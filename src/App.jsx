@@ -4,7 +4,7 @@ import { AudioSys } from "./audio/AudioSys";
 import { STORY, INITIAL_FLAGS } from "./story";
 import {
   STAT_MAX, BATTERY_START, SPARES_START, INITIAL_STATS,
-  LIGHTS_INIT, SPEED_OPTIONS, BLACKOUT_MS, BLACKOUT_HOLD_MS,
+  LIGHTS_INIT, SPEED_OPTIONS, DARK_MS,
 } from "./engine/constants";
 import { batteryColorOf, paginateDoc } from "./engine/textFx";
 import { saveGame, loadGame, clearGame } from "./save/storage";
@@ -23,7 +23,7 @@ import RadioOverlay from "./components/interactions/RadioOverlay";
 import LightsOverlay from "./components/interactions/LightsOverlay";
 import { ValveOverlay, LeverOverlay, FuseOverlay } from "./components/interactions/MechOverlays";
 import BreathOverlay from "./components/interactions/BreathOverlay";
-import BlackoutOverlay from "./components/interactions/BlackoutOverlay";
+import DarknessOverlay from "./components/DarknessOverlay";
 
 /* ============================================================
    SINIR-1 — OYUN MOTORU (App)
@@ -84,10 +84,8 @@ export default function App() {
   const [panelMsg, setPanelMsg] = useState(null);
   // breath
   const [breath, setBreath] = useState(null); // {t, lung, holding, phase}
-  // blackout (güç kaybı)
-  const [blackout, setBlackout] = useState(null); // {hasSpare}
-  const [boCount, setBoCount] = useState(BLACKOUT_MS);
-  const [boHold, setBoHold] = useState(0);
+  // karanlık modu (pil %0 — oyun sürer)
+  const [dark, setDark] = useState(null); // {left}
 
   const runIdRef = useRef(0);
   const skipRef = useRef(false);
@@ -107,9 +105,8 @@ export default function App() {
   const clockRef = useRef(227);
   const speedMultRef = useRef(1);
   const glitchFxRef = useRef(true);
-  const blackoutResolveRef = useRef(null);
-  const blackoutIntRef = useRef(null);
-  const boHoldingRef = useRef(false);
+  const darkIntRef = useRef(null);
+  const darkRef = useRef(false);
   const leverIntRef = useRef(null);
   const leverHoldingRef = useRef(false);
   const fuseIntRef = useRef(null);
@@ -123,7 +120,7 @@ export default function App() {
     setTimeLeft(null);
   };
   const clearIntervals = () => {
-    [blackoutIntRef, leverIntRef, fuseIntRef, breathIntRef].forEach((r) => {
+    [darkIntRef, leverIntRef, fuseIntRef, breathIntRef].forEach((r) => {
       if (r.current) { clearInterval(r.current); r.current = null; }
     });
   };
@@ -224,57 +221,37 @@ export default function App() {
 
   /* ---------------- GÜÇ KAYBI (blackout) ---------------- */
 
-  const startBlackout = (hasSpare) =>
-    new Promise((resolve) => {
-      blackoutResolveRef.current = () => { blackoutResolveRef.current = null; resolve(); };
-      boHoldingRef.current = false;
-      setBoHold(0);
-      setBoCount(BLACKOUT_MS);
-      // FAZ 1 — PIRPIR: ekran birkaç saniye aralıklı aydınlanır, sonra kararır
-      setBlackout({ hasSpare, phase: "flash" });
-      AudioSys.heart(430);
-      later(() => {
-        // FAZ 2 — SİMSİYAH: oyuncuya pil arama/takma süresi
-        setBlackout({ hasSpare, phase: "dark" });
-        const total = hasSpare ? BLACKOUT_MS : 2600;
-        setBoCount(total);
-        let left = total;
-        let hold = 0;
-        blackoutIntRef.current = setInterval(() => {
-          left -= 50;
-          if (hasSpare && boHoldingRef.current) {
-            hold += 50;
-            setBoHold(Math.min(1, hold / BLACKOUT_HOLD_MS));
-            if (hold >= BLACKOUT_HOLD_MS) {
-              clearInterval(blackoutIntRef.current);
-              blackoutIntRef.current = null;
-              setSparesBoth(sparesRef.current - 1);
-              setBatteryBoth(100);
-              setBlackout(null);
-              AudioSys.pickup();
-              showToast("⚡", "Pil Değiştirildi · %100", "#7fae86");
-              if (blackoutResolveRef.current) blackoutResolveRef.current();
-              return;
-            }
-          } else if (hasSpare) {
-            hold = Math.max(0, hold - 90);
-            setBoHold(Math.min(1, hold / BLACKOUT_HOLD_MS));
-          }
-          setBoCount(left);
-          if (left <= 0) {
-            clearInterval(blackoutIntRef.current);
-            blackoutIntRef.current = null;
-            setBlackout(null);
-            die({
-              text: hasSpare
-                ? "Pil elindeydi. Karanlık daha hızlıydı."
-                : "Ekran sönüyor. Karanlık, beklediği şeyi sonunda alıyor. Bu derinlikte ışıksız kalmak, çoktan ölmüş olmaktır.",
-              battery: true,
-            });
-          }
-        }, 50);
-      }, 2600);
-    });
+  /* ---------------- KARANLIK MODU (pil %0) ----------------
+     Oyun durmaz: ekran pırpırlı karanlığa düşer, oyuncu hikayede
+     ilerleyip pil bulmaya çalışır. Süre dolarsa ölüm. Pil takılırsa
+     (yedek varsa pil ikonuna dokun / hikayede pil bul) mod biter. */
+  const stopDarkness = (silent) => {
+    if (darkIntRef.current) { clearInterval(darkIntRef.current); darkIntRef.current = null; }
+    darkRef.current = false;
+    setDark(null);
+    if (!silent) AudioSys.heart(null);
+  };
+
+  const startDarkness = () => {
+    if (darkRef.current) return;
+    darkRef.current = true;
+    setDark({ left: DARK_MS });
+    AudioSys.heart(430);
+    showToast("▼", "GÜÇ BİTTİ — PİL BUL", "#c23b2e");
+    let left = DARK_MS;
+    darkIntRef.current = setInterval(() => {
+      if (batteryRef.current > 0) { stopDarkness(); return; }
+      left -= 100;
+      setDark({ left });
+      if (left <= 0) {
+        stopDarkness(true);
+        die({
+          text: "Ekran son kez sönüyor. Parmakların boş yuvayı yokluyor, yokluyor, yokluyor. Bu derinlikte ışıksız kalmak, çoktan ölmüş olmaktır.",
+          battery: true,
+        });
+      }
+    }, 100);
+  };
 
   /* ---------------- olay oynatıcı ---------------- */
 
@@ -295,7 +272,7 @@ export default function App() {
         }
         return;
       }
-      case "objective": { showObjective(ev.text); return wait(1800, runId); }
+      case "objective": { AudioSys.objectiveSfx(); showObjective(ev.text); return wait(1800, runId); }
       case "stat": {
         const next = { ...statsRef.current };
         next[ev.stat] = Math.max(0, Math.min(STAT_MAX[ev.stat] || 100, (next[ev.stat] || 0) + ev.delta));
@@ -306,13 +283,22 @@ export default function App() {
       }
       case "battery": {
         if (ev.spares) {
-          setSparesBoth(sparesRef.current + ev.spares);
-          AudioSys.pickup();
-          showToast("▲", "Yedek Pil +" + ev.spares, "#7fae86");
+          if (darkRef.current) {
+            // karanlıkta bulunan pil beklemez — titreyen ellerle yuvaya çakılır
+            setBatteryBoth(100);
+            AudioSys.pickup();
+            showToast("⚡", "PİL TAKILDI · %100", "#7fae86");
+            await typeLine("system", "Pili karanlıkta yuvasına çakıyorsun. Ekran nefes alır gibi geri geliyor.", runId, 12);
+          } else {
+            setSparesBoth(sparesRef.current + ev.spares);
+            AudioSys.pickup();
+            showToast("▲", "Yedek Pil +" + ev.spares, "#7fae86");
+          }
         }
         if (ev.delta) setBatteryBoth(Math.max(0, Math.min(100, batteryRef.current + ev.delta)));
         return wait(600, runId);
       }
+      case "anons": return typeLine("anons", ev.text, runId, 20);
       case "document": {
         if (!docsRef.current.find((d) => d.id === ev.doc.id)) {
           docsRef.current = [...docsRef.current, { ...ev.doc, read: false }];
@@ -384,17 +370,12 @@ export default function App() {
     clearTimer();
 
     if (node.cost) {
-      const left = batteryRef.current - node.cost;
-      if (left <= 0) {
-        setBatteryBoth(0);
-        await startBlackout(sparesRef.current > 0);
-        if (runIdRef.current !== runId) return;
-        AudioSys.heart(null);
-      } else {
-        setBatteryBoth(left);
-        if (left <= 20) {
-          await typeLine("alert", "⚠ BATARYA KRİTİK: %" + left + " — PİL BUL", runId, 14);
-        }
+      const left = Math.max(0, batteryRef.current - node.cost);
+      setBatteryBoth(left);
+      if (left === 0) {
+        startDarkness(); // oyun durmaz — karanlıkta oynamaya devam
+      } else if (left <= 20) {
+        await typeLine("alert", "⚠ BATARYA KRİTİK: %" + left + " — PİL BUL", runId, 14);
       }
     }
 
@@ -448,10 +429,10 @@ export default function App() {
     playNode(choice.next);
   };
 
-  const handleSkipTap = () => { if (!screen && !interaction && !blackout) skipRef.current = true; };
+  const handleSkipTap = () => { if (!screen && !interaction) skipRef.current = true; };
 
   const swapBattery = () => {
-    if (sparesRef.current <= 0 || batteryRef.current >= 100 || death || dying || blackout) return;
+    if (sparesRef.current <= 0 || batteryRef.current >= 100 || death || dying) return;
     setSparesBoth(sparesRef.current - 1);
     setBatteryBoth(100);
     AudioSys.pickup();
@@ -542,6 +523,17 @@ export default function App() {
     AudioSys.blipSfx(340);
     const f = Math.round(Math.max(410, Math.min(450, radioFreq + delta)) * 10) / 10;
     setRadioFreq(f);
+    // gizli yayınlar — dinlemek iz bırakır
+    if (Math.abs(f - 437.4) <= 0.05 && !flagsRef.current.frekansCocuk) {
+      setFlagsBoth({ frekansCocuk: true, frekanslariDuydun: !!flagsRef.current.frekansNefes });
+      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) - 5) };
+      setStats({ ...statsRef.current });
+    }
+    if (Math.abs(f - 421.8) <= 0.05 && !flagsRef.current.frekansNefes) {
+      setFlagsBoth({ frekansNefes: true, frekanslariDuydun: !!flagsRef.current.frekansCocuk });
+      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) - 5) };
+      setStats({ ...statsRef.current });
+    }
     if (Math.abs(f - interaction.target) <= 0.05) {
       setRadioPhase("lock");
       const target = interaction.success;
@@ -563,7 +555,7 @@ export default function App() {
     if (radioPhase === "cut") return "— HAT KOPTU —";
     if (Math.abs(f - 437.4) < 0.4) return "…karanlıkta bir çocuk sayı sayıyor… yedi… altı…";
     if (Math.abs(f - 421.8) < 0.4) return "…ıslak, ritmik bir nefes. Dinliyor.";
-    if (Math.abs(f - interaction.target) < 0.8) return "…'—NIR-1, duyuyor mus—' … bir insan sesi!";
+    if (Math.abs(f - interaction.target) < 0.8) return "…bir insan sesi! Genç bir kadın: «—yor musun? Cevap ver—»";
     if (Math.abs(f - interaction.target) < 2.5) return "…statiğin içinde kelime kırıntıları…";
     return "…statik…";
   })();
@@ -591,7 +583,7 @@ export default function App() {
 
   const valveTurn = () => {
     if (mechDone || !interaction) return;
-    AudioSys.clank();
+    AudioSys.valveSfx();
     const step = 360 / interaction.turns;
     const next = valveDeg + step;
     setValveDeg(next);
@@ -648,7 +640,7 @@ export default function App() {
     if (mechDone || !interaction) return;
     const inZone = fuseMarker >= 40 && fuseMarker <= 60;
     if (inZone) {
-      AudioSys.blipSfx(880);
+      AudioSys.fuseSfx();
       const next = fuseHits + 1;
       setFuseHits(next);
       setFuseMsg({ text: "OTURDU (" + next + "/" + interaction.hits + ")", ok: true });
@@ -688,12 +680,21 @@ export default function App() {
       setBreath(null);
       playNode(target);
     };
+    let heartStage = 0;
     breathIntRef.current = setInterval(() => {
       t += 60;
       const holding = breathHoldingRef.current;
-      if (holding) lung += 60;
+      // ADRENALİN DALGALARI: iki pencerede ciğer 2 kat hızlı dolar
+      const spike = (t > 2600 && t < 3900) || (t > 5100 && t < 6300);
+      if (holding) lung += spike ? 120 : 60;
       const phase = t >= holdMs ? "release" : holding ? "hold" : "wait";
-      setBreath({ t, lung, holding, phase });
+      setBreath({ t, lung, holding, phase, spike });
+      // ciğer doldukça kalp hızlanır
+      const stage = lung / lungMs > 0.62 ? 2 : lung / lungMs > 0.3 ? 1 : 0;
+      if (stage !== heartStage) {
+        heartStage = stage;
+        AudioSys.heart(stage === 2 ? 360 : stage === 1 ? 440 : 520);
+      }
       // hiç basmadan 2 sn geçti → nefesin duyuldu
       if (!holding && t < holdMs && t > 2000 && lung === 0) return finish(failTo);
       // ciğer patladı
@@ -745,9 +746,8 @@ export default function App() {
     const cp = checkpointRef.current;
     setDeath(null);
     setDying(false);
-    setBlackout(null);
+    stopDarkness(true);
     clearIntervals();
-    if (blackoutResolveRef.current) blackoutResolveRef.current();
     clearPending();
     AudioSys.heart(null);
     if (!cp) return startFresh();
@@ -761,8 +761,7 @@ export default function App() {
     clearGame(); // eski kalıcı kaydı sil (ilk checkpoint hemen yenisini yazar)
     setDeath(null);
     setDying(false);
-    setBlackout(null);
-    if (blackoutResolveRef.current) blackoutResolveRef.current();
+    stopDarkness(true);
     setEnded(false);
     statsRef.current = { ...INITIAL_STATS };
     setStats({ ...INITIAL_STATS });
@@ -832,11 +831,11 @@ export default function App() {
 
   useEffect(() => {
     // kalp atışı: kriz seviyeleri
-    if (mode !== "game" || death || blackout || interaction?.kind === "breath") return;
+    if (mode !== "game" || death || dark || interaction?.kind === "breath") return;
     if (battery > 0 && battery <= 8) AudioSys.heart(620);
     else if (battery > 0 && battery <= 15) AudioSys.heart(880);
     else AudioSys.heart(null);
-  }, [battery, mode, death, blackout, interaction]);
+  }, [battery, mode, death, dark, interaction]);
 
   useEffect(() => {
     // radyo statiği
@@ -998,13 +997,8 @@ export default function App() {
           onBack={() => setScreen(settingsFrom === "pause" ? "pause" : null)} />
       )}
 
-      {/* Güç kaybı */}
-      {blackout && (
-        <BlackoutOverlay blackout={blackout} count={boCount} totalMs={BLACKOUT_MS}
-          hold={boHold} spares={spares}
-          onHoldStart={() => { if (blackout.hasSpare) boHoldingRef.current = true; }}
-          onHoldEnd={() => { boHoldingRef.current = false; }} />
-      )}
+      {/* Karanlık modu — pil %0 */}
+      {dark && <DarknessOverlay left={dark.left} totalMs={DARK_MS} />}
 
       {/* Ölüm */}
       {dying && <div style={S.dyingVignette} className="s1-dying" />}

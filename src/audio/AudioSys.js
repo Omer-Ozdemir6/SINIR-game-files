@@ -113,6 +113,31 @@ export const AudioSys = {
       setTimeout(() => { try { this.n.blip.triggerAttackRelease(840, "32n"); } catch (e) {} }, 110);
     } catch (e) {}
   },
+  valveSfx() {
+    // vana çevirme — gıcırtılı metal dönüş
+    if (!this.inited || !this.enabled) return;
+    try {
+      this.n.memb.triggerAttackRelease("G1", "16n");
+      this.n.burstG.gain.rampTo(0.02, 0.02);
+      setTimeout(() => { try { this.n.burstG.gain.rampTo(0, 0.12); } catch (e) {} }, 150);
+    } catch (e) {}
+  },
+  fuseSfx() {
+    // sigorta oturması — tak + çıt
+    if (!this.inited || !this.enabled) return;
+    try {
+      this.n.memb.triggerAttackRelease("C2", "32n");
+      setTimeout(() => { try { this.n.blip.triggerAttackRelease(920, "32n"); } catch (e) {} }, 70);
+    } catch (e) {}
+  },
+  objectiveSfx() {
+    // yeni görev — iki yumuşak nota
+    if (!this.inited || !this.enabled) return;
+    try {
+      this.n.blip.triggerAttackRelease(660, "16n");
+      setTimeout(() => { try { this.n.blip.triggerAttackRelease(880, "16n"); } catch (e) {} }, 140);
+    } catch (e) {}
+  },
   boom() {
     if (!this.inited || !this.enabled) return;
     try { this.n.memb.triggerAttackRelease("A0", "2n"); } catch (e) {}

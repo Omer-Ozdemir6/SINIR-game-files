@@ -60,11 +60,12 @@ export function NotePaper({ item, onBack }) {
 
 /* Resmi döküman — sayfalı, kaydırmasız */
 export function DocPaper({ item, page, pages, onPrev, onNext, onClose }) {
+  const hand = item.style === "hand"; // el yazısı günlük (RE7 tarzı)
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.docPaper} className="s1-paper">
-        <div style={S.docPaperMeta}>{item.meta}</div>
-        <div style={S.docPaperBody}>{pages[page]}</div>
+      <div style={hand ? S.docPaperHand : S.docPaper} className="s1-paper">
+        {item.meta && <div style={hand ? S.docHandMeta : S.docPaperMeta}>{item.meta}</div>}
+        <div style={hand ? S.docHandBody : S.docPaperBody}>{pages[page]}</div>
         <div style={S.docNav}>
           <button className="s1-btn" style={{ ...S.docArrow, visibility: page > 0 ? "visible" : "hidden" }}
             onClick={onPrev}>

@@ -32,7 +32,9 @@ export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) 
         </div>
       </div>
       <div style={S.breathHint}>
-        {breath.holding ? "" : breath.phase === "wait" ? "EKRANA BAS VE TUTMAYA BAŞLA — ÇABUK" : ""}
+        {breath.spike && breath.holding
+          ? "CİĞERLERİN YANIYOR — DAYAN, SES ÇIKARMA"
+          : breath.holding ? "" : breath.phase === "wait" ? "EKRANA BAS VE TUTMAYA BAŞLA — ÇABUK" : ""}
       </div>
     </div>
   );

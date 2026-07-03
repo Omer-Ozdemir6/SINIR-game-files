@@ -127,12 +127,52 @@ export const styles = {
 
   stream: { flex: 1, overflowY: "auto", padding: "24px 20px 0", maxWidth: 620, width: "100%", margin: "0 auto" },
 
+    // --- KARANLIK MODU V2 STİLLERİ ---
+  darknessOverlay: {
+    position: "absolute",
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: "#000",
+    opacity: 0.96,
+    zIndex: 85,
+    pointerEvents: "none",
+  },
+  darkBarWrap: {
+    position: "absolute",
+    top: "15px", left: "50%",
+    transform: "translateX(-50%)",
+    width: "160px",
+    display: "flex", flexDirection: "column", alignItems: "center",
+    gap: "4px",
+    zIndex: 90,
+    opacity: 0.55,
+  },
+  darkBarLabel: {
+    fontSize: "10px",
+    fontFamily: "monospace",
+    color: "#ff3333",
+    letterSpacing: "2px",
+    textShadow: "0 0 4px #ff0000",
+  },
+  darkBarTrack: {
+    width: "100%", height: "3px",
+    backgroundColor: "#220000",
+    borderRadius: "1px",
+    overflow: "hidden",
+    border: "1px solid #440000",
+  },
+  darkBarFill: {
+    height: "100%",
+    backgroundColor: "#ff2222",
+    boxShadow: "0 0 6px #ff0000",
+    transition: "width 0.1s linear",
+  },
   lineBase: {
     narrate: { fontSize: 17, lineHeight: 1.75, margin: "0 0 18px", color: "#aebfbc" },
     ambient: { fontSize: 15, lineHeight: 1.7, margin: "0 0 18px", color: "#5f7573", fontStyle: "italic" },
     system: { fontFamily: mono, fontSize: 12, lineHeight: 1.6, margin: "0 0 18px", color: "#c79a52", letterSpacing: "0.05em" },
     alert: { fontFamily: mono, fontSize: 12, lineHeight: 1.6, margin: "0 0 18px", color: "#c05a48", letterSpacing: "0.05em" },
     choice: { fontFamily: mono, fontSize: 13, lineHeight: 1.6, margin: "0 0 22px", color: "#5f7573" },
+    anons: { fontFamily: mono, fontSize: 13, lineHeight: 1.75, margin: "0 0 18px", color: "#d9c27a", letterSpacing: "0.06em", textShadow: "0 0 10px rgba(215,190,110,0.25)" },
   },
 
   timerWrap: { margin: "4px 0 14px" },
@@ -355,6 +395,42 @@ export const styles = {
   rowText: { fontFamily: mono, fontSize: 13, letterSpacing: "0.08em", color: "#cfc9a4" },
   emptyText: { fontFamily: mono, fontSize: 12, color: "#5a584a", textAlign: "center", marginTop: 30, lineHeight: 1.8 },
 
+    // --- EL YAZISI GÜNLÜK (RE7) STİLLERİ ---
+  docPaperHand: {
+    position: "relative",
+    width: "88%", maxWidth: "420px",
+    minHeight: "260px",
+    maxHeight: "75vh",
+    backgroundColor: "#f2ebd9",
+    backgroundImage: "radial-gradient(circle at 50% 50%, #f7f3e8 0%, #e6dcbf 100%)",
+    color: "#2a1e17",
+    padding: "30px 24px",
+    borderRadius: "2px",
+    boxShadow: "0 12px 36px rgba(0,0,0,0.7), inset 0 0 20px rgba(42,30,23,0.15)",
+    display: "flex", flexDirection: "column",
+    border: "1px solid #c2b396",
+    transform: "rotate(-1deg)",
+  },
+  docHandMeta: {
+    fontSize: "11px",
+    fontFamily: "'Courier New', monospace",
+    opacity: 0.6,
+    marginBottom: "16px",
+    borderBottom: "1px dashed rgba(42,30,23,0.2)",
+    paddingBottom: "4px",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+  },
+  docHandBody: {
+    flex: 1,
+    fontSize: "16px",
+    fontFamily: "'Georgia', serif",
+    fontStyle: "italic",
+    lineHeight: "1.6",
+    overflowY: "auto",
+    whiteSpace: "pre-wrap",
+    color: "#1c120c",
+  },
   notePaper: {
     width: "100%", maxWidth: 480, maxHeight: "84vh", overflowY: "auto",
     backgroundColor: "#f3f0e6",
@@ -372,6 +448,19 @@ export const styles = {
     color: "#7a7a6a", border: "none", cursor: "pointer",
   },
 
+  /* El yazısı döküman (günlük) — çizgili kağıt, mavi mürekkep */
+  docPaperHand: {
+    width: "100%", maxWidth: 480, maxHeight: "84vh", overflowY: "auto",
+    backgroundColor: "#f3f0e6",
+    backgroundImage: "repeating-linear-gradient(transparent, transparent 30px, #c8d3df 31px)",
+    boxShadow: "0 10px 50px rgba(0,0,0,0.95)",
+    padding: "28px 26px 18px", display: "flex", flexDirection: "column", gap: 6,
+  },
+  docHandMeta: { fontFamily: hand, fontSize: 15, color: "#7a86b8", marginBottom: 6 },
+  docHandBody: {
+    fontFamily: hand, fontSize: 18.5, lineHeight: "31px", color: "#2f3e96",
+    whiteSpace: "pre-wrap", flex: 1,
+  },
   docPaper: {
     width: "100%", maxWidth: 480, height: "min(84vh, 640px)",
     backgroundColor: "#edeadf",
@@ -419,6 +508,18 @@ export const styles = {
 
   dyingVignette: { position: "fixed", inset: 0, zIndex: 25, pointerEvents: "none" },
 
+  /* Karanlık modu — pil %0: oyun sürer, ekran pırpırlı karanlık */
+  darknessOverlay: {
+    position: "fixed", inset: 0, zIndex: 24, pointerEvents: "none",
+  },
+  darkBarWrap: {
+    position: "fixed", top: 0, left: 0, right: 0, zIndex: 25,
+    display: "flex", flexDirection: "column", alignItems: "center",
+    gap: 3, paddingTop: 4, pointerEvents: "none",
+  },
+  darkBarLabel: { fontFamily: mono, fontSize: 8, letterSpacing: "0.3em", color: "rgba(194,59,46,0.75)" },
+  darkBarTrack: { width: "42%", height: 3, backgroundColor: "rgba(24,10,9,0.9)", borderRadius: 2, overflow: "hidden" },
+  darkBarFill: { height: "100%", backgroundColor: "rgba(194,59,46,0.85)" },
   /* Ölüm ekranı kenarları — Outlast tarzı kan vinyeti */
   deathBloodEdges: {
     position: "absolute", top: 0, right: 0, bottom: 0, left: 0,

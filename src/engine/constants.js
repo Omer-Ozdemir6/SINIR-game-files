@@ -20,6 +20,6 @@ export const SPEED_OPTIONS = [
   { label: "HIZLI", mult: 0.45 },
 ];
 
-// Güç kaybı (blackout) süreleri
-export const BLACKOUT_MS = 6000;       // pil takmak için toplam süre
-export const BLACKOUT_HOLD_MS = 1300;  // "PİLİ TAK" basılı tutma süresi
+// Karanlık modu: pil %0'a inince oyun DURMAZ — ekran pırpırlı
+// karanlığa düşer, oyuncu bu süre içinde pil bulup takamazsa ölür.
+export const DARK_MS = 75000;
