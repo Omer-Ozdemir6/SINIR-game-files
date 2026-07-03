@@ -1,0 +1,51 @@
+import { styles as S } from "../styles/theme";
+
+/* Üst bar: çark menüsü, GÜRÜLTÜ/AKIL göstergeleri, pil, arşiv */
+export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, onGear, onBattery, onArchive }) {
+  // Outlast tarzı dilimli pil: 10 dikey dilim, doluluk kadar yanar
+  const segsOn = battery <= 0 ? 0 : Math.max(1, Math.ceil(battery / 10));
+  return (
+    <div style={S.header}>
+      <div style={S.headerLeft}>
+        <button className="s1-btn" style={S.gearBtn} title="Menü"
+          onClick={(e) => { e.stopPropagation(); onGear(); }}>
+          ⚙
+        </button>
+        <span style={S.stationTag}>SINIR-1</span>
+        <span style={S.sectorTag}>K-6</span>
+      </div>
+      <div style={S.headerRight}>
+        <div style={S.gaugeCol}>
+          <div style={S.gauge}>
+            <span style={S.statLabel}>GÜRÜLTÜ</span>
+            <div style={S.statTrack}>
+              <div style={{ ...S.statFill, width: gurultuPct + "%", backgroundColor: gurultuPct > 50 ? "#b8503f" : "#7a8c46" }} />
+            </div>
+          </div>
+          <div style={S.gauge}>
+            <span style={S.statLabel}>AKIL</span>
+            <div style={S.statTrack}>
+              <div style={{ ...S.statFill, width: akil + "%", backgroundColor: akil > 60 ? "#6a8fae" : akil > 40 ? "#c79a52" : "#b8503f" }} />
+            </div>
+          </div>
+        </div>
+        <button className="s1-btn" style={S.batteryWrap} title="Yedek pil takmak için dokun"
+          onClick={(e) => { e.stopPropagation(); onBattery(); }}>
+          <div style={S.batteryShell}>
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i}
+                className={battery <= 20 && i < segsOn ? "s1-critical" : ""}
+                style={{ ...S.batterySeg, backgroundColor: i < segsOn ? bColor : "transparent" }} />
+            ))}
+          </div>
+          <div style={S.batteryCap} />
+          <span style={{ ...S.spareText, color: spares > 0 ? "#b8b49a" : "#5a584a" }}>×{spares}</span>
+        </button>
+        <button className="s1-btn" style={S.archiveBtn}
+          onClick={(e) => { e.stopPropagation(); onArchive(); }}>
+          ARŞİV
+        </button>
+      </div>
+    </div>
+  );
+}

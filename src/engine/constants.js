@@ -1,0 +1,25 @@
+/* SINIR-1 — MOTOR SABİTLERİ
+   Bölüme özel veriler (bayraklar, hikaye) src/story/ altındadır;
+   burada yalnız motorun genel ayarları durur. */
+
+export const STAT_MAX = { gurultu: 100, akil: 100 };
+
+export const BATTERY_START = 42;   // yeni oyunda pil yüzdesi
+export const SPARES_START = 0;     // yeni oyunda yedek pil sayısı
+
+export const INITIAL_STATS = { gurultu: 0, akil: 100 };
+
+// Lights-Out bulmacası başlangıç dizilimi (çözüm: 2. ve 4. butonlar)
+export const LIGHTS_INIT = [false, false, true, false, false];
+
+export const DOC_LINES_PER_PAGE = 14;
+
+export const SPEED_OPTIONS = [
+  { label: "YAVAŞ", mult: 1.5 },
+  { label: "NORMAL", mult: 1 },
+  { label: "HIZLI", mult: 0.45 },
+];
+
+// Güç kaybı (blackout) süreleri
+export const BLACKOUT_MS = 6000;       // pil takmak için toplam süre
+export const BLACKOUT_HOLD_MS = 1300;  // "PİLİ TAK" basılı tutma süresi
