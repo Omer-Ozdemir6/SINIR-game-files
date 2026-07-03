@@ -225,6 +225,7 @@ export default function App() {
      Oyun durmaz: ekran pırpırlı karanlığa düşer, oyuncu hikayede
      ilerleyip pil bulmaya çalışır. Süre dolarsa ölüm. Pil takılırsa
      (yedek varsa pil ikonuna dokun / hikayede pil bul) mod biter. */
+
   const stopDarkness = (silent) => {
     if (darkIntRef.current) { clearInterval(darkIntRef.current); darkIntRef.current = null; }
     darkRef.current = false;
@@ -261,6 +262,7 @@ export default function App() {
       case "narrate": return typeLine("narrate", ev.text, runId, 26);
       case "ambient": return typeLine("ambient", ev.text, runId, 30);
       case "system": return typeLine("system", ev.text, runId, 12);
+      case "alert": return typeLine("alert", ev.text, runId, 14);
       case "pause": return wait(ev.ms || 800, runId);
       case "glitch": return runGlitch(ev.ms || 600);
       case "flag": { setFlagsBoth(ev.set); return; }
@@ -551,7 +553,7 @@ export default function App() {
   const radioHint = (() => {
     if (!interaction || interaction.kind !== "radio") return "";
     const f = radioFreq;
-    if (radioPhase === "lock") return "\"SINIR-1, sizi alıyoruz, konumunuzu—\"";
+    if (radioPhase === "lock") return "«Yüzey mi? …Yüzey üç haftadır cevap vermiyor. Kimsin sen?»";
     if (radioPhase === "cut") return "— HAT KOPTU —";
     if (Math.abs(f - 437.4) < 0.4) return "…karanlıkta bir çocuk sayı sayıyor… yedi… altı…";
     if (Math.abs(f - 421.8) < 0.4) return "…ıslak, ritmik bir nefes. Dinliyor.";
@@ -871,7 +873,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = battery > 0 && battery <= 12 && !blackout;
+  const flickering = battery > 0 && battery <= 12;
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
 

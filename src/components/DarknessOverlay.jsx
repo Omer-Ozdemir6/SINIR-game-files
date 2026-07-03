@@ -1,4 +1,4 @@
-﻿import { styles as S } from "../styles/theme";
+import { styles as S } from "../styles/theme";
 
 /* KARANLIK MODU: pil %0 — engelleyici DEĞİL (pointerEvents: none).
    Ekran çoğunlukla siyah, aralıklı pırpırlarla görüntü gelip gider;

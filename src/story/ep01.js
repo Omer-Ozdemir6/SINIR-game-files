@@ -617,7 +617,7 @@ export const EP01 = {
     },
 
     n_son: {
-      ending: true,
+      cost: 1,
       events: [
         { type: "narrate", text: "Kapak oturuyor, sürgü kilitleniyor. Sırtını çeliğe verip kayıyorsun; ciğerlerin ancak şimdi, izinli, boşalıyor." },
         { type: "narrate", text: "Kapağın öbür yüzüne, tam kulağının hizasına, bir şey YASLANIYOR. Vurmuyor. Zorlamıyor. Sadece... duruyor. Sonra, çeliğin içinden, neredeyse nazik: tık. Tek bir vuruş. Sanki 'biliyorum' der gibi.", if: { flag: "isaret", equals: true } },
@@ -627,7 +627,9 @@ export const EP01 = {
         { type: "ambient", text: "Ve cebinde, kapalı duran tablet, kendi kendine cızırdıyor. Bir çocuk sesi. Sayıyor: «altı... beş...» Sonra susuyor. K-5'in karanlığı, merdivenin dibinde seni bekliyor." },
         { type: "ambient", text: "Cızırtının altında, çok daha derinde, ikinci bir katman duyuyorsun: ıslak nefes ve bir ninninin kırıntısı. Sen dinlediğini sanıyordun. Oysa bütün gece, DİNLENEN sendin.", if: { flag: "frekanslariDuydun", equals: true } },
         { type: "system", text: "— BÖLÜM 1 SONU: GECE VARDİYASI —" },
-        { type: "system", text: "K-5: 'SINAV' — yakında" },
+      ],
+      choices: [
+        { id: "k5", text: "Merdiveni tırman — K-5: Yaşam Destek", next: "n_k5_giris" },
       ],
     },
   },

@@ -1,9 +1,27 @@
+import { useState, useEffect } from "react";
 import { styles as S } from "../styles/theme";
 
-/* Yeni oyun öncesi içerik uyarısı + giriş metni (Outlast tarzı) */
+/* Yeni oyun öncesi içerik uyarısı + giriş metni.
+   Yumuşak fade-in ile gelir; Devam Et'e basılınca fade-out olur,
+   ardından açılış sinematiği başlar. */
 export default function WarningScreen({ onContinue }) {
+  const [opacity, setOpacity] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setOpacity(1), 60);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleContinue = () => {
+    if (leaving) return;
+    setLeaving(true);
+    setOpacity(0);
+    setTimeout(onContinue, 1150);
+  };
+
   return (
-    <div style={S.warnRoot}>
+    <div style={{ ...S.warnRoot, opacity, transitionProperty: "opacity", transitionDuration: "1100ms" }}>
       <div style={S.warnBody}>
         <p style={S.warnText}>
           SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. Lütfen keyfini çıkarın.
@@ -16,7 +34,7 @@ export default function WarningScreen({ onContinue }) {
           ya da ölmek.
         </p>
       </div>
-      <button className="s1-btn s1-mm" style={S.warnContinue} onClick={onContinue}>
+      <button className="s1-btn s1-mm" style={S.warnContinue} onClick={handleContinue}>
         Devam Et
       </button>
     </div>
