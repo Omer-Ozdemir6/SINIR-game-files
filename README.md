@@ -92,3 +92,46 @@ ve `resumeGame`).
 ## Bilinen Kurallar
 - React inline stillerinde `animation` daima longhand (`animationName`, `animationDuration`...) yazılır.
 - `AudioSys.init()` yalnızca kullanıcı dokunuşundan sonra çağrılır (autoplay kuralı) — menü butonlarında zaten bağlı.
+
+## RİTİM KURALLARI (motor destekli)
+
+Oyuncu asla "ödül seline" maruz kalmaz:
+- **Otomatik fren:** Aynı node'da art arda iki meta olay
+  (document/note/objective/battery) gelirse motor araya kendiliğinden
+  dokunma kapısı sokar.
+- **`{ type: "waitTap" }`** olayı: akış durur, "▸ devam etmek için
+  dokun" belirir. Yoğun sahnelerde elle kullan.
+- **`document` + `open: true`:** kağıt ekrana açılır, oyuncu
+  kapatana dek HER ŞEY bekler. Varsayılan kullanım bu olmalı.
+- Yazım disiplini: bir node'da en fazla 1 döküman VEYA 1 görev;
+  etkileşimli node'a meta olay koyma; ödül daima anlatı vuruşundan
+  SONRA gelsin.
+
+## BÖLÜM TASARIM KURALLARI (keşif ve zorlanma)
+
+Amaç: oyuncu düz çizgide taşınmasın; DÜŞÜNSÜN, arasın, kaybolsun,
+başardığını hissetsin.
+1. **Hedef söylenir, YOL söylenmez.** Görev "radyo odasına ulaş"
+   der; hangi seçimin oraya gittiğini seçenek metni ELE VERMEZ
+   ("Radyo odasına git" diye seçenek olmaz — "soldaki su sesine
+   yürü / sağdaki karanlık geçide gir" olur).
+2. **Her kat bir mini harita:** 5-8 mekânlık hub yapısı; en az 2
+   çıkmaz (içinde lore/pil/ceza olan), en az 1 döngü (iki yoldan
+   aynı yere varılır), en az 1 yanlış-ölümcül yol.
+3. **Yön bilgisi dökümanlardadır:** tünel şeması, vardiya notu,
+   duvar yazısı. Arşivi açmayan oyuncu kaybolur — bu bir hata değil,
+   tasarımdır.
+4. **Kapılar çaba ister:** panel/kod/bulmaca girdileri farklı
+   odalarda toplanır; oyuncu koridorlarda GERİ DÖNMEK zorunda kalır.
+5. **Seçenek sayısı ekranda 3-5'i geçmesin ama aynı hedefe giden
+   tek seçenek olmasın.**
+(EP01–EP02 bu kurallara göre yeniden dokunacak; K-4'ten itibaren
+bölümler doğrudan bu şablonla yazılır.)
+
+## SES DOSYALARI
+
+`src/audio/soundMap.js` içindeki isimlere dosya yolu yaz
+(`public/audio/` altına koy) — o ses anında gerçek kayıtla çalınır;
+boş kalanlar sentetik devam eder. Soundtrack: hikayede
+`{ type: "music", track: "k6" }` başlatır, `{ type: "music" }`
+susturur (parçalar loop çalar, ses ayarına uyar).

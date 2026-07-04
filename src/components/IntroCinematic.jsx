@@ -1,219 +1,234 @@
 import { useState, useEffect, useRef } from "react";
 import { styles as S } from "../styles/theme";
-import { t } from "../i18n";
 import { AudioSys } from "../audio/AudioSys";
+import { t } from "../i18n";
 
 /* ============================================================
-   AÇILIŞ SİNEMATİĞİ — "BATURAY'IN MAİLİ"
-   Uyarı ekranı söndükten sonra otomatik oynar:
-   1) Kurumsal posta terminali belirir (fade in)
-   2) Baturay GERÇEĞİ yazar... durur... hepsini siler
-   3) Evcil bir "denetim talebi" yazar
-   4) İmleç SİL'e gider → "TASLAK SİLİNSİN Mİ?" → HAYIR
-   5) İmleç GÖNDER'e gider → GÖNDERİLDİ — YANIT BEKLENİYOR
-   6) Ekran kararır → "{t("intro.later")}" → oyun başlar
-   Her an sağ alttan GEÇ ile atlanabilir.
+   AÇILIŞ SİNEMATİĞİ v2 — "İHBARCI" (Outlast: Whistleblower akışı)
+   1) Mail YARISI YAZILMIŞ halde açılır — sadece SONUNUN yazılışını
+      izleriz (Baturay'ın ihbar maili, bir gazeteciye).
+   2) Bekleme → imleç SİL'e gider, basar → "TASLAK SİLİNSİN Mİ?"
+      → tereddüt → HAYIR.
+   3) Ekranda talimat belirir: "MESAJI GÖNDERMEK İÇİN GÖNDER'E BAS"
+      — GÖNDER'e OYUNCU basar (ihbarı oyuncu yollar).
+   4) Basar basmaz: kapkara ekranda OYUN İSMİ parlar (Whistleblower
+      başlık kartı) → yavaş fade-out → "Birkaç gün sonra." → oyun.
    ============================================================ */
 
-// Yazılıp SİLİNECEK gerçek:
-const TXT_GERCEK =
-  "Mürettebat geceleri uykusunda sayı sayıyor. Hepsi aynı yerden başlıyor. " +
-  "Şef Tekin iki haftadır uyumuyor ve bize 'aile' diyor. " +
-  "K-2'deki buluntuyu gören herkes";
+// Ekran açıldığında ZATEN yazılmış olan kısım:
+const PREFILLED =
+"Beni tanımıyorsunuz. Hızlı yazmak zorundayım — ağı izliyor olabilirler.\n\nSINIR-1'de gece vardiya amiriyim. Karadeniz'de, hiçbir haritada olmayan bir araştırma istasyonu. Burada korkunç şeyler oluyor ve gördüklerimin yarısına kendim de inanmıyorum.\n\nMürettebat uykusunda sayı sayıyor. Hepsi. Aynı sayıları. İstasyon şefi buna 'aile düzeni' diyor. Revir kayıtları saklanıyor, denetim taleplerim";
 
-// Gönderilecek evcil sürüm:
-const TXT_EVCIL =
-  "Sayın yetkili,\n\n" +
-  "K-6 bakım biriminde rutin dışı durumlar gözlemlemekteyim. " +
-  "Personel sağlığı açısından acil denetim talep ediyorum. " +
-  "Ayrıntılı kayıtlar ektedir.\n\n" +
-  "Saygılarımla,\nB. Soylu — Gece Vardiya Amiri";
-
-const KONU = "K-6 — DENETİM TALEBİ (İVEDİ)";
+// Gözümüzün önünde yazılan SON kısım:
+const TYPED_END =
+" cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— B.S.";
 
 export default function IntroCinematic({ onFinish }) {
-  const [rootOpacity, setRootOpacity] = useState(0);
-  const [konu, setKonu] = useState("");
-  const [body, setBody] = useState("");
-  const [caret, setCaret] = useState(true);
-  const [status, setStatus] = useState("");
-  const [cursor, setCursor] = useState({ left: "50%", top: "110%", visible: false });
-  const [pressed, setPressed] = useState(null); // "sil" | "hayir" | "gonder"
+  const [body, setBody] = useState(PREFILLED);
+  const [phase, setPhase] = useState("mail"); // mail | waitSend | sent | title | titleout | card | done
   const [dialog, setDialog] = useState(false);
-  const [black, setBlack] = useState({ show: false, opacity: 0, text: false });
-  const [showSkip, setShowSkip] = useState(false);
+  const [status, setStatus] = useState("");
+  const [pressed, setPressed] = useState(null);
+  const [cursor, setCursor] = useState({ x: "70%", y: "86%", visible: false });
 
-  const cancelledRef = useRef(false);
+  const rootRef = useRef(null);
+  const silRef = useRef(null);
+  const gonderRef = useRef(null);
+  const evetRef = useRef(null);
+  const hayirRef = useRef(null);
+  const aliveRef = useRef(true);
   const doneRef = useRef(false);
+  const phaseRef = useRef("mail");
+  const setPh = (p) => { phaseRef.current = p; setPhase(p); };
 
   const finish = () => {
     if (doneRef.current) return;
     doneRef.current = true;
-    cancelledRef.current = true;
     onFinish();
   };
 
-  useEffect(() => {
-    let alive = true;
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-    const guard = () => !alive || cancelledRef.current;
+  /* OYUNCUNUN GÖNDER'İ — sinematiğin tek etkileşimli anı */
+  const playerSend = async () => {
+    if (phaseRef.current !== "waitSend" || doneRef.current) return;
+    setPh("sent");
+    setPressed("gonder");
+    AudioSys.blipSfx(720);
+    setTimeout(() => setPressed(null), 200);
+    setStatus("GÖNDERİLİYOR…");
+    setTimeout(() => {
+      if (doneRef.current) return;
+      setStatus("GÖNDERİLDİ ✓");
+      AudioSys.blipSfx(880);
+      // Whistleblower başlık kartı:
+      setTimeout(() => { if (!doneRef.current) { setPh("title"); AudioSys.boom(); } }, 900);
+      setTimeout(() => { if (!doneRef.current) setPh("titleout"); }, 3400);
+      setTimeout(() => { if (!doneRef.current) setPh("card"); }, 5400);
+      setTimeout(() => { if (!doneRef.current) finish(); }, 8600);
+    }, 1300);
+  };
 
-    // karakter karakter yaz (ara sıra tuş tıkırtısı)
-    const typeText = async (text, setFn, base, speed) => {
-      for (let i = 1; i <= text.length; i++) {
-        if (guard()) return;
-        setFn(base + text.slice(0, i));
-        if (i % 4 === 0) AudioSys.blipSfx(190);
-        // insani duraksamalar
-        const c = text[i - 1];
-        await sleep(c === "\n" ? 260 : c === "." || c === "," ? 140 : speed + Math.random() * 30);
+  useEffect(() => {
+    aliveRef.current = true;
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const alive = () => aliveRef.current && !doneRef.current;
+
+    const typeText = async (text, base = 60) => {
+      for (let i = 0; i < text.length; i++) {
+        if (!alive()) return;
+        setBody((b) => b + text[i]);
+        if (i % 3 === 0) AudioSys.blipSfx(190);
+        await sleep(text[i] === "\n" ? 240 : base + Math.random() * 70);
       }
     };
-    // geriye doğru sil
-    const deleteText = async (getLen, setFn, base, text) => {
-      for (let i = text.length - 1; i >= 0; i--) {
-        if (guard()) return;
-        setFn(base + text.slice(0, i));
-        if (i % 3 === 0) AudioSys.blipSfx(150);
-        await sleep(14);
-      }
+    const moveTo = async (ref, ms = 900) => {
+      if (!alive() || !ref.current || !rootRef.current) return;
+      const r = ref.current.getBoundingClientRect();
+      const root = rootRef.current.getBoundingClientRect();
+      setCursor({
+        x: r.left - root.left + r.width * 0.55 + "px",
+        y: r.top - root.top + r.height * 0.6 + "px",
+        visible: true,
+      });
+      await sleep(ms + 120);
     };
-    const moveCursor = async (left, top, ms = 800) => {
-      setCursor({ left, top, visible: true });
-      await sleep(ms + 150);
-    };
-    const press = async (key) => {
-      AudioSys.blipSfx(340);
-      setPressed(key);
-      await sleep(230);
+    const click = async (name) => {
+      if (!alive()) return;
+      setPressed(name);
+      AudioSys.blipSfx(520);
+      await sleep(180);
       setPressed(null);
+      await sleep(240);
     };
 
     (async () => {
-      await sleep(150);
-      if (guard()) return;
-      setRootOpacity(1);                      // fade in
-      setTimeout(() => setShowSkip(true), 2200);
       await sleep(1600);
-
-      // konu satırı
-      await typeText(KONU, setKonu, "", 42);
-      await sleep(700);
-
-      // 1) GERÇEK yazılır...
-      await typeText(TXT_GERCEK, setBody, "", 46);
-      if (guard()) return;
-      await sleep(1500);                      // ...durur. Okur. Korkar.
-      // 2) ...ve hepsi silinir.
-      await deleteText(null, setBody, "", TXT_GERCEK);
-      if (guard()) return;
-      await sleep(900);
-
-      // 3) evcil sürüm
-      await typeText(TXT_EVCIL, setBody, "", 34);
-      if (guard()) return;
-      await sleep(1200);
-
-      // 4) imleç SİL'e süzülür
-      await moveCursor("13%", "88%", 900);
-      if (guard()) return;
-      await press("sil");
-      setDialog(true);
+      // 1) yazının SONU gözümüzün önünde yazılır
+      await typeText(TYPED_END, 55);
+      if (!alive()) return;
+      await sleep(2000); // ekran biraz bekler — yazdığına bakıyor
+      // 2) imleç belirir, SİL'e gider
+      await moveTo(silRef, 1000);
+      await click("sil");
+      if (!alive()) return;
       AudioSys.buzzSfx();
+      setDialog(true);
       await sleep(900);
-      // ...HAYIR
-      await moveCursor("62%", "46%", 700);
-      if (guard()) return;
-      await sleep(600);                       // tereddüt
-      await press("hayir");
+      // 3) tereddüt: EVET'in üstünde uzun bekleyiş...
+      await moveTo(evetRef, 800);
+      await sleep(1900);
+      // ...ve HAYIR
+      await moveTo(hayirRef, 700);
+      await click("hayir");
+      if (!alive()) return;
       setDialog(false);
-      await sleep(700);
-
-      // 5) GÖNDER
-      await moveCursor("78%", "88%", 900);
-      if (guard()) return;
-      await press("gonder");
       setCursor((c) => ({ ...c, visible: false }));
-      setCaret(false);
-      setStatus("GÖNDERİLİYOR…");
-      AudioSys.blipSfx(520);
-      await sleep(1400);
-      if (guard()) return;
-      setStatus("GÖNDERİLDİ — YANIT BEKLENİYOR");
-      AudioSys.blipSfx(720);
-      await sleep(2000);
-
-      // 6) karartma + "{t("intro.later")}"
-      setBlack({ show: true, opacity: 0, text: false });
-      await sleep(60);
-      setBlack({ show: true, opacity: 1, text: false });
-      await sleep(1500);
-      if (guard()) return;
-      setBlack({ show: true, opacity: 1, text: true });
-      await sleep(2600);
-      if (guard()) return;
-      setBlack({ show: true, opacity: 1, text: false });
-      await sleep(1000);
-      finish();
+      await sleep(700);
+      // 4) söz oyuncuda: GÖNDER'e o basacak
+      if (!alive()) return;
+      setStatus(t("intro.pressSend"));
+      setPh("waitSend");
     })();
 
-    return () => { alive = false; };
+    return () => { aliveRef.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* ---- BAŞLIK KARTI + ZAMAN KARTI ---- */
+  if (phase === "title" || phase === "titleout") {
+    return (
+      <div style={S.introBlack}>
+        <div className={phase === "title" ? "s1-fadein" : "s1-fadeout"} style={{
+          fontFamily: "'Courier New', ui-monospace, monospace",
+          fontSize: "clamp(30px, 9vw, 52px)", fontWeight: 700,
+          letterSpacing: "0.45em", paddingLeft: "0.45em",
+          color: "#e8ecdf",
+          textShadow: "0 0 18px rgba(220,240,210,0.85), 0 0 46px rgba(160,220,180,0.4)",
+          whiteSpace: "nowrap",
+        }}>
+          SINIR-1
+        </div>
+      </div>
+    );
+  }
+  if (phase === "card" || phase === "done") {
+    return (
+      <div style={S.introBlack}>
+        <div className="s1-fadeslow" style={S.introBlackText}>{t("intro.later")}</div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ ...S.introRoot, opacity: rootOpacity }}>
+    <div ref={rootRef} style={S.introRoot} className={phase === "sent" && status === "GÖNDERİLDİ ✓" ? "s1-fadeout" : "s1-fadein"}>
       <div style={S.mailWindow}>
-        <div style={S.mailTitle}>SINIR-1 KURUMSAL POSTA — TERMİNAL 6/2</div>
-        <div style={S.mailField}>
-          <span style={S.mailFieldLabel}>KİMDEN</span>
-          <span>b.soylu@sinir1.iç</span>
+        <div style={S.mailTitle}>
+          <span>SINIR-1 · GÜVENLİ POSTA UÇBİRİMİ</span>
+          <span>ŞİFRELİ HAT</span>
         </div>
         <div style={S.mailField}>
-          <span style={S.mailFieldLabel}>KİME</span>
-          <span>denetim@yuzey-operasyon</span>
+          <span style={S.mailFieldLabel}>KİME:</span>
+          <span>t.ergin — derin deniz muhabiri (yüzey)</span>
         </div>
         <div style={S.mailField}>
-          <span style={S.mailFieldLabel}>KONU</span>
-          <span>{konu}{konu.length < KONU.length && caret ? <span className="s1-cursor">▌</span> : null}</span>
+          <span style={S.mailFieldLabel}>KONU:</span>
+          <span>İHBAR / SINIR-1 Araştırma İstasyonu</span>
         </div>
         <div style={S.mailBody}>
           {body}
-          {konu.length >= KONU.length && caret ? <span className="s1-cursor">▌</span> : null}
+          <span className="s1-cursor" style={S.mailCursor}>▌</span>
         </div>
-        <div style={S.mailStatus}>{status}</div>
+        <div style={{
+          ...S.mailStatus,
+          ...(phase === "waitSend" ? { color: "#d8c27a", textShadow: "0 0 10px rgba(215,190,110,0.4)" } : {}),
+        }} className={phase === "waitSend" ? "s1-critical" : ""}>
+          {status}
+        </div>
         <div style={S.mailButtons}>
-          <span style={{ ...S.mailBtn, ...(pressed === "sil" ? S.mailBtnActive : null) }}>SİL</span>
-          <span style={S.mailBtn}>TASLAK</span>
-          <span style={{ ...S.mailBtn, ...(pressed === "gonder" ? S.mailBtnActive : null) }}>GÖNDER</span>
+          <div ref={silRef}
+            style={{ ...S.mailBtn, borderColor: "#4a2620", color: "#c0776a", ...(pressed === "sil" ? S.mailBtnActive : {}) }}>
+            SİL
+          </div>
+          <div ref={gonderRef}
+            onClick={playerSend}
+            style={{
+              ...S.mailBtn,
+              ...(pressed === "gonder" ? S.mailBtnActive : {}),
+              ...(phase === "waitSend"
+                ? { cursor: "pointer", borderColor: "#7fae86", color: "#aee0c0", boxShadow: "0 0 14px rgba(120,200,150,0.25)" }
+                : {}),
+            }}>
+            GÖNDER
+          </div>
         </div>
 
         {dialog && (
           <div style={S.mailDialog}>
             <div style={S.mailDialogText}>TASLAK SİLİNSİN Mİ?</div>
             <div style={S.mailDialogRow}>
-              <span style={S.mailBtn}>EVET</span>
-              <span style={{ ...S.mailBtn, ...(pressed === "hayir" ? S.mailBtnActive : null) }}>HAYIR</span>
+              <div ref={evetRef} style={{ ...S.mailBtn, borderColor: "#4a2620", color: "#c0776a" }}>EVET</div>
+              <div ref={hayirRef} style={{ ...S.mailBtn, ...(pressed === "hayir" ? S.mailBtnActive : {}) }}>HAYIR</div>
             </div>
           </div>
         )}
-
-        {cursor.visible && (
-          <div style={{ ...S.mailCursor, left: cursor.left, top: cursor.top }} />
-        )}
       </div>
 
-      {black.show && (
-        <div style={{ ...S.introBlack, opacity: black.opacity }}>
-          <span style={{ ...S.introBlackText, opacity: black.text ? 1 : 0 }}>
-            {t("intro.later")}
-          </span>
-        </div>
+      {cursor.visible && (
+        <div style={{
+          position: "absolute", left: cursor.x, top: cursor.y, zIndex: 6, pointerEvents: "none",
+          width: 0, height: 0,
+          borderLeft: "7px solid transparent", borderRight: "7px solid transparent",
+          borderBottom: "18px solid #e8e4d8",
+          transform: "rotate(-38deg)",
+          filter: "drop-shadow(0 0 3px rgba(0,0,0,0.9))",
+          transitionProperty: "left, top", transitionDuration: "900ms",
+          transitionTimingFunction: "ease-in-out",
+        }} />
       )}
 
-      {showSkip && !doneRef.current && (
-        <button className="s1-btn" style={S.introSkip} onClick={finish}>GEÇ ▸</button>
-      )}
+      <button className="s1-btn" style={S.introSkip}
+        onClick={(e) => { e.stopPropagation(); finish(); }}>
+        {t("intro.skip")}
+      </button>
     </div>
   );
 }

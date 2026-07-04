@@ -157,8 +157,24 @@ export default function App() {
     });
 
   const hardWait = (ms) => new Promise((resolve) => later(resolve, ms));
-  const waitTap = (runId) => new Promise((resolve) => { if (runIdRef.current !== runId) return resolve(); setTapWait(true); tapWaitRef.current = () => { tapWaitRef.current = null; setTapWait(false); resolve(); }; });
-  const releaseGates = () => { if (tapWaitRef.current) tapWaitRef.current(); if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; } };
+
+  /* RİTİM KAPISI: hikaye durur, oyuncu dokunana kadar bekler.
+     Yoğun anları (döküman+görev+not selini) tek tek sindirtir. */
+  const waitTap = (runId) =>
+    new Promise((resolve) => {
+      if (runIdRef.current !== runId) return resolve();
+      setTapWait(true);
+      tapWaitRef.current = () => {
+        tapWaitRef.current = null;
+        setTapWait(false);
+        resolve();
+      };
+    });
+
+  const releaseGates = () => {
+    if (tapWaitRef.current) tapWaitRef.current();
+    if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; }
+  };
 
   const typeLine = (kind, text, runId, speed = 26) =>
     new Promise((resolve) => {
@@ -311,15 +327,27 @@ export default function App() {
         return wait(600, runId);
       }
       case "anons": return typeLine("anons", ev.text, runId, 20);
+      case "music": { AudioSys.music(ev.track || null); return; }
       case "document": {
         if (!docsRef.current.find((d) => d.id === ev.doc.id)) {
-          docsRef.current = [...docsRef.current, { ...ev.doc, read: false }];
+          docsRef.current = [...docsRef.current, { ...ev.doc, read: !!ev.open }];
           setDocs(docsRef.current);
         }
         AudioSys.page();
         showToast("▤", t("eng.docAdded"), "#d0b06a");
-        return wait(600, runId);
+        if (ev.open) {
+          // Outlast tarzı: kağıt ekrana gelir, kapatılana dek hikaye BEKLER
+          await wait(500, runId);
+          if (runIdRef.current !== runId) return;
+          const item = docsRef.current.find((d) => d.id === ev.doc.id);
+          setDocPage(0);
+          setOpenItem({ kind: "doc", item });
+          await new Promise((res) => { docCloseRef.current = res; });
+          return;
+        }
+        return wait(900, runId);
       }
+      case "waitTap": return waitTap(runId);
       case "note": {
         clockRef.current += 3 + Math.floor(Math.random() * 4);
         if (!notesRef.current.find((n) => n.id === ev.id)) {
@@ -376,6 +404,7 @@ export default function App() {
       }
     }
 
+    releaseGates(); // yarım kalmış kapı/döküman beklemesi varsa çöz
     setCurrentNodeId(nodeId);
     setChoicesVisible(false);
     setInteraction(null);
@@ -406,9 +435,20 @@ export default function App() {
       saveGame(checkpointRef.current); // kalıcı kayıt
     }
 
+    // RİTİM KURALI: art arda iki "meta" olay (döküman/not/görev/pil)
+    // gelirse araya otomatik dokunma kapısı girer — ödül seli oluşamaz.
+    const META = new Set(["document", "note", "objective", "battery"]);
+    let prevMeta = false;
     for (const ev of node.events) {
       if (runIdRef.current !== runId) return;
+      const isMeta = META.has(ev.type);
+      if (isMeta && prevMeta) {
+        await waitTap(runId);
+        if (runIdRef.current !== runId) return;
+      }
       await playEvent(ev, runId);
+      if (ev.type === "narrate" || ev.type === "ambient" || ev.type === "waitTap") prevMeta = false;
+      else if (isMeta) prevMeta = true;
     }
     if (runIdRef.current !== runId) return;
     if (node.death) { die({ text: node.deathText }); return; }
@@ -441,7 +481,11 @@ export default function App() {
     playNode(choice.next);
   };
 
-  const handleSkipTap = () => { if (screen || interaction) return; if (tapWaitRef.current) { AudioSys.blipSfx(420); tapWaitRef.current(); return; } skipRef.current = true; };
+  const handleSkipTap = () => {
+    if (screen || interaction) return;
+    if (tapWaitRef.current) { AudioSys.blipSfx(420); tapWaitRef.current(); return; }
+    skipRef.current = true;
+  };
 
   const swapBattery = () => {
     if (sparesRef.current <= 0 || batteryRef.current >= 100 || death || dying) return;
@@ -780,6 +824,8 @@ export default function App() {
     setDeath(null);
     setDying(false);
     stopDarkness(true);
+    releaseGates();
+    setOpenItem(null);
     clearIntervals();
     clearPending();
     AudioSys.heart(null);
@@ -1064,7 +1110,10 @@ export default function App() {
         <DocPaper item={openItem.item} page={docPage} pages={docPages}
           onPrev={() => { AudioSys.page(); setDocPage(docPage - 1); }}
           onNext={() => { AudioSys.page(); setDocPage(docPage + 1); }}
-          onClose={() => setOpenItem(null)} />
+          onClose={() => {
+            setOpenItem(null);
+            if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; }
+          }} />
       )}
 
       {/* Çark menüsü ve ayarlar */}

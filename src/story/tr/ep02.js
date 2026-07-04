@@ -22,6 +22,7 @@ export const EP02 = {
         { type: "glitch", ms: 300 },
         { type: "anons", text: "「İşte geldin. Prosedürü biliyorsun: yeni personel oryantasyondan geçer. Üç ders. Geçersen K-4 kapısı açılır. Kalırsan... aile büyür.」" },
         { type: "anons", text: "「Kurallar: kopya serbest, yalan serbest, ağlamak serbest. Sadece SIKICI olmak yasak. Başlıyoruz.」" },
+        { type: "waitTap" },
         { type: "stat", stat: "akil", delta: -5 },
         { type: "objective", text: "Deniz'in üç 'dersini' atlat — K-4 geçişini açtır" },
         { type: "note", id: "not_deniz", title: "Deniz Okur", text: "Anonstaki adam: Deniz. Sistem mühendisi — kapılar, kameralar, hoparlörler onun. Beni bir laboratuvar faresi gibi koridorlarına saldı. Sesinde nefret yok. Daha kötüsü var: EĞLENCE." },
@@ -38,7 +39,7 @@ export const EP02 = {
       events: [
         { type: "anons", text: "「Ders bir: BASINÇ. İçeride üç vana var. Doğru sırayla açarsan oda dengelenir. Yanlış sırayla açarsan... kulakların bana hak verir.」" },
         { type: "narrate", text: "Kapının yanındaki panoda, yağlanmış bir şema asılı. Birileri — muhtemelen Deniz'den önce, normal zamanlarda — prosedürü buraya asmış." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_havasema", title: "Basınç Dengeleme Prosedürü",
           meta: "SINIR-1 · K-5 YAŞAM DESTEK · TALİMAT 3-C",
           body: "BASINÇ ODASI — VANA AÇILIŞ SIRASI\n\nUYARI: Sıralamaya kesinlikle uyulacaktır.\n\n  1) DENGELEME VANASI  (sarı)\n     — iç/dış basıncı eşitler\n  2) TAHLİYE VANASI    (kırmızı)\n     — fazla basıncı sintineye atar\n  3) ANA BESLEME       (yeşil, büyük çark)\n     — hattı açar\n\nSIRAYI BOZAN, KULAKLARIYLA ÖDER.\n(bkz. revir kaydı, hafta 12: T. Demir,\nsol kulak, kalıcı)" } },
@@ -104,6 +105,7 @@ export const EP02 = {
         { type: "flag", set: { sinav1: true } },
         { type: "system", text: "BASINÇ ODASI: DENGEDE — DERS 1 TAMAMLANDI" },
         { type: "anons", text: "「...Vay. Okuyabiliyorsun. Son üç adayın toplamından iyisin şimdiden. Kapı açık — ilerle.」" },
+        { type: "waitTap" },
         { type: "note", id: "not_sinav1", title: "Ders 1: geçti", text: "'Son üç aday' dedi. Benden önce üç kişi bu koridorlardan geçirilmiş. Hiçbirinin adını söylemiyor. Hiçbirinin AKIBETİNİ de." },
       ],
       choices: [
@@ -167,7 +169,7 @@ export const EP02 = {
         { type: "flag", set: { dolapAcildi: true } },
         { type: "narrate", text: "Dolap, on yıllık bakım hurdasıyla dolu — ve kapağın iç yüzüne yapıştırılmış, sararmış bir tünel şeması. Rafta da, yağlı bezlerin altında, bir yedek pil." },
         { type: "battery", spares: 1 },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_tunelharita", title: "K-5 Havalandırma Tünel Şeması",
           meta: "SINIR-1 TEKNİK ÇİZİM 5-H · REV.2",
           body: "ANA GİRİŞ (sınav kapısı tarafı)\n   │\n   ├─ KAVŞAK 1 ── SOL → ana hat devamı\n   │              SAĞ → kör uç (eski filtre yuvası)\n   │\n   ├─ KAVŞAK 2 ── düz geçiş (dar boğaz)\n   │\n   └─ KAVŞAK 3 ── SOL → ÇIKIŞ KAPAĞI\n                  SAĞ → yedek malzeme cebi (kör uç)\n\nEL YAZISI NOT (kenarda):\ngiriş → SOL → düz → SOL. ezberle.\ntünelde harita okunmaz. tünelde hiçbir şey\nokunmaz. — T.D." } },
@@ -286,7 +288,7 @@ export const EP02 = {
         { type: "narrate", text: "Kapaktan koridora dökülüyorsun; dizlerin çelikte, ciğerlerin gerçek havada. Hoparlör uzun süre sessiz kalıyor. Konuştuğunda, neşesi yerinde ama altında ince bir çatlak var:" },
         { type: "anons", text: "「...Çıktın. Güzel. O konuyu— tüneldeki şeyi kimseye anlatmana gerek yok. Aile içi mesele. Anladın mı? AİLE İÇİ.」" },
         { type: "narrate", text: "Koridor panosunda, cam çerçevede, eski şikayet formları asılı duruyor. Birinin bunları ÇERÇEVELETMİŞ olması başlı başına bir cevap." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_sikayet", title: "Personel Şikayet Formları (çerçeveli)",
           meta: "SINIR-1 İK DOSYASI · 3 ADET · SERGİ AMAÇLI (?)",
           body: "FORM 1 — konu: D. Okur\n'Deniz geceleri anons sistemini açıp SAYI SAYIYOR.\nUyarınca gülüyor. Sistem kayıtlarını silmiş.'\nKARAR: sözlü uyarı. (H.T.)\n\nFORM 2 — konu: D. Okur\n'Kamarama hoparlör döşemiş. Uykumda konuştuklarımı\nbana dinletti. Bunu KOMİK buluyor.'\nKARAR: yazılı uyarı. (H.T.)\n\nFORM 3 — konu: D. Okur\n'Artık uyarı istemiyorum. Onu durdurun. O çocuk\nyalnızlıktan tehlikeli bir şeye dönüşüyor.'\nKARAR: — (karar bölümü boş; kenarında el\nyazısı, H.T.: 'Aile, evladını dışarı vermez.')" } },
@@ -370,7 +372,7 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Üçüncü kapının ardında boş, beyaz ışıklı bir oda: ortada tek bir sandalye, tavanda tek bir hoparlör, sandalyenin karşısında tek bir kamera. Sandalyenin altında bir defter unutulmuş — ya da BIRAKILMIŞ." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_sinavdefteri", title: "Deniz'in Sınav Defteri", style: "hand",
           meta: "— kapağında: 'ORYANTASYON. dokunma. D.' —",
           body: "ADAY 1 — kaynakçı, adı neydi ya\nders1: geçti (şanstı)  ders2: 41 dakika!! rezalet\nders3: hepsinde yalan. sıkıcı yalanlar hem de.\nSONUÇ: aileye. şef çok sevindi.\n\nADAY 2 — revirdeki kadın\nders1: geçti  ders2: geçti (haritayı bulmuş, zeki)\nders3: bana 'sen busun işte, seyirci arıyorsun'\ndedi. kızmadım. NOT ALDIM.\nSONUÇ: kaçmayı denedi. şaftı denedi. yazık.\n\nADAY 3 — ismini söylemedi (saygı)\nders1: 2 hata  ders2: girmeyi reddetti\nders3: tek kelime etmedi. bütün gece.\nSONUÇ: aileye. artık konuşuyor ama. hep aynı\nsayıları.\n\nADAY 4 —\n(boş sayfa. en üstte, taze mürekkeple,\nsenin görev numaran.)" } },
@@ -516,6 +518,7 @@ export const EP02 = {
         { type: "flag", set: { mezun: true } },
         { type: "system", text: "ORYANTASYON: TAMAMLANDI — K-4 GEÇİŞ KİLİDİ: AÇIK" },
         { type: "anons", text: "「Tebrikler bakım. Mezunsun. Dört adayda bir ilk.」 Tependeki menfez takırdıyor ve içinden ayaklarının dibine bir şey düşüyor: ambalajlı bir tablet pili. 「Kıyak. Kimseye söyleme — imajım var.」" },
+        { type: "waitTap" },
         { type: "battery", spares: 1 },
         { type: "anons", text: "「Son ders bedava: K-4 kapısından çıkınca uzun koridor. O koridor benim değil. O koridor kimsenin değil.」 Bir duraklama. 「...Babama selam söyle.」" },
         { type: "objective", text: "K-4 geçiş koridorunu aş — ana bacaya ulaş" },

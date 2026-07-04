@@ -29,34 +29,46 @@ const P = {
 const near = (a, b, tol) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
 
 /* ============================================================
-   1) GÖLGE HİZALAMA (v2) — parça hedefe yaklaşınca kenarı yeşile
-   döner (dokunsal geri bildirim); kilitte kısa parlama.
-   config: { targetOuter, targetInner, step?15, startOuter?, startInner? }
+   1) GÖLGE HİZALAMA v3 — RE7 projektör: nesne HER YÖNE döner.
+   Üç eksen: DÖNDÜR (Z), EĞ (X — dikey basıklık), YATIR (Y — yatay
+   basıklık). Sözde-3B: eğimler silüeti cos ile sıkıştırır; yanlış
+   eksende doğru görüntü İMKANSIZ olur. Yeşil ipucu YOK — göz kararı.
+   config: { targetRot, targetTiltX, targetTiltY, step?15,
+             startRot?, startTiltX?, startTiltY? }
    ============================================================ */
 
-const OUTER_PTS = "0,-66 22,-52 58,-40 46,-6 62,30 30,44 12,64 -18,56 -52,42 -44,6 -60,-26 -30,-46";
-const INNER_PTS = "0,-38 12,-12 34,-6 14,6 20,32 0,16 -20,32 -14,6 -34,-6 -12,-12";
+const SHADOW_SHAPE = "0,-62 14,-44 40,-50 34,-22 58,-8 34,4 44,34 16,26 6,58 -8,28 -38,42 -30,12 -58,4 -34,-10 -46,-40 -18,-30";
+const TILT_MAX = 75;
+const rad = (d) => (d * Math.PI) / 180;
 
 export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   const step = config.step || 15;
   const tol = Math.max(7, step / 2 - 1);
-  const [outer, setOuter] = useState(config.startOuter ?? 0);
-  const [inner, setInner] = useState(config.startInner ?? 0);
+  const [rot, setRot] = useState(config.startRot ?? 45);
+  const [tx, setTx] = useState(config.startTiltX ?? -30);
+  const [ty, setTy] = useState(config.startTiltY ?? 45);
   const [locked, setLocked] = useState(false);
 
-  const okO = near(outer, config.targetOuter, tol);
-  const okI = near(inner, config.targetInner, tol);
+  const tf = (r, x, y) =>
+    `rotate(${r}) scale(${Math.max(0.12, Math.cos(rad(y)))}, ${Math.max(0.12, Math.cos(rad(x)))})`;
 
-  const rotate = (which, dir) => {
+  const check = (r, x, y) =>
+    near(r, config.targetRot, tol) &&
+    Math.abs(x - config.targetTiltX) <= tol &&
+    Math.abs(y - config.targetTiltY) <= tol;
+
+  const move = (axis, dir) => {
     if (locked) return;
     AudioSys.clank();
-    const no = which === "o" ? outer + dir * step : outer;
-    const ni = which === "i" ? inner + dir * step : inner;
-    setOuter(no); setInner(ni);
-    if (near(no, config.targetOuter, tol) && near(ni, config.targetInner, tol)) {
+    let r = rot, x = tx, y = ty;
+    if (axis === "r") r += dir * step;
+    if (axis === "x") x = Math.max(-TILT_MAX, Math.min(TILT_MAX, x + dir * step));
+    if (axis === "y") y = Math.max(-TILT_MAX, Math.min(TILT_MAX, y + dir * step));
+    setRot(r); setTx(x); setTy(y);
+    if (check(r, x, y)) {
       setLocked(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1100);
+      setTimeout(onSuccess, 1300);
     }
   };
 
@@ -67,30 +79,28 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
         <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 250 }}>
           <defs>
             <radialGradient id="s1lamp" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor={locked ? "#4a5c48" : "#3a4a3c"} />
+              <stop offset="0%" stopColor={locked ? "#50624e" : "#3a4a3c"} />
               <stop offset="55%" stopColor="#16201a" />
               <stop offset="100%" stopColor="#070a08" />
             </radialGradient>
           </defs>
           <circle cx="0" cy="0" r="104" fill="url(#s1lamp)" />
-          <g opacity="0.38">
-            <polygon points={OUTER_PTS} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
-              strokeDasharray="5 4" transform={`rotate(${config.targetOuter})`} />
-            <polygon points={INNER_PTS} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
-              strokeDasharray="5 4" transform={`rotate(${config.targetInner})`} />
-          </g>
-          <polygon points={OUTER_PTS} fill="rgba(6,9,8,0.94)"
-            stroke={okO ? "#7fae86" : "#0e1512"} strokeWidth={okO ? 2.2 : 1}
-            style={{ transition: "transform 300ms ease, stroke 200ms" }} transform={`rotate(${outer})`} />
-          <polygon points={INNER_PTS} fill="rgba(4,6,5,0.97)"
-            stroke={okI ? "#7fae86" : "#0b100d"} strokeWidth={okI ? 2.2 : 1}
-            style={{ transition: "transform 300ms ease, stroke 200ms" }} transform={`rotate(${inner})`} />
+          {/* duvardaki hedef iz */}
+          <polygon points={SHADOW_SHAPE} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
+            strokeDasharray="5 4" opacity="0.4"
+            transform={tf(config.targetRot, config.targetTiltX, config.targetTiltY)} />
+          {/* nesnenin gölgesi */}
+          <polygon points={SHADOW_SHAPE} fill="rgba(5,8,7,0.95)" stroke="#0b100d" strokeWidth="1"
+            style={{ transition: "transform 320ms ease" }}
+            transform={tf(rot, tx, ty)} />
         </svg>
         <div style={P.ctrlRow}>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("o", -1)}>⟲ {t("puzzle.outer")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("o", 1)}>{t("puzzle.outer")} ⟳</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("i", -1)}>⟲ {t("puzzle.inner")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("i", 1)}>{t("puzzle.inner")} ⟳</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("r", -1)}>⟲ {t("puzzle.rot")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("r", 1)}>{t("puzzle.rot")} ⟳</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("x", -1)}>▲ {t("puzzle.tilt")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("x", 1)}>{t("puzzle.tilt")} ▼</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("y", -1)}>◀ {t("puzzle.side")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("y", 1)}>{t("puzzle.side")} ▶</button>
         </div>
         <div style={locked ? P.msgOk : P.hint}>
           {locked ? t("puzzle.shadowDone") : t("puzzle.shadowHint")}
@@ -306,19 +316,39 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   4) VİTRAY HALKALARI — RE8 cam bulmacası: üç renkli halkanın
-   çentiğini üstteki işarete getir; hepsi hizalanınca ortadaki
-   figür belirir.
-   config: { rings:[{color, step, start, target?0}] }
+   4) VİTRAY v2 — RE4 kilise camı: halkalar CAM KIRIKLARI ve altın
+   figürün PARÇALARINI taşır. Çentik/işaret YOK — figür ancak üç
+   halka doğru açılara gelince BÜTÜNLEŞİR; oyuncu resme bakarak
+   çözer. Kırıklar dönerek görsel gürültü yaratır.
+   config: { rings:[{color, step, offset}] } — offset: başlangıcın
+   hedeften sapması (step'in katı olmalı ki çözülebilsin).
    ============================================================ */
+
+const GLASS_SHARDS = [
+  // her halka için kırık cam parçaları: [iç yarıçap bandı] açılarla
+  ["#5a72b8", "#4a9a6a", "#b87a8a", "#8a9a5a", "#6a8ab8", "#b8a05a", "#7a5ab8", "#4a8a9a"],
+  ["#4a9a6a", "#b8a05a", "#5a72b8", "#8a5a7a", "#6ab88a", "#b87a5a", "#5a8ab8", "#9a5a5a", "#7aa06a"],
+  ["#b87a8a", "#5a8ab8", "#8a9a5a", "#4a9a8a", "#b8a05a", "#6a5ab8", "#9ab86a", "#b85a6a", "#5a9ab8", "#8a7a5a"],
+];
+
+const wedge = (r0, r1, a0, a1) => {
+  const p = (r, a) => `${r * Math.sin(rad(a))} ${-r * Math.cos(rad(a))}`;
+  return `M ${p(r0, a0)} A ${r0} ${r0} 0 0 1 ${p(r0, a1)} L ${p(r1, a1)} A ${r1} ${r1} 0 0 0 ${p(r1, a0)} Z`;
+};
+
+// altın figür — halkalara bölünmüş bir "anahtar/kılıç" mührü:
+// iç: gövde+kabza · orta: kollar+gövde devamı · dış: uç+tepe sivri
+const FIGURE = [
+  ["M0 -36 V36", "M-12 26 H12", "M-9 36 H9"],
+  ["M0 -70 V-40", "M0 40 V48", "M-66 8 H-42", "M42 8 H66", "M-42 8 L-24 8", "M24 8 L42 8"],
+  ["M0 -92 V-74", "M-7 -84 L0 -94 L7 -84", "M-84 8 H-70", "M70 8 H84"],
+];
 
 export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
   const rings = config.rings;
-  const [rots, setRots] = useState(rings.map((r) => r.start));
+  const radii = [[16, 38], [42, 68], [72, 96]];
+  const [rots, setRots] = useState(rings.map((r) => r.offset)); // 0 = çözüm
   const [done, setDone] = useState(false);
-  const radii = [40, 62, 84];
-
-  const okAt = (i, rot) => near(rot, rings[i].target ?? 0, Math.max(7, rings[i].step / 2 - 1));
 
   const rotate = (i, dir) => {
     if (done) return;
@@ -326,10 +356,10 @@ export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
     const next = rots.slice();
     next[i] = next[i] + dir * rings[i].step;
     setRots(next);
-    if (next.every((r, j) => okAt(j, r))) {
+    if (next.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)))) {
       setDone(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1400);
+      setTimeout(onSuccess, 1600);
     }
   };
 
@@ -337,33 +367,32 @@ export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.keypadPanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.ringsTitle")}</div>
-        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 250 }}>
-          <circle r="98" fill="#0c1110" stroke="#2a3a30" strokeWidth="2" />
-          {/* üstteki hedef işareti */}
-          <path d="M 0 -101 L -5 -92 L 5 -92 Z" fill="#c8b98a" />
+        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 260 }}>
+          <circle r="100" fill="#d8d2c2" opacity="0.14" />
+          <circle r="100" fill="none" stroke="#3a4438" strokeWidth="4" />
           {rings.map((r, i) => {
-            const rad = radii[i % radii.length];
-            const circ = 2 * Math.PI * rad;
-            const ok = okAt(i, rots[i]);
+            const [r0, r1] = radii[i];
+            const shards = GLASS_SHARDS[i % GLASS_SHARDS.length];
+            const n = shards.length;
             return (
-              <g key={i} style={{ transition: "transform 300ms ease" }} transform={`rotate(${rots[i]})`}>
-                {/* halka gövdesi */}
-                <circle r={rad} fill="none" stroke={r.color} strokeWidth="13"
-                  opacity={done ? 0.55 : 0.28} />
-                {/* çentik */}
-                <circle r={rad} fill="none" stroke={ok ? "#e8e0c0" : r.color} strokeWidth="13"
-                  strokeDasharray={`${circ * 0.07} ${circ * 0.93}`}
-                  strokeDashoffset={circ * 0.035}
-                  transform="rotate(-90)" opacity="0.95"
-                  style={{ transition: "stroke 250ms" }} />
+              <g key={i} style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
+                {shards.map((c, k) => (
+                  <path key={k}
+                    d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 6)}
+                    fill={c} opacity={done ? 0.5 : 0.34}
+                    stroke="#1a1f1a" strokeWidth="1.2" />
+                ))}
+                {FIGURE[i].map((d, k) => (
+                  <path key={"f" + k} d={d} fill="none"
+                    stroke={done ? "#e8c95a" : "#c8a94a"} strokeWidth="4"
+                    strokeLinecap="round"
+                    style={{ transition: "stroke 400ms" }}
+                    opacity={done ? 1 : 0.9} />
+                ))}
               </g>
             );
           })}
-          {/* hizalanınca beliren figür */}
-          <g opacity={done ? 1 : 0} style={{ transition: "opacity 900ms ease" }}>
-            <path d="M0 -26 V26 M-12 -14 H12 M0 -26 L-8 -18 M0 -26 L8 -18 M-9 26 H9 M0 8 L-14 20 M0 8 L14 20"
-              stroke="#d8b34a" strokeWidth="3" fill="none" strokeLinecap="round" />
-          </g>
+          {done && <circle r="100" fill="#e8c95a" opacity="0.07" />}
         </svg>
         <div style={P.ctrlRow}>
           {rings.map((r, i) => (

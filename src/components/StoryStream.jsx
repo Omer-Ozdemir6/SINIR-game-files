@@ -7,7 +7,7 @@ import { t } from "../i18n";
 export default function StoryStream({
   scrollRef, lines, typing, akil, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
-  ended, endInfo, onRestart,
+  ended, endInfo, onRestart, tapWait,
 }) {
   return (
     <div ref={scrollRef} style={S.stream}>
@@ -62,6 +62,15 @@ export default function StoryStream({
           <button className="s1-btn" style={S.beginBtn} onClick={(e) => { e.stopPropagation(); onRestart(); }}>
             {t("end.again")}
           </button>
+        </div>
+      )}
+      {tapWait && (
+        <div style={{
+          fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 10,
+          letterSpacing: "0.18em", color: "#5f7573", textAlign: "center",
+          padding: "10px 0 4px",
+        }}>
+          <span className="s1-cursor">▸</span> {t("stream.tap")}
         </div>
       )}
       <div style={{ height: 40 }} />

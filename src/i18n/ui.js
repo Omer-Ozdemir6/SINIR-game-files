@@ -20,7 +20,7 @@ export const UI = {
       p2: "SINIR-1 su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde yalnızca çatlak ekranlı bakım tabletin var: ışığın, kaydın ve tek dostun. Hayatta kalabildiğin kadar kal. Her şeyi belgele. Savaşçı değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
       cont: "Devam Et",
     },
-    intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra." },
+    intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra.", pressSend: "MESAJI GÖNDERMEK İÇİN GÖNDER'E BAS" },
     hud: {
       noise: "GÜRÜLTÜ", mind: "AKIL", archive: "ARŞİV",
       objective: "Görev: ",
@@ -54,7 +54,7 @@ export const UI = {
       title: "HAYATTASIN", again: "BAŞTAN OYNA",
       stats: "Şimdilik. — Döküman: {d} · Not: {n} · Batarya: %{b} · Yedek pil: {s} · Akıl: %{a}",
     },
-    stream: { decide: "KARAR VER", hidden: "[ ??? ]" },
+    stream: { decide: "KARAR VER", hidden: "[ ??? ]", tap: "devam etmek için dokun" },
     eng: {
       batteryCritical: "⚠ BATARYA KRİTİK: %{n} — PİL BUL",
       restored: "SON KONTROL NOKTASINDAN DEVAM EDİLİYOR...",
@@ -115,7 +115,8 @@ export const UI = {
     },
     puzzle: {
       shadowTitle: "BULUNTU KİLİDİ — GÖLGEYİ HİZALA",
-      shadowHint: "İki parçayı, duvardaki iz ile çakışana dek döndür.",
+      shadowHint: "Nesneyi HER YÖNDE çevir: döndür, eğ, yatır — gölge duvardaki izle birebir çakışsın.",
+      rot: "DÖN", tilt: "EĞ", side: "YATIR",
       shadowDone: "GÖLGELER ÇAKIŞTI — KİLİT DÖNÜYOR…",
       outer: "DIŞ", inner: "İÇ",
       wiresTitle: "DEVRE YAMASI — HATLARI EŞLE",
@@ -132,7 +133,7 @@ export const UI = {
       symbolsDone: "DİZİ KABUL EDİLDİ — KİLİT AÇILIYOR…",
       symbolsWrong: "YANLIŞ SEMBOL — DİZİ SIFIRLANDI",
       ringsTitle: "VİTRAY KİLİDİ — HALKALARI HİZALA",
-      ringsHint: "Renkli halkaların çentiğini üstteki işarete getir. Hepsi hizalanınca desen belirir.",
+      ringsHint: "Cam katmanlarını çevir. Altın figürün parçaları ancak doğru açılarda BİRLEŞİR — resme bak, işarete değil.",
       ringsDone: "CAM BÜTÜNLEŞTİ — DESEN TAMAM",
       tilesTitle: "KARO KAPISI — DESENİ TAMAMLA",
       tilesHint: "İki karoya dokunarak yerlerini değiştir. Desen bütünleşsin.",
@@ -162,7 +163,7 @@ export const UI = {
       p2: "You are the night-shift maintenance technician of the SINIR-1 undersea research facility. Contact with the surface was lost three hours ago, and something is terribly wrong down here. All you carry is a cracked maintenance tablet: your light, your log, your only friend. Survive as long as you can. Document everything. You are not a fighter; at this depth the only ways to stay alive are to run, to hide, or to die.",
       cont: "Continue",
     },
-    intro: { skip: "SKIP ▸▸", later: "A few days later." },
+    intro: { skip: "SKIP ▸▸", later: "A few days later.", pressSend: "PRESS SEND TO DELIVER THE MESSAGE" },
     hud: {
       noise: "NOISE", mind: "MIND", archive: "ARCHIVE",
       objective: "Objective: ",
@@ -196,7 +197,7 @@ export const UI = {
       title: "YOU ARE ALIVE", again: "PLAY AGAIN",
       stats: "For now. — Documents: {d} · Notes: {n} · Battery: {b}% · Spares: {s} · Mind: {a}%",
     },
-    stream: { decide: "DECIDE", hidden: "[ ??? ]" },
+    stream: { decide: "DECIDE", hidden: "[ ??? ]", tap: "tap to continue" },
     eng: {
       batteryCritical: "⚠ BATTERY CRITICAL: {n}% — FIND A BATTERY",
       restored: "RESUMING FROM LAST CHECKPOINT...",
@@ -257,7 +258,8 @@ export const UI = {
     },
     puzzle: {
       shadowTitle: "ARTIFACT LOCK — ALIGN THE SHADOW",
-      shadowHint: "Rotate both pieces until they match the outline on the wall.",
+      shadowHint: "Turn the object in EVERY direction: rotate, pitch, tilt — until its shadow matches the trace on the wall.",
+      rot: "SPIN", tilt: "PITCH", side: "TILT",
       shadowDone: "SHADOWS ALIGNED — THE LOCK IS TURNING…",
       outer: "OUTER", inner: "INNER",
       wiresTitle: "CIRCUIT PATCH — MATCH THE LINES",
@@ -274,7 +276,7 @@ export const UI = {
       symbolsDone: "SEQUENCE ACCEPTED — UNLOCKING…",
       symbolsWrong: "WRONG SYMBOL — SEQUENCE RESET",
       ringsTitle: "STAINED GLASS LOCK — ALIGN THE RINGS",
-      ringsHint: "Bring each colored ring's notch to the mark on top. The pattern appears when all align.",
+      ringsHint: "Turn the glass layers. The pieces of the golden figure only JOIN at the right angles — read the picture, not a mark.",
       ringsDone: "THE GLASS IS WHOLE — PATTERN COMPLETE",
       tilesTitle: "TILE DOOR — COMPLETE THE PATTERN",
       tilesHint: "Tap two tiles to swap them. Make the pattern whole.",

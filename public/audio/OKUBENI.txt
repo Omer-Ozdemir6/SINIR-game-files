@@ -1,0 +1,9 @@
+SINIR-1 SES KLASÖRÜ
+===================
+sfx/    → kısa efektler (blip, vana, sayfa, kalp vuruşu...)
+music/  → bölüm parçaları / soundtrack (loop çalınır)
+amb/    → sürekli dip ambiyans
+
+Dosyayı buraya koy, src/audio/soundMap.js içindeki ilgili ismin
+karşısına yolunu yaz ("/audio/sfx/dosya.ogg"). O ses anında gerçek
+kayıtla çalınır; yol boş kalan sesler sentetik devam eder.

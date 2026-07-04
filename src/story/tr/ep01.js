@@ -23,6 +23,7 @@ export const EP01 = {
         { type: "narrate", text: "Seni uyandıran alarm değil. Alarmın SUSMASI. On bir aydır her gece kulağının dibinde homurdanan jeneratör sustu ve K-6'nın çelik sessizliği üstüne bir tabut kapağı gibi kapandı." },
         { type: "narrate", text: "Ranzadan doğruluyorsun. Acil aydınlatmanın kırmızısı dışında her şey karanlık. Elin, refleksle, yastığın altındaki bakım tabletini buluyor. Çatlak ekran yüzüne soluk bir ışık vuruyor — şu an tüm dünyandaki tek ışık bu." },
         { type: "note", id: "not_uyanis", title: "Vardiya başı", text: "03:47. Jeneratör sustu, alarm yok. Yüzeyle bağlantı üç saattir kopukmuş, tablet öyle diyor. Kimse beni uyandırmadı. Kimse... hiçbir yerde yok gibi." },
+        { type: "waitTap" },
         { type: "objective", text: "Güç kesintisinin kaynağını bul" },
         { type: "ambient", text: "Koridordan, çok uzaktan, ıslak bir şeyin sürüklenme sesi geliyor. Bir kez. Sonra yine sessizlik." },
       ],
@@ -53,7 +54,7 @@ export const EP01 = {
         { type: "narrate", text: "K-6 ana koridoru. Acil lambaların kırmızısı, ıslak zeminde titriyor. Ve zeminde... bir iz var. Ayak izi değil. Islak, geniş, KESİNTİSİZ bir sürüklenme izi — makine dairesinden gelip revirin önünden geçiyor ve platform merdiveninde kayboluyor.", if: { flag: "korIlk", equals: false } },
         { type: "stat", stat: "akil", delta: -5, if: { flag: "korIlk", equals: false } },
         { type: "narrate", text: "Panoda dünkü vardiyanın devir raporu asılı. Kağıdın kenarı, ıslak bir elle tutulmuş gibi buruşuk.", if: { flag: "korIlk", equals: false } },
-        { type: "document", if: { flag: "korIlk", equals: false }, doc: {
+        { type: "document", open: true, if: { flag: "korIlk", equals: false }, doc: {
           id: "d_devir", title: "Vardiya Devir Raporu — 6. Gece",
           meta: "SINIR-1 · K-6 BAKIM · FORM 12-B · VARDİYA AMİRİ: B. SOYLU",
           body: "DEVREDEN: Baturay Soylu (gece)\nDEVRALAN: — (imza yok)\n\nAÇIK İŞLER:\n· Alt platform tahliye pompaları (A/B/C) arızalı.\n  Manuel ilk çalıştırma gerekiyor. Sabaha bakılacak.\n· Radyo odası erişim paneli yeniden kodlandı.\n  Kod, güvenlik gereği İKİYE BÖLÜNDÜ. (bkz. tutanak 7)\n· Ana hat, pompalar açılmadan BAŞLATILMAYACAK.\n\nNOT: Sintine seviyesi yükseliyor. Tahliye 24 saat\niçinde yapılmazsa K-6 su altında kalır.\n\nDİPNOT (el yazısı, farklı kalem):\nGece 3'ten sonra makine dairesine tek başına\ninilmeyecek. Sebep sorma. İn ve say: eksik miyiz?" } },
@@ -76,7 +77,7 @@ export const EP01 = {
         { type: "narrate", text: "Yumruğu sıkılı. Parmaklarını tek tek açıyorsun — avucunda buruşuk bir kağıt: iki rakam, acele bir el yazısıyla: \"21\". Gerisi yırtık." },
         { type: "note", id: "not_kod21", title: "Kod parçası: 21··", text: "Baturay'ın avucundan çıktı. Radyo odasının kodu ikiye bölünmüştü — bu ilk yarısı: 21. Devir raporundaki 'tutanak 7' buydu demek. Diğer yarısı nerede?" },
         { type: "flag", set: { kod21: true } },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_revir", title: "Revir Kaydı — Hafta 42",
           meta: "SINIR-1 SAĞLIK BİRİMİ · GİZLİLİK: KURUM İÇİ",
           body: "TOPLU SEMPTOM BİLDİRİMİ (son 14 gün):\n\n· Kulak çınlaması ....................... 19 personel\n· Uyku bozukluğu ........................ 16 personel\n· \"Duvarlardan ses geldiği\" hissi ....... 11 personel\n· UYKUDA SAYI SAYMA ..................... 9 personel\n\nNot: Uykuda sayanların tamamı, birbirinden habersiz,\nAYNI diziyi sayıyor. Kayıtlar karşılaştırıldı.\nAçıklama bulunamadı.\n\nÖNERİ: Toplu psikolojik değerlendirme + yüzeye\ntahliye talebi. (RED — H. Tekin: 'Vardiya düzeni\nbozulamaz. Aile işini bilir.')\n\nSON KAYIT: B. Soylu tedaviyi reddetti. 'Uyumamak\nyeterli' dedi. Kendisine uyarıcı verildi." } },
@@ -92,7 +93,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "Ceketinin cebinden küçük, şişkin bir defter çıkıyor. Kapağında tek kelime: SAYMA. Sayfaları ıslak, ama okunuyor." },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_gunluk", title: "Baturay'ın Günlüğü", style: "hand",
           meta: "— gece vardiyası defteri —",
           body: "3 Ekim\nKulaklarım bütün gün çınladı. Jeneratörün sesi\nsandım. Değilmiş. Jeneratörü kapattırdım, çınlama\ndurmadı. Ses makinede değil. Ses BENDE.\n\n9 Ekim\nMakinedeki ses; sanki kafamın içindeki sesin aynısı.\nGözümü kırpınca cızırtı görüyorum. Yağlı, karanlık\nbir şey iniyor göz kapaklarımın arkasından. Ama ses\nduvarların İÇİNDEN de geliyor. O sesi tanıyorum.\n\n14 Ekim\nVedat uykusunda sayı sayıyor. Altı. Beş. Dört.\nUyandırdım, hatırlamıyor. Bu gece revirde dokuz\nkişi saydık. HEPSİ AYNI YERDEN başlıyor.\n\n21 Ekim\nŞef 'aile toplantısı' yaptı. Kimse toplantıdan\nkonuşmuyor ama herkes gülümsüyor artık. Aynı\ngülümseme. Radyo odasının kodunu değiştirdim ve\nİKİYE BÖLDÜM. Yarısı hep yanımda. Diğer yarısını\nC pompasının oraya kazıdım. İkisi bir arada olmaz.\nBana bir şey olursa: önce say. Sonra kaç.\n\n(son sayfa, bozuk el yazısı)\nBurada tek kurban ben değilim, hem de hiç.\nAdamın biri bu yerde kalmaktansa yanarak ölmeyi\nbekledi. Ben o kadar cesur değilim. Ben sadece\nuyumayacağım." } },
@@ -111,7 +112,7 @@ export const EP01 = {
         { type: "narrate", text: "Kantin ışığı yanıyor çünkü sofra KURULU. On iki kişilik masa, on iki tabak, on iki bardak. Yemekler günler önce konmuş — üstü yeşil-siyah bir örtüyle kaplı. Ve masanın başındaki tabak... temiz. Bekliyor." },
         { type: "stat", stat: "akil", delta: -5 },
         { type: "narrate", text: "Duvar panosunda vardiya çizelgesi. Yaklaşınca miden buruluyor." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_cizelge", title: "Vardiya Çizelgesi — ?? Hafta",
           meta: "SINIR-1 PERSONEL PLANLAMA · onay: H.T.",
           body: "PAZARTESİ\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nSALI\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nÇARŞAMBA\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nPERŞEMBE\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nCUMA\n  00-08: A İ L E   08-16: A İ L E   16-24: AİLE\nCUMARTESİ\n  00-08: AİLEAİLE  08-16: AİLEAİLEAİLE\nPAZAR\n  hep birlikte hep birlikte hep birlikte hep\n\n(alt köşe, kurşun kalem, minicik:)\ngeç kalan personel için yer ayrıldı" } },
@@ -165,7 +166,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Pompa A: ana tahliye hattı. Vanası bir gemi dümeni büyüklüğünde ve en az on yıllık pasla kaynamış. Yanındaki askıda basınç günlüğü sallanıyor." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_basinc", title: "Basınç Günlüğü — K-6 Dış Gövde",
           meta: "OTOMATİK SENSÖR ÇIKTISI + VARDİYA EL KAYDI",
           body: "GECE 1 — 03:00-04:00\n  Dış gövde temas: 6 vuruş. Kaynak: DIŞ. Balina? (V.)\n\nGECE 2 — 03:10-03:40\n  Dış gövde temas: 5 vuruş. Düzenli aralık.\n  Balinalar düzenli vurmaz. (B.S.)\n\nGECE 3 — 03:20-03:55\n  Temas: 4 vuruş. SENSÖR NOTU: titreşim imzası\n  İÇ kaynak paterni gösteriyor. Teknik hata? (B.S.)\n\nGECE 4 — 03:47\n  Temas: 3 vuruş. İçeriden. Kesin. Üç vuruş,\n  makine dairesi tarafından. Aşağıda kimse yoktu.\n  KİMSE YOKTU. (B.S.)\n\nGECE 5 —\n  (kayıt yok)\n\nGECE 6 —\n  (bu gece)" } },
@@ -325,6 +326,7 @@ export const EP01 = {
         { type: "anons", text: "「Dikkat dikkat. Makine dairesinde ışık görüldü. Aile bilgilendirildi.」" },
         { type: "anons", text: "「...Hoş geldin, geç kalan personel. Ben Deniz. Oryantasyonun başlamıştır.」" },
         { type: "stat", stat: "akil", delta: -5 },
+        { type: "waitTap" },
         { type: "note", id: "not_anons", title: "Anonstaki ses", text: "Hoparlörden bir adam konuştu. Genç. Neşeli. 'Aile bilgilendirildi' dedi. Deniz — mühendislerden. Sesi... normaldi. En korkuncu bu: sesi tamamen normaldi." },
         { type: "objective", text: "6-B koridorundan radyo odasına ulaş, yardım çağır" },
       ],
@@ -400,7 +402,7 @@ export const EP01 = {
       events: [
         { type: "system", text: "KOD KABUL — RADYO ODASI KİLİDİ AÇILDI" },
         { type: "narrate", text: "Radyo odası: bir duvar dolusu ölü ekipman ve ortada, tozun altında, acil durum telsiz konsolu. Masada yarım kalmış bir evrak, çekmecede bir şeyler tıkırdıyor." },
-        { type: "document", doc: {
+        { type: "document", open: true, doc: {
           id: "d_talep", title: "Numune Transfer Talebi — RED",
           meta: "SINIR-1 İÇ YAZIŞMA · FORM 4-A · ARŞİV KOPYASI",
           body: "TALEP EDEN: Dr. Nevin Aras (K-3 Biyoloji)\nTALEP: K-2 arkeoloji ambarındaki 'BULUNTU-1'\nüzerinden ek doku örneği alınması ve K-3\nlaboratuvarına transferi.\n\nGEREKÇE: ████████████████████████████████\n█████████ sayma davranışı ████████████\n██████████ kızımın kayıtları ██████████\n████████████ cevap veriyor ████████\n\nKARAR: RED.\n'Buluntuya kimse dokunmayacak. O, ailenin.\nAnlaşıldı mı Nevin? AİLENİN.'\n— H. Tekin, İstasyon Şefi" } },
@@ -455,6 +457,7 @@ export const EP01 = {
         { type: "pause", ms: 900 },
         { type: "anons", text: "「Karışma Ece. Yeni personelin oryantasyonu benim işim.」" },
         { type: "anons", text: "「...Duydun mu bakım? Adını da öğrendik. Yukarıda görüşürüz.」" },
+        { type: "waitTap" },
         { type: "stat", stat: "akil", delta: 10, note: "AKIL +10 — Bu tesiste hâlâ bir İNSAN var. Yalnız değilsin.", noteKind: "system" },
         { type: "flag", set: { eceIlkTemas: true } },
         { type: "note", id: "not_ece", title: "Ece — sonar operatörü", text: "432.0'da bir kadın: Ece. Dönüşmemiş, saklanıyor, üç haftadır tek başına. 'Şef ışıkları görür' dedi ve kantindeki masa hakkında bir şey söyleyecekti ki hat kesildi. Deniz kesti. İkisi birbirini tanıyor. Ece'yi bulmalıyım — ama önce bu geceden çıkmalıyım." },
@@ -490,6 +493,7 @@ export const EP01 = {
         { type: "stat", stat: "akil", delta: -5 },
         { type: "narrate", text: "Telsiz konsolu paramparça. Hoparlör, bir göğüs kafesi gibi sökülüp açılmış. O şey konuşamadığın şeyi ANLAMIŞ ve sesini kopardığın yeri cezalandırmış. Ece'ye buradan bir daha ulaşamazsın." },
         { type: "alert", text: "RADYO: KALICI HASAR — K-6'DAN YAYIN ARTIK MÜMKÜN DEĞİL" },
+        { type: "waitTap" },
         { type: "objective", text: "K-5 hava kilidine ulaş — bu kattan çık" },
         { type: "ambient", text: "Koridordan, hâlâ yakından, o metalik inleme geliyor. Gitmedi. BEKLİYOR." },
       ],
