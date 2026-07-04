@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { styles as S } from "../styles/theme";
 import { AudioSys } from "../audio/AudioSys";
-import { ShadowOverlay, WiresOverlay, MixOverlay, PlateLinkerOverlay } from "./interactions/PuzzleOverlays";
+import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./interactions/PuzzleOverlays";
 
 /* GEÇİCİ GELİŞTİRİCİ EKRANI — bulmacaları bölüm beklemeden dene.
    Bölümlere entegre edilince menüden kaldırılabilir. */
@@ -21,6 +21,29 @@ const CFG_WIRES = {
     { id: "p3", label: "MIC" },
   ],
   pairs: { k1: "p3", k2: "p2", k3: "p1" },
+};
+
+const CFG_SYMBOLS = {
+  glyphs: ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8"],
+  sequence: ["g4", "g1", "g7", "g5"],
+};
+
+const CFG_RINGS = {
+  rings: [
+    { color: "#4a6ac2", step: 45, start: 135 },
+    { color: "#4aa26a", step: 60, start: 240 },
+    { color: "#c24a3a", step: 90, start: 180 },
+  ],
+};
+
+const CFG_TILES = {
+  scramble: [4, 2, 8, 6, 0, 7, 1, 5, 3],
+};
+
+const CFG_COLOR = {
+  palette: ["#d8d4c8", "#c2903a", "#141a18", "#4a8ac2"],
+  target: [3, 0, 1, 0, 1, 2, 1, 3, 3],
+  showTarget: true,
 };
 
 const CFG_MIX = {
@@ -64,9 +87,17 @@ export default function PuzzleTest({ onBack }) {
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("mix")}>
             Kimyasal Karışım
           </button>
-          {/* Ekran görüntüsü 2026-07-04 115527.png modelinden esinlenilen 7'li altıgen resim hizalama oyunu */}
-          <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("hexPlates")}>
-            Altıgen Taş Entegrasyonu
+          <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("symbols")}>
+            Sembol Kilidi
+          </button>
+          <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("rings")}>
+            Vitray Halkaları
+          </button>
+          <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("tiles")}>
+            Karo Kapısı
+          </button>
+          <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("colorgrid")}>
+            Renk Panosu
           </button>
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={onBack}>
             Geri
@@ -92,8 +123,17 @@ export default function PuzzleTest({ onBack }) {
       {open === "mix" && (
         <MixOverlay config={CFG_MIX} onSuccess={() => win("KARIŞIM")} onFail={fail} onCancel={cancel} />
       )}
-      {open === "hexPlates" && (
-        <PlateLinkerOverlay config={{}} onSuccess={() => win("ANTİK ALTIGEN MATRİSİ")} onFail={fail} onCancel={cancel} />
+      {open === "symbols" && (
+        <SymbolsOverlay config={CFG_SYMBOLS} onSuccess={() => win("SEMBOL")} onFail={fail} onCancel={cancel} />
+      )}
+      {open === "rings" && (
+        <RingsOverlay config={CFG_RINGS} onSuccess={() => win("VİTRAY")} onFail={fail} onCancel={cancel} />
+      )}
+      {open === "tiles" && (
+        <TilesOverlay config={CFG_TILES} onSuccess={() => win("KARO")} onFail={fail} onCancel={cancel} />
+      )}
+      {open === "colorgrid" && (
+        <ColorGridOverlay config={CFG_COLOR} onSuccess={() => win("RENK")} onFail={fail} onCancel={cancel} />
       )}
     </div>
   );

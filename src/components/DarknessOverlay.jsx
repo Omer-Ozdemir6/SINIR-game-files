@@ -1,4 +1,5 @@
 import { styles as S } from "../styles/theme";
+import { t } from "../i18n";
 
 /* KARANLIK MODU: pil %0 — engelleyici DEĞİL (pointerEvents: none).
    Ekran çoğunlukla siyah, aralıklı pırpırlarla görüntü gelip gider;
@@ -9,7 +10,7 @@ export default function DarknessOverlay({ left, totalMs }) {
     <>
       <div style={S.darknessOverlay} className="s1-darkmode" />
       <div style={S.darkBarWrap}>
-        <span style={S.darkBarLabel}>SON GÜÇ</span>
+        <span style={S.darkBarLabel}>{t("hud.lastPower")}</span>
         <div style={S.darkBarTrack}>
           <div style={{ ...S.darkBarFill, width: Math.max(0, (left / totalMs) * 100) + "%" }} />
         </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 import { AudioSys } from "./audio/AudioSys";
-import { STORY, INITIAL_FLAGS } from "./story";
+import { t, getLang, setLang, LANGS } from "./i18n";
+import { STORY, INITIAL_FLAGS, setStoryLang } from "./story";
 import {
   STAT_MAX, BATTERY_START, SPARES_START, INITIAL_STATS,
   LIGHTS_INIT, SPEED_OPTIONS, DARK_MS,
@@ -13,7 +14,6 @@ import { styles as S } from "./styles/theme";
 import MainMenu from "./components/MainMenu";
 import WarningScreen from "./components/WarningScreen";
 import IntroCinematic from "./components/IntroCinematic";
-import PuzzleTest from "./components/PuzzleTest";
 import GameHeader from "./components/GameHeader";
 import StoryStream from "./components/StoryStream";
 import Hud from "./components/Hud";
@@ -25,6 +25,8 @@ import RadioOverlay from "./components/interactions/RadioOverlay";
 import LightsOverlay from "./components/interactions/LightsOverlay";
 import { ValveOverlay, LeverOverlay, FuseOverlay } from "./components/interactions/MechOverlays";
 import BreathOverlay from "./components/interactions/BreathOverlay";
+import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./components/interactions/PuzzleOverlays";
+import PuzzleTest from "./components/PuzzleTest";
 import DarknessOverlay from "./components/DarknessOverlay";
 
 /* ============================================================
@@ -34,7 +36,8 @@ import DarknessOverlay from "./components/DarknessOverlay";
    ============================================================ */
 
 export default function App() {
-  const [mode, setMode] = useState("menu"); // menu | warning | game
+  const [mode, setMode] = useState("menu"); // menu | warning | intro | game | puzzletest
+  const [lang, setLangState] = useState(getLang());
   const [gameExists, setGameExists] = useState(() => !!loadGame());
   const [confirmNew, setConfirmNew] = useState(false);
 
@@ -61,6 +64,7 @@ export default function App() {
   const [openItem, setOpenItem] = useState(null);
   const [docPage, setDocPage] = useState(0);
   const [interaction, setInteraction] = useState(null);
+  const [tapWait, setTapWait] = useState(false); // ▸ dokun göstergesi
   // ayarlar
   const [speedIdx, setSpeedIdx] = useState(1);
   const [glitchFx, setGlitchFx] = useState(true);
@@ -114,6 +118,8 @@ export default function App() {
   const fuseIntRef = useRef(null);
   const breathIntRef = useRef(null);
   const breathHoldingRef = useRef(false);
+  const tapWaitRef = useRef(null);   // "devam için dokun" kapısı
+  const docCloseRef = useRef(null);  // açık döküman kapanana dek bekleme
 
   /* ---------------- yardımcılar ---------------- */
 
@@ -151,6 +157,8 @@ export default function App() {
     });
 
   const hardWait = (ms) => new Promise((resolve) => later(resolve, ms));
+  const waitTap = (runId) => new Promise((resolve) => { if (runIdRef.current !== runId) return resolve(); setTapWait(true); tapWaitRef.current = () => { tapWaitRef.current = null; setTapWait(false); resolve(); }; });
+  const releaseGates = () => { if (tapWaitRef.current) tapWaitRef.current(); if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; } };
 
   const typeLine = (kind, text, runId, speed = 26) =>
     new Promise((resolve) => {
@@ -240,7 +248,7 @@ export default function App() {
     darkRef.current = true;
     setDark({ left: DARK_MS });
     AudioSys.heart(430);
-    showToast("▼", "GÜÇ BİTTİ — PİL BUL", "#c23b2e");
+    showToast("▼", t("eng.darkStart"), "#c23b2e");
     let left = DARK_MS;
     darkIntRef.current = setInterval(() => {
       if (batteryRef.current > 0) { stopDarkness(); return; }
@@ -249,7 +257,7 @@ export default function App() {
       if (left <= 0) {
         stopDarkness(true);
         die({
-          text: "Ekran son kez sönüyor. Parmakların boş yuvayı yokluyor, yokluyor, yokluyor. Bu derinlikte ışıksız kalmak, çoktan ölmüş olmaktır.",
+          text: t("eng.darkDeath"),
           battery: true,
         });
       }
@@ -271,7 +279,7 @@ export default function App() {
       case "status": {
         for (const item of ev.items) {
           const on = !!flagsRef.current[item.flag];
-          await typeLine("system", item.label + ": " + (on ? "AKTİF ▮" : "DEVRE DIŞI ▯"), runId, 8);
+          await typeLine("system", item.label + ": " + (on ? t("eng.statusOn") : t("eng.statusOff")), runId, 8);
           if (runIdRef.current !== runId) return;
         }
         return;
@@ -291,12 +299,12 @@ export default function App() {
             // karanlıkta bulunan pil beklemez — titreyen ellerle yuvaya çakılır
             setBatteryBoth(100);
             AudioSys.pickup();
-            showToast("⚡", "PİL TAKILDI · %100", "#7fae86");
-            await typeLine("system", "Pili karanlıkta yuvasına çakıyorsun. Ekran nefes alır gibi geri geliyor.", runId, 12);
+            showToast("⚡", t("eng.darkInstall"), "#7fae86");
+            await typeLine("system", t("eng.darkInstallLine"), runId, 12);
           } else {
             setSparesBoth(sparesRef.current + ev.spares);
             AudioSys.pickup();
-            showToast("▲", "Yedek Pil +" + ev.spares, "#7fae86");
+            showToast("▲", t("eng.spareGain", { n: ev.spares }), "#7fae86");
           }
         }
         if (ev.delta) setBatteryBoth(Math.max(0, Math.min(100, batteryRef.current + ev.delta)));
@@ -309,7 +317,7 @@ export default function App() {
           setDocs(docsRef.current);
         }
         AudioSys.page();
-        showToast("▤", "Döküman Eklendi", "#d0b06a");
+        showToast("▤", t("eng.docAdded"), "#d0b06a");
         return wait(600, runId);
       }
       case "note": {
@@ -319,7 +327,7 @@ export default function App() {
           setNotes(notesRef.current);
         }
         AudioSys.scratch();
-        showToast("✎", "Not Alındı", "#cbb794");
+        showToast("✎", t("eng.noteAdded"), "#cbb794");
         return wait(600, runId);
       }
       default: return;
@@ -379,7 +387,7 @@ export default function App() {
       if (left === 0) {
         startDarkness(); // oyun durmaz — karanlıkta oynamaya devam
       } else if (left <= 20) {
-        await typeLine("alert", "⚠ BATARYA KRİTİK: %" + left + " — PİL BUL", runId, 14);
+        await typeLine("alert", t("eng.batteryCritical", { n: left }), runId, 14);
       }
     }
 
@@ -433,14 +441,14 @@ export default function App() {
     playNode(choice.next);
   };
 
-  const handleSkipTap = () => { if (!screen && !interaction) skipRef.current = true; };
+  const handleSkipTap = () => { if (screen || interaction) return; if (tapWaitRef.current) { AudioSys.blipSfx(420); tapWaitRef.current(); return; } skipRef.current = true; };
 
   const swapBattery = () => {
     if (sparesRef.current <= 0 || batteryRef.current >= 100 || death || dying) return;
     setSparesBoth(sparesRef.current - 1);
     setBatteryBoth(100);
     AudioSys.pickup();
-    showToast("⚡", "Pil Değiştirildi · %100", "#7fae86");
+    showToast("⚡", t("eng.swapped"), "#7fae86");
   };
 
   const markRead = (kind, id) => {
@@ -460,6 +468,27 @@ export default function App() {
     setOpenItem({ kind, item });
   };
 
+  /* ---------------- BULMACA KANCALARI ---------------- */
+  const puzzleFail = (p) => {
+    AudioSys.buzzSfx();
+    glitchBurst(180);
+    if (p?.gurultu) {
+      statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + p.gurultu) };
+      setStats({ ...statsRef.current });
+    }
+    if (p?.akil) {
+      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) + p.akil) };
+      setStats({ ...statsRef.current });
+    }
+    if (p?.text) showToast("⚠", p.text, "#c23b2e");
+  };
+  const puzzleWin = () => {
+    if (!interaction) return;
+    const target = interaction.success;
+    setInteraction(null);
+    playNode(target);
+  };
+
   /* ---------------- ANA PANEL (kırmızı buton) ---------------- */
 
   const panelPress = () => {
@@ -468,14 +497,14 @@ export default function App() {
     if (allOk) {
       AudioSys.clank();
       AudioSys.blipSfx(980);
-      setPanelMsg({ text: "SİSTEM BAŞLATILIYOR…", ok: true });
+      setPanelMsg({ text: t("panel.starting"), ok: true });
       const target = interaction.success;
       later(() => { setInteraction(null); playNode(target); }, 1200);
     } else {
       AudioSys.buzzSfx();
       glitchBurst(160);
       const eksik = interaction.require.filter((f) => !flagsRef.current[f]).length;
-      setPanelMsg({ text: "HATA — POMPA HATTI EKSİK (" + eksik + ")", ok: false });
+      setPanelMsg({ text: t("panel.error", { n: eksik }), ok: false });
     }
   };
 
@@ -492,7 +521,7 @@ export default function App() {
     if (kpEntry.length < 4 || !interaction) return;
     if (kpEntry === interaction.code) {
       AudioSys.blipSfx(980);
-      setKpMsg({ text: "KOD KABUL EDİLDİ", ok: true });
+      setKpMsg({ text: t("keypad.ok"), ok: true });
       const target = interaction.success;
       later(() => { setInteraction(null); playNode(target); }, 900);
     } else {
@@ -504,13 +533,13 @@ export default function App() {
       if (fails === 3) {
         statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + 10) };
         setStats({ ...statsRef.current });
-        setKpMsg({ text: "HATALI KOD — PANEL BİPLİYOR. GÜRÜLTÜ ARTTI.", ok: false });
+        setKpMsg({ text: t("keypad.badNoisy"), ok: false });
       } else {
-        setKpMsg({ text: "HATALI KOD", ok: false });
+        setKpMsg({ text: t("keypad.bad"), ok: false });
       }
     }
   };
-  const kpKey = (k) => { if (k === "SİL") kpClear(); else if (k === "GİR") kpSubmit(); else kpPress(k); };
+  const kpKey = (k) => { if (k === t("keypad.del")) kpClear(); else if (k === t("keypad.enter")) kpSubmit(); else kpPress(k); };
 
   const interactionCancel = () => {
     if (!interaction) return;
@@ -555,13 +584,13 @@ export default function App() {
   const radioHint = (() => {
     if (!interaction || interaction.kind !== "radio") return "";
     const f = radioFreq;
-    if (radioPhase === "lock") return "«Yüzey mi? …Yüzey üç haftadır cevap vermiyor. Kimsin sen?»";
-    if (radioPhase === "cut") return "— HAT KOPTU —";
-    if (Math.abs(f - 437.4) < 0.4) return "…karanlıkta bir çocuk sayı sayıyor… yedi… altı…";
-    if (Math.abs(f - 421.8) < 0.4) return "…ıslak, ritmik bir nefes. Dinliyor.";
-    if (Math.abs(f - interaction.target) < 0.8) return "…bir insan sesi! Genç bir kadın: «—yor musun? Cevap ver—»";
-    if (Math.abs(f - interaction.target) < 2.5) return "…statiğin içinde kelime kırıntıları…";
-    return "…statik…";
+    if (radioPhase === "lock") return t("radio.hintLock");
+    if (radioPhase === "cut") return t("radio.hintCut");
+    if (Math.abs(f - 437.4) < 0.4) return t("radio.hintChild");
+    if (Math.abs(f - 421.8) < 0.4) return t("radio.hintBreath");
+    if (Math.abs(f - interaction.target) < 0.8) return t("radio.hintNear");
+    if (Math.abs(f - interaction.target) < 2.5) return t("radio.hintFar");
+    return t("radio.hintStatic");
   })();
 
   /* ---------------- IŞIK DEVRESİ ---------------- */
@@ -647,7 +676,7 @@ export default function App() {
       AudioSys.fuseSfx();
       const next = fuseHits + 1;
       setFuseHits(next);
-      setFuseMsg({ text: "OTURDU (" + next + "/" + interaction.hits + ")", ok: true });
+      setFuseMsg({ text: t("mech.fuseOk", { a: next, b: interaction.hits }), ok: true });
       if (next >= interaction.hits) {
         setMechDone(true);
         const target = interaction.success;
@@ -658,7 +687,7 @@ export default function App() {
       glitchBurst(180);
       statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + 4) };
       setStats({ ...statsRef.current });
-      setFuseMsg({ text: "KIVILCIM! — GÜRÜLTÜ +4", ok: false });
+      setFuseMsg({ text: t("mech.fuseSpark"), ok: false });
     }
   };
 
@@ -742,7 +771,7 @@ export default function App() {
     setObjective(cp.objective);
     clockRef.current = cp.clock;
     setScreen(null);
-    setLines([{ kind: "system", text: "SON KONTROL NOKTASINDAN DEVAM EDİLİYOR..." }]);
+    setLines([{ kind: "system", text: t("eng.restored") }]);
     playNode(cp.nodeId);
   };
 
@@ -825,6 +854,11 @@ export default function App() {
     setSoundOn(on);
     AudioSys.setEnabled(on);
   };
+  const applyLang = (code) => {
+    setLang(code);        // UI sözlüğü + kalıcı kayıt
+    setStoryLang(code);   // hikaye havuzu (yoksa TR'ye düşer)
+    setLangState(code);   // yeniden çizim
+  };
 
   /* ---------------- ses durumları ---------------- */
 
@@ -902,10 +936,11 @@ export default function App() {
           }}
           onSettings={() => { setSettingsFrom("mainmenu"); setScreen("settings"); }}
           onCredits={() => setScreen("credits")}
-          onPuzzleTest={() => setMode("puzzle_test")}
+          onPuzzleTest={() => setMode("puzzletest")}
         />
         {screen === "settings" && (
           <SettingsOverlay speedIdx={speedIdx} glitchFx={glitchFx} soundOn={soundOn}
+            lang={lang} onLang={applyLang}
             onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
             onBack={() => setScreen(null)} />
         )}
@@ -914,20 +949,9 @@ export default function App() {
     );
   }
 
-  /* ================= BULMACA TEST EKRANI ================= */
-  if (mode === "puzzle_test") {
-    return (
-      <div style={{ position: "fixed", inset: 0, backgroundColor: "#000", zIndex: 100, overflowY: "auto", padding: "20px" }}>
-        <button 
-          className="s1-btn" 
-          style={{ position: "absolute", top: "10px", right: "10px", color: "#ff3333", borderColor: "#ff3333" }}
-          onClick={() => setMode("menu")}
-        >
-          KAPAT ✕
-        </button>
-        <PuzzleTest />
-      </div>
-    );
+  /* ================= BULMACA TESTİ (geçici) ================= */
+  if (mode === "puzzletest") {
+    return <PuzzleTest onBack={() => setMode("menu")} />;
   }
 
   /* ================= UYARI EKRANI ================= */
@@ -955,7 +979,7 @@ export default function App() {
           wordsObscured={wordsObscured} choicesObscured={choicesObscured}
           timeLeft={timeLeft} choicesVisible={choicesVisible} choices={visibleChoices}
           flags={flags} onChoice={handleChoice}
-          ended={ended}
+          ended={ended} tapWait={tapWait}
           endInfo={{ docs: docs.length, notes: notes.length, battery, spares, akil }}
           onRestart={startFresh}
         />
@@ -980,14 +1004,42 @@ export default function App() {
           onPress={lightsPress} onReset={lightsReset} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "valve" && (
-        <ValveOverlay deg={valveDeg} done={mechDone} onTurn={valveTurn} onCancel={interactionCancel} />
+        <ValveOverlay title={interaction.title} deg={valveDeg} done={mechDone} onTurn={valveTurn} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "lever" && (
-        <LeverOverlay prog={leverProg} done={mechDone} onDown={leverDown} onUp={leverUp} onCancel={interactionCancel} />
+        <LeverOverlay title={interaction.title} prog={leverProg} done={mechDone} onDown={leverDown} onUp={leverUp} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "fuse" && (
-        <FuseOverlay marker={fuseMarker} hits={fuseHits} needed={interaction.hits || 2}
+        <FuseOverlay title={interaction.title} marker={fuseMarker} hits={fuseHits} needed={interaction.hits || 2}
           msg={fuseMsg} done={mechDone} onTap={fuseTap} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "shadow" && (
+        <ShadowOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "wires" && (
+        <WiresOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "mix" && (
+        <MixOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "symbols" && (
+        <SymbolsOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "rings" && (
+        <RingsOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "tiles" && (
+        <TilesOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
+      )}
+      {interaction?.kind === "colorgrid" && (
+        <ColorGridOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "breath" && breath && (
         <BreathOverlay breath={breath}
@@ -1026,6 +1078,7 @@ export default function App() {
       )}
       {screen === "settings" && (
         <SettingsOverlay speedIdx={speedIdx} glitchFx={glitchFx} soundOn={soundOn}
+          lang={lang} onLang={applyLang}
           onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
           onBack={() => setScreen(settingsFrom === "pause" ? "pause" : null)} />
       )}

@@ -1,292 +1,59 @@
-﻿import { useState, useEffect } from "react";
+import { useState } from "react";
 import { styles as S } from "../../styles/theme";
 import { AudioSys } from "../../audio/AudioSys";
+import { t } from "../../i18n";
+
+/* ============================================================
+   SINIR-1 — BULMACA BİLEŞENLERİ v2 (Outlast / RE7 / RE8 esintili)
+   Hepsi kendi durumunu tutar; dış kancalar: onSuccess / onFail / onCancel.
+   Story kullanımı: interaction: { kind, ...config, success, cancel }
+
+   KINDS:
+   · shadow    — iki parçalı gölgeyi duvar iziyle hizala (RE7 projektör)
+   · wires     — kabloları doğru portlara bağla (devre yaması)
+   · symbols   — dökümandaki sembolleri doğru SIRAYLA bas (RE8 çan kilidi)
+   · rings     — renkli halkaları çevirip vitrayı bütünleştir (RE8 cam)
+   · tiles     — karoların yerini değiştirip deseni tamamla (karo kapısı)
+   · colorgrid — hücre renklerini döndürüp şemayı eşle (renk panosu)
+   ============================================================ */
 
 const mono = "'Courier New', ui-monospace, monospace";
 
 const P = {
   hint: { fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", color: "#5f7573", textAlign: "center", lineHeight: 1.7 },
-  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7fae86", textAlign: "center", minHeight: 15, textShadow: "0 0 8px rgba(127,174,134,0.6)" },
-  msgBad: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#ff4d4d", textAlign: "center", minHeight: 15, textShadow: "0 0 8px rgba(255,77,77,0.6)" },
-  ctrlRow: { display: "flex", gap: 8, width: "100%", justifyContent: "center", flexWrap: "wrap", marginTop: 12 },
+  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7fae86", textAlign: "center", minHeight: 15 },
+  msgBad: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#c23b2e", textAlign: "center", minHeight: 15 },
+  ctrlRow: { display: "flex", gap: 8, width: "100%", justifyContent: "center", flexWrap: "wrap" },
 };
 
-// Simple shape definitions for other puzzles (unchanged)
-const SHAPES = {
-  starOuter: "0,-66 22,-52 58,-40 46,-6 62,30 30,44 12,64 -18,56 -52,42 -44,6 -60,-26 -30,-46",
-  starInner: "0,-38 12,-12 34,-6 14,6 20,32 0,16 -20,32 -14,6 -34,-6 -12,-12",
-  gearOuter: "0,-70 15,-70 20,-55 35,-50 48,-60 58,-50 48,-35 55,-20 70,-15 70,0 55,20 48,35 58,50 48,60 35,50 20,55 15,70 0,70 -15,70 -20,55 -35,50 -48,60 -58,50 -48,35 -55,20 -70,15 -70,0 -55,-20 -48,-35 -58,-50 -48,-60 -35,-50 -20,-55 -15,-70",
-  gearInner: "0,-40 10,-35 25,-25 35,-10 35,10 25,25 10,35 0,40 -10,35 -25,25 -35,10 -35,-10 -25,-25 -10,-35",
-  polygonOuter: "0,-65 45,-45 65,0 45,45 0,65 -45,45 -65,0 -45,-45",
-  polygonInner: "0,-35 25,-25 35,0 25,25 0,35 -25,25 -35,0 -25,-25"
-};
-
-const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+const near = (a, b, tol) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
 
 /* ============================================================
-   4) ANTİK LEVHA HİZALAMA BULMACASI (PLATE LINKER PUZZLE)
+   1) GÖLGE HİZALAMA (v2) — parça hedefe yaklaşınca kenarı yeşile
+   döner (dokunsal geri bildirim); kilitte kısa parlama.
+   config: { targetOuter, targetInner, step?15, startOuter?, startInner? }
    ============================================================ */
 
-/**
- * A helper component that samples a hexagonal section of the complete fresco image
- * and displays it. When the piece is correctly oriented, it fits perfectly.
- */
-function FrescoHexagon({ cx, cy, r, id, targetIdx, currentIdx, isMatched }) {
-  const getHexPoints = (x, y, radius) => {
-    const points = [];
-    for (let i = 0; i < 6; i++) {
-      const angleDeg = 60 * i - 30; // 0 degree offset for vertical hexagons
-      const angleRad = (Math.PI / 180) * angleDeg;
-      points.push(`${x + radius * Math.cos(angleRad)},${y + radius * Math.sin(angleRad)}`);
-    }
-    return points.join(" ");
-  };
-
-  const clipPathId = `fresco-hex-clip-${id}`;
-  const rotation = (currentIdx - targetIdx) * 60; // Rotation relative to target
-
-  // Scale the clip path radius slightly for better visual alignment
-  const innerR = r - 2;
-
-  return (
-    <>
-      <defs>
-        <clipPath id={clipPathId}>
-          <polygon points={getHexPoints(cx, cy, innerR)} />
-        </clipPath>
-      </defs>
-      
-      {/* Hexagonal path as a boundary */}
-      <polygon
-        points={getHexPoints(cx, cy, r)}
-        fill="none"
-        stroke={isMatched ? "#639c6c" : "#3d3024"}
-        strokeWidth="1.5"
-      />
-      
-      {/* Group to clip and rotate the texture. */}
-      <g
-        clipPath={`url(#${clipPathId})`}
-        style={{
-          transformOrigin: `${cx}px ${cy}px`, // Rotate the hexagon about its own center
-          transition: "transform 250ms cubic-bezier(0.25, 1, 0.5, 1)", // Apply same transition as other overlays
-        }}
-        transform={`rotate(${rotation})`}
-      >
-        {/* Use CSS positioning and transform to align a single texture for the whole board. */}
-        <image
-          href="/assets/image_4.png" // The generated reference image
-          x={cx - 140} // Align image center (140,105) with plate center
-          y={cy - 105} // Assume source image is 280x210 in size.
-          width="280"
-          height="210"
-          style={{
-            transform: `translate(${- (cx - 140)}px, ${- (cy - 105)}px)`, // Counteract image placement to fix it in board space.
-          }}
-        />
-      </g>
-    </>
-  );
-}
-
-// Replace the simple design functions with our texture sampling approach
-const PLATE_ARTWORKS = {
-  0: (idx) => <FrescoHexagon id={0} {...idx} />,
-  1: (idx) => <FrescoHexagon id={1} {...idx} />,
-  2: (idx) => <FrescoHexagon id={2} {...idx} />,
-  3: (idx) => <FrescoHexagon id={3} {...idx} />,
-  4: (idx) => <FrescoHexagon id={4} {...idx} />,
-  5: (idx) => <FrescoHexagon id={5} {...idx} />,
-  6: (idx) => <FrescoHexagon id={6} {...idx} />
-};
-
-export function PlateLinkerOverlay({ config, onSuccess, onFail, onCancel }) {
-  const [plates, setPlates] = useState([]);
-  const [locked, setLocked] = useState(false);
-  const [moves, setMoves] = useState(0);
-
-  useEffect(() => {
-    const size = 33; // Fixed plate size
-    const cx = 140;  // Center of the 280x210 viewbox
-    const cy = 105;  // Center of the viewbox
-
-    // Layout calculation for a perfectly centered hexagon matrix
-    const hDist = size * Math.sqrt(3);
-    const vDist = size * 1.5;
-
-    // Define target and current orientations for all plates.
-    const initialPlates = [
-      { id: 0, cx: cx, cy: cy, r: size, isStatic: true, targetIdx: 0 },
-      { id: 1, cx: cx, cy: cy - vDist, r: size, isStatic: false, targetIdx: 0 },
-      { id: 2, cx: cx + hDist, cy: cy - vDist / 2, r: size, isStatic: false, targetIdx: 2 },
-      { id: 3, cx: cx + hDist, cy: cy + vDist / 2, r: size, isStatic: false, targetIdx: 4 },
-      { id: 4, cx: cx, cy: cy + vDist, r: size, isStatic: false, targetIdx: 1 },
-      { id: 5, cx: cx - hDist, cy: cy + vDist / 2, r: size, isStatic: false, targetIdx: 5 },
-      { id: 6, cx: cx - hDist, cy: cy - vDist / 2, r: size, isStatic: false, targetIdx: 3 }
-    ].map(p => {
-      if (p.isStatic) return { ...p, currentIdx: 0 };
-      
-      // Assign a random non-target starting orientation.
-      let startIdx;
-      do {
-        startIdx = Math.floor(Math.random() * 6);
-      } while (startIdx === p.targetIdx);
-
-      return { ...p, currentIdx: startIdx };
-    });
-
-    setPlates(initialPlates);
-    setLocked(false);
-    setMoves(0);
-  }, [config]);
-
-  const rotatePlate = (id) => {
-    if (locked) return;
-
-    const target = plates.find(p => p.id === id);
-    if (!target || target.isStatic) return; // Cannot rotate static plates
-
-    AudioSys.blipSfx(420);
-    setMoves(prev => prev + 1);
-
-    const nextPlates = plates.map(p => {
-      if (p.id === id) {
-        // Increment orientation, modulo 6
-        return { ...p, currentIdx: (p.currentIdx + 1) % 6 };
-      }
-      return p;
-    });
-
-    setPlates(nextPlates);
-
-    // Check for success condition: All non-static plates are correctly oriented.
-    const isMatched = nextPlates.every(p => p.currentIdx === p.targetIdx);
-    if (isMatched) {
-      setLocked(true);
-      AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1200);
-    }
-  };
-
-  return (
-    <div style={{ ...S.overlayDim, userSelect: "none" }} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={{ ...S.keypadPanel, border: "2px solid #2b221a", background: "#14100d" }} className="s1-panel">
-        <div style={{ ...S.keypadTitle, color: "#d1bba0", letterSpacing: "0.12em" }}>KADİM LEVHA ENTEGRASYONU</div>
-
-        {/* Puzzle area with background and single cohesive texture. */}
-        <div style={{ backgroundColor: "#080605", padding: "20px 0", borderRadius: 8, border: "1px solid #241c15", display: "flex", justifyContent: "center", position: "relative" }}>
-          
-          {/* Main SVG viewbox. The cohesive fresco image covers the entire board. */}
-          <svg viewBox="0 0 280 210" style={{ width: "100%", maxWidth: 280, position: "relative" }}>
-            
-            {/* The actual completed artwork is rendered here and serves as the source texture. */}
-            {/* The FrescoHexagon component isolates and rotates sections of this texture. */}
-            {plates.map((p) => {
-              // Pass the entire plate state to the render function.
-              const drawArt = PLATE_ARTWORKS[p.id];
-              return (
-                <g key={p.id} onClick={() => rotatePlate(p.id)} style={{ cursor: p.isStatic ? "default" : locked ? "not-allowed" : "pointer" }}>
-                  {drawArt && drawArt({ ...p, isMatched: p.currentIdx === p.targetIdx })}
-                </g>
-              );
-            })}
-
-            {/* Brass alignment pins from the static central plate (unchanged) */}
-            {plates.map((p) => (
-              p.id === 0 && (
-                <g key="brass-pins" pointerEvents="none">
-                  {[0, 60, 120, 180, 240, 300].map((angle, idx) => {
-                    const rad = (Math.PI / 180) * (angle - 30);
-                    const pinX = p.cx + p.r * Math.cos(rad);
-                    const pinY = p.cy + p.r * Math.sin(rad);
-                    return (
-                      <circle key={idx} cx={pinX} cy={pinY} r="2.5" fill="#bfa37a" stroke="#54432f" strokeWidth="1" />
-                    );
-                  })}
-                </g>
-              )
-            ))}
-          </svg>
-        </div>
-
-        {/* State and move count (unchanged) */}
-        <div style={{ display: "flex", justifyContent: "space-between", padding: "0 10px", marginTop: 10 }}>
-          <span style={{ fontFamily: mono, fontSize: 10, color: "#8c755c" }}>HİZALAMA HAMLESİ: {moves}</span>
-          <span style={{ fontFamily: mono, fontSize: 10, color: locked ? "#7fae86" : "#baa48a" }}>
-            {locked ? "MÜHÜR AÇILDI" : "FİGÜRÜ BİRLEŞTİRİN"}
-          </span>
-        </div>
-
-        {/* Hint and success text (unchanged) */}
-        <div style={{
-          fontFamily: mono, fontSize: 11, letterSpacing: "0.04em", color: locked ? "#7fae86" : "#ab947b",
-          textAlign: "center", marginTop: 12, lineHeight: 1.4
-        }}>
-          {locked 
-            ? "✓ FRESK TAMAMLANDI — KİLİT MEKANİZMASI SERBEST KALDI" 
-            : "Karoları döndürerek denizden yükselen tehdidin ve çaresiz figürün resmini tamamlayın."}
-        </div>
-
-        {!locked && (
-          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 12, borderColor: "#4d3d2e", color: "#ab947b" }} onClick={onCancel}>Geri Çekil</button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ============================================================
-   Other Puzzle Types (WiresOverlay, ShadowOverlay, MixOverlay)
-   Unchanged from user input.
-   ============================================================ */
+const OUTER_PTS = "0,-66 22,-52 58,-40 46,-6 62,30 30,44 12,64 -18,56 -52,42 -44,6 -60,-26 -30,-46";
+const INNER_PTS = "0,-38 12,-12 34,-6 14,6 20,32 0,16 -20,32 -14,6 -34,-6 -12,-12";
 
 export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
-  const [outer, setOuter] = useState(0);
-  const [inner, setInner] = useState(0);
+  const step = config.step || 15;
+  const tol = Math.max(7, step / 2 - 1);
+  const [outer, setOuter] = useState(config.startOuter ?? 0);
+  const [inner, setInner] = useState(config.startInner ?? 0);
   const [locked, setLocked] = useState(false);
-  const [runtimeConfig, setRuntimeConfig] = useState(null);
 
-  useEffect(() => {
-    const step = config?.step || 15;
-    const targetOuter = Math.floor(Math.random() * 12) * step;
-    const targetInner = Math.floor(Math.random() * 12) * step;
-    
-    const shapePool = [
-      { outer: SHAPES.starOuter, inner: SHAPES.starInner, type: "RADYAL KİLİT MATRİSİ" },
-      { outer: SHAPES.gearOuter, inner: SHAPES.gearInner, type: "ÇARK ODAKLAMA SİSTEMİ" },
-      { outer: SHAPES.polygonOuter, inner: SHAPES.polygonInner, type: "ASİMETRİK OPTİK BARAJ" }
-    ];
-    const chosenShape = shapePool[Math.floor(Math.random() * shapePool.length)];
-
-    setRuntimeConfig({
-      step,
-      targetOuter,
-      targetInner,
-      shape: chosenShape,
-      tol: Math.max(7, step / 2 - 1)
-    });
-    
-    setOuter(targetOuter + 90);
-    setInner(targetInner - 90);
-  }, [config]);
-
-  if (!runtimeConfig) return null;
-
-  const near = (a, b) => {
-    const d = Math.abs(((a - b) % 360 + 540) % 360 - 180);
-    return d <= runtimeConfig.tol;
-  };
+  const okO = near(outer, config.targetOuter, tol);
+  const okI = near(inner, config.targetInner, tol);
 
   const rotate = (which, dir) => {
     if (locked) return;
     AudioSys.clank();
-    const next = which === "o" ? outer + dir * runtimeConfig.step : inner + dir * runtimeConfig.step;
-    const no = which === "o" ? next : outer;
-    const ni = which === "i" ? next : inner;
-    
-    if (which === "o") setOuter(next); else setInner(next);
-    
-    if (near(no, runtimeConfig.targetOuter) && near(ni, runtimeConfig.targetInner)) {
+    const no = which === "o" ? outer + dir * step : outer;
+    const ni = which === "i" ? inner + dir * step : inner;
+    setOuter(no); setInner(ni);
+    if (near(no, config.targetOuter, tol) && near(ni, config.targetInner, tol)) {
       setLocked(true);
       AudioSys.blipSfx(980);
       setTimeout(onSuccess, 1100);
@@ -294,339 +61,481 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   };
 
   return (
-    <div style={{ ...S.overlayDim, userSelect: "none" }} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={{ ...S.keypadPanel, border: "1px solid #2e473b", boxShadow: "0 0 30px rgba(0,0,0,0.85)" }} className="s1-panel">
-        <div style={{ ...S.keypadTitle, color: "#7fae9c", letterSpacing: "2px" }}>
-          MERCİK HİZALAMA // {runtimeConfig.shape.type}
-        </div>
-        
-        <div style={{ position: "relative", backgroundColor: "#050a08", borderRadius: 6, padding: 10, border: "1px solid #14241d" }}>
-          <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 260, display: "block", margin: "0 auto" }}>
-            <defs>
-              <radialGradient id="lensGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#2c4234" stopOpacity="1" />
-                <stop offset="70%" stopColor="#0c1410" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#020504" stopOpacity="1" />
-              </radialGradient>
-              <filter id="shadowBlur">
-                <feGaussianBlur stdDeviation="1.5" />
-              </filter>
-            </defs>
-            
-            <circle cx="0" cy="0" r="105" fill="url(#lensGlow)" stroke="#1a3026" strokeWidth="1" />
-            
-            <circle cx="0" cy="0" r="85" fill="none" stroke="#223a2f" strokeWidth="0.5" strokeDasharray="3 6" />
-            <line x1="-100" y1="0" x2="100" y2="0" stroke="#1d3329" strokeWidth="0.5" strokeDasharray="4 4" />
-            <line x1="0" y1="-100" x2="0" y2="100" stroke="#1d3329" strokeWidth="0.5" strokeDasharray="4 4" />
-
-            <g opacity="0.25">
-              <polygon points={runtimeConfig.shape.outer} fill="none" stroke="#a4cfb7" strokeWidth="2" strokeDasharray="4 3" transform={`rotate(${runtimeConfig.targetOuter})`} />
-              <polygon points={runtimeConfig.shape.inner} fill="none" stroke="#a4cfb7" strokeWidth="2" strokeDasharray="4 3" transform={`rotate(${runtimeConfig.targetInner})`} />
-            </g>
-            
-            <g filter="url(#shadowBlur)">
-              <polygon points={runtimeConfig.shape.outer} fill="rgba(10,16,13,0.95)" stroke="#050807" strokeWidth="1.5" style={{ transition: "transform 250ms cubic-bezier(0.25, 1, 0.5, 1)" }} transform={`rotate(${outer})`} />
-              <polygon points={runtimeConfig.shape.inner} fill="rgba(5,9,7,0.98)" stroke="#020403" strokeWidth="1.5" style={{ transition: "transform 250ms cubic-bezier(0.25, 1, 0.5, 1)" }} transform={`rotate(${inner})`} />
-            </g>
-          </svg>
-        </div>
-
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.shadowTitle")}</div>
+        <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 250 }}>
+          <defs>
+            <radialGradient id="s1lamp" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={locked ? "#4a5c48" : "#3a4a3c"} />
+              <stop offset="55%" stopColor="#16201a" />
+              <stop offset="100%" stopColor="#070a08" />
+            </radialGradient>
+          </defs>
+          <circle cx="0" cy="0" r="104" fill="url(#s1lamp)" />
+          <g opacity="0.38">
+            <polygon points={OUTER_PTS} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
+              strokeDasharray="5 4" transform={`rotate(${config.targetOuter})`} />
+            <polygon points={INNER_PTS} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
+              strokeDasharray="5 4" transform={`rotate(${config.targetInner})`} />
+          </g>
+          <polygon points={OUTER_PTS} fill="rgba(6,9,8,0.94)"
+            stroke={okO ? "#7fae86" : "#0e1512"} strokeWidth={okO ? 2.2 : 1}
+            style={{ transition: "transform 300ms ease, stroke 200ms" }} transform={`rotate(${outer})`} />
+          <polygon points={INNER_PTS} fill="rgba(4,6,5,0.97)"
+            stroke={okI ? "#7fae86" : "#0b100d"} strokeWidth={okI ? 2.2 : 1}
+            style={{ transition: "transform 300ms ease, stroke 200ms" }} transform={`rotate(${inner})`} />
+        </svg>
         <div style={P.ctrlRow}>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, minWidth: 65, fontSize: 10 }} onClick={() => rotate("o", -1)}>⟲ DIŞ</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, minWidth: 65, fontSize: 10 }} onClick={() => rotate("o", 1)}>DIŞ ⟳</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, minWidth: 65, fontSize: 10 }} onClick={() => rotate("i", -1)}>⟲ İÇ</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, minWidth: 65, fontSize: 10 }} onClick={() => rotate("i", 1)}>İÇ ⟳</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("o", -1)}>⟲ {t("puzzle.outer")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("o", 1)}>{t("puzzle.outer")} ⟳</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("i", -1)}>⟲ {t("puzzle.inner")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => rotate("i", 1)}>{t("puzzle.inner")} ⟳</button>
         </div>
-
-        <div style={{ marginTop: 12, ...(locked ? P.msgOk : P.hint) }}>
-          {locked ? "⚡ OPTİK HİZALAMA BAŞARILI — KİLİT AÇILDI" : "Mekanizmayı çevirerek arkadaki kılavuz izlerine tam oturt."}
+        <div style={locked ? P.msgOk : P.hint}>
+          {locked ? t("puzzle.shadowDone") : t("puzzle.shadowHint")}
         </div>
-        
         {!locked && (
-          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 10 }} onClick={onCancel}>Geri Çekil</button>
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
   );
 }
 
+/* ============================================================
+   2) KABLO EŞLEŞTİRME (v2) — yanlış bağlantı artık KIRMIZI hat
+   olarak bir an çizilir, kıvılcım sayacı işler; dolu portlar
+   kablosunun rengiyle yanar.
+   config: { cables:[{id,label,color}], ports:[{id,label}],
+             pairs:{cableId: portId}, penalty? }
+   ============================================================ */
+
 export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
   const [sel, setSel] = useState(null);
   const [conn, setConn] = useState({});
-  const [sparkPort, setSparkPort] = useState(null);
+  const [spark, setSpark] = useState(null); // {ci, pi}
+  const [errors, setErrors] = useState(0);
   const [done, setDone] = useState(false);
-  const [panelModel, setPanelModel] = useState(null);
+  const cables = config.cables;
+  const ports = config.ports;
 
-  useEffect(() => {
-    const architectures = [
-      { name: "SIGMA-4 ELEKTRONİK YAMASI", pool: [{label:"VOLT",color:"#ff4444"}, {label:"FRQ",color:"#4488ff"}, {label:"DATA",color:"#ffcc00"}] },
-      { name: "OMEGA-MNT MATRİS KÖPRÜSÜ", pool: [{label:"AMP",color:"#ff33aa"}, {label:"BUS",color:"#33ffee"}, {label:"SYS",color:"#aacc33"}] },
-      { name: "THETA-KAPISI GÜVENLİK AKIMI", pool: [{label:"GND",color:"#888888"}, {label:"LINK",color:"#bb44ff"}, {label:"CORE",color:"#ff8844"}] }
-    ];
-    const arch = architectures[Math.floor(Math.random() * architectures.length)];
-    
-    const shuffledCables = shuffle(arch.pool).map((c, i) => ({ id: `c_${i}`, ...c }));
-    const shuffledPorts = shuffle([{ id: "p_0", label: "TRM-A" }, { id: "p_1", label: "TRM-B" }, { id: "p_2", label: "TRM-C" }]);
-    
-    const pairs = {};
-    const portIds = shuffledPorts.map(p => p.id);
-    shuffledCables.forEach((c, idx) => {
-      pairs[c.id] = portIds[idx];
-    });
+  const yOf = (i, n) => 34 + i * (150 / Math.max(1, n - 1));
+  const wire = (ci, pi) =>
+    `M 44 ${yOf(ci, cables.length)} C 120 ${yOf(ci, cables.length)}, 150 ${yOf(pi, ports.length)}, 214 ${yOf(pi, ports.length)}`;
 
-    setPanelModel({
-      title: arch.name,
-      cables: shuffledCables,
-      ports: shuffle(shuffledPorts),
-      pairs
-    });
-  }, [config]);
-
-  if (!panelModel) return null;
-
-  const yOf = (i, n) => 35 + i * (140 / Math.max(1, n - 1));
+  const portOwner = (pid) => cables.find((c) => conn[c.id] === pid);
 
   const pickCable = (id) => {
     if (done || conn[id]) return;
-    AudioSys.blipSfx(520);
+    AudioSys.blipSfx(500);
     setSel(id === sel ? null : id);
   };
 
   const pickPort = (pid) => {
-    if (done || !sel) return;
-    if (Object.values(conn).includes(pid)) return;
-    
-    if (panelModel.pairs[sel] === pid) {
+    if (done || !sel || portOwner(pid)) return;
+    const ci = cables.findIndex((c) => c.id === sel);
+    const pi = ports.findIndex((p) => p.id === pid);
+    if (config.pairs[sel] === pid) {
       AudioSys.clank();
       const next = { ...conn, [sel]: pid };
       setConn(next);
       setSel(null);
-      if (Object.keys(next).length === panelModel.cables.length) {
+      if (Object.keys(next).length === cables.length) {
         setDone(true);
         AudioSys.blipSfx(980);
         setTimeout(onSuccess, 1000);
       }
     } else {
-      setSparkPort(pid);
+      setSpark({ ci, pi });
+      setErrors((e) => e + 1);
       setSel(null);
-      AudioSys.blipSfx(220);
-      onFail(config?.penalty || { gurultu: 5, text: "KISA DEVRE! ANAKARTTA KIVILCIM ÇIKTI GÜRÜLTÜ +5" });
-      setTimeout(() => setSparkPort(null), 500);
+      onFail(config.penalty || { gurultu: 4, text: t("puzzle.wiresSpark") });
+      setTimeout(() => setSpark(null), 480);
     }
   };
 
   return (
-    <div style={{ ...S.overlayDim, userSelect: "none" }} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={{ ...S.keypadPanel, border: "1px solid #1f3a33" }} className="s1-panel">
-        <div style={S.keypadTitle}>{panelModel.title}</div>
-        
-        <svg viewBox="0 0 280 210" style={{ width: "100%", maxWidth: 300, backgroundColor: "#040807", borderRadius: 4, border: "1px solid #10241f" }}>
-          <defs>
-            <pattern id="wireGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#091411" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect width="280" height="210" fill="url(#wireGrid)" />
-
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.wiresTitle")}</div>
+        <svg viewBox="0 0 260 200" style={{ width: "100%", maxWidth: 280 }}>
+          <rect x="0" y="0" width="260" height="200" rx="6" fill="#070d0c" stroke="#14312c" />
           {Object.entries(conn).map(([cid, pid]) => {
-            const ci = panelModel.cables.findIndex((c) => c.id === cid);
-            const pi = panelModel.ports.findIndex((p) => p.id === pid);
-            const c = panelModel.cables[ci];
-            if (ci === -1 || pi === -1) return null;
+            const ci = cables.findIndex((c) => c.id === cid);
+            const pi = ports.findIndex((p) => p.id === pid);
             return (
-              <g key={cid}>
-                <path d={`M 46 ${yOf(ci, panelModel.cables.length)} C 130 ${yOf(ci, panelModel.cables.length)}, 150 ${yOf(pi, panelModel.ports.length)}, 224 ${yOf(pi, panelModel.ports.length)}`}
-                  fill="none" stroke={c.color} strokeWidth="5" opacity="0.25" strokeLinecap="round" />
-                <path d={`M 46 ${yOf(ci, panelModel.cables.length)} C 130 ${yOf(ci, panelModel.cables.length)}, 150 ${yOf(pi, panelModel.ports.length)}, 224 ${yOf(pi, panelModel.ports.length)}`}
-                  fill="none" stroke={c.color} strokeWidth="2.2" strokeLinecap="round" />
+              <path key={cid} d={wire(ci, pi)} fill="none"
+                stroke={cables[ci].color} strokeWidth="3" opacity="0.9" />
+            );
+          })}
+          {spark && (
+            <path d={wire(spark.ci, spark.pi)} fill="none"
+              stroke="#e06a4a" strokeWidth="3" strokeDasharray="6 5" opacity="0.9" />
+          )}
+          {cables.map((c, i) => (
+            <g key={c.id} onClick={() => pickCable(c.id)} style={{ cursor: "pointer" }}>
+              <circle cx="30" cy={yOf(i, cables.length)} r="12"
+                fill={conn[c.id] ? "#0c1514" : "#0a1210"}
+                stroke={sel === c.id ? "#e8e4d8" : c.color}
+                strokeWidth={sel === c.id ? 3 : 2} />
+              <circle cx="30" cy={yOf(i, cables.length)} r="5" fill={c.color} opacity={conn[c.id] ? 0.4 : 1} />
+              <text x="30" y={yOf(i, cables.length) + 26} textAnchor="middle"
+                fontFamily={mono} fontSize="8" fill="#5f7573">{c.label}</text>
+            </g>
+          ))}
+          {ports.map((p, i) => {
+            const owner = portOwner(p.id);
+            const sparking = spark && ports[spark.pi]?.id === p.id;
+            return (
+              <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: "pointer" }}>
+                <rect x="216" y={yOf(i, ports.length) - 11} width="26" height="22" rx="3"
+                  fill={sparking ? "#3a120c" : owner ? "#0c1a16" : "#0a1210"}
+                  stroke={sparking ? "#e06a4a" : owner ? owner.color : "#235248"}
+                  strokeWidth="2" />
+                <text x="229" y={yOf(i, ports.length) + 4} textAnchor="middle"
+                  fontFamily={mono} fontSize={sparking ? "12" : "8"}
+                  fill={sparking ? "#f0a060" : "#7fae9c"}>
+                  {sparking ? "⚡" : p.label}
+                </text>
               </g>
             );
           })}
-
-          {panelModel.cables.map((c, i) => {
-            const isSelected = sel === c.id;
-            const isConnected = !!conn[c.id];
-            return (
-              <g key={c.id} onClick={() => pickCable(c.id)} style={{ cursor: isConnected ? "not-allowed" : "pointer" }}>
-                <rect x="15" y={yOf(i, panelModel.cables.length) - 14} width="32" height="28" rx="3" fill="#0b1210" stroke={isSelected ? "#e8e4d8" : "#1a2e28"} strokeWidth={isSelected ? 2 : 1} />
-                <circle cx="31" cy={yOf(i, panelModel.cables.length)} r="6" fill={isConnected ? "#1c2623" : c.color} />
-                {isSelected && <circle cx="31" cy={yOf(i, panelModel.cables.length)} r="10" fill="none" stroke="#fff" strokeWidth="1" opacity="0.5" />}
-                <text x="31" y={yOf(i, panelModel.cables.length) + 22} textAnchor="middle" fontFamily={mono} fontSize="7" fill={isSelected ? "#fff" : "#5f7573"}>{c.label}</text>
-              </g>
-            );
-          })}
-
-          {panelModel.ports.map((p, i) => {
-            const isSparking = sparkPort === p.id;
-            const isMatched = Object.values(conn).includes(p.id);
-            return (
-              <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: isMatched ? "not-allowed" : "pointer" }}>
-                <rect x="224" y={yOf(i, panelModel.ports.length) - 14} width="36" height="28" rx="3" 
-                  fill={isSparking ? "#42120c" : isMatched ? "#0c1714" : "#08100e"} 
-                  stroke={isSparking ? "#ff4444" : isMatched ? "#3a6356" : "#204239"} strokeWidth="1.5" />
-                {isSparking ? (
-                  <text x="242" y={yOf(i, panelModel.ports.length) + 5} textAnchor="middle" fontSize="11" fill="#ffaa44">⚡</text>
-                ) : (
-                  <text x="242" y={yOf(i, panelModel.ports.length) + 4} textAnchor="middle" fontFamily={mono} fontSize="8" fill={isMatched ? "#6bb39e" : "#4a7a6d"}>{p.label}</text>
-                )}
-              </g>
-            );
-          })}
+          {errors > 0 && !done && (
+            <text x="10" y="192" fontFamily={mono} fontSize="8" fill="#8a4a3a">⚡ ×{errors}</text>
+          )}
         </svg>
-
-        <div style={{ marginTop: 12, ...(done ? P.msgOk : sparkPort ? P.msgBad : P.hint) }}>
-          {done ? "✓ ŞEBEKE SENKRONİZASYONU TAMAMLANDI" : sparkPort ? "⚠ SİSTEM GÜVENLİĞİ TETİKLENDİ — KISA DEVRE!" : sel ? "Açık hattı bağlamak için sağ panelden doğru port yuvasını seç." : "Sol taraftan akım yüklemek istediğin bir terminal seç."}
+        <div style={done ? P.msgOk : P.hint}>
+          {done ? t("puzzle.wiresDone") : sel ? t("puzzle.wiresHintPort") : t("puzzle.wiresHintPick")}
         </div>
-
         {!done && (
-          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 10 }} onClick={onCancel}>Bırak</button>
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
   );
 }
 
-export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
-  const [mix, setMix] = useState({});
-  const [state, setState] = useState("idle");
-  const [mixModel, setMixModel] = useState(null);
+/* ============================================================
+   3) SEMBOL KİLİDİ — RE8 çan paneli: 8 işaret çember dizilir,
+   dökümandaki semboller doğru SIRAYLA basılır. Yanlış = dizi
+   sıfırlanır + ceza.
+   config: { glyphs:["g1".."g8"] (dizilim), sequence:["g4","g1","g7"],
+             penalty? }
+   ============================================================ */
 
-  useEffect(() => {
-    const chemicalPool = [
-      { id: "b1", label: "Bromür", color: "#d1b846" },
-      { id: "b2", label: "İodin", color: "#46a8d1" },
-      { id: "b3", label: "Florür", color: "#b846d1" },
-      { id: "b4", label: "Eter", color: "#46d168" }
-    ];
-    
-    const chosenChems = shuffle(chemicalPool).slice(0, 3);
-    const target = {};
-    let capacity = 0;
-    
-    chosenChems.forEach((chem) => {
-      const amt = Math.floor(Math.random() * 2) + 1;
-      target[chem.id] = amt;
-      capacity += amt;
-    });
+export const GLYPHS = {
+  g1: "M20 8 A12 12 0 1 0 20.1 8 M20 15 A5 5 0 1 1 19.9 15",
+  g2: "M13 10 V30 M27 10 V30 M13 20 H27",
+  g3: "M20 8 V32 M12 14 L28 26 M28 14 L12 26",
+  g4: "M12 12 Q28 20 12 28 M28 12 Q12 20 28 28",
+  g5: "M20 8 L30 20 L20 32 L10 20 Z M20 15 V25",
+  g6: "M10 24 Q20 8 30 24 M20 24 V32 M15 30 H25",
+  g7: "M11 13 Q16 9 20 13 Q24 17 29 13 M11 20 Q16 16 20 20 Q24 24 29 20 M11 27 Q16 23 20 27 Q24 31 29 27",
+  g8: "M20 8 Q10 18 20 22 Q30 26 20 34 M13 14 L27 14",
+}; // ihtiyaç olursa yeni işaretler buraya eklenir
 
-    const vesselTypes = ["DİSTİLE KAPSÜLÜ v4", "KRİYO-FİLTER HAZNESİ", "HİBRİT REAKTÖR BEHERİ"];
-    const chosenTitle = vesselTypes[Math.floor(Math.random() * vesselTypes.length)];
+export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
+  const [progress, setProgress] = useState(0); // dizide kaç doğru basıldı
+  const [flash, setFlash] = useState(null);    // {id, ok}
+  const [done, setDone] = useState(false);
+  const glyphs = config.glyphs;
+  const seq = config.sequence;
+  const litSet = new Set(seq.slice(0, progress));
 
-    setMixModel({
-      title: chosenTitle,
-      bottles: chosenChems,
-      target,
-      capacity
-    });
-    setMix({});
-    setState("idle");
-  }, [config]);
-
-  if (!mixModel) return null;
-
-  const total = Object.values(mix).reduce((a, b) => a + b, 0);
-
-  const blend = () => {
-    if (total === 0) return "#0c1412";
-    let r = 0, g = 0, b = 0;
-    mixModel.bottles.forEach((bt) => {
-      const w = (mix[bt.id] || 0) / total;
-      const c = bt.color.match(/\w\w/g).map((h) => parseInt(h, 16));
-      r += c[0] * w; g += c[1] * w; b += c[2] * w;
-    });
-    return `rgba(${r | 0},${g | 0},${b | 0}, 0.85)`;
-  };
-
-  const add = (id) => {
-    if (state !== "idle" || total >= mixModel.capacity) return;
-    AudioSys.blipSfx(400 + Math.random() * 150);
-    const next = { ...mix, [id]: (mix[id] || 0) + 1 };
-    setMix(next);
-    
-    const t = Object.values(next).reduce((a, b) => a + b, 0);
-    if (t >= mixModel.capacity) {
-      const ok = mixModel.bottles.every((bt) => (next[bt.id] || 0) === (mixModel.target[bt.id] || 0));
-      if (ok) {
-        setState("done");
+  const press = (id) => {
+    if (done) return;
+    if (seq[progress] === id) {
+      AudioSys.blipSfx(640 + progress * 90);
+      setFlash({ id, ok: true });
+      setTimeout(() => setFlash(null), 300);
+      const next = progress + 1;
+      setProgress(next);
+      if (next >= seq.length) {
+        setDone(true);
         AudioSys.blipSfx(980);
-        setTimeout(onSuccess, 1200);
-      } else {
-        setState("fizz");
-        AudioSys.blipSfx(250);
-        onFail(config?.penalty || { akil: -6, text: "KARIŞIM ASİDİK TEPKİME VERDİ! AKIL KANAYIŞI -6" });
-        setTimeout(() => { setMix({}); setState("idle"); }, 1500);
+        setTimeout(onSuccess, 1100);
       }
+    } else {
+      setFlash({ id, ok: false });
+      setProgress(0);
+      onFail(config.penalty || { gurultu: 3, text: t("puzzle.symbolsWrong") });
+      setTimeout(() => setFlash(null), 450);
     }
   };
 
-  const fillH = (total / mixModel.capacity) * 88;
-
   return (
-    <div style={{ ...S.overlayDim, userSelect: "none" }} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={{ ...S.keypadPanel, border: "1px solid #4a3b23" }} className="s1-panel">
-        <div style={{ ...S.keypadTitle, color: "#d4a35d" }}>{mixModel.title}</div>
-        
-        <div style={{ backgroundColor: "#060a08", padding: "15px 0", borderRadius: 4, border: "1px solid #1c140a", display: "flex", justifyContent: "center" }}>
-          <svg viewBox="0 0 200 140" style={{ width: "100%", maxWidth: 220 }}>
-            <rect x="66" y={114 - fillH} width="68" height={fillH} rx="2"
-              fill={state === "fizz" ? "#e63946" : blend()}
-              style={{ transition: "height 320ms ease, y 320ms ease, fill 400ms" }} />
-            
-            {total > 0 && state === "idle" && (
-              <g opacity="0.6">
-                <circle cx="75" cy="90" r="1.5" fill="#fff" opacity="0.4" />
-                <circle cx="115" cy="70" r="2" fill="#fff" opacity="0.3" />
-                <circle cx="95" cy="100" r="1" fill="#fff" opacity="0.6" />
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.symbolsTitle")}</div>
+        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 250 }}>
+          <polygon points="0,-100 71,-71 100,0 71,71 0,100 -71,71 -100,0 -71,-71"
+            fill="#0d1210" stroke="#2a3a30" strokeWidth="2" />
+          {glyphs.map((id, i) => {
+            const ang = (i / glyphs.length) * Math.PI * 2 - Math.PI / 2;
+            const cx = Math.cos(ang) * 68, cy = Math.sin(ang) * 68;
+            const lit = litSet.has(id) && !done ? true : done;
+            const fl = flash?.id === id;
+            return (
+              <g key={id} transform={`translate(${cx},${cy})`}
+                onClick={() => press(id)} style={{ cursor: "pointer" }}>
+                <circle r="24"
+                  fill={fl ? (flash.ok ? "#16302a" : "#3a120c") : lit ? "#132420" : "#0a0e0c"}
+                  stroke={fl ? (flash.ok ? "#7fae86" : "#e06a4a") : lit ? "#7fae86" : "#3a4a40"}
+                  strokeWidth="2.5" style={{ transition: "stroke 200ms, fill 200ms" }} />
+                <path d={GLYPHS[id]} fill="none"
+                  stroke={lit || fl ? "#d8cfa0" : "#8a7f5a"} strokeWidth="2"
+                  strokeLinecap="round" transform="translate(-20,-20)" />
               </g>
-            )}
-
-            {state === "fizz" && (
-              <g fill="#ff8888" opacity="0.8">
-                <circle cx="80" cy="50" r="3" /> <circle cx="100" cy="45" r="4" />
-                <circle cx="120" cy="55" r="2.5" /> <circle cx="90" cy="65" r="3.5" />
-              </g>
-            )}
-
-            <path d="M 82 10 L 82 35 L 65 110 Q 63 116 72 116 L 128 116 Q 137 116 135 110 L 118 35 L 118 10"
-              fill="none" stroke="#5c4d37" strokeWidth="2" strokeLinecap="round" />
-            
-            <path d="M 72 112 Q 67 112 68 106 L 81 40" fill="none" stroke="#ffffff" strokeWidth="0.8" opacity="0.15" />
-
-            {Array.from({ length: mixModel.capacity }).map((_, i) => {
-              const yPos = 114 - ((i + 1) / mixModel.capacity) * 88;
-              return (
-                <line key={i} x1="126" x2="132" y1={yPos} y2={yPos} stroke="#423725" strokeWidth="1" />
-              );
-            })}
-            
-            <text x="142" y="75" fontFamily={mono} fontSize="9" fill="#8c7654" fontWeight="bold">
-              {total} / {mixModel.capacity}
-            </text>
-          </svg>
+            );
+          })}
+          <text x="0" y="5" textAnchor="middle" fontFamily={mono} fontSize="11"
+            fill={done ? "#7fae86" : "#3f5a52"}>
+            {progress}/{seq.length}
+          </text>
+        </svg>
+        <div style={done ? P.msgOk : flash && !flash.ok ? P.msgBad : P.hint}>
+          {done ? t("puzzle.symbolsDone") : flash && !flash.ok ? t("puzzle.symbolsWrong") : t("puzzle.symbolsHint")}
         </div>
-
-        <div style={P.ctrlRow}>
-          {mixModel.bottles.map((bt) => (
-            <button key={bt.id} className="s1-btn s1-key"
-              style={{ ...S.keyBtn, borderColor: bt.color, color: "#e3e8e5", minWidth: 80, fontSize: 10 }}
-              onClick={() => add(bt.id)}>
-              {bt.label} <span style={{ color: bt.color, fontSize: 9 }}>({mix[bt.id] || 0})</span>
-            </button>
-          ))}
-          <button className="s1-btn s1-key" style={{ ...S.keyAlt, minWidth: 70, color: "#ff6666", borderColor: "rgba(255,102,102,0.3)" }} 
-            onClick={() => { if (state === "idle" && total > 0) { AudioSys.blipSfx(300); setMix({}); } }}>
-            BOŞALT
-          </button>
-        </div>
-
-        <div style={{ marginTop: 12, ...(state === "done" ? P.msgOk : state === "fizz" ? P.msgBad : P.hint) }}>
-          {state === "done" ? "✓ SENTEZ BAŞARILI — BİLEŞEN HAZIRLANDI" : state === "fizz" ? "☣ KARIŞIM TEPKİDİ! ASİT GAZI SALINIYOR!" : "Sentez tüpüne tam ölçülerde özüt ekle. Hatalı mililitre reaksiyona neden olur."}
-        </div>
-
-        {state !== "done" && (
-          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 10 }} onClick={onCancel}>Uzaklaş</button>
+        {!done && (
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
   );
 }
+
+/* ============================================================
+   4) VİTRAY HALKALARI — RE8 cam bulmacası: üç renkli halkanın
+   çentiğini üstteki işarete getir; hepsi hizalanınca ortadaki
+   figür belirir.
+   config: { rings:[{color, step, start, target?0}] }
+   ============================================================ */
+
+export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
+  const rings = config.rings;
+  const [rots, setRots] = useState(rings.map((r) => r.start));
+  const [done, setDone] = useState(false);
+  const radii = [40, 62, 84];
+
+  const okAt = (i, rot) => near(rot, rings[i].target ?? 0, Math.max(7, rings[i].step / 2 - 1));
+
+  const rotate = (i, dir) => {
+    if (done) return;
+    AudioSys.blipSfx(380 + i * 120);
+    const next = rots.slice();
+    next[i] = next[i] + dir * rings[i].step;
+    setRots(next);
+    if (next.every((r, j) => okAt(j, r))) {
+      setDone(true);
+      AudioSys.blipSfx(980);
+      setTimeout(onSuccess, 1400);
+    }
+  };
+
+  return (
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.ringsTitle")}</div>
+        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 250 }}>
+          <circle r="98" fill="#0c1110" stroke="#2a3a30" strokeWidth="2" />
+          {/* üstteki hedef işareti */}
+          <path d="M 0 -101 L -5 -92 L 5 -92 Z" fill="#c8b98a" />
+          {rings.map((r, i) => {
+            const rad = radii[i % radii.length];
+            const circ = 2 * Math.PI * rad;
+            const ok = okAt(i, rots[i]);
+            return (
+              <g key={i} style={{ transition: "transform 300ms ease" }} transform={`rotate(${rots[i]})`}>
+                {/* halka gövdesi */}
+                <circle r={rad} fill="none" stroke={r.color} strokeWidth="13"
+                  opacity={done ? 0.55 : 0.28} />
+                {/* çentik */}
+                <circle r={rad} fill="none" stroke={ok ? "#e8e0c0" : r.color} strokeWidth="13"
+                  strokeDasharray={`${circ * 0.07} ${circ * 0.93}`}
+                  strokeDashoffset={circ * 0.035}
+                  transform="rotate(-90)" opacity="0.95"
+                  style={{ transition: "stroke 250ms" }} />
+              </g>
+            );
+          })}
+          {/* hizalanınca beliren figür */}
+          <g opacity={done ? 1 : 0} style={{ transition: "opacity 900ms ease" }}>
+            <path d="M0 -26 V26 M-12 -14 H12 M0 -26 L-8 -18 M0 -26 L8 -18 M-9 26 H9 M0 8 L-14 20 M0 8 L14 20"
+              stroke="#d8b34a" strokeWidth="3" fill="none" strokeLinecap="round" />
+          </g>
+        </svg>
+        <div style={P.ctrlRow}>
+          {rings.map((r, i) => (
+            <span key={i} style={{ display: "flex", gap: 6 }}>
+              <button className="s1-btn s1-key"
+                style={{ ...S.keyBtn, borderColor: r.color, minWidth: 46 }}
+                onClick={() => rotate(i, -1)}>⟲</button>
+              <button className="s1-btn s1-key"
+                style={{ ...S.keyBtn, borderColor: r.color, minWidth: 46 }}
+                onClick={() => rotate(i, 1)}>⟳</button>
+            </span>
+          ))}
+        </div>
+        <div style={done ? P.msgOk : P.hint}>
+          {done ? t("puzzle.ringsDone") : t("puzzle.ringsHint")}
+        </div>
+        {!done && (
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   5) KARO KAPISI — karışmış karoları ikişer ikişer değiştirerek
+   büyük deseni tamamla (dökümandaki bilgi doğru dizilimi anlatır).
+   config: { scramble:[2,0,1,...] (başlangıç permütasyonu, 9 eleman) }
+   Desen tek büyük SVG'dir; her karo kendi doğru penceresini gösterir.
+   ============================================================ */
+
+const TILE_ART = [
+  "M60 12 A48 48 0 1 0 60.1 12",                       // dış çember
+  "M60 24 V96",                                         // gövde
+  "M36 44 H84",                                         // kollar
+  "M60 24 L46 38 M60 24 L74 38",                        // çapa uçları
+  "M42 96 Q60 82 78 96",                                // taban yayı
+  "M24 60 Q40 52 44 60 M96 60 Q80 52 76 60",            // yan işaretler
+  "M52 70 A8 8 0 1 0 68 70 A8 8 0 1 0 52 70",           // göz
+];
+
+export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
+  const n = 3;
+  const [perm, setPerm] = useState(config.scramble || [4, 2, 8, 6, 0, 7, 1, 5, 3]);
+  const [sel, setSel] = useState(null);
+  const [done, setDone] = useState(false);
+
+  const tap = (pos) => {
+    if (done) return;
+    if (sel === null) {
+      AudioSys.blipSfx(500);
+      setSel(pos);
+      return;
+    }
+    if (sel === pos) { setSel(null); return; }
+    AudioSys.clank();
+    const next = perm.slice();
+    [next[sel], next[pos]] = [next[pos], next[sel]];
+    setPerm(next);
+    setSel(null);
+    if (next.every((v, i) => v === i)) {
+      setDone(true);
+      AudioSys.blipSfx(980);
+      setTimeout(onSuccess, 1300);
+    }
+  };
+
+  return (
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.tilesTitle")}</div>
+        <div style={{
+          display: "grid", gridTemplateColumns: `repeat(${n}, 1fr)`, gap: 4,
+          width: "100%", maxWidth: 240, padding: 8,
+          backgroundColor: "#0c0f0d", border: "2px solid #2a3a30", borderRadius: 6,
+        }}>
+          {perm.map((tile, pos) => {
+            const tx = (tile % n) * 40, ty = Math.floor(tile / n) * 40;
+            const right = tile === pos;
+            return (
+              <div key={pos} onClick={() => tap(pos)} style={{
+                aspectRatio: "1", cursor: "pointer", borderRadius: 3,
+                backgroundColor: "#e8e2d0",
+                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7fae8644" : "1px solid #b8b09a",
+                overflow: "hidden", transition: "outline 150ms",
+                opacity: done ? 1 : 0.96,
+              }}>
+                <svg viewBox={`${tx} ${ty} 40 40`} style={{ width: "100%", height: "100%", display: "block" }}>
+                  {TILE_ART.map((d, i) => (
+                    <path key={i} d={d} fill="none" stroke="#7a6248" strokeWidth="3" strokeLinecap="round" />
+                  ))}
+                  <rect x={tx} y={ty} width="40" height="40" fill="none" />
+                </svg>
+              </div>
+            );
+          })}
+        </div>
+        <div style={done ? P.msgOk : P.hint}>
+          {done ? t("puzzle.tilesDone") : sel !== null ? t("puzzle.tilesSwap") : t("puzzle.tilesHint")}
+        </div>
+        {!done && (
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   6) RENK PANOSU — hücrelere dokun: renk döner; dökümandaki
+   şemayı birebir kur (RE8 kale jeneratörü).
+   config: { palette:["#.."], target:[0,1,2,...9 indeks],
+             start?:[...], showTarget?:bool (test için) }
+   ============================================================ */
+
+export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
+  const palette = config.palette;
+  const [cells, setCells] = useState(config.start || config.target.map(() => 0));
+  const [done, setDone] = useState(false);
+
+  const tap = (i) => {
+    if (done) return;
+    AudioSys.blipSfx(440 + (cells[i] % palette.length) * 60);
+    const next = cells.slice();
+    next[i] = (next[i] + 1) % palette.length;
+    setCells(next);
+    if (next.every((v, j) => v === config.target[j])) {
+      setDone(true);
+      AudioSys.blipSfx(980);
+      setTimeout(onSuccess, 1200);
+    }
+  };
+
+  const grid = (vals, size, clickable) => (
+    <div style={{
+      display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 3,
+      width: size, padding: 5,
+      backgroundColor: "#0c0f0d", border: "2px solid #2a3a30", borderRadius: 5,
+    }}>
+      {vals.map((v, i) => (
+        <div key={i} onClick={clickable ? () => tap(i) : undefined} style={{
+          aspectRatio: "1", borderRadius: 2, cursor: clickable ? "pointer" : "default",
+          backgroundColor: palette[v], border: "1px solid rgba(0,0,0,0.4)",
+          transition: "background-color 200ms",
+        }} />
+      ))}
+    </div>
+  );
+
+  return (
+    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+      <div style={S.keypadPanel} className="s1-panel">
+        <div style={S.keypadTitle}>{config.title || t("puzzle.colorTitle")}</div>
+        {config.showTarget && (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+            <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: "#5f7573" }}>
+              {t("puzzle.colorTarget")}
+            </span>
+            {grid(config.target, 90, false)}
+          </div>
+        )}
+        {grid(cells, 190, true)}
+        <div style={done ? P.msgOk : P.hint}>
+          {done ? t("puzzle.colorDone") : t("puzzle.colorHint")}
+        </div>
+        {!done && (
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* MixOverlay (kimyasal karışım) — değişmeden korunur */
+export { MixOverlay } from "./MixOverlay";

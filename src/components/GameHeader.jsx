@@ -1,4 +1,5 @@
 import { styles as S } from "../styles/theme";
+import { t } from "../i18n";
 
 /* Üst bar: çark menüsü, GÜRÜLTÜ/AKIL göstergeleri, pil, arşiv */
 export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, onGear, onBattery, onArchive }) {
@@ -7,7 +8,7 @@ export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, 
   return (
     <div style={S.header}>
       <div style={S.headerLeft}>
-        <button className="s1-btn" style={S.gearBtn} title="Menü"
+        <button className="s1-btn" style={S.gearBtn} title={t("hud.menuBtnTitle")}
           onClick={(e) => { e.stopPropagation(); onGear(); }}>
           ⚙
         </button>
@@ -17,19 +18,19 @@ export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, 
       <div style={S.headerRight}>
         <div style={S.gaugeCol}>
           <div style={S.gauge}>
-            <span style={S.statLabel}>GÜRÜLTÜ</span>
+            <span style={S.statLabel}>{t("hud.noise")}</span>
             <div style={S.statTrack}>
               <div style={{ ...S.statFill, width: gurultuPct + "%", backgroundColor: gurultuPct > 50 ? "#b8503f" : "#7a8c46" }} />
             </div>
           </div>
           <div style={S.gauge}>
-            <span style={S.statLabel}>AKIL</span>
+            <span style={S.statLabel}>{t("hud.mind")}</span>
             <div style={S.statTrack}>
               <div style={{ ...S.statFill, width: akil + "%", backgroundColor: akil > 60 ? "#6a8fae" : akil > 40 ? "#c79a52" : "#b8503f" }} />
             </div>
           </div>
         </div>
-        <button className="s1-btn" style={S.batteryWrap} title="Yedek pil takmak için dokun"
+        <button className="s1-btn" style={S.batteryWrap} title={t("hud.batteryTitle")}
           onClick={(e) => { e.stopPropagation(); onBattery(); }}>
           <div style={S.batteryShell}>
             {Array.from({ length: 10 }).map((_, i) => (
@@ -43,7 +44,7 @@ export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, 
         </button>
         <button className="s1-btn" style={S.archiveBtn}
           onClick={(e) => { e.stopPropagation(); onArchive(); }}>
-          ARŞİV
+          {t("hud.archive")}
         </button>
       </div>
     </div>

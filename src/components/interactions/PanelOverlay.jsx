@@ -1,4 +1,5 @@
 import { styles as S } from "../../styles/theme";
+import { t } from "../../i18n";
 
 /* Ana kontrol paneli: CRT durum ekranı + büyük kırmızı buton.
    Tüm require bayrakları açık değilse buton hata verir (App'te). */
@@ -34,14 +35,14 @@ export default function PanelOverlay({ interaction, flags, msg, onPress, onCance
             backgroundColor: allOk ? "#7fce8d" : "#c23b2e",
             boxShadow: allOk ? "0 0 14px rgba(120,230,150,0.9)" : "0 0 14px rgba(220,50,30,0.9)",
           }} className={allOk ? "" : "s1-critical"} />
-          <span style={S.panelLightLabel}>{allOk ? "HAT HAZIR" : "HAT EKSİK"}</span>
+          <span style={S.panelLightLabel}>{allOk ? t("panel.ready") : t("panel.missing")}</span>
         </div>
         {msg && (
           <div style={{ ...S.keypadMsg, color: msg.ok ? "#7fae86" : "#d24234" }}>{msg.text}</div>
         )}
-        <button className="s1-btn s1-redbtn" style={S.redButton} onClick={onPress} aria-label="ANA HATTI BAŞLAT" />
-        <div style={S.redButtonLabel}>ANA HATTI BAŞLAT</div>
-        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>Uzaklaş</button>
+        <button className="s1-btn s1-redbtn" style={S.redButton} onClick={onPress} aria-label={t("panel.start")} />
+        <div style={S.redButtonLabel}>{t("panel.start")}</div>
+        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("panel.away")}</button>
       </div>
     </div>
   );

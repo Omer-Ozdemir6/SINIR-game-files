@@ -1,4 +1,5 @@
 import { styles as S } from "../../styles/theme";
+import { t } from "../../i18n";
 
 /* Nefes tutma: tüm ekran basılı tutulur. Kurallar App'te;
    burada yalnız görsel: fazlar, TEHLİKE ve CİĞER barları. */
@@ -9,23 +10,23 @@ export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) 
       onPointerUp={(e) => { e.stopPropagation(); onUp(); }}
       onPointerCancel={(e) => { e.stopPropagation(); onUp(); }}>
       <div style={S.breathTitle}>
-        {breath.phase === "release" ? "UZAKLAŞIYOR — YAVAŞÇA BIRAK" : "NEFESİNİ TUT"}
+        {breath.phase === "release" ? t("breath.release") : t("breath.hold")}
       </div>
       <div style={S.breathPhaseText}>
-        {breath.t < 2500 ? "Islak adımlar odada dolanıyor…"
-          : breath.t < 5000 ? "Tam masanın yanında durdu."
-          : breath.t < 7000 ? "Nefesi ensende. Eğiliyor."
-          : "Doğruldu. Kapıya yöneliyor…"}
+        {breath.t < 2500 ? t("breath.ph1")
+          : breath.t < 5000 ? t("breath.ph2")
+          : breath.t < 7000 ? t("breath.ph3")
+          : t("breath.ph4")}
       </div>
       <div style={S.breathBars}>
         <div style={S.breathBarBlock}>
-          <span style={S.statLabel}>TEHLİKE</span>
+          <span style={S.statLabel}>{t("breath.danger")}</span>
           <div style={S.mechProgTrack}>
             <div style={{ ...S.mechProgFill, width: Math.min(100, (breath.t / holdMs) * 100) + "%", backgroundColor: "#7fae86" }} />
           </div>
         </div>
         <div style={S.breathBarBlock}>
-          <span style={S.statLabel}>CİĞER</span>
+          <span style={S.statLabel}>{t("breath.lung")}</span>
           <div style={S.mechProgTrack}>
             <div style={{ ...S.mechProgFill, width: Math.min(100, (breath.lung / lungMs) * 100) + "%", backgroundColor: "#c23b2e" }} />
           </div>
@@ -33,8 +34,8 @@ export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) 
       </div>
       <div style={S.breathHint}>
         {breath.spike && breath.holding
-          ? "CİĞERLERİN YANIYOR — DAYAN, SES ÇIKARMA"
-          : breath.holding ? "" : breath.phase === "wait" ? "EKRANA BAS VE TUTMAYA BAŞLA — ÇABUK" : ""}
+          ? t("breath.spike")
+          : breath.holding ? "" : breath.phase === "wait" ? t("breath.start") : ""}
       </div>
     </div>
   );

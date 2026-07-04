@@ -1,16 +1,17 @@
 import { styles as S } from "../styles/theme";
+import { t } from "../i18n";
 
 /* Arşiv ana menüsü */
 export function ArchiveMenu({ objective, onNotes, onDocs, onClose }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.menuPanel} className="s1-panel">
-        <div style={S.menuObjective}>Görev: {objective}</div>
+        <div style={S.menuObjective}>{t("hud.objective")}{objective}</div>
         <div style={S.menuButtons}>
-          <button className="s1-btn s1-menuitem" style={S.menuItem} onClick={onNotes}>Notlar</button>
-          <button className="s1-btn s1-menuitem" style={S.menuItem} onClick={onDocs}>Dökümanlar</button>
+          <button className="s1-btn s1-menuitem" style={S.menuItem} onClick={onNotes}>{t("archive.notes")}</button>
+          <button className="s1-btn s1-menuitem" style={S.menuItem} onClick={onDocs}>{t("archive.docs")}</button>
         </div>
-        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onClose}>Kapat</button>
+        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onClose}>{t("archive.close")}</button>
       </div>
     </div>
   );
@@ -21,11 +22,11 @@ export function ArchiveList({ kind, items, onOpen, onBack }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.listPanel} className="s1-panel">
-        <div style={S.listTitle}>{kind === "notes" ? "Notlar" : "Dökümanlar"}</div>
+        <div style={S.listTitle}>{kind === "notes" ? t("archive.notes") : t("archive.docs")}</div>
         <div style={S.listBody}>
           {items.length === 0 && (
             <div style={S.emptyText}>
-              {kind === "notes" ? "Henüz not yazılmadı." : "Henüz döküman toplanmadı. Ortalığı aramayı dene."}
+              {kind === "notes" ? t("archive.emptyNotes") : t("archive.emptyDocs")}
             </div>
           )}
           {items.map((item) => (
@@ -36,7 +37,7 @@ export function ArchiveList({ kind, items, onOpen, onBack }) {
             </button>
           ))}
         </div>
-        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onBack}>Geri</button>
+        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onBack}>{t("archive.back")}</button>
       </div>
     </div>
   );
@@ -52,7 +53,7 @@ export function NotePaper({ item, onBack }) {
           <span style={S.notePaperTime}>{item.time}</span>
         </div>
         <div style={S.notePaperBody}>{item.text}</div>
-        <button className="s1-btn s1-menuitem" style={S.paperBack} onClick={onBack}>Geri</button>
+        <button className="s1-btn s1-menuitem" style={S.paperBack} onClick={onBack}>{t("archive.back")}</button>
       </div>
     </div>
   );
@@ -72,7 +73,7 @@ export function DocPaper({ item, page, pages, onPrev, onNext, onClose }) {
             ‹
           </button>
           <button className="s1-btn s1-menuitem" style={S.paperBackDark} onClick={onClose}>
-            Kapat
+            {t("archive.close")}
           </button>
           <button className="s1-btn" style={{ ...S.docArrow, visibility: page < pages.length - 1 ? "visible" : "hidden" }}
             onClick={onNext}>

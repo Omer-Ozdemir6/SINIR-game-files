@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { styles as S } from "../styles/theme";
+import { t } from "../i18n";
 import { AudioSys } from "../audio/AudioSys";
 
 /* ============================================================
@@ -10,7 +11,7 @@ import { AudioSys } from "../audio/AudioSys";
    3) Evcil bir "denetim talebi" yazar
    4) İmleç SİL'e gider → "TASLAK SİLİNSİN Mİ?" → HAYIR
    5) İmleç GÖNDER'e gider → GÖNDERİLDİ — YANIT BEKLENİYOR
-   6) Ekran kararır → "BİRKAÇ GÜN SONRA" → oyun başlar
+   6) Ekran kararır → "{t("intro.later")}" → oyun başlar
    Her an sağ alttan GEÇ ile atlanabilir.
    ============================================================ */
 
@@ -142,7 +143,7 @@ export default function IntroCinematic({ onFinish }) {
       AudioSys.blipSfx(720);
       await sleep(2000);
 
-      // 6) karartma + "BİRKAÇ GÜN SONRA"
+      // 6) karartma + "{t("intro.later")}"
       setBlack({ show: true, opacity: 0, text: false });
       await sleep(60);
       setBlack({ show: true, opacity: 1, text: false });
@@ -205,7 +206,7 @@ export default function IntroCinematic({ onFinish }) {
       {black.show && (
         <div style={{ ...S.introBlack, opacity: black.opacity }}>
           <span style={{ ...S.introBlackText, opacity: black.text ? 1 : 0 }}>
-            BİRKAÇ GÜN SONRA
+            {t("intro.later")}
           </span>
         </div>
       )}

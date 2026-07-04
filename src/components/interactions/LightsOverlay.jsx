@@ -1,11 +1,12 @@
 import { styles as S } from "../../styles/theme";
+import { t } from "../../i18n";
 
 /* Lights-Out devre bulmacası: her buton kendisi + komşularını değiştirir */
 export default function LightsOverlay({ lights, done, onPress, onReset, onCancel }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.keypadPanel} className="s1-panel">
-        <div style={S.keypadTitle}>DEVRE PANELİ — TÜM LAMBALARI YAK</div>
+        <div style={S.keypadTitle}>{t("lights.title")}</div>
         <div style={S.lightsRow}>
           {lights.map((on, i) => (
             <div key={i} style={{
@@ -15,7 +16,7 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
             }} />
           ))}
         </div>
-        <div style={S.lightsHintText}>Her buton kendisiyle birlikte komşularını da değiştirir.</div>
+        <div style={S.lightsHintText}>{t("lights.hint")}</div>
         <div style={S.lightsRow}>
           {lights.map((_, i) => (
             <button key={i} className="s1-btn s1-key" style={S.lightBtn} onClick={() => onPress(i)}>
@@ -23,10 +24,10 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
             </button>
           ))}
         </div>
-        {done && <div style={S.radioLockText}>DEVRE TAMAM — KİLİT AÇILIYOR…</div>}
+        {done && <div style={S.radioLockText}>{t("lights.done")}</div>}
         <div style={{ display: "flex", gap: 14 }}>
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onReset}>Sıfırla</button>
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>Vazgeç</button>
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onReset}>{t("lights.reset")}</button>
+          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("lights.cancel")}</button>
         </div>
       </div>
     </div>

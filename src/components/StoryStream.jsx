@@ -1,5 +1,6 @@
 import { styles as S } from "../styles/theme";
 import { corruptText, obscureText } from "../engine/textFx";
+import { t } from "../i18n";
 
 /* Hikaye akışı: satırlar (akıl bozulması + pil karartması uygulanır),
    karar zamanlayıcısı, seçim butonları ve bölüm sonu ekranı. */
@@ -26,7 +27,7 @@ export default function StoryStream({
 
       {timeLeft && (
         <div style={S.timerWrap}>
-          <div style={S.timerLabel}>KARAR VER</div>
+          <div style={S.timerLabel}>{t("stream.decide")}</div>
           <div style={S.timerTrack}>
             <div style={{ ...S.timerFill, width: (timeLeft.left / timeLeft.total) * 100 + "%" }} />
           </div>
@@ -45,7 +46,7 @@ export default function StoryStream({
                 onClick={(e) => { e.stopPropagation(); if (!locked) onChoice(c); }}>
                 {locked
                   ? (c.lockText || c.text) + " (" + activeCount + "/" + c.requireFlags.length + ")"
-                  : hidden ? "[ ??? ]" : c.text}
+                  : hidden ? t("stream.hidden") : c.text}
               </button>
             );
           })}
@@ -54,12 +55,12 @@ export default function StoryStream({
 
       {ended && (
         <div style={S.endWrap}>
-          <div style={S.endTitle}>HAYATTASIN</div>
+          <div style={S.endTitle}>{t("end.title")}</div>
           <div style={S.endText}>
-            Şimdilik. — Döküman: {endInfo.docs} · Not: {endInfo.notes} · Batarya: %{endInfo.battery} · Yedek pil: {endInfo.spares} · Akıl: %{endInfo.akil}
+            {t("end.stats", { d: endInfo.docs, n: endInfo.notes, b: endInfo.battery, s: endInfo.spares, a: endInfo.akil })}
           </div>
           <button className="s1-btn" style={S.beginBtn} onClick={(e) => { e.stopPropagation(); onRestart(); }}>
-            BAŞTAN OYNA
+            {t("end.again")}
           </button>
         </div>
       )}

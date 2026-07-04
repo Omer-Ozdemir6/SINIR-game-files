@@ -1,4 +1,5 @@
 import { styles as S } from "../styles/theme";
+import { t } from "../i18n";
 
 /* HUD katmanı: pil karartması, görev bandı ve köşe bildirimi (toast) */
 export default function Hud({ dimOpacity, objectiveFlash, toast }) {
@@ -10,7 +11,7 @@ export default function Hud({ dimOpacity, objectiveFlash, toast }) {
 
       {objectiveFlash && (
         <div key={objectiveFlash.key} style={S.objectiveBand} className="s1-objective">
-          <span style={S.objectiveText}>Görev: {objectiveFlash.text}</span>
+          <span style={S.objectiveText}>{t("hud.objective")}{objectiveFlash.text}</span>
         </div>
       )}
 
