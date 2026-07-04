@@ -12,6 +12,8 @@ import { styles as S } from "./styles/theme";
 
 import MainMenu from "./components/MainMenu";
 import WarningScreen from "./components/WarningScreen";
+import IntroCinematic from "./components/IntroCinematic";
+import PuzzleTest from "./components/PuzzleTest";
 import GameHeader from "./components/GameHeader";
 import StoryStream from "./components/StoryStream";
 import Hud from "./components/Hud";
@@ -852,6 +854,13 @@ export default function App() {
   }, [interaction, radioFreq, radioPhase, radioSignal]);
 
   useEffect(() => {
+    // Mobil: uzun basışta tarayıcı bağlam menüsü / kopyalama balonu çıkmasın
+    const prevent = (e) => e.preventDefault();
+    document.addEventListener("contextmenu", prevent);
+    return () => document.removeEventListener("contextmenu", prevent);
+  }, []);
+
+  useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [lines, choicesVisible, timeLeft]);
 
@@ -873,7 +882,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = battery > 0 && battery <= 12;
+  const flickering = battery > 0 && battery <= 12 && !blackout;
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
 
@@ -893,6 +902,7 @@ export default function App() {
           }}
           onSettings={() => { setSettingsFrom("mainmenu"); setScreen("settings"); }}
           onCredits={() => setScreen("credits")}
+          onPuzzleTest={() => setMode("puzzle_test")}
         />
         {screen === "settings" && (
           <SettingsOverlay speedIdx={speedIdx} glitchFx={glitchFx} soundOn={soundOn}
@@ -904,14 +914,35 @@ export default function App() {
     );
   }
 
+  /* ================= BULMACA TEST EKRANI ================= */
+  if (mode === "puzzle_test") {
+    return (
+      <div style={{ position: "fixed", inset: 0, backgroundColor: "#000", zIndex: 100, overflowY: "auto", padding: "20px" }}>
+        <button 
+          className="s1-btn" 
+          style={{ position: "absolute", top: "10px", right: "10px", color: "#ff3333", borderColor: "#ff3333" }}
+          onClick={() => setMode("menu")}
+        >
+          KAPAT ✕
+        </button>
+        <PuzzleTest />
+      </div>
+    );
+  }
+
   /* ================= UYARI EKRANI ================= */
   if (mode === "warning") {
-    return <WarningScreen onContinue={startFresh} />;
+    return <WarningScreen onContinue={() => setMode("intro")} />;
+  }
+
+  /* ================= AÇILIŞ SİNEMATİĞİ ================= */
+  if (mode === "intro") {
+    return <IntroCinematic onFinish={startFresh} />;
   }
 
   /* ================= OYUN ================= */
   return (
-    <div style={S.root} onPointerDown={handleSkipTap}>
+    <div style={S.root} onPointerDown={handleSkipTap} onContextMenu={(e) => e.preventDefault()}>
       <div style={S.gameLayer} className={glitching ? "s1-glitch" : flickering ? "s1-flicker" : ""}>
         <GameHeader
           gurultuPct={gurultuPct} akil={akil} battery={battery} bColor={bColor} spares={spares}

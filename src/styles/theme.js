@@ -30,7 +30,7 @@ export const styles = {
     position: "relative", height: "100%", display: "flex", flexDirection: "column",
     justifyContent: "center", alignItems: "center", gap: 8,
   },
-  menuTitle: { fontFamily: mono, fontSize: 46, letterSpacing: "0.3em", color: "#dceade", fontWeight: 700, textShadow: "0 0 20px rgba(90,180,120,0.3)" },
+  menuTitle: { fontFamily: mono, fontSize: "clamp(28px, 10.5vw, 46px)", letterSpacing: "0.28em", whiteSpace: "nowrap", textAlign: "center", maxWidth: "100%", color: "#dceade", fontWeight: 700, textShadow: "0 0 20px rgba(90,180,120,0.3)" },
   menuSub: { fontFamily: mono, fontSize: 10, letterSpacing: "0.25em", color: "#4d6e58", marginBottom: 30 },
   mmButtons: { display: "flex", flexDirection: "column", gap: 20, alignItems: "center" },
   mmBtn: {
@@ -154,7 +154,7 @@ export const styles = {
   },
 
   endWrap: { textAlign: "center", padding: "30px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 10 },
-  endTitle: { fontFamily: mono, fontSize: 22, letterSpacing: "0.25em", color: "#d7e4e0" },
+  endTitle: { fontFamily: mono, fontSize: "clamp(16px, 5.5vw, 22px)", letterSpacing: "0.25em", color: "#d7e4e0", textAlign: "center" },
   endText: { color: "#5f7573", fontStyle: "italic", fontSize: 14, lineHeight: 1.6 },
 
   overlayDim: {
@@ -494,6 +494,7 @@ export const styles = {
     fontFamily: mono, fontSize: 10, letterSpacing: "0.2em", color: "#3f6b5e",
     backgroundColor: "transparent", border: "none", padding: 10,
   },
+
   /* Karanlık modu — pil %0: oyun sürer, ekran pırpırlı karanlık */
   darknessOverlay: {
     position: "fixed", inset: 0, zIndex: 24, pointerEvents: "none",
@@ -527,7 +528,7 @@ export const styles = {
     display: "flex", flexDirection: "column", justifyContent: "center",
     alignItems: "center", gap: 18, padding: "0 28px", textAlign: "center", zIndex: 30,
   },
-  deathTitle: { fontFamily: mono, fontSize: 20, letterSpacing: "0.3em", color: "#b8503f" },
+  deathTitle: { fontFamily: mono, fontSize: "clamp(15px, 5vw, 20px)", letterSpacing: "0.3em", color: "#b8503f", textAlign: "center", maxWidth: "100%" },
   deathText: { fontFamily: serif, fontStyle: "italic", fontSize: 16, color: "#8a6b64", maxWidth: 380, lineHeight: 1.7 },
   deathBtn: {
     fontFamily: mono, fontSize: 11, letterSpacing: "0.12em", padding: "14px 22px",

@@ -1,27 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { styles as S } from "../styles/theme";
 
-/* Yeni oyun öncesi içerik uyarısı + giriş metni.
-   Yumuşak fade-in ile gelir; Devam Et'e basılınca fade-out olur,
-   ardından açılış sinematiği başlar. */
+/* Yeni oyun öncesi içerik uyarısı — fade-in ile gelir,
+   Devam Et'e basılınca fade-out olup açılış sinematiğine geçer. */
 export default function WarningScreen({ onContinue }) {
-  const [opacity, setOpacity] = useState(0);
   const [leaving, setLeaving] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setOpacity(1), 60);
-    return () => clearTimeout(t);
-  }, []);
-
-  const handleContinue = () => {
+  const go = () => {
     if (leaving) return;
     setLeaving(true);
-    setOpacity(0);
-    setTimeout(onContinue, 1150);
+    setTimeout(onContinue, 850);
   };
-
   return (
-    <div style={{ ...S.warnRoot, opacity, transitionProperty: "opacity", transitionDuration: "1100ms" }}>
+    <div style={S.warnRoot} className={leaving ? "s1-fadeout" : "s1-fadein"}>
       <div style={S.warnBody}>
         <p style={S.warnText}>
           SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. Lütfen keyfini çıkarın.
@@ -34,7 +24,7 @@ export default function WarningScreen({ onContinue }) {
           ya da ölmek.
         </p>
       </div>
-      <button className="s1-btn s1-mm" style={S.warnContinue} onClick={handleContinue}>
+      <button className="s1-btn s1-mm" style={S.warnContinue} onClick={go}>
         Devam Et
       </button>
     </div>

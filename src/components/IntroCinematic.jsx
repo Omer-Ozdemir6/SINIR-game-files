@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { styles as S } from "../styles/theme";
 import { AudioSys } from "../audio/AudioSys";
 

@@ -130,6 +130,11 @@ export const AudioSys = {
       setTimeout(() => { try { this.n.blip.triggerAttackRelease(920, "32n"); } catch (e) {} }, 70);
     } catch (e) {}
   },
+  tick() {
+    // klavye tuşu — çok kısa, kısık tık
+    if (!this.inited || !this.enabled) return;
+    try { this.n.blip.triggerAttackRelease(1320, "64n"); } catch (e) {}
+  },
   objectiveSfx() {
     // yeni görev — iki yumuşak nota
     if (!this.inited || !this.enabled) return;
