@@ -1,20 +1,23 @@
 import { styles as S } from "../styles/theme";
-import { t } from "../i18n";
 
-/* KARANLIK MODU: pil %0 — engelleyici DEĞİL (pointerEvents: none).
-   Ekran çoğunlukla siyah, aralıklı pırpırlarla görüntü gelip gider;
-   oyuncu bu pencerelerde seçim yapıp pil aramaya devam eder.
-   Üstte silik "SON GÜÇ" süresi akar. */
-export default function DarknessOverlay({ left, totalMs }) {
+/* KARANLIK MODU v2 — Outlast'ın pil bitişi gibi:
+   · süre GİZLİ: bar/rakam yok
+   · ekran aralıklı pırpırlar (s1-darkmode)
+   · süre azaldıkça (p→1) kenarlar KIZARIR, oyun katmanı App'te
+     griye döner — oyuncuya "yavaş yavaş ölüyorsun" hissi
+   · kurtuluş: üstteki pil ikonuna dokun (yedek varsa)
+   Engelleyici değildir: pointerEvents none. */
+export default function DarknessOverlay({ p }) {
   return (
     <>
+      {/* aralıklı karartma pırpırı */}
       <div style={S.darknessOverlay} className="s1-darkmode" />
-      <div style={S.darkBarWrap}>
-        <span style={S.darkBarLabel}>{t("hud.lastPower")}</span>
-        <div style={S.darkBarTrack}>
-          <div style={{ ...S.darkBarFill, width: Math.max(0, (left / totalMs) * 100) + "%" }} />
-        </div>
-      </div>
+      {/* kızaran kenarlar — ölüme yaklaştıkça koyulaşır */}
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 25, pointerEvents: "none",
+        boxShadow: `inset 0 0 ${Math.round(30 + p * 170)}px ${Math.round(8 + p * 60)}px rgba(150,18,10,${(p * 0.8).toFixed(2)})`,
+        transitionProperty: "box-shadow", transitionDuration: "600ms",
+      }} />
     </>
   );
 }

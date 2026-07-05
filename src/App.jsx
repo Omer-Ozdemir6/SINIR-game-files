@@ -2,22 +2,27 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 import { AudioSys } from "./audio/AudioSys";
 import { t, getLang, setLang, LANGS } from "./i18n";
-import { STORY, INITIAL_FLAGS, setStoryLang } from "./story";
+import { STORY, INITIAL_FLAGS, setStoryLang, DEMO_START } from "./story";
+import { Haptics } from "./engine/haptics";
 import {
   STAT_MAX, BATTERY_START, SPARES_START, INITIAL_STATS,
-  LIGHTS_INIT, SPEED_OPTIONS, DARK_MS,
+  LIGHTS_INIT, SPEED_OPTIONS, DARK_MS, IS_RELEASE,
 } from "./engine/constants";
 import { batteryColorOf, paginateDoc } from "./engine/textFx";
 import { saveGame, loadGame, clearGame } from "./save/storage";
 import { styles as S } from "./styles/theme";
 
 import MainMenu from "./components/MainMenu";
+import StudioIntro from "./components/StudioIntro";
+import DisclaimerScreen from "./components/DisclaimerScreen";
 import WarningScreen from "./components/WarningScreen";
 import IntroCinematic from "./components/IntroCinematic";
+import LoadingScreen from "./components/LoadingScreen";
 import GameHeader from "./components/GameHeader";
 import StoryStream from "./components/StoryStream";
 import Hud from "./components/Hud";
-import { PauseMenu, SettingsOverlay, CreditsOverlay, DeathOverlay } from "./components/MenuOverlays";
+import { PauseMenu, SettingsOverlay, DeathOverlay } from "./components/MenuOverlays";
+import Credits from "./components/Credits";
 import { ArchiveMenu, ArchiveList, NotePaper, DocPaper } from "./components/ArchiveOverlays";
 import PanelOverlay from "./components/interactions/PanelOverlay";
 import KeypadOverlay from "./components/interactions/KeypadOverlay";
@@ -36,7 +41,7 @@ import DarknessOverlay from "./components/DarknessOverlay";
    ============================================================ */
 
 export default function App() {
-  const [mode, setMode] = useState("menu"); // menu | warning | intro | game | puzzletest
+  const [mode, setMode] = useState("boot"); // boot | disclaimer | bootload | menu | warning | loading | intro | game | puzzletest
   const [lang, setLangState] = useState(getLang());
   const [gameExists, setGameExists] = useState(() => !!loadGame());
   const [confirmNew, setConfirmNew] = useState(false);
@@ -57,6 +62,7 @@ export default function App() {
   const [currentNodeId, setCurrentNodeId] = useState(null);
   const [death, setDeath] = useState(null);
   const [ended, setEnded] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [typing, setTyping] = useState(false);
   const [screen, setScreen] = useState(null);
@@ -69,6 +75,13 @@ export default function App() {
   const [speedIdx, setSpeedIdx] = useState(1);
   const [glitchFx, setGlitchFx] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
+  const [hapticsOn, setHapticsOn] = useState(true);
+  useEffect(() => {
+    try {
+      const h = localStorage.getItem("sinir1_haptics");
+      if (h !== null) { const on = h === "1"; setHapticsOn(on); Haptics.setEnabled(on); }
+    } catch (e) {}
+  }, []);
   // keypad
   const [kpEntry, setKpEntry] = useState("");
   const [kpMsg, setKpMsg] = useState(null);
@@ -205,8 +218,17 @@ export default function App() {
   };
   const flagOk = (cond) => {
     if (!cond) return true;
-    const want = cond.equals !== undefined ? cond.equals : true;
-    return !!flagsRef.current[cond.flag] === want;
+    const cur = flagsRef.current[cond.flag];
+    let ok;
+    if (cond.equals !== undefined) {
+      // boolean flag: !!cur === bool ; string/sayı flag: cur === değer
+      ok = typeof cond.equals === "boolean"
+        ? (!!cur === cond.equals)
+        : (cur === cond.equals || ((cur ?? "") === cond.equals));
+    } else {
+      ok = !!cur;
+    }
+    return cond.negate ? !ok : ok;
   };
   const statOk = (cond) => {
     if (!cond) return true;
@@ -232,6 +254,7 @@ export default function App() {
 
   const glitchBurst = (ms) => {
     AudioSys.burst(ms);
+    Haptics.glitch();
     if (!glitchFxRef.current) return;
     setGlitching(true);
     later(() => setGlitching(false), ms);
@@ -239,6 +262,7 @@ export default function App() {
 
   const runGlitch = async (ms) => {
     AudioSys.burst(Math.min(ms, 400));
+    Haptics.glitch();
     if (!glitchFxRef.current) return hardWait(Math.min(ms, 300));
     setGlitching(true);
     await hardWait(ms);
@@ -311,17 +335,9 @@ export default function App() {
       }
       case "battery": {
         if (ev.spares) {
-          if (darkRef.current) {
-            // karanlıkta bulunan pil beklemez — titreyen ellerle yuvaya çakılır
-            setBatteryBoth(100);
-            AudioSys.pickup();
-            showToast("⚡", t("eng.darkInstall"), "#7fae86");
-            await typeLine("system", t("eng.darkInstallLine"), runId, 12);
-          } else {
-            setSparesBoth(sparesRef.current + ev.spares);
-            AudioSys.pickup();
-            showToast("▲", t("eng.spareGain", { n: ev.spares }), "#7fae86");
-          }
+          setSparesBoth(sparesRef.current + ev.spares);
+          AudioSys.pickup();
+          showToast("▲", t("eng.spareGain", { n: ev.spares }), "#7fae86");
         }
         if (ev.delta) setBatteryBoth(Math.max(0, Math.min(100, batteryRef.current + ev.delta)));
         return wait(600, runId);
@@ -414,6 +430,7 @@ export default function App() {
       const left = Math.max(0, batteryRef.current - node.cost);
       setBatteryBoth(left);
       if (left === 0) {
+        Haptics.low();
         startDarkness(); // oyun durmaz — karanlıkta oynamaya devam
       } else if (left <= 20) {
         await typeLine("alert", t("eng.batteryCritical", { n: left }), runId, 14);
@@ -451,8 +468,8 @@ export default function App() {
       else if (isMeta) prevMeta = true;
     }
     if (runIdRef.current !== runId) return;
-    if (node.death) { die({ text: node.deathText }); return; }
-    if (node.ending) { setEnded(true); return; }
+    if (node.death) { Haptics.death(); die({ text: node.deathText }); return; }
+    if (node.ending) { setEnded(true); clearGame(); setGameExists(false); return; }
     if (node.interaction) {
       const k = node.interaction.kind;
       if (k === "keypad") { setKpEntry(""); setKpMsg(null); setKpFails(0); }
@@ -833,7 +850,7 @@ export default function App() {
     restoreFrom(cp);
   };
 
-  const startFresh = () => {
+  const startFresh = (startNode) => {
     clearPending();
     clearTimer();
     clearIntervals();
@@ -866,7 +883,7 @@ export default function App() {
     setGameExists(true);
     setMode("game");
     AudioSys.init().then(() => AudioSys.ambient(true));
-    playNode(STORY.start);
+    playNode(typeof startNode === "string" ? startNode : STORY.start);
   };
 
   const resumeGame = () => {
@@ -896,6 +913,12 @@ export default function App() {
     glitchFxRef.current = on;
     if (!on) setGlitching(false);
   };
+  const applyHaptics = (on) => {
+    setHapticsOn(on);
+    Haptics.setEnabled(on);
+    try { localStorage.setItem("sinir1_haptics", on ? "1" : "0"); } catch (e) {}
+    if (on) Haptics.tap();
+  };
   const applySound = (on) => {
     setSoundOn(on);
     AudioSys.setEnabled(on);
@@ -919,7 +942,8 @@ export default function App() {
     if (battery > 0 && battery <= 8) AudioSys.heart(620);
     else if (battery > 0 && battery <= 15) AudioSys.heart(880);
     else AudioSys.heart(null);
-  }, [battery, mode, death, dark, interaction]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [battery, mode, death, !!dark, interaction]);
 
   useEffect(() => {
     // radyo statiği
@@ -965,6 +989,8 @@ export default function App() {
   const flickering = battery > 0 && battery <= 12 && !blackout;
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
+  // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ
+  const darkP = dark ? Math.min(1, Math.max(0, 1 - dark.left / DARK_MS)) : 0;
 
   /* ================= ANA MENÜ ================= */
   if (mode === "menu") {
@@ -973,7 +999,7 @@ export default function App() {
         <MainMenu
           gameExists={gameExists}
           confirmNew={confirmNew}
-          onResume={resumeGame}
+          onResume={() => setMode("resumeload")}
           onNewGame={() => {
             if (gameExists && !confirmNew) { setConfirmNew(true); return; }
             setConfirmNew(false);
@@ -982,38 +1008,72 @@ export default function App() {
           }}
           onSettings={() => { setSettingsFrom("mainmenu"); setScreen("settings"); }}
           onCredits={() => setScreen("credits")}
-          onPuzzleTest={() => setMode("puzzletest")}
+          onPuzzleTest={IS_RELEASE ? null : () => setMode("puzzletest")}
         />
         {screen === "settings" && (
           <SettingsOverlay speedIdx={speedIdx} glitchFx={glitchFx} soundOn={soundOn}
             lang={lang} onLang={applyLang}
             onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
+            hapticsOn={hapticsOn} onHaptics={applyHaptics}
             onBack={() => setScreen(null)} />
         )}
-        {screen === "credits" && <CreditsOverlay onClose={() => setScreen(null)} />}
+        {screen === "credits" && <Credits onClose={() => setScreen(null)} />}
       </>
     );
   }
 
   /* ================= BULMACA TESTİ (geçici) ================= */
   if (mode === "puzzletest") {
-    return <PuzzleTest onBack={() => setMode("menu")} />;
+    return <PuzzleTest onBack={() => setMode("menu")} onDemo={() => startFresh(DEMO_START)} />;
+  }
+
+  /* ================= AÇILIŞ: YAPIMCI LOGOSU ================= */
+  if (mode === "boot") {
+    return <StudioIntro onDone={() => setMode("disclaimer")} />;
+  }
+
+  /* ================= AÇILIŞ: KURGU UYARISI ================= */
+  if (mode === "disclaimer") {
+    return <DisclaimerScreen onDone={() => setMode("bootload")} />;
+  }
+
+  /* ================= AÇILIŞ: YÜKLEME → MENÜ ================= */
+  if (mode === "bootload") {
+    return <LoadingScreen onDone={() => setMode("menu")} />;
+  }
+
+  /* ================= DEVAM: YÜKLEME → OYUN ================= */
+  if (mode === "resumeload") {
+    return <LoadingScreen onDone={() => resumeGame()} />;
   }
 
   /* ================= UYARI EKRANI ================= */
   if (mode === "warning") {
-    return <WarningScreen onContinue={() => setMode("intro")} />;
+    return <WarningScreen onContinue={() => setMode("loading")} />;
+  }
+
+  /* ================= YÜKLEME ================= */
+  if (mode === "loading") {
+    return <LoadingScreen onDone={() => setMode("intro")} />;
   }
 
   /* ================= AÇILIŞ SİNEMATİĞİ ================= */
   if (mode === "intro") {
-    return <IntroCinematic onFinish={startFresh} />;
+    return <IntroCinematic onFinish={() => startFresh()} />;
   }
 
   /* ================= OYUN ================= */
   return (
     <div style={S.root} onPointerDown={handleSkipTap} onContextMenu={(e) => e.preventDefault()}>
-      <div style={S.gameLayer} className={glitching ? "s1-glitch" : flickering ? "s1-flicker" : ""}>
+      <div
+        style={{
+          ...S.gameLayer,
+          ...(dark ? {
+            filter: `grayscale(${Math.round(darkP * 90)}%) brightness(${(1 - darkP * 0.22).toFixed(2)})`,
+            transitionProperty: "filter", transitionDuration: "500ms",
+          } : {}),
+        }}
+        className={glitching ? "s1-glitch" : flickering ? "s1-flicker" : ""}>
         <GameHeader
           gurultuPct={gurultuPct} akil={akil} battery={battery} bColor={bColor} spares={spares}
           onGear={() => setScreen("pause")}
@@ -1027,11 +1087,18 @@ export default function App() {
           flags={flags} onChoice={handleChoice}
           ended={ended} tapWait={tapWait}
           endInfo={{ docs: docs.length, notes: notes.length, battery, spares, akil }}
-          onRestart={startFresh}
+          onRestart={() => { setShowCredits(false); startFresh(); }}
+          onMainMenu={() => setShowCredits(true)}
         />
       </div>
 
       <Hud dimOpacity={dimOpacity} objectiveFlash={objectiveFlash} toast={toast} />
+
+      {showCredits && (
+        <Credits onClose={() => {
+          setShowCredits(false); clearGame(); setGameExists(false); setEnded(false); setMode("menu");
+        }} />
+      )}
 
       {/* Etkileşimler */}
       {interaction?.kind === "panel" && (
@@ -1076,7 +1143,7 @@ export default function App() {
           onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "rings" && (
-        <RingsOverlay key={currentNodeId} config={interaction}
+        <RingsOverlay key={currentNodeId} config={interaction} flags={flags}
           onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "tiles" && (
@@ -1129,11 +1196,12 @@ export default function App() {
         <SettingsOverlay speedIdx={speedIdx} glitchFx={glitchFx} soundOn={soundOn}
           lang={lang} onLang={applyLang}
           onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
+            hapticsOn={hapticsOn} onHaptics={applyHaptics}
           onBack={() => setScreen(settingsFrom === "pause" ? "pause" : null)} />
       )}
 
       {/* Karanlık modu — pil %0 */}
-      {dark && <DarknessOverlay left={dark.left} totalMs={DARK_MS} />}
+      {dark && <DarknessOverlay p={darkP} />}
 
       {/* Ölüm */}
       {dying && <div style={S.dyingVignette} className="s1-dying" />}

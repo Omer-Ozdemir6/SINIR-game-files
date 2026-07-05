@@ -31,6 +31,9 @@ export const MUSIC_FILES = {
   // ile başlar, { type: "music" } (track'siz) ile susar.
   k6: "",         // makine dairesi ambiyansı
   k5: "",         // yaşam destek / Deniz'in katı
+  k2: "",         // buluntu / kazı — final
+  k3: "",         // bahçe / Dr. Nevin'in katı
+  k4: "",         // ev / Şef Harun'un katı
   chase: "",      // kovalamaca
   hide: "",       // saklanma gerilimi
   safe: "",       // checkpoint/güvenli an nefesi

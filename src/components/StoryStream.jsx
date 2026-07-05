@@ -7,7 +7,7 @@ import { t } from "../i18n";
 export default function StoryStream({
   scrollRef, lines, typing, akil, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
-  ended, endInfo, onRestart, tapWait,
+  ended, endInfo, onRestart, onMainMenu, tapWait,
 }) {
   return (
     <div ref={scrollRef} style={S.stream}>
@@ -55,13 +55,15 @@ export default function StoryStream({
 
       {ended && (
         <div style={S.endWrap}>
-          <div style={S.endTitle}>{t("end.title")}</div>
-          <div style={S.endText}>
-            {t("end.stats", { d: endInfo.docs, n: endInfo.notes, b: endInfo.battery, s: endInfo.spares, a: endInfo.akil })}
-          </div>
           <button className="s1-btn" style={S.beginBtn} onClick={(e) => { e.stopPropagation(); onRestart(); }}>
             {t("end.again")}
           </button>
+          {onMainMenu && (
+            <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 12 }}
+              onClick={(e) => { e.stopPropagation(); onMainMenu(); }}>
+              {t("end.menu")}
+            </button>
+          )}
         </div>
       )}
       {tapWait && (

@@ -6,9 +6,9 @@
 import { DOC_LINES_PER_PAGE } from "./constants";
 
 export const batteryColorOf = (lvl) => {
-  if (lvl <= 20) return "#c23b2e";
-  const t = Math.min(1, (lvl - 20) / 80);
-  return "hsl(" + Math.round(10 + t * 100) + ", 42%, 46%)";
+  if (lvl <= 20) return "#c23b2e";   // kritik: kırmızı
+  if (lvl <= 50) return "#d8857a";   // yarının altı: açık kırmızı
+  return "#e8e6dc";                  // dolu: beyaz
 };
 
 // %15 altında bazı kelimeleri karart

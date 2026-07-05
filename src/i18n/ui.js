@@ -16,11 +16,13 @@ export const UI = {
       puzzleTest: "· bulmaca testi ·",
     },
     warn: {
-      p1: "SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. Lütfen keyfini çıkarın.",
+      p1: "SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. En iyi deneyim için karanlık bir ortamda ve kulaklıkla oynayın.",
       p2: "SINIR-1 su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde yalnızca çatlak ekranlı bakım tabletin var: ışığın, kaydın ve tek dostun. Hayatta kalabildiğin kadar kal. Her şeyi belgele. Savaşçı değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
       cont: "Devam Et",
     },
-    intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra.", pressSend: "MESAJI GÖNDERMEK İÇİN GÖNDER'E BAS" },
+    intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra.", pressSend: "MESAJI GÖNDERMEK İÇİN 'MESAJI GÖNDER'E BAS" },
+    sys: { loading: "YÜKLENİYOR" },
+    disclaimer: { body: "Bu oyun tamamen kurgudur. Anlatılan olaylar, geçen kişiler ve kurumlar hayal ürünüdür. Gerçek kişi, kurum veya olaylarla benzerlik göstermesi tamamen tesadüftür." },
     hud: {
       noise: "GÜRÜLTÜ", mind: "AKIL", archive: "ARŞİV",
       objective: "Görev: ",
@@ -33,12 +35,13 @@ export const UI = {
     },
     settings: {
       title: "AYARLAR", speed: "YAZI HIZI", glitch: "GLITCH EFEKTLERİ",
-      sound: "SES", lang: "DİL", on: "AÇIK", off: "KAPALI", back: "Geri",
+      sound: "SES", haptics: "TİTREŞİM", lang: "DİL", on: "AÇIK", off: "KAPALI", back: "Geri",
       speedSlow: "YAVAŞ", speedNormal: "NORMAL", speedFast: "HIZLI",
-      langNote: "Hikaye metinleri seçilen dilde mevcutsa kullanılır.",
+      langNote: "Arayüz dili değişir. Hikâye şu an yalnızca Türkçe.",
     },
     credits: {
-      body: "Metin tabanlı korku prototipi.\nKaradeniz'in dibinde, ölümün çalışmadığı yerde.\n\nTasarım & Hikaye: Sahip",
+      tagline: "Karadeniz'in dibinde, ölümün çalışmadığı yerde.",
+      roll: "TASARIM & YÖNETİM\nSahip\n\n\nHİKAYE & SENARYO\nSahip\n\n\nOYUN TASARIMI\nSahip\n\n\nPROGRAMLAMA\nSahip\n\n\nSES & ATMOSFER\nSahip\n\n\n\nİLHAM\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nÖZEL TEŞEKKÜR\nBaturay Soylu'ya —\nmesajı gönderdiği için.\n\n\n\n\nSINIR-1'de kimse\ngerçekten ölmez.\n\nSadece Aile'ye katılır.\n\n\n\n\n— SON —\n\n\nsürüm 1.0",
       close: "Kapat",
     },
     archive: {
@@ -51,7 +54,7 @@ export const UI = {
       respawn: "SON KONTROL NOKTASINDAN DEVAM ET",
     },
     end: {
-      title: "HAYATTASIN", again: "BAŞTAN OYNA",
+      title: "HAYATTASIN", again: "BAŞTAN OYNA", menu: "BİTİR ▸ CREDITS",
       stats: "Şimdilik. — Döküman: {d} · Not: {n} · Batarya: %{b} · Yedek pil: {s} · Akıl: %{a}",
     },
     stream: { decide: "KARAR VER", hidden: "[ ??? ]", tap: "devam etmek için dokun" },
@@ -135,6 +138,8 @@ export const UI = {
       ringsTitle: "VİTRAY KİLİDİ — HALKALARI HİZALA",
       ringsHint: "Cam katmanlarını çevir. Altın figürün parçaları ancak doğru açılarda BİRLEŞİR — resme bak, işarete değil.",
       ringsDone: "CAM BÜTÜNLEŞTİ — DESEN TAMAM",
+      ringsMissing: "HALKALAR HİZADA — AMA CAM EKSİK: {n} PARÇA DIŞARIDA",
+      ringsPlaced: "eksik parça yerleştirildi",
       tilesTitle: "KARO KAPISI — DESENİ TAMAMLA",
       tilesHint: "İki karoya dokunarak yerlerini değiştir. Desen bütünleşsin.",
       tilesSwap: "Şimdi ikinci karoyu seç.",
@@ -163,7 +168,9 @@ export const UI = {
       p2: "You are the night-shift maintenance technician of the SINIR-1 undersea research facility. Contact with the surface was lost three hours ago, and something is terribly wrong down here. All you carry is a cracked maintenance tablet: your light, your log, your only friend. Survive as long as you can. Document everything. You are not a fighter; at this depth the only ways to stay alive are to run, to hide, or to die.",
       cont: "Continue",
     },
-    intro: { skip: "SKIP ▸▸", later: "A few days later.", pressSend: "PRESS SEND TO DELIVER THE MESSAGE" },
+    intro: { skip: "SKIP ▸▸", later: "A few days later.", pressSend: "PRESS 'SEND MESSAGE' TO DELIVER IT" },
+    sys: { loading: "LOADING" },
+    disclaimer: { body: "This game is a work of fiction. All events, characters, and organizations depicted are products of imagination. Any resemblance to real persons, entities, or events is purely coincidental." },
     hud: {
       noise: "NOISE", mind: "MIND", archive: "ARCHIVE",
       objective: "Objective: ",
@@ -176,12 +183,13 @@ export const UI = {
     },
     settings: {
       title: "SETTINGS", speed: "TEXT SPEED", glitch: "GLITCH EFFECTS",
-      sound: "SOUND", lang: "LANGUAGE", on: "ON", off: "OFF", back: "Back",
+      sound: "SOUND", haptics: "VIBRATION", lang: "LANGUAGE", on: "ON", off: "OFF", back: "Back",
       speedSlow: "SLOW", speedNormal: "NORMAL", speedFast: "FAST",
-      langNote: "Story text uses the selected language when available.",
+      langNote: "Changes interface language. Story is currently Turkish only.",
     },
     credits: {
-      body: "A text-based horror prototype.\nAt the bottom of the Black Sea, where death doesn't work.\n\nDesign & Story: Sahip",
+      tagline: "At the bottom of the Black Sea, where death doesn't work.",
+      roll: "DESIGN & DIRECTION\nSahip\n\n\nSTORY & SCRIPT\nSahip\n\n\nGAME DESIGN\nSahip\n\n\nPROGRAMMING\nSahip\n\n\nSOUND & ATMOSPHERE\nSahip\n\n\n\nINSPIRED BY\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nSPECIAL THANKS\nTo Baturay Soylu —\nfor sending the message.\n\n\n\n\nNobody truly dies\nin SINIR-1.\n\nThey just join the Family.\n\n\n\n\n— THE END —\n\n\nversion 1.0",
       close: "Close",
     },
     archive: {
@@ -194,7 +202,7 @@ export const UI = {
       respawn: "CONTINUE FROM LAST CHECKPOINT",
     },
     end: {
-      title: "YOU ARE ALIVE", again: "PLAY AGAIN",
+      title: "YOU ARE ALIVE", again: "PLAY AGAIN", menu: "FINISH ▸ CREDITS",
       stats: "For now. — Documents: {d} · Notes: {n} · Battery: {b}% · Spares: {s} · Mind: {a}%",
     },
     stream: { decide: "DECIDE", hidden: "[ ??? ]", tap: "tap to continue" },
@@ -278,6 +286,8 @@ export const UI = {
       ringsTitle: "STAINED GLASS LOCK — ALIGN THE RINGS",
       ringsHint: "Turn the glass layers. The pieces of the golden figure only JOIN at the right angles — read the picture, not a mark.",
       ringsDone: "THE GLASS IS WHOLE — PATTERN COMPLETE",
+      ringsMissing: "RINGS ALIGNED — BUT GLASS IS MISSING: {n} PIECE(S) OUT THERE",
+      ringsPlaced: "missing piece set in place",
       tilesTitle: "TILE DOOR — COMPLETE THE PATTERN",
       tilesHint: "Tap two tiles to swap them. Make the pattern whole.",
       tilesSwap: "Now pick the second tile.",

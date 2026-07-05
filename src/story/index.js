@@ -10,14 +10,18 @@
 
 import { EP01, EP01_FLAGS } from "./tr/ep01.js";
 import { EP02, EP02_FLAGS } from "./tr/ep02.js";
+import { EP03, EP03_FLAGS } from "./tr/ep03.js";
+import { EP04, EP04_FLAGS } from "./tr/ep04.js";
+import { EP05, EP05_FLAGS } from "./tr/ep05.js";
+import { EPX, EPX_FLAGS } from "./tr/epx-ornek.js";
 // import { EP01 as EN_EP01 } from "./en/ep01.js";  // çeviri hazır olunca
 
 const buildTR = () => ({
   story: {
     start: EP01.start,
-    nodes: { ...EP01.nodes, ...EP02.nodes },
+    nodes: { ...EP01.nodes, ...EP02.nodes, ...EP03.nodes, ...EP04.nodes, ...EP05.nodes, ...EPX.nodes },
   },
-  flags: { ...EP01_FLAGS, ...EP02_FLAGS },
+  flags: { ...EP01_FLAGS, ...EP02_FLAGS, ...EP03_FLAGS, ...EP04_FLAGS, ...EP05_FLAGS, ...EPX_FLAGS },
 });
 
 const STORIES = {
@@ -37,3 +41,6 @@ export function setStoryLang(lang) {
   STORY = b.story;
   INITIAL_FLAGS = b.flags;
 }
+
+// Örnek/şablon bölümün başlangıç node'u (menüden test için)
+export const DEMO_START = "nx_giris";

@@ -21,7 +21,7 @@ export function PauseMenu({ onResume, onRespawn, onSettings, onMainMenu, onClose
 }
 
 /* Ayarlar: yazı hızı / glitch / ses / DİL */
-export function SettingsOverlay({ speedIdx, glitchFx, soundOn, lang, onSpeed, onGlitch, onSound, onLang, onBack }) {
+export function SettingsOverlay({ speedIdx, glitchFx, soundOn, hapticsOn, lang, onSpeed, onGlitch, onSound, onHaptics, onLang, onBack }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.menuPanel} className="s1-panel">
@@ -52,6 +52,15 @@ export function SettingsOverlay({ speedIdx, glitchFx, soundOn, lang, onSpeed, on
             <button className="s1-btn" style={!soundOn ? S.segActive : S.segBtn} onClick={() => onSound(false)}>{t("settings.off")}</button>
           </div>
         </div>
+        {onHaptics && (
+          <div style={S.settingsBlock}>
+            <div style={S.settingsLabel}>{t("settings.haptics")}</div>
+            <div style={S.segRow}>
+              <button className="s1-btn" style={hapticsOn ? S.segActive : S.segBtn} onClick={() => onHaptics(true)}>{t("settings.on")}</button>
+              <button className="s1-btn" style={!hapticsOn ? S.segActive : S.segBtn} onClick={() => onHaptics(false)}>{t("settings.off")}</button>
+            </div>
+          </div>
+        )}
         {onLang && (
           <div style={S.settingsBlock}>
             <div style={S.settingsLabel}>{t("settings.lang")}</div>
@@ -76,17 +85,6 @@ export function SettingsOverlay({ speedIdx, glitchFx, soundOn, lang, onSpeed, on
 }
 
 /* Hakkında */
-export function CreditsOverlay({ onClose }) {
-  return (
-    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.menuPanel} className="s1-panel">
-        <div style={S.listTitle}>SINIR-1</div>
-        <div style={S.creditsText}>{t("credits.body")}</div>
-        <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onClose}>{t("credits.close")}</button>
-      </div>
-    </div>
-  );
-}
 
 /* Ölüm ekranı */
 export function DeathOverlay({ death, onRespawn }) {

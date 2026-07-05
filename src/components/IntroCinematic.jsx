@@ -21,7 +21,84 @@ const PREFILLED =
 
 // Gözümüzün önünde yazılan SON kısım:
 const TYPED_END =
-" cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— B.S.";
+" cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— Baturay Soylu, gece vardiya amiri";
+
+/* ---- WHISTLEBLOWER GÖRÜNÜMÜ: açık gri pencere, beyaz sayfa,
+   mavi el yazısı — Outlast'ın SECURE MAIL ekranı ---- */
+const hand = "'Segoe Print', 'Comic Sans MS', 'Bradley Hand', cursive";
+const ui = "Tahoma, 'Segoe UI', Arial, sans-serif";
+const W = {
+  backdrop: {
+    position: "fixed", inset: 0, zIndex: 5,
+    display: "flex", alignItems: "center", justifyContent: "center",
+    padding: "14px 10px",
+    backgroundColor: "#1a1410",
+    backgroundImage: "url(/desktop-bg.jpg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  },
+  win: {
+    position: "relative", width: "100%", maxWidth: 620,
+    backgroundColor: "#c9c6bd", border: "1px solid #6a675e",
+    boxShadow: "0 18px 70px rgba(0,0,0,0.85), inset 0 1px 0 #eceade",
+    borderRadius: 4, overflow: "hidden",
+    fontFamily: ui,
+  },
+  titleBar: {
+    display: "flex", justifyContent: "space-between", alignItems: "center",
+    padding: "4px 8px", fontSize: 10, color: "#f2f0e8",
+    background: "linear-gradient(#8a94a0, #6a7480)",
+  },
+  winBtns: { display: "flex", gap: 4, fontSize: 9, color: "#dcdcd4" },
+  winBtn: { width: 16, height: 13, textAlign: "center", lineHeight: "12px", backgroundColor: "#b8b4a8", color: "#3a3a34", border: "1px solid #7a776c", borderRadius: 2 },
+  menuRow: { display: "flex", gap: 12, padding: "3px 8px", fontSize: 9.5, color: "#4a473e", borderBottom: "1px solid #a8a498", backgroundColor: "#d4d1c6" },
+  urlRow: { display: "flex", alignItems: "center", gap: 6, padding: "4px 8px", borderBottom: "1px solid #a8a498", backgroundColor: "#cfccc1" },
+  urlBox: {
+    flex: 1, fontSize: 9.5, color: "#3a4a3e", backgroundColor: "#f2f0e6",
+    border: "1px solid #8a8778", borderRadius: 2, padding: "3px 7px",
+    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+  },
+  bandRow: {
+    display: "flex", alignItems: "center", gap: 7, padding: "6px 10px",
+    background: "linear-gradient(#4a5560, #3a444e)", color: "#e8ecdf",
+    fontSize: 11, letterSpacing: "0.18em", fontWeight: 700,
+  },
+  toolRow: { display: "flex", gap: 14, padding: "5px 10px", fontSize: 9.5, color: "#4a473e", borderBottom: "1px solid #a8a498", backgroundColor: "#d4d1c6" },
+  bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#c9c6bd" },
+  attach: {
+    width: 86, flexShrink: 0, borderRight: "1px solid #a8a498",
+    backgroundColor: "#d0cdc2", padding: "6px 6px", fontSize: 9, color: "#5a574c",
+  },
+  attachTitle: { borderBottom: "1px solid #a8a498", paddingBottom: 3, marginBottom: 6, fontSize: 9 },
+  rightCol: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column" },
+  field: { display: "flex", gap: 6, alignItems: "baseline", padding: "3px 10px", fontSize: 10.5, color: "#3a3a32" },
+  fieldLabel: { width: 46, flexShrink: 0, color: "#6a675c", fontSize: 9.5 },
+  fieldVal: { flex: 1, borderBottom: "1px solid #b4b1a4", paddingBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  page: {
+    margin: "8px 10px 0", backgroundColor: "#f6f4ec",
+    border: "1px solid #a8a498", minHeight: 240, maxHeight: "42vh", overflowY: "auto",
+    padding: "14px 16px",
+  },
+  ink: { fontFamily: hand, fontSize: 15, lineHeight: 1.85, color: "#2b3fae", whiteSpace: "pre-wrap", wordBreak: "break-word" },
+  status: { padding: "5px 12px 0", fontSize: 9.5, minHeight: 16, textAlign: "right", color: "#5a6a4e", fontFamily: ui, letterSpacing: "0.06em" },
+  btnRow: { display: "flex", gap: 8, padding: "8px 10px 10px" },
+  btn: {
+    fontFamily: ui, fontSize: 10.5, color: "#2e2c26", cursor: "default",
+    padding: "5px 14px", backgroundColor: "#dcd9ce",
+    border: "1px solid #8a8778", borderRadius: 2,
+    boxShadow: "inset 0 1px 0 #f4f2e8, 0 1px 0 #9a978a",
+  },
+  btnDown: { boxShadow: "inset 0 1px 3px rgba(0,0,0,0.35)", transform: "translateY(1px)", backgroundColor: "#cfccc0" },
+  dialog: {
+    position: "absolute", top: "36%", left: "50%", transform: "translate(-50%,-50%)",
+    backgroundColor: "#d4d1c6", border: "1px solid #7a776c",
+    boxShadow: "0 10px 40px rgba(0,0,0,0.6)", borderRadius: 3,
+    padding: 0, zIndex: 3, minWidth: 240,
+  },
+  dialogTitle: { padding: "4px 8px", fontSize: 10, color: "#f2f0e8", background: "linear-gradient(#8a94a0, #6a7480)" },
+  dialogBody: { padding: "16px 16px 12px", fontSize: 11, color: "#3a3a32", textAlign: "center" },
+  dialogRow: { display: "flex", justifyContent: "center", gap: 10, padding: "0 12px 12px" },
+};
 
 export default function IntroCinematic({ onFinish }) {
   const [body, setBody] = useState(PREFILLED);
@@ -159,54 +236,86 @@ export default function IntroCinematic({ onFinish }) {
   }
 
   return (
-    <div ref={rootRef} style={S.introRoot} className={phase === "sent" && status === "GÖNDERİLDİ ✓" ? "s1-fadeout" : "s1-fadein"}>
-      <div style={S.mailWindow}>
-        <div style={S.mailTitle}>
-          <span>SINIR-1 · GÜVENLİ POSTA UÇBİRİMİ</span>
-          <span>ŞİFRELİ HAT</span>
+    <div ref={rootRef} style={W.backdrop} className={phase === "sent" && status === "GÖNDERİLDİ ✓" ? "s1-fadeout" : "s1-fadein"}>
+      <div style={W.win}>
+        {/* pencere başlığı */}
+        <div style={W.titleBar}>
+          <span>GÜVENLİ POSTA — Ağ Tarayıcısı</span>
+          <span style={W.winBtns}>
+            <span style={W.winBtn}>_</span>
+            <span style={W.winBtn}>□</span>
+            <span style={W.winBtn}>✕</span>
+          </span>
         </div>
-        <div style={S.mailField}>
-          <span style={S.mailFieldLabel}>KİME:</span>
-          <span>t.ergin — derin deniz muhabiri (yüzey)</span>
+        <div style={W.menuRow}>
+          <span>Dosya</span><span>Düzen</span><span>Görünüm</span><span>Geçmiş</span><span>Araçlar</span><span>Yardım</span>
         </div>
-        <div style={S.mailField}>
-          <span style={S.mailFieldLabel}>KONU:</span>
-          <span>İHBAR / SINIR-1 Araştırma İstasyonu</span>
+        <div style={W.urlRow}>
+          <span style={{ fontSize: 10 }}>◀ ▶</span>
+          <div style={W.urlBox}>🔒 https://www.gposta.tr/?gorev=posta&_id=19319410214&_eylem=yaz</div>
+          <span style={{ fontSize: 10 }}>⟳</span>
         </div>
-        <div style={S.mailBody}>
-          {body}
-          <span className="s1-cursor" style={S.mailCursor}>▌</span>
+        <div style={W.bandRow}>
+          <span>🔒</span> GÜVENLİ POSTA
         </div>
-        <div style={{
-          ...S.mailStatus,
-          ...(phase === "waitSend" ? { color: "#d8c27a", textShadow: "0 0 10px rgba(215,190,110,0.4)" } : {}),
-        }} className={phase === "waitSend" ? "s1-critical" : ""}>
-          {status}
+        <div style={W.toolRow}>
+          <span>✉ Gönder</span><span>✓ Yazım</span><span>📎 Ekle</span><span>🔒 Güvenlik</span><span>💾 Kaydet</span>
         </div>
-        <div style={S.mailButtons}>
-          <div ref={silRef}
-            style={{ ...S.mailBtn, borderColor: "#4a2620", color: "#c0776a", ...(pressed === "sil" ? S.mailBtnActive : {}) }}>
-            SİL
+
+        <div style={W.bodyWrap}>
+          <div style={W.attach}>
+            <div style={W.attachTitle}>Ekler</div>
           </div>
-          <div ref={gonderRef}
-            onClick={playerSend}
-            style={{
-              ...S.mailBtn,
-              ...(pressed === "gonder" ? S.mailBtnActive : {}),
-              ...(phase === "waitSend"
-                ? { cursor: "pointer", borderColor: "#7fae86", color: "#aee0c0", boxShadow: "0 0 14px rgba(120,200,150,0.25)" }
-                : {}),
-            }}>
-            GÖNDER
+          <div style={W.rightCol}>
+            <div style={W.field}>
+              <span style={W.fieldLabel}>Kimden</span>
+              <span style={W.fieldVal}>10260110756 (anonim)</span>
+            </div>
+            <div style={W.field}>
+              <span style={W.fieldLabel}>Kime</span>
+              <span style={W.fieldVal}>t.ergin@derinbasin.tr</span>
+            </div>
+            <div style={W.field}>
+              <span style={W.fieldLabel}>Konu</span>
+              <span style={W.fieldVal}>İHBAR / SINIR-1 Araştırma İstasyonu'nda Yasadışı Faaliyet</span>
+            </div>
+            <div style={W.page}>
+              <div style={W.ink}>
+                {body}
+                <span className="s1-cursor" style={{ color: "#2b3fae" }}>▌</span>
+              </div>
+            </div>
+            <div style={{
+              ...W.status,
+              ...(phase === "waitSend" ? { color: "#8a4a1e", fontWeight: 700 } : {}),
+            }} className={phase === "waitSend" ? "s1-critical" : ""}>
+              {status}
+            </div>
+            <div style={W.btnRow}>
+              <div ref={gonderRef}
+                onClick={playerSend}
+                style={{
+                  ...W.btn,
+                  ...(pressed === "gonder" ? W.btnDown : {}),
+                  ...(phase === "waitSend" ? { cursor: "pointer", borderColor: "#5a7a4e", boxShadow: "inset 0 1px 0 #f4f2e8, 0 0 10px rgba(120,180,90,0.55)" } : {}),
+                }}>
+                Mesajı gönder
+              </div>
+              <div ref={silRef}
+                style={{ ...W.btn, ...(pressed === "sil" ? W.btnDown : {}) }}>
+                Vazgeç
+              </div>
+            </div>
           </div>
         </div>
 
         {dialog && (
-          <div style={S.mailDialog}>
-            <div style={S.mailDialogText}>TASLAK SİLİNSİN Mİ?</div>
-            <div style={S.mailDialogRow}>
-              <div ref={evetRef} style={{ ...S.mailBtn, borderColor: "#4a2620", color: "#c0776a" }}>EVET</div>
-              <div ref={hayirRef} style={{ ...S.mailBtn, ...(pressed === "hayir" ? S.mailBtnActive : {}) }}>HAYIR</div>
+          <div style={W.dialog}>
+            <div style={W.dialogTitle}>GÜVENLİ POSTA</div>
+            <div style={W.dialogBody}>Taslak silinsin mi?</div>
+            <div style={W.dialogRow}>
+              <div ref={evetRef} style={W.btn}>Evet</div>
+              <div ref={hayirRef} style={{ ...W.btn, ...(pressed === "hayir" ? W.btnDown : {}) }}>Hayır</div>
             </div>
           </div>
         )}
@@ -217,9 +326,9 @@ export default function IntroCinematic({ onFinish }) {
           position: "absolute", left: cursor.x, top: cursor.y, zIndex: 6, pointerEvents: "none",
           width: 0, height: 0,
           borderLeft: "7px solid transparent", borderRight: "7px solid transparent",
-          borderBottom: "18px solid #e8e4d8",
+          borderBottom: "18px solid #1e1e1a",
           transform: "rotate(-38deg)",
-          filter: "drop-shadow(0 0 3px rgba(0,0,0,0.9))",
+          filter: "drop-shadow(0 0 2px rgba(255,255,255,0.7))",
           transitionProperty: "left, top", transitionDuration: "900ms",
           transitionTimingFunction: "ease-in-out",
         }} />

@@ -34,6 +34,11 @@ const CFG_RINGS = {
     { color: "#4aa26a", step: 45, offset: 225 },
     { color: "#c24a3a", step: 40, offset: 120 },
   ],
+  // eksik parça örneği: bayrak alınmadan kilit açılmaz
+  pieces: [
+    { flag: "vitrayParca1", ring: 1, shard: 3, fig: 2 },
+    { flag: "vitrayParca2", ring: 2, shard: 6, fig: 1 },
+  ],
 };
 
 const CFG_TILES = {
@@ -56,8 +61,9 @@ const CFG_MIX = {
   target: { a: 2, b: 1, c: 3 },
 };
 
-export default function PuzzleTest({ onBack }) {
+export default function PuzzleTest({ onBack, onDemo }) {
   const [open, setOpen] = useState(null);
+  const [ringPieceFound, setRingPieceFound] = useState(false); // vitray parça simülasyonu
   const [msg, setMsg] = useState(null);
 
   const fail = (p) => {
@@ -91,7 +97,11 @@ export default function PuzzleTest({ onBack }) {
             Sembol Kilidi
           </button>
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("rings")}>
-            Vitray Halkaları
+            Vitray Halkaları {ringPieceFound ? "" : "(1 parça kayıp)"}
+          </button>
+          <button className="s1-btn s1-mm" style={{ ...S.mmBtn, fontSize: 11, opacity: 0.7 }}
+            onClick={() => setRingPieceFound(true)}>
+            → kayıp cam parçasını "bul"
           </button>
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("tiles")}>
             Karo Kapısı
@@ -99,6 +109,11 @@ export default function PuzzleTest({ onBack }) {
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("colorgrid")}>
             Renk Panosu
           </button>
+          {onDemo && (
+            <button className="s1-btn s1-mm" style={S.mmBtn} onClick={onDemo}>
+              ▶ Örnek Bölüm (parça bul + vitray)
+            </button>
+          )}
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={onBack}>
             Geri
           </button>
@@ -127,7 +142,9 @@ export default function PuzzleTest({ onBack }) {
         <SymbolsOverlay config={CFG_SYMBOLS} onSuccess={() => win("SEMBOL")} onFail={fail} onCancel={cancel} />
       )}
       {open === "rings" && (
-        <RingsOverlay config={CFG_RINGS} onSuccess={() => win("VİTRAY")} onFail={fail} onCancel={cancel} />
+        <RingsOverlay config={CFG_RINGS}
+          flags={{ vitrayParca1: true, vitrayParca2: ringPieceFound }}
+          onSuccess={() => win("VİTRAY")} onFail={fail} onCancel={cancel} />
       )}
       {open === "tiles" && (
         <TilesOverlay config={CFG_TILES} onSuccess={() => win("KARO")} onFail={fail} onCancel={cancel} />

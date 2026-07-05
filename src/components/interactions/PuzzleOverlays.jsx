@@ -344,11 +344,21 @@ const FIGURE = [
   ["M0 -92 V-74", "M-7 -84 L0 -94 L7 -84", "M-84 8 H-70", "M70 8 H84"],
 ];
 
-export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
+export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }) {
+  /* EKSİK PARÇA SİSTEMİ: config.pieces = [{flag, ring, shard, fig}]
+     Bayrağı henüz alınmamış her parça camda DELİK olarak görünür ve
+     figürün o segmenti çizilmez — halkalar hizalansa bile kilit
+     açılmaz; oyuncu parçaları DÜNYADA bulup (flag) geri gelmeli. */
   const rings = config.rings;
   const radii = [[16, 38], [42, 68], [72, 96]];
   const [rots, setRots] = useState(rings.map((r) => r.offset)); // 0 = çözüm
   const [done, setDone] = useState(false);
+  const pieces = config.pieces || [];
+  const missing = pieces.filter((p) => !flags[p.flag]);
+  const holeAt = (ring, shard) => missing.some((p) => p.ring === ring && p.shard === shard);
+  const placedAt = (ring, shard) => pieces.some((p) => p.ring === ring && p.shard === shard && flags[p.flag]);
+  const figHidden = (ring, k) => missing.some((p) => p.ring === ring && (p.fig ?? 0) === k);
+  const aligned = rots.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)));
 
   const rotate = (i, dir) => {
     if (done) return;
@@ -356,10 +366,13 @@ export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
     const next = rots.slice();
     next[i] = next[i] + dir * rings[i].step;
     setRots(next);
-    if (next.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)))) {
+    const ok = next.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)));
+    if (ok && missing.length === 0) {
       setDone(true);
       AudioSys.blipSfx(980);
       setTimeout(onSuccess, 1600);
+    } else if (ok && missing.length > 0) {
+      AudioSys.buzzSfx(); // hizada ama cam eksik — kilit direnir
     }
   };
 
@@ -376,13 +389,20 @@ export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
             const n = shards.length;
             return (
               <g key={i} style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
-                {shards.map((c, k) => (
-                  <path key={k}
-                    d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 6)}
-                    fill={c} opacity={done ? 0.5 : 0.34}
-                    stroke="#1a1f1a" strokeWidth="1.2" />
-                ))}
-                {FIGURE[i].map((d, k) => (
+                {shards.map((c, k) => {
+                  const hole = holeAt(i, k);
+                  const placed = placedAt(i, k);
+                  return (
+                    <path key={k}
+                      d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 6)}
+                      fill={hole ? "#070908" : c}
+                      opacity={hole ? 0.95 : done ? 0.5 : 0.34}
+                      stroke={hole ? "#3a4438" : placed ? "#e8c95a" : "#1a1f1a"}
+                      strokeWidth={placed ? 2 : 1.2}
+                      strokeDasharray={hole ? "4 3" : "none"} />
+                  );
+                })}
+                {FIGURE[i].map((d, k) => figHidden(i, k) ? null : (
                   <path key={"f" + k} d={d} fill="none"
                     stroke={done ? "#e8c95a" : "#c8a94a"} strokeWidth="4"
                     strokeLinecap="round"
@@ -406,8 +426,10 @@ export function RingsOverlay({ config, onSuccess, onFail, onCancel }) {
             </span>
           ))}
         </div>
-        <div style={done ? P.msgOk : P.hint}>
-          {done ? t("puzzle.ringsDone") : t("puzzle.ringsHint")}
+        <div style={done ? P.msgOk : aligned && missing.length > 0 ? P.msgBad : P.hint}>
+          {done ? t("puzzle.ringsDone")
+            : aligned && missing.length > 0 ? t("puzzle.ringsMissing", { n: missing.length })
+            : t("puzzle.ringsHint")}
         </div>
         {!done && (
           <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
