@@ -23,6 +23,7 @@ import StoryStream from "./components/StoryStream";
 import Hud from "./components/Hud";
 import { PauseMenu, SettingsOverlay, DeathOverlay } from "./components/MenuOverlays";
 import Credits from "./components/Credits";
+import HowToPlay from "./components/HowToPlay";
 import { ArchiveMenu, ArchiveList, NotePaper, DocPaper } from "./components/ArchiveOverlays";
 import PanelOverlay from "./components/interactions/PanelOverlay";
 import KeypadOverlay from "./components/interactions/KeypadOverlay";
@@ -63,6 +64,7 @@ export default function App() {
   const [death, setDeath] = useState(null);
   const [ended, setEnded] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
+  const [endFade, setEndFade] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [typing, setTyping] = useState(false);
   const [screen, setScreen] = useState(null);
@@ -116,6 +118,7 @@ export default function App() {
   const notesRef = useRef([]);
   const objectiveRef = useRef("—");
   const checkpointRef = useRef(null);
+  const currentTrackRef = useRef(null);
   const timerRef = useRef(null);
   const flashRef = useRef(null);
   const toastRef = useRef(null);
@@ -343,7 +346,7 @@ export default function App() {
         return wait(600, runId);
       }
       case "anons": return typeLine("anons", ev.text, runId, 20);
-      case "music": { AudioSys.music(ev.track || null); return; }
+      case "music": { currentTrackRef.current = ev.track || null; AudioSys.music(ev.track || null); return; }
       case "document": {
         if (!docsRef.current.find((d) => d.id === ev.doc.id)) {
           docsRef.current = [...docsRef.current, { ...ev.doc, read: !!ev.open }];
@@ -931,6 +934,40 @@ export default function App() {
 
   /* ---------------- ses durumları ---------------- */
 
+  // global buton tıklama sesi + hafif titreşim (tüm butonlara)
+  useEffect(() => {
+    const onClick = (e) => {
+      const el = e.target.closest("button, .s1-btn, [role='button']");
+      if (!el) return;
+      AudioSys.uiClick();
+      Haptics.tap();
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
+  // arayüz müziği: mode'a göre menü / intro / credits parçaları
+  useEffect(() => {
+    // credits ekranı açıksa credits müziği (mode ne olursa olsun öncelikli)
+    if (showCredits || screen === "credits") { AudioSys.music("credits"); return; }
+    // arşiv açıkken sakin ambiyans müziği
+    if (mode === "game" && (screen === "menu" || screen === "notes" || screen === "docs")) {
+      AudioSys.music("credits"); return;   // sakin arşiv müziği (credits parçasıyla aynı sakin ton)
+    }
+    if (mode === "menu" || mode === "warning") { AudioSys.music("menu"); return; }
+    if (mode === "intro") { AudioSys.music("intro"); return; }
+    // boot/disclaimer/loading: sessiz. oyun içi müziği 'music' event'i yönetir.
+    if (mode === "boot" || mode === "disclaimer" || mode === "bootload" || mode === "resumeload") {
+      AudioSys.music(null); return;
+    }
+    // oyun moduna dönünce (arşiv kapanınca) bölüm müziğini geri yükle
+    if (mode === "game" && !screen) {
+      const cp = checkpointRef.current;
+      AudioSys.music(currentTrackRef.current || null);
+      return;
+    }
+  }, [mode, showCredits, screen]);
+
   useEffect(() => {
     if (mode !== "game") { AudioSys.ambient(false); AudioSys.heart(null); return; }
     AudioSys.ambient(true);
@@ -1008,6 +1045,7 @@ export default function App() {
           }}
           onSettings={() => { setSettingsFrom("mainmenu"); setScreen("settings"); }}
           onCredits={() => setScreen("credits")}
+          onHowTo={() => setScreen("howto")}
           onPuzzleTest={IS_RELEASE ? null : () => setMode("puzzletest")}
         />
         {screen === "settings" && (
@@ -1018,6 +1056,7 @@ export default function App() {
             onBack={() => setScreen(null)} />
         )}
         {screen === "credits" && <Credits onClose={() => setScreen(null)} />}
+        {screen === "howto" && <HowToPlay onClose={() => setScreen(null)} />}
       </>
     );
   }
@@ -1086,13 +1125,18 @@ export default function App() {
           timeLeft={timeLeft} choicesVisible={choicesVisible} choices={visibleChoices}
           flags={flags} onChoice={handleChoice}
           ended={ended} tapWait={tapWait}
-          endInfo={{ docs: docs.length, notes: notes.length, battery, spares, akil }}
-          onRestart={() => { setShowCredits(false); startFresh(); }}
-          onMainMenu={() => setShowCredits(true)}
+          onEndContinue={() => { setEndFade(true); setTimeout(() => { setEndFade(false); setShowCredits(true); }, 1400); }}
         />
       </div>
 
       <Hud dimOpacity={dimOpacity} objectiveFlash={objectiveFlash} toast={toast} />
+
+      {endFade && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 54, background: "#000",
+          animation: "s1-fade 1.4s ease-in forwards",
+        }} />
+      )}
 
       {showCredits && (
         <Credits onClose={() => {

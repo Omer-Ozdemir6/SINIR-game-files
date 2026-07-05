@@ -37,38 +37,100 @@ const near = (a, b, tol) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
              startRot?, startTiltX?, startTiltY? }
    ============================================================ */
 
-const SHADOW_SHAPE = "0,-62 14,-44 40,-50 34,-22 58,-8 34,4 44,34 16,26 6,58 -8,28 -38,42 -30,12 -58,4 -34,-10 -46,-40 -18,-30";
 const TILT_MAX = 75;
 const rad = (d) => (d * Math.PI) / 180;
 
+/* ------------------------------------------------------------
+   3D GÖLGE NESNESİ — "kalıntı".
+   Nesne 3B çizgi segmentlerinden oluşur. Oyuncu iki eksende
+   döndürür (yaw = yatay, pitch = dikey). Her açıda nesnenin
+   2B izdüşümü (gölgesi) FARKLI görünür — gerçek RE7 mekaniği.
+   Doğru açı çiftinde gölge hedef silüete oturur → kilit.
+
+   Nesne: SINIR-1 evrenine ait deforme bir kalıntı. Doğru açıda
+   gölgesi BULUNTU'NUN İŞARETİ'ne (dairesel sonar + merkez göz +
+   yayılan kollar) benzer.
+   ------------------------------------------------------------ */
+
+// 3B nokta [x,y,z]; segment = [i,j] iki nokta indexi
+// Kalıntının düğüm noktaları (Buluntu işareti doğru açıda belirir)
+const OBJ_NODES = [
+  [0, 0, 0],       // 0 merkez
+  [0, -58, 6],     // 1 üst kol
+  [50, -20, -8],   // 2 sağ üst
+  [58, 22, 8],     // 3 sağ alt
+  [22, 56, -6],    // 4 alt sağ
+  [-22, 58, 6],    // 5 alt sol
+  [-58, 20, -8],   // 6 sol alt
+  [-50, -22, 8],   // 7 sol üst
+  [0, 0, 46],      // 8 öne çıkıntı (göz sapı) — derinlik ekseni
+  [0, 0, -40],     // 9 arkaya çıkıntı
+];
+const OBJ_EDGES = [
+  [0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7], // yayılan kollar
+  [1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,1], // dış halka
+  [0,8],[0,9],                                // derinlik çubukları
+];
+
+// nokta bulutunu yaw/pitch ile döndür ve 2B'ye izdüşür (ortografik)
+function project(nodes, yawDeg, pitchDeg) {
+  const cy = Math.cos(rad(yawDeg)), sy = Math.sin(rad(yawDeg));
+  const cx = Math.cos(rad(pitchDeg)), sx = Math.sin(rad(pitchDeg));
+  return nodes.map(([x, y, z]) => {
+    // yaw: Y ekseni etrafında (x,z döner)
+    let x1 = x * cy + z * sy;
+    let z1 = -x * sy + z * cy;
+    // pitch: X ekseni etrafında (y,z döner)
+    let y1 = y * cx - z1 * sx;
+    // ortografik: (x1, y1) ekrana düşer
+    return [x1, y1];
+  });
+}
+
+// bir açı çiftindeki gölgeyi SVG path'e çevir (segmentleri kalın çizgi olarak)
+function shadowPath(pts2d) {
+  return OBJ_EDGES.map(([a, b]) => {
+    const [ax, ay] = pts2d[a], [bx, by] = pts2d[b];
+    return `M ${ax.toFixed(1)} ${ay.toFixed(1)} L ${bx.toFixed(1)} ${by.toFixed(1)}`;
+  }).join(" ");
+}
+
 export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   const step = config.step || 15;
-  const tol = Math.max(7, step / 2 - 1);
-  const [rot, setRot] = useState(config.startRot ?? 45);
-  const [tx, setTx] = useState(config.startTiltX ?? -30);
-  const [ty, setTy] = useState(config.startTiltY ?? 45);
+  const tol = config.tol ?? 12;                       // derece toleransı
+  const targetYaw = config.targetYaw ?? 0;
+  const targetPitch = config.targetPitch ?? 0;
+  const [yaw, setYaw] = useState(config.startYaw ?? 65);
+  const [pitch, setPitch] = useState(config.startPitch ?? -40);
   const [locked, setLocked] = useState(false);
 
-  const tf = (r, x, y) =>
-    `rotate(${r}) scale(${Math.max(0.12, Math.cos(rad(y)))}, ${Math.max(0.12, Math.cos(rad(x)))})`;
+  const angNear = (a, b) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
+  const check = (yw, pt) => angNear(yw, targetYaw) && angNear(pt, targetPitch);
 
-  const check = (r, x, y) =>
-    near(r, config.targetRot, tol) &&
-    Math.abs(x - config.targetTiltX) <= tol &&
-    Math.abs(y - config.targetTiltY) <= tol;
+  // hedef gölge (sabit, hafif ipucu olarak arkada)
+  const targetPts = project(OBJ_NODES, targetYaw, targetPitch);
+  const targetD = shadowPath(targetPts);
+  // güncel gölge
+  const curPts = project(OBJ_NODES, yaw, pitch);
+  const curD = shadowPath(curPts);
+
+  // ne kadar yakınız (0..1) → yaklaştıkça gölge parlar
+  const dist = Math.min(1,
+    (Math.abs(((yaw - targetYaw) % 360 + 540) % 360 - 180) +
+     Math.abs(((pitch - targetPitch) % 360 + 540) % 360 - 180)) / 180);
+  const glow = locked ? 1 : Math.max(0, 1 - dist);
 
   const move = (axis, dir) => {
     if (locked) return;
     AudioSys.clank();
-    let r = rot, x = tx, y = ty;
-    if (axis === "r") r += dir * step;
-    if (axis === "x") x = Math.max(-TILT_MAX, Math.min(TILT_MAX, x + dir * step));
-    if (axis === "y") y = Math.max(-TILT_MAX, Math.min(TILT_MAX, y + dir * step));
-    setRot(r); setTx(x); setTy(y);
-    if (check(r, x, y)) {
+    let yw = yaw, pt = pitch;
+    if (axis === "yaw") yw = (yw + dir * step) % 360;
+    if (axis === "pitch") pt = Math.max(-TILT_MAX, Math.min(TILT_MAX, pt + dir * step));
+    setYaw(yw); setPitch(pt);
+    if (check(yw, pt)) {
       setLocked(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1300);
+      setTimeout(onSuccess, 1400);
     }
   };
 
@@ -76,31 +138,38 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.keypadPanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.shadowTitle")}</div>
-        <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 250 }}>
+        <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 260 }}>
           <defs>
             <radialGradient id="s1lamp" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor={locked ? "#50624e" : "#3a4a3c"} />
-              <stop offset="55%" stopColor="#16201a" />
+              <stop offset="0%" stopColor={locked ? "#4a6a52" : "#2f3d32"} />
+              <stop offset="55%" stopColor="#12191400" />
+              <stop offset="55%" stopColor="#141d18" />
               <stop offset="100%" stopColor="#070a08" />
             </radialGradient>
           </defs>
+          {/* projeksiyon lambası (duvar) */}
           <circle cx="0" cy="0" r="104" fill="url(#s1lamp)" />
-          {/* duvardaki hedef iz */}
-          <polygon points={SHADOW_SHAPE} fill="none" stroke="#5a8a6a" strokeWidth="1.6"
-            strokeDasharray="5 4" opacity="0.4"
-            transform={tf(config.targetRot, config.targetTiltX, config.targetTiltY)} />
-          {/* nesnenin gölgesi */}
-          <polygon points={SHADOW_SHAPE} fill="rgba(5,8,7,0.95)" stroke="#0b100d" strokeWidth="1"
-            style={{ transition: "transform 320ms ease" }}
-            transform={tf(rot, tx, ty)} />
+          {/* hedef silüet — soluk kesikli, ne yapman gerektiğini gösterir */}
+          <path d={targetD} fill="none"
+            stroke="#5a8a6a" strokeWidth="2.4" strokeLinecap="round"
+            strokeDasharray="4 5" opacity={locked ? 0 : 0.32} />
+          {/* nesnenin gölgesi — açı değiştikçe ŞEKİL değişir */}
+          <path d={curD} fill="none"
+            stroke={locked ? "#7cc39a" : "#05080799"}
+            strokeWidth={locked ? 3.4 : 3}
+            strokeLinecap="round" strokeLinejoin="round"
+            style={{
+              transition: "d 120ms linear",
+              filter: glow > 0.5 ? `drop-shadow(0 0 ${glow * 6}px rgba(120,200,150,${glow * 0.7}))` : "none",
+            }} />
+          {/* merkez göz — kilitlenince açılır */}
+          {locked && <circle cx={curPts[0][0]} cy={curPts[0][1]} r="6" fill="#7cc39a" opacity="0.9" />}
         </svg>
         <div style={P.ctrlRow}>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("r", -1)}>⟲ {t("puzzle.rot")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("r", 1)}>{t("puzzle.rot")} ⟳</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("x", -1)}>▲ {t("puzzle.tilt")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("x", 1)}>{t("puzzle.tilt")} ▼</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("y", -1)}>◀ {t("puzzle.side")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("y", 1)}>{t("puzzle.side")} ▶</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("yaw", -1)}>⟲ {t("puzzle.rot")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("yaw", 1)}>{t("puzzle.rot")} ⟳</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("pitch", -1)}>▲ {t("puzzle.tilt")}</button>
+          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("pitch", 1)}>{t("puzzle.tilt")} ▼</button>
         </div>
         <div style={locked ? P.msgOk : P.hint}>
           {locked ? t("puzzle.shadowDone") : t("puzzle.shadowHint")}

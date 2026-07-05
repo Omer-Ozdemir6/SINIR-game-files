@@ -6,7 +6,7 @@ import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, 
 /* GEÇİCİ GELİŞTİRİCİ EKRANI — bulmacaları bölüm beklemeden dene.
    Bölümlere entegre edilince menüden kaldırılabilir. */
 
-const CFG_SHADOW = { targetRot: 300, targetTiltX: 30, targetTiltY: -15, step: 15 };
+const CFG_SHADOW = { targetYaw: 0, targetPitch: 0, startYaw: 65, startPitch: -40, step: 15, tol: 12 };
 
 const CFG_WIRES = {
   title: "İNTERKOM YAMASI — HATLARI EŞLE",

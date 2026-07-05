@@ -7,19 +7,20 @@ import { AudioSys } from "../audio/AudioSys";
    Logo: public/reddoors-logo.png
    ============================================================ */
 export default function StudioIntro({ onDone }) {
-  const [phase, setPhase] = useState("in");   // in | hold | out
+  const [phase, setPhase] = useState("wait");   // wait | in | hold | out
   const [glitch, setGlitch] = useState(false);
 
   useEffect(() => {
     let alive = true;
     const seq = [
-      [1000, () => setPhase("hold")],                            // fade-in bitti
-      [1600, () => { setGlitch(true); AudioSys.burst?.(140); }], // 1. glitch
-      [1780, () => setGlitch(false)],
-      [2350, () => { setGlitch(true); AudioSys.burst?.(120); }], // 2. glitch
-      [2540, () => setGlitch(false)],
-      [3300, () => setPhase("out")],                             // fade-out
-      [4300, () => { if (alive) onDone(); }],                    // bitti
+      [1400, () => setPhase("in")],                             // birkaç saniye siyah bekle, sonra fade-in
+      [2600, () => setPhase("hold")],                           // fade-in bitti
+      [3300, () => { setGlitch(true); AudioSys.burst?.(140); }],// 1. glitch
+      [3480, () => setGlitch(false)],
+      [4050, () => { setGlitch(true); AudioSys.burst?.(120); }],// 2. glitch
+      [4240, () => setGlitch(false)],
+      [5000, () => setPhase("out")],                            // fade-out
+      [6000, () => { if (alive) onDone(); }],                   // bitti
     ];
     const timers = seq.map(([ms, fn]) => setTimeout(() => { if (alive) fn(); }, ms));
     return () => { alive = false; timers.forEach(clearTimeout); };
@@ -27,6 +28,7 @@ export default function StudioIntro({ onDone }) {
   }, []);
 
   const cls = phase === "in" ? "s1-fadein" : phase === "out" ? "s1-fadeout" : "";
+  const visible = phase !== "wait";
 
   return (
     <div
@@ -43,6 +45,7 @@ export default function StudioIntro({ onDone }) {
         className={glitch ? "s1-glitch" : ""}
         style={{
           width: "min(52vw, 300px)",
+          opacity: visible ? undefined : 0,
           filter: glitch
             ? "drop-shadow(3px 0 #c23b2e) drop-shadow(-3px 0 #3a7a9a)"
             : "none",

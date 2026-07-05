@@ -10,18 +10,16 @@ const DOTS = 12;
 
 export default function LoadingScreen({ onDone }) {
   const [active, setActive] = useState(0);
-  const [prog, setProg] = useState(0);
 
   useEffect(() => {
     let alive = true;
     // dönen nokta
     const spin = setInterval(() => setActive((a) => (a + 1) % DOTS), 70);
-    // ilerleme (düzensiz, disk-okuma hissi)
+    // yükleme süresi (görünmez; sadece geçiş zamanlaması)
     let p = 0;
     const step = () => {
       if (!alive) return;
       p = Math.min(100, p + (Math.random() < 0.25 ? 12 + Math.random() * 14 : 2 + Math.random() * 5));
-      setProg(p);
       if (p >= 100) { setTimeout(() => { if (alive) onDone(); }, 550); }
       else setTimeout(step, 100 + Math.random() * 240);
     };
@@ -68,11 +66,6 @@ export default function LoadingScreen({ onDone }) {
         letterSpacing: "0.35em", color: "#5f7573",
       }}>
         {t("sys.loading")}
-      </div>
-
-      {/* ince ilerleme çizgisi (isteğe bağlı, çok belirsiz) */}
-      <div style={{ marginTop: 14, width: 120, height: 2, background: "#101816", borderRadius: 2, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: prog + "%", background: "#3a5a4c" }} />
       </div>
     </div>
   );

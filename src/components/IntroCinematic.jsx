@@ -23,80 +23,89 @@ const PREFILLED =
 const TYPED_END =
 " cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— Baturay Soylu, gece vardiya amiri";
 
-/* ---- WHISTLEBLOWER GÖRÜNÜMÜ: açık gri pencere, beyaz sayfa,
-   mavi el yazısı — Outlast'ın SECURE MAIL ekranı ---- */
-const hand = "'Segoe Print', 'Comic Sans MS', 'Bradley Hand', cursive";
+/* ---- SECURE MAIL — Outlast görseline birebir:
+   açık gri pencere, mavi başlık bandı, düz MAVİ yazı ---- */
 const ui = "Tahoma, 'Segoe UI', Arial, sans-serif";
 const W = {
   backdrop: {
     position: "fixed", inset: 0, zIndex: 5,
     display: "flex", alignItems: "center", justifyContent: "center",
-    padding: "14px 10px",
+    padding: 0, overflow: "hidden",
     backgroundColor: "#1a1410",
     backgroundImage: "url(/desktop-bg.jpg)",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundSize: "cover", backgroundPosition: "center",
   },
+  // pencere: ekrana SIĞAR (kaydırma yok), sabit iç oran, viewport'a göre ölçek
   win: {
-    position: "relative", width: "100%", maxWidth: 620,
-    backgroundColor: "#c9c6bd", border: "1px solid #6a675e",
+    position: "relative",
+    width: "min(94vw, 680px)",
+    maxHeight: "92vh",
+    display: "flex", flexDirection: "column",
+    backgroundColor: "#d7d4cc", border: "1px solid #55524a",
     boxShadow: "0 18px 70px rgba(0,0,0,0.85), inset 0 1px 0 #eceade",
-    borderRadius: 4, overflow: "hidden",
-    fontFamily: ui,
+    fontFamily: ui, overflow: "hidden",
   },
+  // pencere başlık çubuğu (koyu gri)
   titleBar: {
     display: "flex", justifyContent: "space-between", alignItems: "center",
-    padding: "4px 8px", fontSize: 10, color: "#f2f0e8",
-    background: "linear-gradient(#8a94a0, #6a7480)",
+    padding: "3px 6px", fontSize: 10, color: "#e8e6de",
+    background: "linear-gradient(#7c8590, #5f6771)", flexShrink: 0,
   },
-  winBtns: { display: "flex", gap: 4, fontSize: 9, color: "#dcdcd4" },
-  winBtn: { width: 16, height: 13, textAlign: "center", lineHeight: "12px", backgroundColor: "#b8b4a8", color: "#3a3a34", border: "1px solid #7a776c", borderRadius: 2 },
-  menuRow: { display: "flex", gap: 12, padding: "3px 8px", fontSize: 9.5, color: "#4a473e", borderBottom: "1px solid #a8a498", backgroundColor: "#d4d1c6" },
-  urlRow: { display: "flex", alignItems: "center", gap: 6, padding: "4px 8px", borderBottom: "1px solid #a8a498", backgroundColor: "#cfccc1" },
+  winBtns: { display: "flex", gap: 3 },
+  winBtn: { width: 15, height: 12, textAlign: "center", lineHeight: "11px", fontSize: 8, backgroundColor: "#c8c4b8", color: "#3a3a34", border: "1px solid #6a675c" },
+  menuRow: { display: "flex", gap: 11, padding: "2px 8px", fontSize: 9, color: "#3a382f", borderBottom: "1px solid #b0ac9f", backgroundColor: "#ece9df", flexShrink: 0 },
+  urlRow: { display: "flex", alignItems: "center", gap: 6, padding: "3px 8px", borderBottom: "1px solid #b0ac9f", backgroundColor: "#e4e1d6", flexShrink: 0 },
   urlBox: {
-    flex: 1, fontSize: 9.5, color: "#3a4a3e", backgroundColor: "#f2f0e6",
-    border: "1px solid #8a8778", borderRadius: 2, padding: "3px 7px",
+    flex: 1, fontSize: 9, color: "#2a3a2e", backgroundColor: "#fbfaf4",
+    border: "1px solid #9a978a", padding: "2px 7px",
     whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+    display: "flex", alignItems: "center", gap: 5,
   },
+  // MAVİ "SECURE MAIL" bandı
   bandRow: {
-    display: "flex", alignItems: "center", gap: 7, padding: "6px 10px",
-    background: "linear-gradient(#4a5560, #3a444e)", color: "#e8ecdf",
-    fontSize: 11, letterSpacing: "0.18em", fontWeight: 700,
+    display: "flex", alignItems: "center", gap: 8, padding: "7px 12px",
+    background: "linear-gradient(#3f5876, #2f4560)", color: "#eef2f6",
+    fontSize: 13, letterSpacing: "0.12em", fontWeight: 700, flexShrink: 0,
   },
-  toolRow: { display: "flex", gap: 14, padding: "5px 10px", fontSize: 9.5, color: "#4a473e", borderBottom: "1px solid #a8a498", backgroundColor: "#d4d1c6" },
-  bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#c9c6bd" },
+  // araç çubuğu (Send / Spelling / Attach...)
+  toolRow: { display: "flex", gap: 16, padding: "5px 12px", fontSize: 9.5, color: "#3a382f", borderBottom: "1px solid #b0ac9f", backgroundColor: "#e8e5da", flexShrink: 0 },
+  bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#d7d4cc", flex: 1, minHeight: 0 },
+  // solda Attachments paneli
   attach: {
-    width: 86, flexShrink: 0, borderRight: "1px solid #a8a498",
-    backgroundColor: "#d0cdc2", padding: "6px 6px", fontSize: 9, color: "#5a574c",
+    width: "22%", minWidth: 78, flexShrink: 0, borderRight: "1px solid #b0ac9f",
+    backgroundColor: "#dedbd0", padding: "6px 7px", fontSize: 9, color: "#55524a",
   },
-  attachTitle: { borderBottom: "1px solid #a8a498", paddingBottom: 3, marginBottom: 6, fontSize: 9 },
+  attachTitle: { borderBottom: "1px solid #b0ac9f", paddingBottom: 4, marginBottom: 6, fontSize: 9.5, color: "#3a382f" },
   rightCol: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column" },
-  field: { display: "flex", gap: 6, alignItems: "baseline", padding: "3px 10px", fontSize: 10.5, color: "#3a3a32" },
-  fieldLabel: { width: 46, flexShrink: 0, color: "#6a675c", fontSize: 9.5 },
-  fieldVal: { flex: 1, borderBottom: "1px solid #b4b1a4", paddingBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  field: { display: "flex", gap: 8, alignItems: "baseline", padding: "3px 10px", fontSize: 10, color: "#2e2c26", flexShrink: 0 },
+  fieldLabel: { width: 44, flexShrink: 0, color: "#6a675c", fontSize: 9 },
+  fieldVal: { flex: 1, borderBottom: "1px solid #bdbaad", paddingBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  subLinks: { display: "flex", gap: 8, padding: "1px 10px 3px 62px", fontSize: 8, color: "#4a6a9a", flexShrink: 0 },
+  // yazı sayfası — BEYAZ, DÜZ MAVİ yazı; yazıldıkça otomatik alta kayar
   page: {
-    margin: "8px 10px 0", backgroundColor: "#f6f4ec",
-    border: "1px solid #a8a498", minHeight: 240, maxHeight: "42vh", overflowY: "auto",
-    padding: "14px 16px",
+    margin: "6px 10px", backgroundColor: "#ffffff",
+    border: "1px solid #b0ac9f", flex: 1, minHeight: 0, overflowY: "auto",
+    padding: "14px 18px",
   },
-  ink: { fontFamily: hand, fontSize: 15, lineHeight: 1.85, color: "#2b3fae", whiteSpace: "pre-wrap", wordBreak: "break-word" },
-  status: { padding: "5px 12px 0", fontSize: 9.5, minHeight: 16, textAlign: "right", color: "#5a6a4e", fontFamily: ui, letterSpacing: "0.06em" },
-  btnRow: { display: "flex", gap: 8, padding: "8px 10px 10px" },
+  ink: {
+    fontFamily: ui, fontSize: "clamp(11px, 2.7vw, 14px)", fontWeight: 700,
+    lineHeight: 1.5, color: "#1a3fb8", whiteSpace: "pre-wrap", wordBreak: "break-word",
+  },
+  status: { padding: "3px 12px 0", fontSize: 9, minHeight: 14, textAlign: "right", color: "#4a6a4e", fontFamily: ui, letterSpacing: "0.06em", flexShrink: 0 },
+  btnRow: { display: "flex", gap: 8, padding: "6px 10px 9px", flexShrink: 0 },
   btn: {
-    fontFamily: ui, fontSize: 10.5, color: "#2e2c26", cursor: "default",
-    padding: "5px 14px", backgroundColor: "#dcd9ce",
-    border: "1px solid #8a8778", borderRadius: 2,
-    boxShadow: "inset 0 1px 0 #f4f2e8, 0 1px 0 #9a978a",
+    fontFamily: ui, fontSize: 10, color: "#2e2c26", cursor: "default",
+    padding: "4px 13px", backgroundColor: "#e4e1d6",
+    border: "1px solid #8a8778", boxShadow: "inset 0 1px 0 #faf8ee, 0 1px 0 #9a978a",
   },
-  btnDown: { boxShadow: "inset 0 1px 3px rgba(0,0,0,0.35)", transform: "translateY(1px)", backgroundColor: "#cfccc0" },
+  btnDown: { boxShadow: "inset 0 1px 3px rgba(0,0,0,0.35)", transform: "translateY(1px)", backgroundColor: "#d4d1c6" },
   dialog: {
-    position: "absolute", top: "36%", left: "50%", transform: "translate(-50%,-50%)",
-    backgroundColor: "#d4d1c6", border: "1px solid #7a776c",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.6)", borderRadius: 3,
-    padding: 0, zIndex: 3, minWidth: 240,
+    position: "absolute", top: "38%", left: "50%", transform: "translate(-50%,-50%)",
+    backgroundColor: "#e4e1d6", border: "1px solid #6a675c",
+    boxShadow: "0 10px 40px rgba(0,0,0,0.6)", zIndex: 3, minWidth: 230,
   },
-  dialogTitle: { padding: "4px 8px", fontSize: 10, color: "#f2f0e8", background: "linear-gradient(#8a94a0, #6a7480)" },
-  dialogBody: { padding: "16px 16px 12px", fontSize: 11, color: "#3a3a32", textAlign: "center" },
+  dialogTitle: { padding: "4px 8px", fontSize: 10, color: "#e8e6de", background: "linear-gradient(#7c8590, #5f6771)" },
+  dialogBody: { padding: "16px 16px 12px", fontSize: 11, color: "#2e2c26", textAlign: "center" },
   dialogRow: { display: "flex", justifyContent: "center", gap: 10, padding: "0 12px 12px" },
 };
 
@@ -109,6 +118,7 @@ export default function IntroCinematic({ onFinish }) {
   const [cursor, setCursor] = useState({ x: "70%", y: "86%", visible: false });
 
   const rootRef = useRef(null);
+  const pageRef = useRef(null);
   const silRef = useRef(null);
   const gonderRef = useRef(null);
   const evetRef = useRef(null);
@@ -117,6 +127,11 @@ export default function IntroCinematic({ onFinish }) {
   const doneRef = useRef(false);
   const phaseRef = useRef("mail");
   const setPh = (p) => { phaseRef.current = p; setPhase(p); };
+
+  // yazı yazıldıkça mail sayfasını otomatik en alta kaydır (manuel kaydırma gerekmez)
+  useEffect(() => {
+    if (pageRef.current) pageRef.current.scrollTop = pageRef.current.scrollHeight;
+  }, [body]);
 
   const finish = () => {
     if (doneRef.current) return;
@@ -150,11 +165,27 @@ export default function IntroCinematic({ onFinish }) {
     const alive = () => aliveRef.current && !doneRef.current;
 
     const typeText = async (text, base = 60) => {
-      for (let i = 0; i < text.length; i++) {
+      let i = 0;
+      let blipCount = 0;
+      while (i < text.length) {
         if (!alive()) return;
-        setBody((b) => b + text[i]);
-        if (i % 3 === 0) AudioSys.blipSfx(190);
-        await sleep(text[i] === "\n" ? 240 : base + Math.random() * 70);
+        // yeni satırda dur; aksi halde 2-5 karakterlik öbek ekle
+        if (text[i] === "\n") {
+          setBody((b) => b + "\n");
+          i += 1;
+          await sleep(220);
+          continue;
+        }
+        // öbek boyu: 2-5 karakter, ama satır sonunu aşma
+        let chunk = 2 + Math.floor(Math.random() * 4);   // 2..5
+        let end = i + chunk;
+        const nl = text.indexOf("\n", i);
+        if (nl !== -1 && nl < end) end = nl;              // satır sonuna kadar
+        const piece = text.slice(i, end);
+        setBody((b) => b + piece);
+        i = end;
+        if (blipCount++ % 2 === 0) AudioSys.blipSfx(190);
+        await sleep(base + Math.random() * 55);
       }
     };
     const moveTo = async (ref, ms = 900) => {
@@ -240,24 +271,33 @@ export default function IntroCinematic({ onFinish }) {
       <div style={W.win}>
         {/* pencere başlığı */}
         <div style={W.titleBar}>
-          <span>GÜVENLİ POSTA — Ağ Tarayıcısı</span>
+          <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ fontSize: 9 }}>🔒</span> GÜVENLİ POSTA
+          </span>
           <span style={W.winBtns}>
             <span style={W.winBtn}>_</span>
             <span style={W.winBtn}>□</span>
-            <span style={W.winBtn}>✕</span>
+            <span style={{ ...W.winBtn, backgroundColor: "#c0504a", color: "#fff" }}>✕</span>
           </span>
         </div>
         <div style={W.menuRow}>
-          <span>Dosya</span><span>Düzen</span><span>Görünüm</span><span>Geçmiş</span><span>Araçlar</span><span>Yardım</span>
+          <span>Dosya</span><span>Düzen</span><span>Görünüm</span><span>Geçmiş</span><span>Yer İmleri</span><span>Araçlar</span><span>Yardım</span>
         </div>
         <div style={W.urlRow}>
-          <span style={{ fontSize: 10 }}>◀ ▶</span>
-          <div style={W.urlBox}>🔒 https://www.gposta.tr/?gorev=posta&_id=19319410214&_eylem=yaz</div>
-          <span style={{ fontSize: 10 }}>⟳</span>
+          <span style={{ fontSize: 9, color: "#5a574c" }}>◀ ▶</span>
+          <div style={W.urlBox}>
+            <span style={{ fontSize: 8 }}>🔒</span>
+            https://www.gposta.tr/?gorev=posta&_id=19319410214&_eylem=yaz
+          </div>
+          <span style={{ fontSize: 9, color: "#5a574c" }}>☆ ⟳</span>
         </div>
+
+        {/* MAVİ SECURE MAIL bandı */}
         <div style={W.bandRow}>
-          <span>🔒</span> GÜVENLİ POSTA
+          <span style={{ fontSize: 12 }}>🔒</span> GÜVENLİ POSTA
         </div>
+
+        {/* araç çubuğu */}
         <div style={W.toolRow}>
           <span>✉ Gönder</span><span>✓ Yazım</span><span>📎 Ekle</span><span>🔒 Güvenlik</span><span>💾 Kaydet</span>
         </div>
@@ -275,14 +315,17 @@ export default function IntroCinematic({ onFinish }) {
               <span style={W.fieldLabel}>Kime</span>
               <span style={W.fieldVal}>t.ergin@derinbasin.tr</span>
             </div>
+            <div style={W.subLinks}>
+              <span>Cc Ekle</span><span>|</span><span>Bcc Ekle</span><span>|</span><span>Yanıt Adresi Ekle</span>
+            </div>
             <div style={W.field}>
               <span style={W.fieldLabel}>Konu</span>
               <span style={W.fieldVal}>İHBAR / SINIR-1 Araştırma İstasyonu'nda Yasadışı Faaliyet</span>
             </div>
-            <div style={W.page}>
+            <div style={W.page} ref={pageRef}>
               <div style={W.ink}>
                 {body}
-                <span className="s1-cursor" style={{ color: "#2b3fae" }}>▌</span>
+                <span className="s1-cursor" style={{ color: "#1a3fb8" }}>▌</span>
               </div>
             </div>
             <div style={{
@@ -297,7 +340,7 @@ export default function IntroCinematic({ onFinish }) {
                 style={{
                   ...W.btn,
                   ...(pressed === "gonder" ? W.btnDown : {}),
-                  ...(phase === "waitSend" ? { cursor: "pointer", borderColor: "#5a7a4e", boxShadow: "inset 0 1px 0 #f4f2e8, 0 0 10px rgba(120,180,90,0.55)" } : {}),
+                  ...(phase === "waitSend" ? { cursor: "pointer", borderColor: "#5a7a4e", boxShadow: "inset 0 1px 0 #faf8ee, 0 0 10px rgba(120,180,90,0.55)" } : {}),
                 }}>
                 Mesajı gönder
               </div>

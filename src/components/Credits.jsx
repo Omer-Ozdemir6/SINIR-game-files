@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { t } from "../i18n";
 
 /* ============================================================
    KAYAN CREDITS — RED DOORS tarzı, sinematik ve YAVAŞ.
-   Üstte sabit logo, altından yavaşça yukarı akan yazılar.
+   Her şey (logo + oyun ismi + yazılar) TEK blok olarak yukarı
+   akar — videodaki gibi logo da hareket eder, sabit kalmaz.
    İki yerde: ana menü "Hakkında" ve oyun sonu.
    Bitince (ya da dokununca) onClose çağrılır.
    ============================================================ */
@@ -18,7 +19,7 @@ export default function Credits({ onClose }) {
     let y = el.parentElement.clientHeight;      // alttan başla
     el.style.transform = `translateY(${y}px)`;
     const total = el.scrollHeight;
-    const speed = 0.032;                         // px/ms — YAVAŞ, sinematik (videodaki tempo)
+    const speed = 0.032;                         // px/ms — yavaş, sinematik
 
     let last = performance.now();
     const tick = (now) => {
@@ -42,39 +43,43 @@ export default function Credits({ onClose }) {
         background: "#000", overflow: "hidden", cursor: "pointer",
       }}
     >
-      {/* üstte sabit RED DOORS logosu + oyun ismi */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, zIndex: 2,
-        paddingTop: "7vh", paddingBottom: 26,
-        display: "flex", flexDirection: "column", alignItems: "center",
-        background: "linear-gradient(#000 62%, rgba(0,0,0,0))",
-        pointerEvents: "none",
-      }}>
-        <img src="/reddoors-logo.png" alt="RED DOORS"
-          style={{ width: "min(34vw, 150px)", height: "auto", marginBottom: 16 }} draggable={false} />
-        <div style={{
-          fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: "clamp(20px, 6vw, 30px)", fontWeight: 700,
-          letterSpacing: "0.35em", paddingLeft: "0.35em",
-          color: "#e8ecdf", textShadow: "0 0 16px rgba(160,220,180,0.3)",
-        }}>SINIR-1</div>
-        <div style={{
-          fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: 10, letterSpacing: "0.12em", color: "#5f7573",
-          marginTop: 10, textAlign: "center", padding: "0 24px",
-        }}>{t("credits.tagline")}</div>
-      </div>
-
-      {/* aşağıdan yukarı akan yazı */}
+      {/* TEK kayan blok: logo + isim + yazılar birlikte akar */}
       <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center" }}>
-        <div ref={scrollRef} style={{
-          width: "86%", maxWidth: 420, willChange: "transform",
-          fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: 13, lineHeight: 2.2, letterSpacing: "0.08em",
-          color: "#a8bcae", textAlign: "center", whiteSpace: "pre-wrap",
-        }}>{t("credits.roll")}</div>
+        <div
+          ref={scrollRef}
+          style={{
+            width: "88%", maxWidth: 440, willChange: "transform",
+            display: "flex", flexDirection: "column", alignItems: "center",
+            fontFamily: "'Courier New', ui-monospace, monospace",
+            textAlign: "center",
+          }}
+        >
+          {/* RED DOORS logosu (kayan bloğun tepesinde) */}
+          <img src="/reddoors-logo.png" alt="RED DOORS"
+            style={{ width: "min(38vw, 170px)", height: "auto", marginBottom: 22 }} draggable={false} />
+
+          {/* oyun ismi */}
+          <div style={{
+            fontSize: "clamp(24px, 8vw, 38px)", fontWeight: 700,
+            letterSpacing: "0.32em", paddingLeft: "0.32em",
+            color: "#e8ecdf", textShadow: "0 0 18px rgba(160,220,180,0.35)",
+          }}>SINIR-1</div>
+
+          {/* slogan */}
+          <div style={{
+            fontSize: 11, letterSpacing: "0.12em", color: "#5f7573",
+            marginTop: 14, marginBottom: 60, padding: "0 20px",
+          }}>{t("credits.tagline")}</div>
+
+          {/* kayan yazılar */}
+          <div style={{
+            fontSize: 13, lineHeight: 2.2, letterSpacing: "0.08em",
+            color: "#a8bcae", whiteSpace: "pre-wrap",
+          }}>{t("credits.roll")}</div>
+        </div>
       </div>
 
+      {/* alt: dokun-kapat ipucu (sabit) */}
       <div style={{
         position: "absolute", bottom: 20, left: 0, right: 0, textAlign: "center",
         fontFamily: "'Courier New', ui-monospace, monospace",

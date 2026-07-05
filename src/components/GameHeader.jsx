@@ -32,10 +32,10 @@ export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, 
         </div>
         <button className="s1-btn" style={S.batteryWrap} title={t("hud.batteryTitle")}
           onClick={(e) => { e.stopPropagation(); onBattery(); }}>
-          <div style={S.batteryShell}>
+          <div style={S.batteryShell}
+            className={battery <= 20 && battery > 0 ? "s1-batblink" : ""}>
             {Array.from({ length: 10 }).map((_, i) => (
               <div key={i}
-                className={battery <= 20 && i < segsOn ? "s1-critical" : ""}
                 style={{ ...S.batterySeg, backgroundColor: i < segsOn ? bColor : "transparent" }} />
             ))}
           </div>

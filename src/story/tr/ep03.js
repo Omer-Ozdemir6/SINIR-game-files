@@ -333,12 +333,12 @@ export const EP03 = {
         { type: "alert", text: "ŞEF DEPODA — şu an giremezsin.", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [
-        { id: "gir", text: "Kapıyı arala, içeri gir", next: "n_depo", if: { flag: "sefNerede", equals: "depo", negate: true } },
+        { id: "gir", text: "Kapıyı arala, içeri gir", next: "n_k4_depo", if: { flag: "sefNerede", equals: "depo", negate: true } },
         { id: "bekle", text: "Şef çıkana kadar bekle (hole dön)", next: "n_hol", if: { flag: "sefNerede", equals: "depo" } },
       ],
     },
 
-    n_depo: {
+    n_k4_depo: {
       checkpoint: true,
       cost: 2,
       events: [

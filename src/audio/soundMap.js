@@ -11,22 +11,27 @@
    ============================================================ */
 
 export const SFX_FILES = {
-  blip: "/audio/sfx/blip.mp3",       // arayüz bip'i (tuşlar, onaylar)
+  blip: "",       // arayüz bip'i (tuşlar, onaylar)
   buzz: "",       // hata vızıltısı
-  clank: "/audio/sfx/clank.mp3",      // metal darbe (vana turu, kilit)
-  tick: "/audio/sfx/tick.mp3",       // klavye tık'ı (intro)
-  scratch: "/audio/sfx/scratch.mp3",    // kalemle not yazma
-  page: "/audio/sfx/page.mp3",       // kâğıt/sayfa hışırtısı
-  pickup: "/audio/sfx/pickup.mp3",     // pil/eşya alma
-  valve: "/audio/sfx/valve.mp3",      // vana gıcırtısı
-  fuse: "/audio/sfx/fuse.mp3",       // sigorta oturması
-  objective: "/audio/sfx/objective.mp3",  // yeni görev çanı
-  boom: "/audio/sfx/boom.mp3",       // ölüm/darbe vuruşu
-  glitch: "/audio/sfx/glitch.mp3",     // parazit patlaması
-  heartbeat: "/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
+  clank: "",      // metal darbe (vana turu, kilit)
+  tick: "",       // klavye tık'ı (intro)
+  click: "",      // arayüz buton tıklaması
+  scratch: "",    // kalemle not yazma
+  page: "",       // kâğıt/sayfa hışırtısı
+  pickup: "",     // pil/eşya alma
+  valve: "",      // vana gıcırtısı
+  fuse: "",       // sigorta oturması
+  objective: "",  // yeni görev çanı
+  boom: "",       // ölüm/darbe vuruşu
+  glitch: "",     // parazit patlaması
+  heartbeat: "",  // TEK kalp vuruşu (ritmi motor tekrarlar)
 };
 
 export const MUSIC_FILES = {
+  // Menü / arayüz parçaları
+  menu: "",      // ana menü müziği (New Game/Continue'a kadar çalar)
+  intro: "",     // intro mail sekansı müziği
+  credits: "",   // credits ekranı müziği
   // Bölüm/atmosfer parçaları — hikayede { type: "music", track: "k6" }
   // ile başlar, { type: "music" } (track'siz) ile susar.
   k6: "",         // makine dairesi ambiyansı

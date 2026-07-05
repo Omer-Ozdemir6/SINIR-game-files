@@ -6,12 +6,13 @@ import { t } from "../i18n";
    Atmosferik arka plan (su altı tesisi), sol hizalı liste,
    üzerine gelinen/seçili öğe vurgulu (kutu + parlaklık).
    ============================================================ */
-export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, onSettings, onCredits, onPuzzleTest }) {
+export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, onSettings, onCredits, onHowTo, onPuzzleTest }) {
   const [hover, setHover] = useState(null);
 
   const items = [];
   if (gameExists) items.push({ key: "resume", label: t("menu.resume"), fn: onResume });
   items.push({ key: "new", label: gameExists && confirmNew ? t("menu.newGameConfirm") : t("menu.newGame"), fn: onNewGame });
+  items.push({ key: "howto", label: t("menu.howto"), fn: onHowTo });
   items.push({ key: "settings", label: t("menu.settings"), fn: onSettings });
   items.push({ key: "credits", label: t("menu.credits"), fn: onCredits });
 

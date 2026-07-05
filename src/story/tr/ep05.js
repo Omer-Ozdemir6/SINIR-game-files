@@ -62,8 +62,43 @@ export const EP05 = {
         { type: "narrate", text: "«İyi haber: onlardan olmadığın belli. Yemeklerini yemedin, kokun temiz. Ama bu, Buluntu'nun seni bir tehdit olarak göreceği anlamına da geliyor. Dikkatli geç.»", if: { flag: "sofraYedi", equals: false } },
       ],
       choices: [
-        { id: "ilerle", text: "Kazının merkezine, Buluntu'ya doğru ilerle", next: "n_gecit" },
+        { id: "ilerle", text: "Kazının merkezine, Buluntu'ya doğru ilerle", next: "n_kadim_kapi" },
         { id: "sor", text: "\"Sıfıra ne kadar var?\" diye sor", next: "n_selin_sifir" },
+      ],
+    },
+
+    /* KADİM KAPI — gölge (kalıntı) bulmacası: RE7 tarzı 3D çevirme */
+    n_kadim_kapi: {
+      checkpoint: true,
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Kazının merkezine giden yol, kayaya oyulmuş devasa bir kapıyla kesiliyor. Üstünde tek bir oyuk: dairesel bir işaret, ortasında bir göz, yayılan kollar. Selin fısıldıyor: «Bu kapıyı kazı ekibi hiç açamadı. Kilidi bir bilmece — şu kaidedeki kalıntıyı doğru açıyla tutman gerek.»" },
+        { type: "narrate", text: "Kaidede, projektör lambasının önünde, deforme bir metal-kemik karışımı kalıntı duruyor; Buluntu'nun dokusundan bir parça. Onu çevirdikçe arkadaki duvara düşen gölgesi değişiyor — bir açıda anlamsız bir yumak, başka açıda... bir şeye benziyor. Doğru açıda gölgesi kapıdaki işarete dönüşmeli." },
+        { type: "waitTap" },
+        { type: "note", id: "not_kadim", title: "Kadim kapı", text: "Kazının merkezine giden kapı, gölge bilmecesiyle kilitli. Kaidedeki kalıntıyı çevirip eğerek, gölgesini kapıdaki işarete (dairesel göz + yayılan kollar) oturtmam gerek. Her açıda gölge farklı düşüyor." },
+      ],
+      interaction: {
+        kind: "shadow",
+        title: "KADİM KİLİT — GÖLGEYİ BUL",
+        // hedef açı: kalıntının gölgesinin Buluntu işaretine döndüğü açı
+        targetYaw: 0, targetPitch: 0,
+        startYaw: 65, startPitch: -40,
+        step: 15, tol: 12,
+        success: "n_kadim_acildi",
+        cancel: "n_selin_plan",
+      },
+    },
+
+    n_kadim_acildi: {
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Gölge işarete oturduğu an, kalıntı zayıf bir titreşimle karşılık veriyor — ve kadim kapı, taş üstünde taş kayarak, inleyerek açılıyor. Ardından kazının kalbi: Buluntu." },
+        { type: "flag", set: { kadimAcildi: true } },
+        { type: "waitTap" },
+        { type: "ambient", text: "Selin gölgeye bakakalıyor. «Kazı ekibi aylarca uğraştı bununla. Sen... sen nasıl bu kadar çabuk?» Cevap veremiyorsun. Sanki eller senin değil de başka birininmiş gibi doğru açıyı buldu. Buluntu seni çağırıyor olabilir mi?" },
+      ],
+      choices: [
+        { id: "gec", text: "Açılan kapıdan Buluntu'nun önüne geç", next: "n_k2_gecit" },
       ],
     },
 
@@ -74,13 +109,13 @@ export const EP05 = {
         { type: "narrate", text: "Sen gizli frekansları dinlemiştin — Buluntu'nun sesini tanıyorsun. Selin'in bilmediğini biliyorsun: sayı düzenli değil. Hızlanıyor.", if: { flag: "frekanslariDuydun", equals: true } },
       ],
       choices: [
-        { id: "ilerle", text: "Merkeze ilerle", next: "n_gecit" },
+        { id: "ilerle", text: "Merkeze ilerle", next: "n_kadim_kapi" },
       ],
     },
 
     /* ================= GEÇİT — BULUNTU'NUN ÖNÜ ================= */
 
-    n_gecit: {
+    n_k2_gecit: {
       checkpoint: true,
       cost: 2,
       events: [
@@ -272,5 +307,5 @@ export const EP05 = {
 };
 
 export const EP05_FLAGS = {
-  k2Ilk: false,
+  k2Ilk: false, kadimAcildi: false,
 };

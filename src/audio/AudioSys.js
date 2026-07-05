@@ -126,6 +126,12 @@ export const AudioSys = {
     if (!this.inited || !this.enabled) return;
     try { this.n.blip.triggerAttackRelease(freq, "32n"); } catch (e) {}
   },
+  uiClick() {
+    // arayüz buton tıklaması — kısa, tok blip
+    if (this.playSample("click")) return;
+    if (!this.inited || !this.enabled) return;
+    try { this.n.blip.triggerAttackRelease(430, "64n"); } catch (e) {}
+  },
   buzzSfx() {
     if (this.playSample("buzz")) return;
     if (!this.inited || !this.enabled) return;

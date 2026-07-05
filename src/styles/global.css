@@ -96,6 +96,7 @@ img { -webkit-user-drag: none; user-drag: none; }
   .s1-line { animation-name: s1-fade; animation-duration: 0.4s; animation-timing-function: ease-out; }
   .s1-death { animation-name: s1-fade; animation-duration: 1.2s; animation-timing-function: ease-in; }
   .s1-critical { animation-name: s1-pulse; animation-duration: 1s; animation-iteration-count: infinite; }
+  .s1-batblink { animation-name: s1-blink; animation-duration: 0.7s; animation-iteration-count: infinite; }
   .s1-objective { animation-name: s1-objflash; animation-duration: 4.2s; animation-timing-function: ease-in-out; animation-fill-mode: forwards; }
   .s1-toast { animation-name: s1-toastblink; animation-duration: 3.2s; animation-timing-function: linear; animation-fill-mode: forwards; }
   .s1-panel, .s1-paper { animation-name: s1-panelin; animation-duration: 0.25s; animation-timing-function: ease-out; }
