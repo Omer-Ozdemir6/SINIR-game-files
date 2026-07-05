@@ -986,7 +986,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = battery > 0 && battery <= 12 && !blackout;
+  const flickering = battery > 0 && battery <= 12 && screen !== "blackout";
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
   // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ
