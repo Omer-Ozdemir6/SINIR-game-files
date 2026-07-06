@@ -1,22 +1,13 @@
-/* ============================================================
-   SINIR-1 — BÖLÜM 2: "K-5 / SINAV"  (v3 — tam, labirent + parça kilidi)
+/* ================= ===========================================
+   SINIR-1 — BÖLÜM 2: "K-5 / SINAV" (v4 — OUTLAST TONE & TABLET LIGHT MECHANIC)
    Katın sahibi: DENİZ OKUR — sistemden konuşan mühendis.
 
-   YAPI (hub + serbest sıra):
-   · n_hub: dört dala açılır; oyuncu sınavların sırasını SEÇER
-   · üç sınav = üç KART PARÇASI (kart1/kart2/kart3)
-   · üç parça toplanmadan n_cikis kapısı BOŞA döner (parça-kilit)
-   · Ece hattı: adını verme kararı → eceGuven; ele verme → ihanet
-   · Deniz sınavı: cevaplar denizOfke'yi oynatır, sonuçlar taşınır
-   · mezuniyet → Harun kovalamacası (sefFarkindalik doğar) → final
-
-   SEBEP-SONUÇ (oyuncu HATA yapabilir):
-   · basınç şemasını okumadan Sınav 1 → yanlış vana → akıl −, gürültü +
-   · tünel haritasını almadan Sınav 2 → kaybolma + ölümcül tahliye
-   · Ece'ye adını verirsen Deniz sınav 3'te kullanır
-   · Ece'yi ele verirsen eceGuven çöker (EP03'e taşınır)
-   · Harun'da yanlış kaçış = ölüm; donakalmak İnleyen'de işe yarar,
-     Şef'te YARAMAZ (o gözle görür) — önceki dersi yanlış genelleme
+   YAPI & ATMOSFER (Outlast Horrific Realism):
+   · n_hub: dört dala açılır; oyuncu sınavların sırasını SEÇER.
+   · Oyuncunun elinde GECE GÖRÜŞÜ veya vizör yok. Sadece TABLET var.
+   · Tabletin ekran ışığı (ya da feneri) tek ışık kaynağı; pili bittiğinde mutlak karanlık ve ölüm kaçınılmaz.
+   · Anlatım dili tamamen Outlast klasiği olan çaresizlik, ağır psikolojik gerilim, et kesilmesi, kemik çatlaması, nefes darlığı ve bedensel korku üzerine kuruldu.
+   · Kod yapısı, bayraklar, etkileşimler eksiksiz korundu; sadece metinler, anonslar ve tasvirler Outlast vahşeti ve o klostrofobik atmosfere göre revize edildi.
    ============================================================ */
 
 export const EP02 = {
@@ -28,20 +19,21 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "music", track: "k5" },
-        { type: "system", text: "KAT: K-5 — YAŞAM DESTEK · HAVA İŞLEME · SU GERİ DÖNÜŞÜMÜ" },
-        { type: "narrate", text: "Merdiven seni dev hava santrallerinin uğultusuna bırakıyor. K-5 nefes alan bir kat: borular soluyup veriyor, filtreler tıslıyor, tavanda havalandırma ağızları karanlık dişler gibi sıralanıyor." },
-        { type: "narrate", text: "Üç adım atıyorsun — ve arkandaki kapı kendi kendine, nazikçe kilitleniyor. Ardından öndeki. Tık. Tık. Bir tuzağın değil, bir OYUNUN içine düştüğünü anlıyorsun." },
+        { type: "music", track: "k5_outlast_dread" },
+        { type: "system", text: "KAT: K-5 — YAŞAM DESTEK · ÖLÜMÜN EŞİĞİ · SU VE KAN DÖNGÜSÜ" },
+        { type: "narrate", text: "Merdivenlerden indiğin an, ciğerlerine dolan hava pas, küf ve çürüyen et kokusuyla ağırlaşıyor. K-5 devasa bir canavarın içi gibi; borular delice zonkluyor, filtreler sanki boğuluyormuş gibi hırıltıyla tıslıyor, tavan şaftları karanlık dişlerini etine geçirmek için bekleyen ağızlar gibi açılıyor." },
+        { type: "narrate", text: "Öne doğru üç titrek adım atıyorsun. Arkandaki ağır çelik kapı birden öyle bir gürültüyle kapanıyor ki, darbe dalgası sırtında patlıyor. Kilidin yuvasına oturma sesi: TIK. TIK. Bir farenin kapana kısılması gibi, burası bir deney sahası ve sen sadece can çekişmesi izlenecek bir kurbansın." },
+        { type: "narrate", text: "Karanlığı yırtan tek şey, parmaklarının arasında titreyen tabletin çiğ, beyaz ekran ışığı. Bu ışık seni kurtarmıyor; sadece seni avlayacak şeylere nerede olduğunu gösteren bir fener gibi yüzünü aydınlatıyor. Pil çubuğu yavaşça göz kırpıyor." },
         { type: "waitTap" },
         { type: "glitch", ms: 300 },
-        { type: "anons", text: "「İşte geldin. Ben Deniz. Sistem burada benim: her kapı, her kamera, her hoparlör. Sen ise... yeni oyuncaksın.」" },
-        { type: "anons", text: "「Kural basit: bu katta üç ders var, her ders bir KART PARÇASI verir. Üçünü birleştirip çıkış kapısını açarsan K-4'e geçersin. Sırasını sana bırakıyorum — nereden başlayacağını görmek eğlenceli.」" },
+        { type: "anons", text: "「İşte oradasın... Canlı taze et. Ben Deniz. Bu labirentin tanrısı da benim, kasabı da. Her kapı, her kör kamera, her paslı hoparlör benim gözüm, benim dilim. Sen ise... sadece biraz daha uzun süre çırpınmasını umduğum yeni oyuncağımsın.」" },
+        { type: "anons", text: "「Kurallar canını yakacak kadar basit: Bu katta üç acımasız ders var. Her ders sana etinden cımbızla çekip alacağın bir KART PARÇASI verecek. Üçünü de kanlı parmaklarınla birleştirip çıkış kapısına sokamazsan, burada çürürsün. Seçim senin, hangi acıdan başlayacağını izlemek nefesimi kesiyor...」" },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "objective", text: "Üç dersten kartın üç parçasını topla, çıkışı aç" },
-        { type: "note", id: "not_deniz", title: "Deniz Okur", text: "Anonstaki adam: Deniz, sistem mühendisi. Kapılar, kameralar, hoparlörler onun. Beni laboratuvar faresi gibi koridorlara saldı. Sesinde nefret yok — eğlence var, ki bu daha kötü. Üç 'ders', üç kart parçası; kartı tamamlamadan çıkış yok." },
+        { type: "objective", text: "Mutlak karanlık çökmeden üç kart parçasını söküp al ve çıkışı zorla" },
+        { type: "note", id: "not_deniz", title: "Deniz Okur — Hücremin Gardiyanı", text: "Hoparlörden salyalarını akıtarak konuşan o psikopat: Deniz. Sistem mühendisi. Kapılar, kameralar, buradaki her ölüm tuzağı onun parmaklarının ucunda. Beni bu lağım kokulu koridorlara bir laboratuvar faresi gibi fırlattı. Sesindeki o sapkın eğlence, saf nefretten çok daha korkunç. Üç 'ders', üç kart parçası... Eğer pillerim bitmeden o kartı tamamlayamazsam, bu tabletin soğuk ışığı altında can vereceğim." },
       ],
       choices: [
-        { id: "ilerle", text: "Açık kalan tek koridordan ilerle", next: "n_hub" },
+        { id: "ilerle", text: "Tabletin titrek ışığını önüme tutarak koridora sız", next: "n_hub" },
       ],
     },
 
@@ -51,35 +43,35 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Dört yöne açılan bir dağıtım kavşağı. Zeminde kuruyan bir su birikintisi, tavanda cansız kameralar — biri seni takip ediyormuş gibi hafifçe dönüyor.", if: { flag: "hubIlk", equals: false } },
+        { type: "narrate", text: "Dört vahşi karanlığa açılan boğucu bir dağıtım kavşağı. Zeminde pıhtılaşmış, kararmış bir sıvı birikintisi var — kokusu genzini yakıyor. Tavandaki cansız kameralardan biri, içindeki dişliler çığlık ata ata dönüyor ve merceğini doğrudan gözlerine saplıyor. Tabletinin ışığı, etraftaki gölgeleri duvarlarda devasa canavarlara dönüştürüyor.", if: { flag: "hubIlk", equals: false } },
         { type: "flag", set: { hubIlk: true } },
         { type: "status", items: [
           { label: "KART I", flag: "kart1" },
           { label: "KART II", flag: "kart2" },
           { label: "KART III", flag: "kart3" },
         ] },
-        { type: "ambient", text: "Duvarda paslı yön levhaları: BASINÇ ODASI · TÜNEL AĞI · GÖZLEM ODASI · ÇIKIŞ. Levhaların altına biri tırnakla kazımış: 'sırayla değil, hazır olduğunda'." },
+        { type: "ambient", text: "Duvarda pas ve pislikle kaplanmış yön levhaları: BASINÇ ODASI · TÜNEL AĞI · GÖZLEM ODASI · ÇIKIŞ. Levhaların hemen altına, muhtemelen tırnakları sökülene kadar kazımış biri: 'Sırayla ölmediler, sen de hazır olduğunda geber.'" },
       ],
       choices: [
-        { id: "basinc", text: "Basınç sesinin geldiği ıslak koridora sap", next: "n_s1_kapi", if: { flag: "kart1", equals: false } },
-        { id: "tunel", text: "Tavan ağızlarının alçaldığı dar geçide gir", next: "n_s2_kapi", if: { flag: "kart2", equals: false } },
-        { id: "gozlem", text: "Cam bölmeli sessiz koridoru izle", next: "n_s3_kapi", if: { flag: "kart3", equals: false } },
-        { id: "destek", text: "Kıvılcım saçan yaşam destek paneline bak", next: "n_destek_panel", if: { flag: "destekOnarildi", equals: false } },
-        { id: "cikis", text: "Ağır çıkış kapısına git", next: "n_cikis" },
-        { id: "dinlen", text: "Bir borunun gölgesinde durup soluklan", next: "n_hub_dinlen", ifStat: { stat: "gurultu", gte: 30 } },
+        { id: "basinc", text: "Basınç çığlıklarının yükseldiği ıslak, kan kokulu koridora sap", next: "n_s1_kapi", if: { flag: "kart1", equals: false } },
+        { id: "tunel", text: "Tavan şaftlarının bir tabut gibi alçaldığı kapkara dehlize sürün", next: "n_s2_kapi", if: { flag: "kart2", equals: false } },
+        { id: "gozlem", text: "Kırık camların arkasından ölüm sessizliği yayan koridora sız", next: "n_s3_kapi", if: { flag: "kart3", equals: false } },
+        { id: "destek", text: "Kıvılcımlar saçarak can çekişen yaşam destek paneline yaklaş", next: "n_destek_panel", if: { flag: "destekOnarildi", equals: false } },
+        { id: "cikis", text: "Zemini zincirlenmiş o devasa çelik çıkış kapısına yürü", next: "n_cikis" },
+        { id: "dinlen", text: "Karanlık bir borunun gölgesine sinip hıçkırıklarını bastırmaya çalış", next: "n_hub_dinlen", ifStat: { stat: "gurultu", gte: 30 } },
       ],
     },
 
-    /* YENİ: yaşam destek paneli — wires bulmacası (kablo eşleştirme) */
+    /* yaşam destek paneli — wires bulmacası */
     n_destek_panel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kavşağın köşesinde, sökülmüş bir yaşam destek panelinin kapağı sarkıyor. İçeride beş kablo yuvalarından çıkmış, uçları çıplak, ara sıra kıvılcım atıyor. Panel etiketi: \"K-5 HAVA DÖNGÜSÜ — O2/CO2 DENGE\". Deniz'in — ya da başka birinin — bu paneli kasten sabote ettiği belli. Kabloları doğru portlara bağlarsan bu kattaki hava temizlenir; gürültün daha az iz bırakır." },
-        { type: "note", id: "not_destek", title: "Yaşam destek paneli", text: "K-5 hava döngüsü paneli sabote edilmiş — beş kablo yuvalarından sökülmüş. Renkleri portlarla eşleştirmem gerek. Onarırsam hava temizlenir, hareketim daha sessiz olur." },
+        { type: "narrate", text: "Kavşağın en karanlık köşesinde, sanki bir balta ile parçalanmış yaşam destek panelinin kapağı sallanıyor. İçerideki beş kalın kablo damarları sökülmüş bir insan gibi dışarı sarkmış; uçlarından fırlayan mavi kıvılcımlar tabletinin ekranında anlık parlamalar yaratıyor. Paneldeki kanlı etikette \"K-5 HAVA DÖNGÜSÜ — YAŞAM / ÖLÜM DENGESİ\" yazıyor. Deniz bu paneli bilerek parçalamış; acı çekmeni istiyor. Eğer bu vahşi kabloları doğru yuvalara sokabilirsen, ciğerlerini yakan o asitli gaz temizlenecek ve attığın her korku dolu adım daha az ses çıkaracak." },
+        { type: "note", id: "not_destek", title: "Can Çekişen Hava Paneli", text: "K-5'in akciğerleri sökülmüş. Beş çıplak kablo kıvılcım saçıyor, dokunursam parmaklarımı yakacak kadar sıcaklar. Doğru portları bulmam gerek. Eğer beceremezsem, bu zehirli hava beni boğacak ve çıkardığım hırıltılar yüzünden yerimi anında bulacaklar." },
       ],
       interaction: {
         kind: "wires",
-        title: "HAVA DÖNGÜSÜ — KABLOLARI BAĞLA",
+        title: "NEFES ALMAK İÇİN — KABLOLARI ETİNE DOKUNDURMADAN BAĞLA",
         cables: [
           { id: "c_o2", label: "O₂", color: "#4aa2c2" },
           { id: "c_co2", label: "CO₂", color: "#8a8a8a" },
@@ -95,7 +87,7 @@ export const EP02 = {
           { id: "p5", label: "5" },
         ],
         pairs: { c_o2: "p3", c_co2: "p1", c_pmp: "p5", c_fan: "p2", c_val: "p4" },
-        penalty: { gurultu: 12, akil: -4, text: "YANLIŞ BAĞLANTI — yüksek kıvılcım! GÜRÜLTÜ +12" },
+        penalty: { gurultu: 12, akil: -4, text: "GÜM! Yanlış bağlantı! Yüksek voltaj parmaklarında patladı ve çelik duvarlarda yankılandı! GÜRÜLTÜ +12" },
         success: "n_destek_onarildi",
         cancel: "n_hub",
       },
@@ -104,25 +96,25 @@ export const EP02 = {
     n_destek_onarildi: {
       cost: 1,
       events: [
-        { type: "system", text: "HAVA DÖNGÜSÜ: DENGELENDİ" },
-        { type: "narrate", text: "Son kablo yuvasına oturduğu an panel canlanıyor; fanlar dönmeye başlıyor, havadaki o ağır, metalik koku dağılıyor. İlk kez K-5'te derin bir nefes alabiliyorsun. Temiz hava, temiz kafa demek." },
+        { type: "system", text: "HAVA DÖNGÜSÜ: KANLI GAZ TAHLİYE EDİLDİ" },
+        { type: "narrate", text: "Son kabloyu yuvasına ittirdiğin an panel amansız bir hırıltıyla canlanıyor. Fanlar dönmeye başlıyor ve o genzini yırtan, çürümüş demir kokusu yavaşça dağılıyor. İlk kez göğsün körük gibi inip kalkarken derin bir nefes alabiliyorsun. Kurtulmak için aklını başında tutmalısın." },
         { type: "flag", set: { destekOnarildi: true } },
-        { type: "stat", stat: "akil", delta: 6, note: "AKIL +6 — Temiz hava", noteKind: "system" },
+        { type: "stat", stat: "akil", delta: 6, note: "AKIL +6 — Ciğerlerine giren taze hava can verdi", noteKind: "system" },
         { type: "battery", spares: 1 },
       ],
       choices: [
-        { id: "geri", text: "Kavşağa dön", next: "n_hub" },
+        { id: "geri", text: "O ölümcül kavşağa geri dön", next: "n_hub" },
       ],
     },
 
     n_hub_dinlen: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Sırtını soğuk boruya verip nefesini sayıyorsun. Bir. İki. Kameranın kırmızı ışığı yavaşça sönüyor — Deniz başka bir şeye bakıyor. Şimdilik." },
-        { type: "stat", stat: "gurultu", delta: -20, note: "Ortalık sakinleşti — GÜRÜLTÜ azaldı", noteKind: "system" },
+        { type: "narrate", text: "Sırtını sırılsıklam, buz gibi bir boruya yaslayıp dizlerini göğsüne çekiyorsun. Kalbin göğüs kafesini parçalamak istercesine vuruyor. Bir... İki... Tabletinin ışığını bacaklarının arasına saklıyorsun. Kameranın tepesindeki kan kırmızısı ışık yavaşça sönüyor; Deniz şimdilik başka bir kurbanın can çekişmesini izliyor olmalı." },
+        { type: "stat", stat: "gurultu", delta: -20, note: "Nefesin düzene girdi — GÜRÜLTÜ azaldı", noteKind: "system" },
       ],
       choices: [
-        { id: "geri", text: "Kavşağa dön", next: "n_hub" },
+        { id: "geri", text: "Işığı yeniden karanlığa doğrult ve kavşağa dön", next: "n_hub" },
       ],
     },
 
@@ -131,12 +123,12 @@ export const EP02 = {
     n_s1_kapi: {
       cost: 1,
       events: [
-        { type: "anons", text: "「Ders bir: BASINÇ. İçeride üç vana. Doğru sırayla açarsan oda dengelenir ve kartın ilk parçasını alırsın. Yanlış sırayla açarsan... kulakların bana teşekkür eder.」" },
-        { type: "narrate", text: "Kapının yanında yağ lekeli bir pano. Üstünde bir şema — ama birikmiş kir yüzünde. Okumak için eğilip silmen gerekecek; ya da şansını denersin." },
+        { type: "anons", text: "「Birinci ders: BASINÇ. İçeride etini kemiğinden ayırabilecek güçte üç vana var. Eğer doğru sırayla çevirmezsen, o çok güvendiğin kulak zarlarının kafanın içinde nasıl patladığını dinleriz. Başla bakalım fare.」" },
+        { type: "narrate", text: "Ağır demir kapının yanında paslı, yağlı bir pano duruyor. Üzerinde kurumuş kan lekelerinin altında bir şema var. Okumak için tabletinin ekran ışığını dibine kadar yaklaştırıp parmaklarınla o pisliği kazıman gerekecek. Ya da doğrudan intiharı seçip içeri dalarsın." },
       ],
       choices: [
-        { id: "oku", text: "Panoya eğil, şemayı sil ve oku", next: "n_s1_sema" },
-        { id: "gir", text: "Vakit kaybetme, doğruca içeri gir", next: "n_s1" },
+        { id: "oku", text: "Tablet ışığını panoya daya, pisliği kazıyıp oku", next: "n_s1_sema" },
+        { id: "gir", text: "Zamanım yok, piller tükeniyor! Doğruca içeri dal", next: "n_s1" },
       ],
     },
 
@@ -145,13 +137,13 @@ export const EP02 = {
       events: [
         { type: "flag", set: { s1SemaOkundu: true } },
         { type: "document", open: true, doc: {
-          id: "d_havasema", title: "Basınç Dengeleme Prosedürü",
-          meta: "SINIR-1 · K-5 YAŞAM DESTEK · TALİMAT 3-C",
-          body: "BASINÇ ODASI — VANA AÇILIŞ SIRASI\n\nUYARI: Sıralamaya kesinlikle uyulacaktır.\n\n  1) DENGELEME  (sarı)  — iç/dış basıncı eşitler\n  2) TAHLİYE    (kırmızı)— fazla basıncı sintineye atar\n  3) ANA BESLEME(yeşil)  — hattı açar\n\nSIRAYI BOZAN, KULAĞIYLA ÖDER.\n(revir, hafta 12: T. Demir — sol kulak, kalıcı)" } },
-        { type: "note", id: "not_havasema", title: "Basınç sırası", text: "Vana sırası: önce SARI (dengeleme), sonra KIRMIZI (tahliye), en son YEŞİL (ana besleme). Yanlış sıra kulak zarı demek." },
+          id: "d_havasema", title: "Dehşet Altında Basınç Protokolü",
+          meta: "SINIR-1 · K-5 ÖLÜM HESAPLARI · TALİMAT 3-C",
+          body: "BASINÇ ODASI — İŞKENCEYİ DURDURMA SIRASI\n\nKURAL: Bu sırayı bozan içeride paramparça olur.\n\n  1) DENGELEME  (sarı)  — kafanın içindeki baskıyı durdurur\n  2) TAHLİYE    (kırmızı)— biriken kanlı gazı sintineye fırlatır\n  3) ANA BESLEME(yeşil)  — kilidi patlatır\n\nHATA YAPARSAN, BEYNİN KULAKLARINDAN AKAR.\n(Kayıt, hafta 12: T. Demir — Sol kulak zarı patladı, delirdi.)" } },
+        { type: "note", id: "not_havasema", title: "Kulaklarımı Kurtaracak Sıra", text: "Önce SARI vana (denge), sonra KIRMIZI (tahliye), en son o devasa YEŞİL çark. Yanlış bir hareket yaparsam kafam patlayacak." },
       ],
       choices: [
-        { id: "gir", text: "Basınç odasına gir", next: "n_s1" },
+        { id: "gir", text: "Şemayı aklına kazı ve basınç odasına gir", next: "n_s1" },
       ],
     },
 
@@ -159,15 +151,15 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Oda, kulak zarında hissedilen bir gerginlikle dolu. Üç vana: sarı, kırmızı ve dipte yeşil boyalı büyük çark. Basınç ibresi turuncu bölgede titriyor.", if: { flag: "s1Ilk", equals: false } },
+        { type: "narrate", text: "Odaya adım attığın an kulaklarında korkunç bir zonklama başlıyor, gözlerin yuvalarından fırlayacak gibi geriliyor. Duvarlardan sızan buhar çığlık atarak yükseliyor. Üç vana karşında duruyor: Sarı, kırmızı ve en dipte loş köşede yeşil boyalı devasa bir çark. Basınç göstergesi kıpkırmızı bölgede titriyor.", if: { flag: "s1Ilk", equals: false } },
         { type: "flag", set: { s1Ilk: true } },
-        { type: "alert", text: "ODA BASINCI: YÜKSEK — SIRALAMAYI DOĞRU SEÇ" },
-        { type: "narrate", text: "Şemayı okumadın. Hangi vana önce? Bir tahmin — ve tahminin bedeli kulağın.", if: { flag: "s1SemaOkundu", equals: false } },
+        { type: "alert", text: "HAVA BASINCI ÖLÜMCÜL SEVİYEDE — KAFAN PATLAMADAN ÖNCE SEÇ" },
+        { type: "narrate", text: "Şemayı okumadan geldin. Karanlıkta el yordamıyla hangi vanayı çevireceksin? Yapacağın tek bir hata, kulaklarından kan gelmesine sebep olacak.", if: { flag: "s1SemaOkundu", equals: false } },
       ],
       choices: [
-        { id: "sari", text: "SARI vanayı aç", next: "n_s1_b" },
-        { id: "kirmizi", text: "KIRMIZI vanayı aç", next: "n_s1_yanlis" },
-        { id: "yesil", text: "YEŞİL çarkı aç", next: "n_s1_yanlis" },
+        { id: "sari", text: "SARI vanaya yapış ve tüm gücünle çevir", next: "n_s1_b" },
+        { id: "kirmizi", text: "KIRMIZI vanayı çılgınca döndür", next: "n_s1_yanlis" },
+        { id: "yesil", text: "O devasa YEŞİL çarkı zorla", next: "n_s1_yanlis" },
       ],
     },
 
@@ -175,49 +167,49 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "glitch", ms: 500 },
-        { type: "narrate", text: "Vana döner dönmez oda üstüne çöküyor: basınç dalgası kulaklarına iki çivi gibi giriyor. Dizlerinin üstünde, ağzın açık, sesin sana ait olmayan bir çınlamayla doluyor." },
-        { type: "stat", stat: "akil", delta: -12, note: "AKIL -12 — Kulakların hâlâ çınlıyor", noteKind: "alert" },
-        { type: "stat", stat: "gurultu", delta: 10, note: "GÜRÜLTÜ +10 — Basınç dalgası tüm katta duyuldu", noteKind: "alert" },
-        { type: "anons", text: "「Uuu. Şemayı okumadın demek. Panodaki kağıda bir zahmet göz atsaydın. Baştan.」" },
+        { type: "narrate", text: "Vanayı çevirdiğin an odada korkunç bir patlama yankılanıyor! Yüksek basınç dalgası kulaklarına iki kızgın demir gibi saplanıyor. Çığlık atarak dizlerinin üzerine çöküyorsun ama kendi sesini bile duyamıyorsun; kafanın içi sadece saf, delirten bir çınlamayla kaplı. Burnundan sızan sıcak kanı hissediyorsun." },
+        { type: "stat", stat: "akil", delta: -12, note: "AKIL -12 — Kulaklarından kan sızıyor, çınlama delirtici", noteKind: "alert" },
+        { type: "stat", stat: "gurultu", delta: 10, note: "GÜRÜLTÜ +10 — Bu korkunç patlama kattaki her şeyi uyandırdı", noteKind: "alert" },
+        { type: "anons", text: "「Ahahaha! Tanrım, o kemik çatlaması sesini buradan bile duydum! O panodaki kağıda bakmak bu kadar mı zordu? Hadi, kalk ayağa ve baştan acı çek!」" },
       ],
       choices: [
-        { id: "tekrar", text: "Toparlan, vanalara dön", next: "n_s1" },
-        { id: "cik", text: "Odadan çık, önce şemayı bul", next: "n_s1_kapi", if: { flag: "s1SemaOkundu", equals: false } },
+        { id: "tekrar", text: "Gözlerindeki yaşları sil, acıyla toparlanıp vanalara dön", next: "n_s1" },
+        { id: "cik", text: "Can havliyle dışarı kaç, panodaki şemayı oku", next: "n_s1_kapi", if: { flag: "s1SemaOkundu", equals: false } },
       ],
     },
 
     n_s1_b: {
       cost: 1,
       events: [
-        { type: "system", text: "DENGELEME VANASI: AÇIK — İÇ/DIŞ BASINÇ EŞİTLENİYOR" },
-        { type: "narrate", text: "Sarı vana tıslayarak açılıyor, kulaklarındaki baskı bir kademe gevşiyor. Şimdi ikincisi." },
+        { type: "system", text: "DENGELEME VANASI: AÇILDI — KAFATASI BASINCI DÜŞÜYOR" },
+        { type: "narrate", text: "Sarı vana tiz bir çığlıkla dönüyor, kulaklarındaki o korkunç patlama hissi bir nebze olsun hafifliyor. Ama duramazsın, tabletin ışığı titriyor. Şimdi ikincisi." },
       ],
       choices: [
-        { id: "kirmizi", text: "KIRMIZI vanayı aç", next: "n_s1_c" },
-        { id: "yesil", text: "YEŞİL çarkı aç", next: "n_s1_yanlis" },
+        { id: "kirmizi", text: "KIRMIZI vanaya atla ve çevir", next: "n_s1_c" },
+        { id: "yesil", text: "YEŞİL çarkı zorla", next: "n_s1_yanlis" },
       ],
     },
 
     n_s1_c: {
       cost: 1,
       events: [
-        { type: "system", text: "TAHLİYE VANASI: AÇIK — FAZLA BASINÇ SİNTİNEYE VERİLİYOR" },
-        { type: "narrate", text: "İbre turuncudan sarıya, sarıdan yeşile süzülüyor. Son adım: ana besleme çarkı. Büyük, ağır, yeşil." },
+        { type: "system", text: "TAHLİYE VANASI: AÇILDI — ZEHİRLİ GAZ SİNTİNEYE KUSULUYOR" },
+        { type: "narrate", text: "Basınç ibresi o ölümcül kırmızı bölgeden aşağıya doğru kayıyor. Son bir hamle kaldı: Ana besleme çarkı. Paslanmış, devasa ve yeşil." },
       ],
-      interaction: { kind: "valve", title: "ANA BESLEME — ÇARKI ÇEVİR", turns: 6, success: "n_s1_ok", cancel: "n_s1_c" },
+      interaction: { kind: "valve", title: "KAYALARI SÖKER GİBİ — ÇARKI TÜM GÜCÜNLE ÇEVİR", turns: 6, success: "n_s1_ok", cancel: "n_s1_c" },
     },
 
     n_s1_ok: {
       cost: 1,
       events: [
         { type: "flag", set: { sinav1: true, kart1: true } },
-        { type: "system", text: "BASINÇ ODASI: DENGEDE — DERS 1 TAMAMLANDI · KART PARÇASI I ALINDI" },
-        { type: "anons", text: "「...Vay. Okuyabiliyorsun. Son üç adayın toplamından iyisin. İlk parça senin.」" },
+        { type: "system", text: "ODA DENGELENDİ — KART PARÇASI I ETTEN SÖKÜLEREK ALINDI" },
+        { type: "anons", text: "「...Bak sen şu işe. Sadece bir et yığını değilsin demek, okuyabiliyorsun. Senden önceki üç zavallı et parçasından daha dayanıklısın. İlk parça senin, şimdilik sevin bakalım.」" },
         { type: "battery", spares: 1 },
-        { type: "note", id: "not_sinav1", title: "Kart I / III", text: "İlk kart parçası: basınç sınavı. 'Son üç aday' dedi — benden önce üç kişi bu koridorlardan geçirilmiş. Hiçbirinin adını, akıbetini söylemiyor." },
+        { type: "note", id: "not_sinav1", title: "İlk Kanlı Parça (I / III)", text: "Basınç cehenneminden ilk kart parçasını söktüm. Deniz 'senden önceki üç aday' dedi... Benden önce üç insanı daha bu labirentte avlamışlar. Onlara ne yaptı? Kemiklerini nereye fırlattı? Sesi tamamen hastalıklı bir hazla dolu." },
       ],
       choices: [
-        { id: "hub", text: "Kavşağa dön", next: "n_ara1" },
+        { id: "hub", text: "Kart parçasını göğsüme saklayıp kavşağa dön", next: "n_ara1" },
       ],
     },
 
@@ -227,12 +219,12 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Kavşağa dönerken duvardaki ölü interkom paneli kendi kendine cızırdıyor. Bir kez. İki kez. Statiğin altından tanıdık olmayan ama insan — gerçek — bir ses:" },
-        { type: "ambient", text: "«Konuşma, dinle. Bu hat eski sonar bakım hattı; Deniz'in hoparlörleri bunu duyamaz. ...K-6'dan çıktın. Kimse K-6'dan çıkamadı. Sen kimsin?»" },
+        { type: "narrate", text: "Kavşağa doğru titreyerek adımlarken, duvardaki parçalanmış, içi dışına çıkmış interkom paneli aniden cızırdıyor. Bir kez. İki kez. Statiğin, o boğucu cızırtının altından derinden gelen, dehşet içinde ama insan— gerçek bir kadın sesi yükseliyor:" },
+        { type: "ambient", text: "«Yalvarırım ses çıkarma, sadece dinle... Bu hat eski sonar hattı, Deniz'in o iğrenç kulakları burayı duyamaz. ...K-6 cehenneminden çıktın. Kimse oradan canlı çıkamamıştı. Sen hangi cehennemden geldin? Kimsin sen?»" },
       ],
       choices: [
-        { id: "ad", text: "Adını söyle", next: "n_ara1_ad" },
-        { id: "adyok", text: "\"İsimler tehlikeli. Bakım teknisyeniyim, o kadar.\"", next: "n_ara1_adyok" },
+        { id: "ad", text: "Korkudan titreyen sesimle adımı fısılda", next: "n_ara1_ad" },
+        { id: "adyok", text: "\"İsimler burada ölüm demek. Sadece hayatta kalmaya çalışan bir teknisyenim.\"", next: "n_ara1_adyok" },
       ],
     },
 
@@ -240,33 +232,33 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { adSoylendi: true } },
-        { type: "stat", stat: "eceGuven", delta: 15, note: "ECE sana güvenmeye başladı", noteKind: "system" },
-        { type: "ambient", text: "«...Üç haftadır kimse bana adını söylememişti. Herkes numara, rütbe.» Sesin gülümsediğini duyuyorsun. «Ben de Ece. Sonar operatörü. Dinle:»" },
+        { type: "stat", stat: "eceGuven", delta: 15, note: "ECE bu dehşetin içinde sana tutundu", noteKind: "system" },
+        { type: "ambient", text: "«...Üç koca haftadır bu karanlıkta kimse bana adını söylemedi. Herkes sadece çığlık attı ya da bir numara gibi geberdi...» Sesin arkasında hıçkırıklarını yutmaya çalıştığını duyuyorsun. «Ben Ece. Sonar operatörüyüm. Beni dinle, yaşamak istiyorsan dinle:»" },
       ],
       choices: [
-        { id: "devam", text: "Dinle", next: "n_ara1_bilgi" },
+        { id: "devam", text: "Tablet ışığını yere tutup pürdikkat dinle", next: "n_ara1_bilgi" },
       ],
     },
 
     n_ara1_adyok: {
       cost: 1,
       events: [
-        { type: "ambient", text: "«...Haklısın. Deniz isimleri toplar. İsim verirsen seninle OYNAR.» Bir duraksama. «Akıllısın ya da çok korkuyorsun. İkisi de işe yarar. Dinle:»" },
+        { type: "ambient", text: "«...Doğru. Çok haklısın. Deniz isimleri avlar. İsim verirsen o ismi zihnine kazır ve seni delirene kadar evcil hayvanı yapar...» Kısa, boğucu bir duraksama. «Çok korkuyorsun ama aklını kaybetmemişsin. Bu katta bu tek silahın. Beni iyi dinle:»" },
       ],
       choices: [
-        { id: "devam", text: "Dinle", next: "n_ara1_bilgi" },
+        { id: "devam", text: "Korkuyla dinle", next: "n_ara1_bilgi" },
       ],
     },
 
     n_ara1_bilgi: {
       cost: 1,
       events: [
-        { type: "ambient", text: "«Tünel dersini karanlıkta yaptırır — ışıkları o tutar. Ve tünel ağı labirenttir; haritasız gireni duvarlara vura vura dinlemiştim, günlerce. Gözlem odasının yanındaki bakım dolabında eski tünel şeması var. Tünele girmeden ONU AL.»" },
-        { type: "ambient", text: "«Bir şey daha: tünellerde bazen aşağıdan bir şey çıkar. Deniz bunu bilmiyor — kimse ona söylemiyor, çünkü kimse artık onunla konuşmuyor. Sesini duyarsan DUR. Sadece dur. Söz ver.»" },
-        { type: "note", id: "not_ece2", title: "Ece — sonar hattı", text: "Ece eski sonar hattından ulaşıyor; Deniz duyamıyor. Tünel için haritayı almamı söyledi — gözlem odası yanındaki dolapta. Tünellerdeki 'şey' için tek tavsiye: durmak. Üç haftadır tek başına hayatta; sözü altın." },
+        { type: "ambient", text: "«Tünel sınavını mutlak karanlıkta yapacak... Işıkları kapatıp seni avlayacak. Ve o tüneller tam bir insan öğütücü, kör bir labirent. Haritasız girenlerin duvarlara vurarak kafalarını nasıl parçaladığını günlerce interkomdan dinledim... Gözlem odasının yanındaki o kanlı bakım dolabında eski tünel şeması var. Oraya gir ve ONU AL!»" },
+        { type: "ambient", text: "«Bir şey daha var... Tünellerin derinliklerinde, o lağımların dibinde yaşayan başka bir şey var... Deniz bile bilmiyor, kimse ona söyleyemedi çünkü tünele giren herkes yendi. Eğer aşağıda ıslak, sürünme bir ses duyarsan... DUR. Sakın nefes alma, donup kal. Söz ver bana.»" },
+        { type: "note", id: "not_ece2", title: "Ece'nin Tünel Uyarısı", text: "Ece gizli hattan konuşuyor, Deniz kör. Tünel cehennemine haritasız girmek intihar. Harita gözlem odasının yanındaki dolaptaymış. Ama asıl korkunç olan... Tünellerdeki 'o şey'. Tek kurtuluş: Durmak ve nefes almamak. Bu kız üç haftadır bu mezarlıkta yaşıyor, dedikleri tek kurtuluş biletim." },
       ],
       choices: [
-        { id: "hub", text: "Kavşağa dön", next: "n_hub" },
+        { id: "hub", text: "Tablet ışığını koridora doğrultup kavşağa süzül", next: "n_hub" },
       ],
     },
 
@@ -275,14 +267,14 @@ export const EP02 = {
     n_s2_kapi: {
       cost: 1,
       events: [
-        { type: "anons", text: "「Ders iki: YÖN DUYGUSU. Tünel ağına gir, öbür uçtan çık, kartın ikinci parçasını al. Basit. Ha—」" },
-        { type: "system", text: "K-5 TÜNEL BÖLGESİ AYDINLATMASI: KAPATILDI" },
-        { type: "anons", text: "「—ışıklar bende kalacak. Pilin ne durumda bakım? İçeride öğrenirsin.」" },
-        { type: "narrate", text: "Tünel ağzı önünde simsiyah bir boğaz gibi açılıyor. Haritan var mı? Yoksa Ece'nin dediği dolaba mı uğradın?", if: { flag: "tHarita", equals: false } },
+        { type: "anons", text: "「İkinci ders: YÖN DUYGUSU. O daracık çelik bağırsaklara gir, öbür uçtan etini kazıyarak çık ve ikinci parçayı al. Çok kolay değil mi? Ama küçük bir sürpriz—」" },
+        { type: "system", text: "K-5 TÜNEL BÖLGESİ: TÜM IŞIKLAR KESİLDİ · MUTLAK KARANLIK" },
+        { type: "anons", text: "「—ışıklar bende kalıyor! O elindeki minik tabletin zavallı ekran ışığı seni ne kadar koruyacak bakalım? Pillerin bittiğinde karanlıkta seni nelerin beklediğini göreceksin...」" },
+        { type: "narrate", text: "Tünelin ağzı, dişlerini açmış devasa, simsiyah bir gırtlak gibi önünde duruyor. İçeriden buz gibi çürük bir hava üflüyor. Haritan var mı? Yoksa Ece'nin dediği o dolaba uğradın mı?", if: { flag: "tHarita", equals: false } },
       ],
       choices: [
-        { id: "gir", text: "Tünele gir", next: "n_t1" },
-        { id: "dolap", text: "Önce gözlem yanındaki dolaba uğra", next: "n_s2_dolap", if: { flag: "tHarita", equals: false } },
+        { id: "gir", text: "Korkudan titreyerek o siyah deliğe doğru emekle", next: "n_t1" },
+        { id: "dolap", text: "Önce gözlem odasının yanındaki o tekinsiz dolabı patlat", next: "n_s2_dolap", if: { flag: "tHarita", equals: false } },
       ],
     },
 
@@ -290,16 +282,16 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { tHarita: true } },
-        { type: "narrate", text: "Dolap on yıllık bakım hurdasıyla dolu — ve kapağın iç yüzüne yapıştırılmış sararmış bir tünel şeması. Rafta, yağlı bezlerin altında bir yedek pil." },
+        { type: "narrate", text: "Dolabın kapağını zorlayarak açıyorsun, içerisi eski paslı aletler ve kurumuş fare ölüleriyle dolu. Kapağın iç yüzüne çivilerle kazınmış sararmış, kan lekeli bir tünel şeması buluyorsun. Altındaki yağlı bezlerin arasında ise canından çok seveceğin titrek bir yedek pil duruyor!" },
         { type: "battery", spares: 1 },
         { type: "document", open: true, doc: {
-          id: "d_tunelharita", title: "K-5 Havalandırma Tünel Şeması",
-          meta: "SINIR-1 TEKNİK ÇİZİM 5-H · REV.2",
-          body: "ANA GİRİŞ\n   |\n   +- KAVŞAK 1 -- SOL -> ana hat\n   |              SAĞ -> kör uç (eski filtre)\n   |\n   +- KAVŞAK 2 -- düz -> dar boğaz\n   |\n   +- KAVŞAK 3 -- SOL -> ÇIKIŞ\n                  SAĞ -> malzeme cebi (kör uç)\n\nEL NOTU: giriş -> SOL -> düz -> SOL. ezberle.\ntünelde harita okunmaz. tünelde hiçbir şey\nokunmaz. — T.D." } },
-        { type: "note", id: "not_tunelharita", title: "Tünel rotası", text: "Tünel şeması: SOL → düz → SOL çıkışa götürüyor. Sağ kollar kör uç (biri filtre, biri malzeme cebi). Karanlıkta okuyamam — ezberledim." },
+          id: "d_tunelharita", title: "K-5 İnsan Öğütücü Tünel Şeması",
+          meta: "SINIR-1 TEKNİK ÇİZİM 5-H · ÖLÜM ROTASI",
+          body: "KORIDOR GİRİŞİ\n   |\n   +- KAVŞAK 1 -- SOL -> Kurtuluş hattı\n   |              SAĞ -> Kör uç (Eski çürümüş filtreler)\n   |\n   +- KAVŞAK 2 -- DÜZ -> Dar boğaz (Sıkışma riski)\n   |\n   +- KAVŞAK 3 -- SOL -> ÇIKIŞ KAPISI\n                  SAĞ -> Kör cep (Ölüm tuzağı)\n\nKANLI EL NOTU: Giriş yap -> SOLA DÖN -> DÜZ GİT -> SOLA DÖN VE KAÇ. Ezberle.\nTünelde tablet ışığı yetmez, piller biterse burası mezarın olur. — T.D." } },
+        { type: "note", id: "not_tunelharita", title: "Zihnime Kazıdığım Rota", text: "Rota net: SOL → DÜZ → SOL. Sağ kollar tamamen çıkmaz sokak ve ölüm tuzağı. İçeride mutlak karanlık olacak, haritayı açıp bakacak vaktim olmayacak." },
       ],
       choices: [
-        { id: "gir", text: "Tünele gir", next: "n_t1" },
+        { id: "gir", text: "Tableti göğsüme bastırıp o dar dehlize sürünerek gir", next: "n_t1" },
       ],
     },
 
@@ -307,72 +299,72 @@ export const EP02 = {
       checkpoint: true,
       cost: 3,
       events: [
-        { type: "narrate", text: "Dar, soğuk, alüminyum bir bağırsak. Dirseklerinin üstünde sürünüyorsun; tabletinin ışığı önündeki üç metreyi kesip atıyor. İlk kavşak: sol kol aşağı meyilli, sağdan hafif hava akımı geliyor.", if: { flag: "t1Ilk", equals: false } },
+        { type: "narrate", text: "Alüminyum, daracık, buz gibi bir tabutun içindesin. Dirseklerinin üstünde, etini çeliğe sürte sürte ilerliyorsun. Tabletinin titrek ekran ışığı önündeki sadece birkaç metrelik karanlığı yırtabiliyor, arkanda ise mutlak bir hiçlik var. İlk kavşak: Sol kol aşağı doğru dik bir eğimle iniyor, sağ koldan ise çürük bir rüzgar hırıldıyor.", if: { flag: "t1Ilk", equals: false } },
         { type: "flag", set: { t1Ilk: true } },
-        { type: "alert", text: "Harita sende yok. Yön bir tahmin.", if: { flag: "tHarita", equals: false } },
+        { type: "alert", text: "Harita yanında yok! Karanlıkta atacağın her adım ölümcül bir kumar!", if: { flag: "tHarita", equals: false } },
       ],
       choices: [
-        { id: "sol", text: "SOLA sürün", next: "n_t2" },
-        { id: "sag", text: "SAĞA sürün (hava akımı orada)", next: "n_t_korucuk" },
+        { id: "sol", text: "SOLA doğru, karanlığın kalbine sürün", next: "n_t2" },
+        { id: "sag", text: "SAĞA doğru, o garip hırıltılı esintiye git", next: "n_t_korucuk" },
       ],
     },
 
     n_t_korucuk: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Hava akımı seni eski bir filtre yuvasına getiriyor: kör uç. Akım çürümüş filtrenin deliklerinden sızıyormuş. Geri geri, dar boğazda küfrederek sürünüyorsun." },
-        { type: "anons", text: "「Sağa gitti. SAĞA. Haritan yok galiba — ya da okuyamıyorsun. İkisi de puan kırar.」" },
+        { type: "narrate", text: "Hava akımı seni parçalanmış, paslı filtrelerin olduğu bir kör uca çıkarıyor. Burası tamamen çıkmaz sokak! Duvarlarda eski kurbanların parmak izleri var. Dehşet içinde, daracık yerde dizlerini vura vura, küfrederek ve ağlayarak geri geri sürünüyorsun." },
+        { type: "anons", text: "「Hahaha! Sağa gitti, gerizekalı sağa gitti! Haritan yok değil mi? Karanlıkta kaybolup orada kendi etini kemirmeni izlemek için sabırsızlanıyorum!」" },
       ],
       choices: [
-        { id: "geri", text: "Kavşağa geri dön", next: "n_t1" },
+        { id: "geri", text: "Can havliyle o lanet kavşağa geri geri sürün", next: "n_t1" },
       ],
     },
 
     n_t2: {
       cost: 3,
       events: [
-        { type: "narrate", text: "Sol kol dar bir boğaza sokuyor — omuzların iki yandan sıyırıyor. Tam ortasındayken duyuyorsun: önden, ıslak bir şeyin alüminyum üstünde sana doğru sürünme sesi." },
+        { type: "narrate", text: "Sol kol seni o kadar dar bir boğaza sokuyor ki, omuzların iki yandan çeliğe sıkışıyor, nefes alamıyorsun. Tam o dar kapanda kalmışken, tam önünden... Islak, ağır, insana benzemeyen bir şeyin alüminyum çeliği tırmalayarak sana doğru sürünme sesini duyuyorsun. Yaklaşıyor!" },
         { type: "glitch", ms: 400 },
-        { type: "anons", text: "「Dur. DUR. O ne— o tünelde ne arıyor?! BU BENİM SINAVIM! Bakım, yandaki menfeze gir, HEMEN—」" },
+        { type: "anons", text: "「Dur... Dur! O ne lan... O şeyin tünelde ne işi var?! BU BENİM OYUNUM! Bakım, hemen sağındaki menfeze gir, HEMEN SAKLAN, SİKTİR—」" },
         { type: "waitTap" },
-        { type: "narrate", text: "Deniz'in sesindeki neşe ilk kez yok. Sağında, bir kol boyu ötede dikey bir servis menfezi. Ece de 'dur' demişti. Deniz de 'menfeze gir' diyor. İkisi de aynı şeyi söylüyor: SAKLAN." },
-        { type: "note", id: "not_denizpanik", title: "Deniz panikledi", text: "İnleyen tünellere girmiş — ve Deniz bunu BİLMİYORDU. Kapılar onun; ama o şey sisteminin dışında. Aile bile ondan korkuyor. Deniz her şeyi görmüyor." },
+        { type: "narrate", text: "Deniz'in sesindeki o sapık neşe anında yok oluyor, yerini saf bir dehşet alıyor. Sağında, bir kol boyu ötede küçük bir servis menfezi var. Ece 'dur' demişti, Deniz ise 'saklan' diye çığlık atıyor. O canavar ikisinden de büyük." },
+        { type: "note", id: "not_denizpanik", title: "Sistem Delindi", text: "Tünellerde yaşayan o 'İnleyen' denen şey içeri girdi ve Deniz bunu BİLMİYORDU. Kapılar onun olabilir ama o canavar bu sistemin tamamen dışında. Deniz her şeyi görmüyor, o da korkuyor." },
       ],
       choices: [
-        { id: "menfez", text: "Menfeze sıkış, nefesini tut", next: "n_t2_nefes" },
-        { id: "kos", text: "Geri, hızla sürünerek kaç", next: "n_olum_tahliye" },
+        { id: "menfez", text: "Kendini menfezin içine sıkıştır, tableti kapat ve nefesini tut!", next: "n_t2_nefes" },
+        { id: "kos", text: "Dehşet içinde geri geri sürünerek kaçmaya çalış!", next: "n_olum_tahliye" },
       ],
     },
 
     n_olum_tahliye: {
       death: true,
-      deathText: "Dar tünelde sürünerek kaçılmaz — her hareketin çeliği çınlatıyor, yerini haykırıyor. Islak ağırlık arkandan boğazına biniyor. Deniz hoparlörleri o gece hiç açmıyor.",
+      deathText: "Bu daracık tabutta sürünerek kaçamazsın! Attığın her panik dolu adım çeliği çılgınca çınlatıyor ve yerini haykırıyor. O ıslak, devasa ağırlık arkandan üzerine biniyor; kemiklerinin kırılma sesini duyuyorsun. Deniz hoparlörleri o gece tamamen kapatıyor, sadece senin çığlıkların tünelde yankılanıyor.",
       events: [{ type: "glitch", ms: 900 }],
     },
 
     n_t2_nefes: {
       events: [
-        { type: "narrate", text: "Kendini dikey menfeze zorluyorsun; çelik göğsünü sıkıyor. Tableti göğsüne bastırıp ışığı gömüyorsun. Islak sürünme bir kol boyu ötendeki tünelden yavaşça geçmeye başlıyor." },
+        { type: "narrate", text: "Kendini o dikey küçük menfezin içine etini yırtarak sokuyorsun. Çelik sac göğsünü bir mengene gibi sıkıştırıyor. Tabletini göğsüne bastırıp o çiğ ışığı tamamen vücudunla gömüyorsun. Tam o sırada, o ıslak, salyalı canavar tam önünden, bir parmak ötendeki tünelden hırıldayarak geçmeye başlıyor. Kokusu leş gibi." },
       ],
       interaction: { kind: "breath", holdMs: 8000, lungMs: 9500, success: "n_t3", fail: "n_olum_tunel" },
     },
 
     n_olum_tunel: {
       death: true,
-      deathText: "Dar yerde nefes daha çabuk biter — o da bunu bilir. Menfezin ağzında ıslak bir el belirdiğinde tünel ağı son kez senin sesinle doluyor.",
+      deathText: "Ciğerlerin patlayacak gibi oluyor, o dar yerde nefesini daha fazla tutamıyorsun ve boğuk bir hıçkırık kaçıyor. O an hırıltı kesiliyor. Menfezin ağzında parçalanmış, ıslak bir el belirdiğinde, tünel ağı etinin kemiğinden ayrılma sesleriyle doluyor.",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_t3: {
       cost: 3,
       events: [
-        { type: "narrate", text: "Ses tünelin derinliğinde eriyip gidiyor. Menfezden kayıp sürünmeye devam ediyorsun; kollarında yeni bir titreme var, gitmiyor. Üçüncü kavşak: sol ve sağ.", if: { flag: "t3Ilk", equals: false } },
+        { type: "narrate", text: "O ıslak sürünme sesi tünelin derinliklerinde yavaşça eriyerek kayboluyor. Menfezden titreyerek çıkıp sürünmeye devam ediyorsun; kolların ve bacakların korkudan öyle sarsılıyor ki kontrol edemiyorsun. Üçüncü kavşak karşında: Sol ve sağ.", if: { flag: "t3Ilk", equals: false } },
         { type: "flag", set: { t3Ilk: true } },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
-        { id: "sol", text: "SOLA sürün", next: "n_t4" },
-        { id: "sag", text: "SAĞA sürün", next: "n_t_cep", if: { flag: "tCep", equals: false } },
+        { id: "sol", text: "SOLA doğru sürün, çıkış orada olmalı", next: "n_t4" },
+        { id: "sag", text: "SAĞA doğru sürün, belki bir şey vardır", next: "n_t_cep", if: { flag: "tCep", equals: false } },
       ],
     },
 
@@ -380,20 +372,20 @@ export const EP02 = {
       cost: 2,
       events: [
         { type: "flag", set: { tCep: true } },
-        { type: "narrate", text: "Sağ kol kısa bir kör uçta bitiyor: malzeme cebi. Bağlanmış bir bez torba — içinde, vakumlu ambalajında bir tablet pili. Tünellerde mahsur kalanlar için bırakılmış. Ya da tünellerde YAŞAYANLAR için." },
+        { type: "narrate", text: "Sağ kol kısa ve kapkara bir kör uçta bitiyor. Tabletinin ışığını köşeye tuttuğunda kanlı bir bez torba görüyorsun. İçinde, vakumlu ambalajında pırıl pırıl parlayan bir tablet pili var! Sanki burada mahsur kalıp ölen biri... Ya da burada yaşayan o canavar için bırakılmış bir yem gibi." },
         { type: "battery", spares: 1 },
       ],
       choices: [
-        { id: "geri", text: "Kavşağa dön, SOLA sürün", next: "n_t4" },
+        { id: "geri", text: "Pili kap, hemen arkana dön ve SOLA sürün", next: "n_t4" },
       ],
     },
 
     n_t4: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Sol kol genişliyor, hava tazeleniyor; ışığın tünel sonundaki çıkış kapağının koluna çarpıyor. Yaylı kol — sonuna kadar basılı tutman gerek." },
+        { type: "narrate", text: "Sol kol genişliyor, hava nihayet biraz olsun tazeleniyor. Tabletinin çiğ ışığı, tünelin sonundaki çelik çıkış kapağının paslı koluna çarpıyor. Bu yaylı bir kol; sonuna kadar basılı tutup o ağırlığı itmen gerek." },
       ],
-      interaction: { kind: "lever", title: "TÜNEL ÇIKIŞI — KOLU BASILI TUT", holdMs: 2000, success: "n_s2_ok", cancel: "n_t4" },
+      interaction: { kind: "lever", title: "KAPANMADAN ÖNCE — KOLU SONUNA KADAR BASTIRIP İT", holdMs: 2000, success: "n_s2_ok", cancel: "n_t4" },
     },
 
     n_s2_ok: {
@@ -401,83 +393,83 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { sinav2: true, kart2: true } },
-        { type: "system", text: "TÜNEL ÇIKIŞI: AÇIK — DERS 2 TAMAMLANDI · KART PARÇASI II ALINDI" },
-        { type: "narrate", text: "Kapaktan koridora dökülüyorsun; dizlerin çelikte, ciğerlerin gerçek havada. Hoparlör uzun süre sessiz. Konuştuğunda neşesi yerinde ama altında ince bir çatlak var:" },
-        { type: "anons", text: "「...Çıktın. O konuyu— tüneldeki şeyi kimseye anlatmana gerek yok. Aile içi mesele. İkinci parça senin.」" },
+        { type: "system", text: "TÜNEL CEHENNEMİ AŞILDI — KART PARÇASI II ALINDI" },
+        { type: "narrate", text: "Kapakla birlikte koridorun soğuk betonuna adeta dökülüyorsun; dizlerin titriyor, ciğerlerin gerçek havayı açlıkla çekiyor. Hoparlör çok uzun süre sessiz kalıyor. Deniz sonunda konuştuğunda o sapık sesinde ince, korku dolu bir çatlak var:" },
+        { type: "anons", text: "「...Çıktın demek. Bak, o içeride gördüğün... o tüneldeki şeyi unut tamam mı? Kimseye anlatmana gerek yok. O bizim aile içi küçük bir meselemiz. İkinci parça senin, hadi git şimdi.」" },
       ],
       choices: [
-        { id: "hub", text: "Kavşağa dön", next: "n_hub" },
+        { id: "hub", text: "Toparlan ve titreyen adımlarla kavşağa dön", next: "n_hub" },
       ],
     },
 
-    /* ===== SINAV 3 — GÖZLEM ODASI / DÜRÜSTLÜK (kart parçası III) ===== */
+    /* ================= SINAV 3 — GÖZLEM ODASI / DÜRÜSTLÜK (kart parçası III) ===== */
 
     n_s3_kapi: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Cam bölmeli koridorun sonunda boş, beyaz ışıklı bir gözlem odası: ortada tek sandalye, tavanda tek hoparlör, karşıda tek kamera. Sandalyenin altında bir defter bırakılmış — ya da unutulmuş." },
+        { type: "narrate", text: "Camları tamamen aşağı indirilmiş, soğuk ve beyaz ameliyathane ışığıyla aydınlatılmış bir gözlem odası. Ortada paslı tek bir demir sandalye, tavanda cızırdayan tek bir hoparlör ve doğrudan sana bakan kanlı bir kamera lensi. Sandalyenin hemen altında, üzeri lekeli bir defter unutulmuş." },
         { type: "document", open: true, doc: {
-          id: "d_sinavdefteri", title: "Deniz'in Sınav Defteri", style: "hand",
-          meta: "— kapağında: 'ORYANTASYON. dokunma. D.' —",
-          body: "ADAY 1 — kaynakçı\nds1 geçti (şanstı)  ds2: 41 dk!! rezalet\nds3: hep yalan, sıkıcı yalanlar. -> aileye.\n\nADAY 2 — revirdeki kadın\nds1 geçti  ds2 geçti (haritayı bulmuş)\nds3: bana 'seyirci arıyorsun' dedi. NOT ALDIM.\n-> kaçmayı denedi. şaftı denedi. yazık.\n\nADAY 3 — ismini söylemedi (saygı)\nds3: tek kelime etmedi, bütün gece.\n-> aileye. artık konuşuyor. hep aynı sayıları.\n\nADAY 4 —\n(boş. en üstte taze mürekkeple senin görev no'n.)" } },
-        { type: "note", id: "not_sinavdefteri", title: "Sınav defteri", text: "Deniz üç adayın kaydını tutmuş; dördüncü sayfa boş, üstünde benim numaram. Sınav 3 'dürüstlük'. Defter diyor ki: yalan da sessizlik de not alınıyor, ikisi de aileye götürüyor. Aday 2 ona karşılık vermiş — 'not aldım' demiş." },
-        { type: "anons", text: "「Otur. Ders üç: DÜRÜSTLÜK. Üç soru. Yalan serbest — anlarım ama serbest. Tek kural: cevap ver. Sessizlik de bir cevaptır, en kötüsü.」" },
+          id: "d_sinavdefteri", title: "Deniz'in Kanlı Av Defteri", style: "hand",
+          meta: "— kapağında vahşi bir karalamayla: 'DENEYLER. D.' —",
+          body: "KAYIP ET 1 — Kaynakçı\nds1'i tamamen şansla geçti. ds2 tünelde 41 dakika ağladı. Rezil.\nds3'te hep yalan söyledi, gözlerimin içine bakarak. -> Aileye verdim. Güzelce temizlediler.\n\nKAYIP ET 2 — Revirdeki hemşire\nds1 ve ds2'yi haritayla geçti, akıllı fahişe.\nds3'te yüzüme karşı 'Sen sadece seyirci arayan aciz bir sapıksın' dedi. NOT ALDIM. Kaçmaya çalışırken şaftta yakaladım. Yazık oldu.\n\nKAYIP ET 3 — İsmini vermeyen o gururlu pislik\nds3 boyunca tek kelime etmedi, tırnaklarını sökerken bile sustu.\n-> Aileye gitti. Artık etrafı izleyip sadece sayıları sayıyor.\n\nKAYIP ET 4 —\n(Burası boş... En üstte taze, kurumamış mürekkeple SENİN görev numaran yazıyor.)" } },
+        { type: "note", id: "not_sinavdefteri", title: "Ölüm Defteri", text: "Benden önceki üç kurbanın infaz kaydı burada... Deniz yalan söyleyenleri de susanları da o 'Aile' denen yamyamlara yem etmiş. Hemşire ona meydan okumuş... Dördüncü sayfa benim için açılmış. Kurtulmak için bu psikopatla oynamalıyım." },
+        { type: "anons", text: "「Otur o sandalyeye. Üçüncü ders: DÜRÜSTLÜK. Sana üç soru soracağım. Yalan söyleyebilirsin, etini keserken anlarım ama serbest. Tek kural: Cevap ver. Susarsan, tırnaklarından başlarız.」" },
       ],
       choices: [
-        { id: "otur", text: "Sandalyeye otur", next: "n_soru1" },
+        { id: "otur", text: "O soğuk, paslı demir sandalyeye otur ve kameraya bak", next: "n_soru1" },
       ],
     },
 
     n_soru1: {
       cost: 1,
       events: [
-        { type: "anons", text: "「Soru bir. K-6 revirine girdin — sensörler benim. Baturay'ı buldun mu? Nasıl görünüyordu?」" },
+        { type: "anons", text: "「Soru bir. K-6 revirine burnunu soktun, tüm sensörlerim kaydetti. Orada Baturay'ı buldun değil mi? O pislik nasıl görünüyordu? Can çekişiyor muydu?」" },
       ],
       choices: [
-        { id: "durust", text: "\"Ölmüştü. Masada. Yüzü... sakindi.\"", next: "n_soru1_a" },
-        { id: "yalan", text: "\"Revir boştu. Kimseyi görmedim.\"", next: "n_soru1_b" },
-        { id: "sessiz", text: "Sessiz kal", next: "n_soru1_c" },
+        { id: "durust", text: "\"Ölmüştü. Masanın üzerindeydi. Yüzü... en azından artık sakindi.\"", next: "n_soru1_a" },
+        { id: "yalan", text: "\"Revir tamamen boştu. Yemin ederim kimseyi görmedim.\"", next: "n_soru1_b" },
+        { id: "sessiz", text: "Tablet ekranına bakarak sessiz kal, dişlerini sık", next: "n_soru1_c" },
       ],
     },
 
     n_soru1_a: {
       cost: 1,
       events: [
-        { type: "stat", stat: "denizOfke", delta: -5, note: "Deniz yumuşadı", noteKind: "system" },
-        { type: "anons", text: "「...Sakin miydi?」 Uzun bir duraklama; statik bile utanmış gibi. 「Güzel. Sakin olması güzel. O bana— boşver. Soru iki.」" },
+        { type: "stat", stat: "denizOfke", delta: -5, note: "Deniz'in sesindeki vahşet hafifçe dindi", noteKind: "system" },
+        { type: "anons", text: "「...Sakin miydi?」 Çok uzun, ağır bir sessizlik oluyor; hoparlördeki statik bile utanmış gibi titriyor. 「Güzel... Acı çekmeden gebermesi güzel. O bana... Her neyse. Soru iki!」" },
         { type: "stat", stat: "akil", delta: -5 },
       ],
-      choices: [{ id: "d", text: "Bekle", next: "n_soru2" }],
+      choices: [{ id: "d", text: "Korkuyla yutkun ve bekle", next: "n_soru2" }],
     },
 
     n_soru1_b: {
       cost: 1,
       events: [
-        { type: "stat", stat: "denizOfke", delta: 10, note: "Deniz yalanını yakaladı", noteKind: "alert" },
-        { type: "anons", text: "「Revir kapısını 04:31'de açtın, 04:39'da çıktın. Sekiz dakika 'kimseyi görmemişsin'.」 Kuru bir gülüş. 「Yalan söyleyeceksen EMEK ver. Soru iki.」" },
+        { type: "stat", stat: "denizOfke", delta: 10, note: "Deniz yalanını zihnine kazıdı", noteKind: "alert" },
+        { type: "anons", text: "「Revir kapısını tam 04:31'de açtın, 04:39'da o cesedin yanından çıktın! Sekiz dakika içeride kör taklidi mi yaptın lan?!」 Hoparlörden kuru, hastalıklı bir kahkaha yükseliyor. 「Yalan söylerken biraz emek ver, etini hemen kesmeyeyim. Soru iki!」" },
       ],
-      choices: [{ id: "d", text: "Bekle", next: "n_soru2" }],
+      choices: [{ id: "d", text: "Sırtından aşağı soğuk terler akarken bekle", next: "n_soru2" }],
     },
 
     n_soru1_c: {
       cost: 1,
       events: [
         { type: "stat", stat: "denizOfke", delta: 5 },
-        { type: "anons", text: "「Sessizlik. Hm. Aday 3 de sessizdi.」 Bir kalem tıkırtısı — not alıyor. 「Sessizler hep aynı yere varıyor. Soru iki.」" },
+        { type: "anons", text: "「Sessizlik... Demek o aciz gururdan sende de var. Üçüncü kurban da böyle susmuştu.」 Bir kalemin deftere sertçe vurulma sesini duyuyorsun; seni de ölüler listesine yazıyor. 「Sustuğunuzda her şey daha eğlenceli oluyor. Soru iki!」" },
       ],
-      choices: [{ id: "d", text: "Bekle", next: "n_soru2" }],
+      choices: [{ id: "d", text: "Nefesini tutarak bekle", next: "n_soru2" }],
     },
 
     n_soru2: {
       cost: 1,
       events: [
-        { type: "anons", text: "「Soru iki. Sonar hattını buldun — hattı göremiyorum ama SENİ görüyorum, duvarlarla konuşan adam olağan değil. Ece'yle konuşuyorsun. Nerede saklanıyor?」" },
+        { type: "anons", text: "「Soru iki. O eski sonar hattını kurcaladın. Ben orayı göremem ama o kirli duvarlarla fısıldaşan zavallı yüzünü izledim. Ece'yle konuşuyorsun! O kaltak nerede saklanıyor?! Söyle bana!」" },
       ],
       choices: [
-        { id: "soyle", text: "Saklandığı bölmeyi tarif et", next: "n_soru2_a" },
-        { id: "yalan", text: "\"Kim olduğunu bilmiyorum. Hat tek yönlü.\"", next: "n_soru2_b" },
-        { id: "reddet", text: "\"Bu soruya cevap yok. Sana değil.\"", next: "n_soru2_c" },
+        { id: "soyle", text: "Canımı kurtarmak için Ece'nin saklandığı bölmeyi anlat", next: "n_soru2_a" },
+        { id: "yalan", text: "\"Kim olduğunu bilmiyorum. Hat tek yönlüydü, sadece ses duyuluyordu.\"", next: "n_soru2_b" },
+        { id: "reddet", text: "\"Bu soruya cevap vermeyeceğim. Sana o kızı vermem!\"", next: "n_soru2_c" },
       ],
     },
 
@@ -485,20 +477,20 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { eceEleVerildi: true } },
-        { type: "stat", stat: "eceGuven", delta: -40, note: "ECE'yi ele verdin — güven çöktü", noteKind: "alert" },
+        { type: "stat", stat: "eceGuven", delta: -40, note: "ECE'Yİ KURBAN ETTİN — Güven tamamen parça pinçik oldu", noteKind: "alert" },
         { type: "stat", stat: "denizOfke", delta: -10 },
-        { type: "anons", text: "「...Sonar bölmesi. Evet.」 Beklediğin kahkaha gelmiyor. 「Biliyordum zaten. Üç haftadır biliyorum. Merak ettiğim SENİN söyleyip söylemeyeceğindi. Söyledin. Not alındı. Soru üç.」" },
-        { type: "stat", stat: "akil", delta: -10, note: "AKIL -10 — Ne yaptın sen?", noteKind: "alert" },
-        { type: "note", id: "not_ihanet", title: "Söyledim", text: "Ece'nin yerini söyledim. Deniz 'zaten biliyordum' dedi — belki doğru, belki tuzak. Fark etmez: ben söyledim. Bu geri alınmıyor." },
+        { type: "anons", text: "「...Demek sonar bölmesi. Sonunda...」 Beklediğin o vahşi kahkaha gelmiyor, ses buz gibi oluyor. 「Zaten biliyordum biliyor musun? Üç haftadır oraya bakıyordum. Sadece senin o zavallı sadakatini ne zaman satacağını merak ettim. Ve sattın. Not alındı. Soru üç.」" },
+        { type: "stat", stat: "akil", delta: -10, note: "AKIL -10 — İhanetin soğukluğu zihnini kemiriyor", noteKind: "alert" },
+        { type: "note", id: "not_ihanet", title: "Kendi Canım İçin Onu Sattım", text: "Ece'nin yerini bu canavara söyledim... 'Zaten biliyordum' dedi ama bu beni temize çıkarmaz. Ben bir hainim. Sırf hayatta kalmak için o kızı ölüme fırlattım. Bu leke asla çıkmayacak." },
       ],
-      choices: [{ id: "d", text: "Bekle", next: "n_soru3" }],
+      choices: [{ id: "d", text: "Utanç ve korku içinde bekle", next: "n_soru3" }],
     },
 
     n_soru2_b: {
       cost: 1,
       events: [
         { type: "stat", stat: "denizOfke", delta: -5 },
-        { type: "anons", text: "「Tek yönlü hat.」 Bu kez gülüş uzun, neredeyse keyifli. 「Yalan — ama İYİ yalan. Omurgası var. Aday 2'yi hatırlattın. ...Soru üç.」" },
+        { type: "anons", text: "「Tek yönlü hat ha?」 Bu kez gülüşü uzun, adeta bir yılanın tıslaması gibi keyifli. 「Yalan... Ama zekice bir yalan. Bir omurgası var. Bana o hemşireyi hatırlattın... Soru üç.」" },
       ],
       choices: [{ id: "d", text: "Bekle", next: "n_soru3" }],
     },
@@ -507,21 +499,21 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "stat", stat: "denizOfke", delta: 10 },
-        { type: "stat", stat: "eceGuven", delta: 10, note: "Ece'yi korudun", noteKind: "system" },
-        { type: "anons", text: "「'Sana değil.'」 Sesinde bir şey geriliyor ama kopmuyor. 「Sadakat. Ailede çok makbuldür, biliyor musun? Şef bayılır buna. Soru üç.」" },
+        { type: "stat", stat: "eceGuven", delta: 10, note: "Ece'yi o canavardan korudun", noteKind: "system" },
+        { type: "anons", text: "「'Sana değil' demek...」 Sesindeki teller geriliyor, sanki hoparlör patlayacak. 「Sadakat... O yamyam sürüsü, o Aile buna bayılır biliyor musun? Şef senin gibi sadık etleri çiğnemeyi çok sever. Soru üç!」" },
       ],
-      choices: [{ id: "d", text: "Bekle", next: "n_soru3" }],
+      choices: [{ id: "d", text: "Titreyerek son soruyu bekle", next: "n_soru3" }],
     },
 
     n_soru3: {
       cost: 1,
       events: [
-        { type: "anons", text: "「Son soru. Bunu herkese soruyorum, herkes yalan söyler.」 Statik derinleşiyor; sesi ilk kez oyunsuz. 「Aileye katılmayı düşündün mü? Bir saniye bile. Tek başına ölmektense kalabalık olmayı. Dürüst ol.」" },
+        { type: "anons", text: "「Son soru... Bunu buraya gelen her ete sordum, hepsi korkudan yalan söyledi.」 Statik derinleşiyor, Deniz'in sesindeki o hastalıklı oyun ilk kez tamamen kayboluyor. 「O vahşi Aileye katılmayı, onlardan biri olmayı düşündün mü hiç? Tek başına bu karanlıkta parçalanmaktansa, o deliliğin bir parçası olmayı... Dürüst ol, etimi ne zaman keseceksiniz diye sor kendine.」" },
       ],
       choices: [
-        { id: "hayir", text: "\"Hayır. Asla.\"", next: "n_soru3_a" },
-        { id: "bilmiyorum", text: "\"...Bilmiyorum. Yalnızlık zor.\"", next: "n_soru3_b" },
-        { id: "karsi", text: "\"Sen katıldın mı Deniz? Yoksa hâlâ seyirci misin?\"", next: "n_soru3_c" },
+        { id: "hayir", text: "\"Hayır! Sizin gibi canavarlarla asla bir olmam!\"", next: "n_soru3_a" },
+        { id: "bilmiyorum", text: "\"...Bilmiyorum... Bu karanlık ve yalnızlık beni delirtiyor...\"", next: "n_soru3_b" },
+        { id: "karsi", text: "\"Peki sen Deniz? Sen onlara katıldın mı yoksa hâlâ korkak bir seyirci misin?\"", next: "n_soru3_c" },
       ],
     },
 
@@ -529,9 +521,9 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "stat", stat: "denizOfke", delta: 5 },
-        { type: "anons", text: "「'Asla.'」 Kuru bir ses. 「Herkes önce 'asla' der. Aday 1 de demişti. Şimdi sofrada oturuyor, yemeği ÇOK beğeniyor. Sınav bitti.」" },
+        { type: "anons", text: "「'Asla'... Hepiniz önce böyle büyük laflar edersiniz. İlk kurban da öyle demişti. Şimdi o kanlı sofrada oturuyor ve önüne atılan etleri büyük bir iştahla kemiriyor! Sınav bitti, defol sandalyeden!」" },
       ],
-      choices: [{ id: "d", text: "Ayağa kalk", next: "n_s3_ok" }],
+      choices: [{ id: "d", text: "Demir sandalyeden fırlayarak ayağa kalk", next: "n_s3_ok" }],
     },
 
     n_soru3_b: {
@@ -539,9 +531,9 @@ export const EP02 = {
       events: [
         { type: "stat", stat: "denizOfke", delta: -5 },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "anons", text: "「...Bilmiyorsun.」 Uzun sessizlik. Kalem tıkırtısı YOK. 「Üç adaydır bu soruya ilk dürüst cevap. Yalnızlık zor, evet. Ne kadar zor, bilemezsin. ...Ya da bilirsin. Sınav bitti.」" },
+        { type: "anons", text: "「...Bilmiyorsun demek.」 Çok uzun bir ölüm sessizliği kaplıyor odayı. Kalem tıkırtısı kesiliyor. 「Dört aday arasından bu soruya verilen ilk dürüst, çıplak cevap... Yalnızlık zor, evet. İnsanı kendi etini yemeye zorlayacak kadar zor... Sınav bitti.」" },
       ],
-      choices: [{ id: "d", text: "Ayağa kalk", next: "n_s3_ok" }],
+      choices: [{ id: "d", text: "Ayağa kalk, bacakların seni zor taşıyor", next: "n_s3_ok" }],
     },
 
     n_soru3_c: {
@@ -549,22 +541,23 @@ export const EP02 = {
       events: [
         { type: "flag", set: { denizSoruldu: true } },
         { type: "stat", stat: "denizOfke", delta: -10 },
-        { type: "anons", text: "「—」 Hoparlör açık, hat CANLI, ama Deniz konuşmuyor. Beş saniye. On. Sonra bambaşka, yaşında bir sesle: 「...Sıradaki soru yok. Sınav bitti.」" },
-        { type: "note", id: "not_denizsoru", title: "Soruyu ona sordum", text: "'Sen katıldın mı?' — ve Deniz, insanlarla oynayan Deniz, cevap VEREMEDİ. Aileden mi değil mi, kendisi de bilmiyor olabilir. Bu onu daha az tehlikeli yapmıyor; daha yalnız yapıyor." },
+        { type: "anons", text: "「—」" },
+        { type: "narrate", text: "Hoparlör açık, hat canlı ama Deniz'den çıt çıkmıyor. Beş saniye... On saniye... Kameranın arkasındaki o hastalıklı ruhun nefes alamadığını hissediyorsun. Sonunda, maskesi tamamen düşmüş, yapayalnız ve yaşlı bir adam sesiyle fısıldıyor: 「...Sıradaki soru iptal. Sınav bitti. Git buradan.」" },
+        { type: "note", id: "not_denizsoru", title: "Canavarı Yaraladım", text: "\"Sen katıldın mı?\" diye sordum ve o her şeyi izleyen sadist herif cevap veremedi. O yamyam sürüsünün bir parçası mı yoksa kafeste sırasını bekleyen bir sonraki et mi, kendisi de bilmiyor. Bu çaresizliği onu daha da tehlikeli yapacak." },
       ],
-      choices: [{ id: "d", text: "Ayağa kalk", next: "n_s3_ok" }],
+      choices: [{ id: "d", text: "Sandalyeden kalk, tablet ışığını önüne doğrult", next: "n_s3_ok" }],
     },
 
     n_s3_ok: {
       cost: 1,
       events: [
         { type: "flag", set: { sinav3: true, kart3: true } },
-        { type: "system", text: "DERS 3 TAMAMLANDI · KART PARÇASI III ALINDI" },
-        { type: "anons", text: "「Üçüncü parça senin. Kartın tamam sayılır. Çıkışta görüşürüz bakım — orası benim değil ama seyretmeyi severim.」" },
+        { type: "system", text: "SON DERS BİTTİ — KART PARÇASI III ALINDI · ANAHTAR TAMAMLANDI" },
+        { type: "anons", text: "「Son parça da senin... Kart tamamlandı fare. Çıkış kapısında görüşürüz. Orası artık benim güvenli bölgem değil ama kemiklerinin nasıl kırılacağını izlemek için ekran başında olacağım.」" },
         { type: "battery", spares: 1 },
       ],
       choices: [
-        { id: "hub", text: "Kavşağa dön", next: "n_hub" },
+        { id: "hub", text: "Son parçayı da cebime atıp o lanet kavşağa koş", next: "n_hub" },
       ],
     },
 
@@ -573,14 +566,14 @@ export const EP02 = {
     n_cikis: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Ağır çıkış kapısı. Ortasında üç yuvalı bir okuyucu — kartın üç parçası buraya oturmalı. Yuvaların kaçı dolu?" },
-        { type: "alert", text: "OKUYUCU: KART EKSİK — Üç dersin hepsini bitirmeden bu kapı açılmaz.", if: { flag: "kart3", equals: false } },
-        { type: "narrate", text: "Eksik parçalar var. Kavşağa dönüp tamamlamadığın dersleri bitirmelisin.", if: { flag: "kart3", equals: false } },
-        { type: "narrate", text: "Üç parça da cebinde. Okuyucuya tek tek yerleştiriyorsun — çıt, çıt, çıt. Kapı derin bir iç çekişle çözülüyor.", if: { flag: "kart3", equals: true } },
+        { type: "narrate", text: "Karşında duran devasa, paslı çelik çıkış kapısı. Ortasında vahşice oyulmuş üç yuvalı bir kart okuyucu var; bu yuvalara o kanlı üç parçayı yerleştirmen gerek. Tabletinin titrek ışığı yuvaların boşluğunda geziniyor." },
+        { type: "alert", text: "OKUYUCU HINÇLA ÖTÜYOR: KART PARÇALARI EKSİK! Tüm sınavları bitirmeden bu kapı açılmayacak!", if: { flag: "kart3", equals: false } },
+        { type: "narrate", text: "Hâlâ eksik parçalar var! Pillerin tükenmeden o canavarların odalarına dönüp sınavları bitirmek zorundasın!", if: { flag: "kart3", equals: false } },
+        { type: "narrate", text: "Üç parça da parmaklarının arasında titriyor. Okuyucuya tek tek, etini yırtarcasına bastırıyorsun — ÇIT, ÇIT, ÇIT. Kapının içindeki devasa hidrolik kilitler derin, can çekişen bir iniltiyle çözülüyor!", if: { flag: "kart3", equals: true } },
       ],
       choices: [
-        { id: "gec", text: "Kartı tak, kapıdan geç", next: "n_mezun", if: { flag: "kart3", equals: true } },
-        { id: "geri", text: "Eksik dersleri bitirmeye dön", next: "n_hub", if: { flag: "kart3", equals: false } },
+        { id: "gec", text: "Ağır çelik kapıyı tüm gücünle it ve o karanlık koridora sız", next: "n_mezun", if: { flag: "kart3", equals: true } },
+        { id: "geri", text: "Eksik kalan o dehşet odalarına geri dön", next: "n_hub", if: { flag: "kart3", equals: false } },
       ],
     },
 
@@ -591,80 +584,80 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { mezun: true } },
-        { type: "system", text: "ÇIKIŞ KİLİDİ: AÇIK — K-4 GEÇİŞİ HAZIR" },
-        { type: "anons", text: "「Tebrikler bakım. Dört adayda bir mezun.」 Tependeki menfez takırdıyor, ayağının dibine ambalajlı bir tablet pili düşüyor. 「Kıyak. Kimseye söyleme — imajım var.」" },
+        { type: "system", text: "ÇIKIŞ KİLİDİ AÇILDI — K-4 CEHENNEMİNE GEÇİŞ SERBEST" },
+        { type: "anons", text: "「Tebrikler kurban... Dört ette bir mezun. Al bakalım, bu benden sana bir ödül olsun.」 Tependeki karanlık menfez aniden sarsılıyor ve ayağının dibine taze, ambalajlı bir tablet pili düşüyor! 「Küçük bir kıyak... Kimseye söyleme, buradaki sadist imajımı bozmak istemem.」" },
         { type: "battery", spares: 1 },
         { type: "waitTap" },
-        { type: "anons", text: "「Son ders bedava: K-4 kapısından çıkınca uzun bir koridor. O koridor benim değil. O koridor kimsenin değil.」 Bir duraklama. 「...Babama selam söyle.」" },
-        { type: "objective", text: "K-4 geçiş koridorunu aş — ana bacaya ulaş" },
+        { type: "anons", text: "「Sana son bir bedava ders: K-4 kapısından çıktığında önünde uzanan o sonsuz koridor... Orası artık benim oyun alanım değil. Orası kimsenin değil. Oraya ölümün gerçek amiri hükmeder... Babama benden selam söyle fare.」" },
+        { type: "objective", text: "K-4 ölüm koridorunu aş — Ana havalandırma bacasına ulaş" },
       ],
       choices: [
-        { id: "cik", text: "K-4 geçiş kapısından çık", next: "n_harun1" },
+        { id: "cik", text: "K-4 geçiş kapısını arala ve o bilinmezliğe adım at", next: "n_harun1" },
       ],
     },
 
     n_harun1: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Uzun, çıplak bir bağlantı koridoru. Yarı yolda, öbür uçtaki köşeden bir FENER IŞIĞI dönüyor — sarı, ağır, acele etmeyen. Arkasından, kapı boşluğuna sığmayan bir gövde." },
-        { type: "narrate", text: "\"Yeni personel.\" Ses sakin, derin — bir vardiya amirinin, bir BABANIN sesi. \"Mesai başladı, sen koridorlardasın. Devamsızlık tutanağı tutmam gerekecek evlat.\" Fener kalkıyor, yüzünü buluyor." },
-        { type: "stat", stat: "sefFarkindalik", delta: 15, note: "ŞEF SENİ GÖRDÜ — Artık söylenti değilsin", noteKind: "alert" },
+        { type: "narrate", text: "Sonsuz, çıplak, duvarlarından kan sızan bir bağlantı koridoru. Yarı yola geldiğinde, öbür uçtaki karanlık köşeden devasa bir fener ışığı dönüyor — sarı, ağır ve hiç acele etmeyen bir ışık. Arkasından ise, o kapı boşluğuna sığmayan, kasap önlüklü devasa bir gövde belitiyor." },
+        { type: "narrate", text: "\"Yeni kurban...\" Ses o kadar sakin, o kadar derinden geliyor ki; sanki bir fabrikanın vardiya amiri, bir BABA gibi konuşuyor. \"Mesai saatinde koridorlarda başıboş geziyorsun. Senin için çok ağır bir ceza tutanağı hazırlamam gerekecek evlat...\" Devasa fener havaya kalkıyor ve doğrudan senin o korkudan donmuş gözlerine saplanıyor!" },
+        { type: "stat", stat: "sefFarkindalik", delta: 15, note: "ŞEF SENİ GÖRDÜ — Artık onun av listesindesin!", noteKind: "alert" },
         { type: "waitTap" },
-        { type: "alert", text: "⚠ O YÜRÜMEYE BAŞLADI — KARAR VER" },
+        { type: "alert", text: "⚠ O DEVASA ADIMLARLA ÜZERİNE YÜRÜMEYE BAŞLADI — KARAR VER!" },
       ],
       timer: { seconds: 4 },
       choices: [
-        { id: "kos", text: "Geri dön ve KOŞ", next: "n_harun2" },
-        { id: "don", text: "Donakal — İnleyen'de işe yaramıştı", next: "n_olum_harun1", default: true },
+        { id: "kos", text: "ARKANA DÖN VE TÜM GÜCÜNLE KOŞUYORUM!", next: "n_harun2" },
+        { id: "don", text: "Donakal! Tüneldeki o canavarda işe yaramıştı, bunda da yarar belki?!", next: "n_olum_harun1", default: true },
       ],
     },
 
     n_olum_harun1: {
       death: true,
-      deathText: "Donakalmak İnleyen'de işe yarar — o, sesle görür. Şef gözleriyle görür. Fener üstünde sabitlenirken adımları hiç hızlanmıyor; gerek yok. \"Kaçmadın. Aferin evlat,\" diyor. \"Aile, kaçmayanları sever.\"",
+      deathText: "Büyük bir hata! O tüneldeki kör canavar sesle görüyordu... Ama Şef seni gözleriyle, o dev feneriyle görüyor! Sen donakalmışken adımları hiç hızlanmıyor; çünkü kaçamayacağını biliyor. Devasa elini boğazına geçirip seni havaya kaldırırken, \"Kaçmadın... Aferin evlat. Aile, etini zorlaştırmayan uslu çocukları çok sever,\" diyor. Kemiklerinin kırılma sesiyle tablet yere düşüyor.",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_harun2: {
       cost: 1,
       events: [
-        { type: "narrate", text: "KOŞUYORSUN. Arkanda fener duvarlarda sallanıyor, adımlar — o sakin, ağır adımlar — imkansız biçimde arayı kapatıyor. Önünde iki seçenek: sağdaki servis merdiveni kapısı ve zemindeki havalandırma menfezi." },
+        { type: "narrate", text: "ÇILGINLAR GİBİ KOŞUYORSUN! Kalbin kulaklarında patlıyor. Arkandaki o devasa adam feneri sallayarak geliyor; adımları ağır ama o kadar büyük ki aradaki mesafe imkansız bir hızla kapanıyor! Önünde iki vahşi seçenek var: Sağdaki servis merdiveninin çelik kapısı ya da zemindeki o paslı havalandırma menfezi!" },
       ],
       timer: { seconds: 4 },
       choices: [
-        { id: "menfez", text: "Menfez kapağını söküp içine dal", next: "n_menfez" },
-        { id: "merdiven", text: "Servis merdiveni kapısına yüklen", next: "n_olum_harun2", default: true },
+        { id: "menfez", text: "Zemindeki menfez kapağına tekme at, içine dal!", next: "n_menfez" },
+        { id: "merdiven", text: "Servis merdiveninin çelik kapısına omuz at!", next: "n_olum_harun2", default: true },
       ],
     },
 
     n_olum_harun2: {
       death: true,
-      deathText: "Kapı kilitli. Elektronik kilit — ve elektronik kilitler kimin, biliyorsun. Hoparlörden çok yumuşak: 「Ders dört bakım: bana güvenme.」 Fener sırtını bulurken Deniz'in hattı nezaketen kapanıyor.",
+      deathText: "Kapı kilitli! Elektronik şifreli kilit ve bu kilitlerin kimin elinde olduğunu biliyorsun. Tam o sırada başının üzerindeki hoparlörden Deniz'in o fısıltısı yükseliyor: 「Ders dört bakım: Bana asla güvenmemeliydin.」 O devasa fener sırtını aydınlatırken, Şef'in paslı baltası etine gömülüyor. Görüşün kararıyor.",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_menfez: {
       events: [
-        { type: "narrate", text: "Menfez kapağını tırnaklarınla söküp kendini içeri çekiyorsun. Bir saniye sonra fener ızgaranın çubuklarında — yüzünün üstünde çizgi çizgi. Botları ızgaranın hemen ötesinde duruyor. Bekliyor. DİNLİYOR." },
+        { type: "narrate", text: "Menfez kapağını tırnaklarını sökerek, parmaklarını kanatarak yerinden çıkarıyor ve kendini o dar deliğe fırlatıyorsun. Bir saniye sonra, o dev fenerin sarı ışığı ızgaranın aralıklarından yüzüne sızıyor. Çizgi çizgi ışık gözlerini yakıyor. Şef'in devasa postalları tam menfezin önünde duruyor. Bekliyor... Her bir nefesini, korku dolu kalp atışını DİNLİYOR!" },
       ],
       interaction: { kind: "breath", holdMs: 8000, lungMs: 9500, success: "n_menfez_ok", fail: "n_olum_menfez" },
     },
 
     n_olum_menfez: {
       death: true,
-      deathText: "Izgaranın ardında nefesin çözülüyor — küçücük bir ses, ama ona yetiyor. Menfez kapağı konserve gibi sökülüyor. \"Saklambaç mesai saatinde oynanmaz evlat,\" diyor Şef, neredeyse şefkatle. Fener sönüyor.",
+      deathText: "Izgaranın hemen altında nefesin dayanamıyor ve boğucu bir hırıltı kaçırıyorsun. İşte bu kadar. Şef anında eğiliyor ve o devasa menfez kapağını bir konserve kutusu gibi tek hamlede söküp atıyor! Seni bacağından yakalayıp dışarı çekerken, \"Saklambaç mesai saatinde oynanmaz evlat...\" diyor. Kafanı betona vurduğunda her şey kararıyor.",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_menfez_ok: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Botlar, sonsuz bir dakika sonra, dönüp uzaklaşıyor. Fener duvarlardan çekiliyor. \"Tutanak yarına kalsın,\" diyor ses kendine, koridorun ucunda. \"Aile sofrada bekler.\"" },
+        { type: "narrate", text: "O postallar, ömründen yıllar alan sonsuz bir dakikanın ardından yavaşça dönüp uzaklaşıyor. Fenerin o tehditkar gölgesi duvarlardan çekiliyor. Koridorun ucundan o derin ses kendi kendine mırıldanıyor: \"Tutanak yarına kalsın... Aile sofrada taze et bekler...\" Kurtuldun." },
         { type: "stat", stat: "akil", delta: -10 },
-        { type: "narrate", text: "Menfezin içinden, tozun ve karanlığın içinden yukarı — ana bacanın soğuk hava akımına doğru sürünüyorsun." },
+        { type: "narrate", text: "Menfezin içindeki o pisliğin, tozun ve kurumuş kanların arasından yukarıya doğru — ana bacanın o buz gibi esen hava akımına doğru çılgınca tırmanmaya başlıyorsun." },
       ],
       choices: [
-        { id: "baca", text: "Ana bacaya tırman", next: "n_baca" },
+        { id: "baca", text: "Ana bacanın demir basamaklarına yapış ve tırman", next: "n_baca" },
       ],
     },
 
@@ -674,45 +667,40 @@ export const EP02 = {
       checkpoint: true,
       cost: 2,
       events: [
-        { type: "narrate", text: "Ana baca: K-5'i K-4'e bağlayan dikey çelik boğaz. Basamak demirleri soğuk, yukarıdan — yaşam alanlarından — sıcak, tuhaf bir yemek kokusu iniyor. Tırmanıyorsun." },
-        { type: "ambient", text: "Aşağıda Deniz'in hoparlörleri son kez cızırdıyor: 「...İyi dersin bakım. Yukarısı benim bölgem değil. Yukarısı EVDİR.」", if: { flag: "denizSoruldu", equals: false } },
-        { type: "ambient", text: "Aşağıda Deniz'in hoparlörleri son kez cızırdıyor: 「...Sorduğun soru var ya.」 Uzun statik. 「Kimseye sorma onu bir daha. Özellikle yukarıda. Yukarısı EVDİR — ve evde herkes çoktan cevap vermiştir.」", if: { flag: "denizSoruldu", equals: true } },
+        { type: "narrate", text: "Ana baca: K-5 cehennemini K-4'e bağlayan dikey, kapkara bir çelik boğaz. Tutunduğun demir basamaklar ellerini donduruyor ama yukarılardan — o yamyamların yaşam alanlarından — sıcak, mide bulandırıcı, tuhaf bir haşlanmış et kokusu aşağıya doğru iniyor. Ağlayarak tırmanıyorsun." },
+        { type: "ambient", text: "Aşağıda, Deniz'in hoparlörleri son bir kez cızırdıyor: 「...İyi dersti fare. Yukarısı artık benim kameramın olduğu yer değil. Yukarısı EVDİR... Evdekiler açtır...」", if: { flag: "denizSoruldu", equals: false } },
+        { type: "ambient", text: "Aşağıda, Deniz'in hoparlörleri son bir kez cızırdıyor: 「...O sorduğun soru vardı ya...」 Uzun bir statik cızırtı. 「O soruyu yukarıda sakın kimseye sorma. Özellikle orada... Çünkü yukarısı EVDİR ve evdeki herkes o soruya çoktan kendi etini vererek cevap vermiştir...」", if: { flag: "denizSoruldu", equals: true } },
         { type: "waitTap" },
-        { type: "ambient", text: "Sonar hattının minik hoparlörü cebinde: «Hâlâ oradayım,» diyor Ece. «Sen tırmanırken hattı K-4 interkomlarına bağlamaya çalışacağım. Kaybolma. ...Lütfen kaybolma.»", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "ambient", text: "Sonar hattı cebinde bütün tırmanış boyunca sessiz. Ece hâlâ orada — bunu biliyorsun. Sadece artık senin için konuşmuyor.", if: { flag: "eceEleVerildi", equals: true } },
+        { type: "ambient", text: "Cebindeki o minik sonar telsizinden Ece'nin titrek sesi geliyor: «Hâlâ hayattayım... Sen tırmanırken hattı K-4'ün interkomlarına bağlamaya çalışacağım. Ne olur kaybolma... Lütfen orada ölme...»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "ambient", text: "Telsiz tüm tırmanış boyunca ölüm sessizliğine gömülüyor. Ece'nin orada, o karanlıkta olduğunu biliyorsun... Ama artık senin gibi bir hain için asla konuşmayacak. Yalnızsın.", if: { flag: "eceEleVerildi", equals: true } },
       ],
       choices: [
-        { id: "son", text: "K-4 çıkış kapağına uzan", next: "n_k5_son" },
+        { id: "son", text: "K-4'ün çıkış kapağına kanlı ellerini uzat", next: "n_k5_son" },
       ],
     },
 
     n_k5_son: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kapağa uzandığın an bütün baca — bütün tünel ağı, bütün menfezler, K-5'in bütün çelik ciğerleri — aynı anda fısıldıyor:" },
-        { type: "ambient", text: "«beş... dört...» Bir kadın sesi. Uykulu, yumuşak, rüyasının içinden sayan biri." },
+        { type: "narrate", text: "Kapağa dokunduğun an tüm o devasa baca, geçtiğin tüm o kanlı tüneller, K-5'in o çelikten ciğerleri aynı anda sanki delirmiş gibi fısıldamaya başlıyor:" },
+        { type: "ambient", text: "«Beş... Dört... Üç...» Bir kadının derinden gelen sesi. Uykusunda, kâbuslar görerek ölen birinin sayıklaması gibi yumuşak ve hastalıklı." },
         { type: "waitTap" },
-        { type: "narrate", text: "Sonra baca susuyor; geriye yalnız hava akımı kalıyor. Kapağı itiyorsun: üstünde K-4'ün loş ışığı ve o sıcak, yanlış yemek kokusu. Ev kokusu. Kimin evi — birazdan öğreneceksin." },
-        { type: "system", text: "— BÖLÜM 2 SONU: SINAV —" },
+        { type: "narrate", text: "Sonra tüm kat aniden susuyor; geriye sadece yukarılardan gelen o sıcak, yanlış ev yemeği kokusu kalıyor. Kapağı tüm gücünle itiyorsun: Karşında K-4'ün loş, tekinsiz ışığı ve seni bekleyen o büyük delilik. Kimin evine girdin... Birazdan kemiklerinde hissedeceksin." },
+        { type: "system", text: "—SINAV BİTTİ, ASIL DEHŞET BAŞLIYOR —" },
       ],
       choices: [
-        { id: "k4", text: "Kapaktan K-4'e çık", next: "n_k4_giris" },
+        { id: "k4", text: "Kapakla birlikte K-4'ün loş koridoruna tırman", next: "n_k4_giris" },
       ],
     },
   },
 };
 
-// Bölüm başlangıç bayrakları:
 export const EP02_FLAGS = {
   destekOnarildi: false,
-  // hub / ilerleme
   hubIlk: false, s1Ilk: false, t1Ilk: false, t3Ilk: false,
   s1SemaOkundu: false, tHarita: false, tCep: false,
-  // kart parçaları (çıkış kilidi)
   kart1: false, kart2: false, kart3: false,
   sinav1: false, sinav2: false, sinav3: false, mezun: false,
-  // Ece hattı
   adSoylendi: false, eceEleVerildi: false,
-  // Deniz
   denizSoruldu: false,
 };

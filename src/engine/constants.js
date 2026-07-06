@@ -5,7 +5,7 @@ export const IS_RELEASE = true;
    Bölüme özel veriler (bayraklar, hikaye) src/story/ altındadır;
    burada yalnız motorun genel ayarları durur. */
 
-export const STAT_MAX = { gurultu: 100, akil: 100, eceGuven: 100, denizOfke: 100, sefFarkindalik: 100 };
+export const STAT_MAX = { gurultu: 100, akil: 170, eceGuven: 100, denizOfke: 100, sefFarkindalik: 100 };
 
 export const BATTERY_START = 25;   // yeni oyunda pil yüzdesi (düşük — yedek yönetimi kritik)
 export const SPARES_START = 1;     // yeni oyunda 1 yedek pil (başlangıç güvencesi)
@@ -37,8 +37,8 @@ export const DARK_MS = 75000;
    bir kaynak baskısına dönüştürür.
    BATTERY_DRAIN_MS: kaç ms'de bir %1 azalır (normal durum).
    Düşük = hızlı tükenir. */
-export const BATTERY_DRAIN_MS = 1000;      // her 6 sn'de %1 (normal) → ~%42 pil ≈ 4 dk
-export const BATTERY_DRAIN_TENSE = 500;   // gerilim/keşif anında daha hızlı
+export const BATTERY_DRAIN_MS = 3000;      // her 6 sn'de %1 (normal) → ~%42 pil ≈ 4 dk
+export const BATTERY_DRAIN_TENSE = 1500;   // gerilim/keşif anında daha hızlı
 
 /* ---- MERKEZÎ EŞİK SİSTEMİ (her bölümde otomatik çalışır) ----
    Gürültü ve akıl sürekli izlenir; eşik aşılınca sistem tetiklenir.

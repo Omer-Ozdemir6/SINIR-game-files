@@ -29,13 +29,13 @@ export const EP01 = {
         { type: "system", text: "SAAT: 03:47 · DERİNLİK: 214M · HARİCİ BAĞLANTI: YOK (3 SA 12 DK)" },
         { type: "pause", ms: 900 },
         { type: "system", text: "ATANMA: BAKIM TEKNİSYENİ · SİCİL YENİ · GÖREV: RUTİN DENETİM" },
-        { type: "narrate", text: "Üç gün önce bir işe alım maili aldın: 'SINIR-1 araştırma istasyonu, bakım teknisyeni pozisyonu — bir önceki personel görevi bıraktı, acil ihtiyaç.' Maaş fazla iyiydi, sorular fazla azdı. Denizaltıyla indirildiğinde kimse seni karşılamadı. On bir aydır çalışan bir istasyon için burası fazla sessizdi." },
-        { type: "narrate", text: "Seni uyandıran alarm değil. Alarmın SUSMASI. İlk gecen ve jeneratör çoktan susmuş; K-6'nın çelik sessizliği üstüne bir tabut kapağı gibi kapanıyor." },
-        { type: "narrate", text: "Ranzadan doğruluyorsun. Acil aydınlatmanın kırmızısı dışında her şey karanlık. Elin, refleksle, sana verilen bakım tabletini buluyor. Çatlak ekran yüzüne soluk bir ışık vuruyor — şu an tüm dünyandaki tek ışık bu. Önceki teknisyenden kalma; kilit ekranında silinmemiş bir isim: 'B. Soylu'." },
+        { type: "narrate", text: "Üç gün önce gelen o e-posta bir lütuf gibiydi. 'SINIR-1 araştırma istasyonu, acil bakım personeli aranıyor.' Maaş akılalmazdı, tek bir mülakat bile yapılmadı. Denizaltının kapakları üzerime kapandığında geriye dönüş olmadığını biliyordum ama bu zifiri çelik mezarla karşılaşacağımı tahmin etmemiştim. On bir aydır aralıksız çalışan koca tesiste çıt çıkmıyor." },
+        { type: "narrate", text: "Seni uyandıran şey kulakları tırmalayan bir alarm değil. Jeneratörün aniden ÖLMESİ. Kulaklarındaki o uğultu bıçak gibi kesiliyor ve K-6 katının mutlak, boğucu karanlığı göğsüne bir karabasan gibi çöküyor. Kalbinin göğüs kafesini zorladığını hissediyorsun." },
+        { type: "narrate", text: "Ranzadan doğrulurken nefesin daralıyor. Acil durum aydınlatmasının o hastalıklı kırmızı pırıltısı bile sönmüş, her yer kör karanlık. Panikle elini uzatıyorsun ve parmakların sana verilen şirketin bakım tabletini buluyor. Güç tuşuna bastığında çatlak ekran aniden parlıyor; çiğ, mavi-beyaz, buz gibi bir ışık suratına çarpıyor. Şu an bu zifiri dünyadaki tek dayanağın, tek ışık kaynağın bu ekran. Önceki teknisyenden kalmış; parmak izleriyle lekelenmiş kilit ekranında silinmemiş bir isim parıldıyor: 'B. Soylu'." },
         { type: "note", id: "not_uyanis", title: "İlk gece", text: "SINIR-1'e bakım teknisyeni olarak atandım — önceki personel 'görevi bırakmış'. İlk gecem ve jeneratör çoktan susmuş, alarm yok, yüzeyle bağlantı üç saattir kopuk. Kimse beni karşılamadı, kimse uyandırmadı. Tablet önceki teknisyene aitmiş: B. Soylu. O nerede?" },
         { type: "waitTap" },
         { type: "objective", text: "Güç kesintisinin kaynağını bul" },
-        { type: "ambient", text: "Koridordan, çok uzaktan, ıslak bir şeyin sürüklenme sesi geliyor. Bir kez. Sonra yine sessizlik." },
+        { type: "ambient", text: "Yatakhanenin dışındaki koridordan, çok uzaktan, et parçası sürükleniyormuş gibi ıslak, ağır bir ses geliyor. Birkaç saniye sürüyor, sonra yerini ölümcül bir sessizliğe bırakıyor." },
       ],
       choices: [
         { id: "ranza", text: "Diğer ranzaları ve dolapları ara", next: "n_ranza", if: { flag: "ranzaArandi", equals: false } },
@@ -47,11 +47,11 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { ranzaArandi: true } },
-        { type: "narrate", text: "Sekiz ranza, sekizi de boş — ama bozulmamış. Battaniyeler katlı, yastıklar düzgün. Kimse kaçmamış buradan. Herkes... kalkıp gitmiş. Düzenle." },
-        { type: "narrate", text: "Vedat'ın dolabını çekiştiriyorsun. Kilit direniyor, asılıyorsun — dolap bütün gövdesiyle devrilip zemine ÇARPILIYOR. Gürültü, çelik koridorlarda bir yumruk gibi yankılanıyor." },
+        { type: "narrate", text: "Tableti havaya kaldırıp çiğ ışığı etrafa saçıyorsun. Sekiz ranza... Hepsi bomboş ama tuhaf bir şekilde kusursuz. Battaniyeler askeri nizamda katlanmış, yastıklar düzgün. Kimse panikle kaçmamış. Sanki herkes tek bir emirle ranzalarından kalkıp karanlığın içine yürümüş. Düzenli ve itaatkar bir şekilde." },
+        { type: "narrate", text: "Vedat yazan dolabın kapağına asılıyorsun. Kilit paslı, parmakların kayıyor, delirmiş gibi tüm gücünle çekiştiriyorsun ve koca çelik dolap büyük bir gürültüyle ÖNE DOĞRU DEVRELEREK çelik zemine PATLIYOR. Çıkan korkunç ses, dar koridorlarda bir kırbaç gibi yankılanıyor. Göğsün hızla inip kalkıyor, durup dehşetle karanlığı dinliyorsun." },
         { type: "stat", stat: "gurultu", delta: 8, note: "GÜRÜLTÜ +8 — Ses, boş koridorlarda uzun süre yankılandı", noteKind: "alert" },
         { type: "battery", spares: 1 },
-        { type: "narrate", text: "Dolabın içinden bir yedek pil yuvarlanıyor — ve iç kapağa bantlanmış, elden ele kopyalanmış bir kağıt: katın krokisi. Vedat'ın el yazısıyla köşesine bir şeyler karalanmış." },
+        { type: "narrate", text: "Devrilen dolabın içinden bir yedek pil yuvarlanıp tabletinin ışığına çarpıyor. İç kapağa ise kan kırmızısı bir bantla yapıştırılmış, elden ele kopyalanmaktan yıpranmış bir kağıt var: katın krokisi. Vedat'ın titreyen eliyle köşesine kazıdığı notlar titrek ekran ışığında okunuyor." },
         { type: "document", open: true, doc: {
           id: "d_kroki", title: "K-6 Kat Krokisi (el kopyası)",
           meta: "resmi çizimden kopya · V.K. eliyle",
@@ -68,15 +68,15 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "K-6 ana koridoru. Acil lambaların kırmızısı, ıslak zeminde titriyor. Ve zeminde... bir iz var. Ayak izi değil. Islak, geniş, KESİNTİSİZ bir sürüklenme izi — koridor boyunca uzanıp kavşağın karanlığında kayboluyor.", if: { flag: "korIlk", equals: false } },
+        { type: "narrate", text: "K-6 ana koridoruna adım atıyorsun. Tabletinin ekranını öne doğru tuttuğunda, sadece birkaç adım önünü aydınlatabiliyorsun; geri kalan her yer seni yutmaya hazır bir karaltı. Zemindeki ıslaklık parlıyor. Ve orada... kusmuk gibi mide bulandırıcı bir iz var. Ayak izi değil. Geniş, yapışkan ve kesintisiz bir sürüklenme izi... Etin çeliğe sürtünme izi, kavşağın zifiri karanlığına doğru uzanıyor.", if: { flag: "korIlk", equals: false } },
         { type: "stat", stat: "akil", delta: -5, if: { flag: "korIlk", equals: false } },
-        { type: "narrate", text: "Panoda dünkü vardiyanın devir raporu asılı. Kağıdın kenarı, ıslak bir elle tutulmuş gibi buruşuk.", if: { flag: "korIlk", equals: false } },
+        { type: "narrate", text: "Panoda dünkü vardiyanın devir raporu asılı duruyor. Kağıdın kenarı, kurumuş sümüksü bir sıvıyla buruşmuş, sanki insana benzemeyen bir el burayı kavramış.", if: { flag: "korIlk", equals: false } },
         { type: "document", open: true, if: { flag: "korIlk", equals: false }, doc: {
           id: "d_devir", title: "Vardiya Devir Raporu — 6. Gece",
           meta: "SINIR-1 · K-6 BAKIM · FORM 12-B · VARDİYA AMİRİ: B. SOYLU",
-          body: "DEVREDEN: Baturay Soylu (gece)\nDEVRALAN: — (imza yok)\n\nAÇIK İŞLER:\n· Alt platform tahliye pompaları (A/B/C) arızalı.\n  Manuel ilk çalıştırma gerekiyor.\n· POMPA C'NİN SİGORTASI YANDI VE ÇIKARILDI.\n  Yedek sigortalar B-2 DEPOSUNDA.\n· Radyo odası erişim paneli yeniden kodlandı.\n  Kod, güvenlik gereği İKİYE BÖLÜNDÜ. (bkz. tutanak 7)\n· Ana hat, üç pompa da açılmadan BAŞLATILMAYACAK.\n\nUYARILAR:\n· Eski personel asansörü HİZMET DIŞI. Kabin yok,\n  şaft boş. Kapıyı KULLANMAYIN.\n· Sintine seviyesi yükseliyor. Tahliye 24 saat içinde\n  yapılmazsa K-6 su altında kalır.\n\nDİPNOT (el yazısı, farklı kalem):\nGece 3'ten sonra platforma tek başına inilmeyecek.\nSebep sorma. İn ve say: eksik miyiz?" } },
+          body: "DEVREDEN: Baturay Soylu (gece)\nDEVRALAN: — (imza yok)\n\nAÇIK İŞLER:\n· Alt platform tahliye pompaları (A/B/C) arızalı.\n  Manuel ilk çalıştırma gerekiyor.\n· POMPA C'NİN SİGORTASI YANDI VE ÇIKARILDI.\n  Yedek sigortalar B-2 DEPOSUNDA.\n· Radyo odası erişim paneli yeniden kodlandı.\n  Kod, güvenlik gereği İKİYE BÖLÜNDÜ. (bkz. tutanak 7)\n· Ana hat, üç pompa da açılmadan BAŞLATILMAYACAK.\n\nUYARILAR:\n· Eski personel asansörü HİZMET DIŞI. Kabin yok,\n  şaft boş. Kapıyı KULLANMAYIN.\n· Sintine seviyesi yükseliyor. Tahliye 24 saat içinde\n  yapılmazsa K-6 su altında kalır.\n\nDİPNOT (el yazısı, different kalem):\nGece 3'ten sonra platforma tek başına inilmeyecek.\nSebep sorma. İn ve say: eksik miyiz?" } },
         { type: "flag", set: { korIlk: true } },
-        { type: "ambient", text: "Sol tarafta ilaç kokusu sızdıran aralık bir kapı var. İleride, tuhaf biçimde, kantinin ışığı hâlâ yanıyor. Ve koridorun sonunda: kavşağın ağzı, kapkara." },
+        { type: "ambient", text: "Sol tarafta, ekşimsi bir çürüme ve ağır kimyasal kokusu sızdıran aralık bir kapı var. İleride, mantığa meydan okurcasına kantinin sarı, titrek ışığı yanıp sönüyor. Koridorun ucu ise dipsiz bir kuyu gibi kapkara." },
       ],
       choices: [
         { id: "revir", text: "İlaç kokusunun geldiği aralık kapıya bak", next: "n_revir", if: { flag: "revirGezildi", equals: false } },
@@ -89,7 +89,7 @@ export const EP01 = {
     n_uyanis_geri: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Yatakhane olduğu gibi duruyor: sekiz boş ranza, katlı battaniyeler. Kapıdan bakıp geri dönüyorsun — burada senin için bir şey kalmadı." },
+        { type: "narrate", text: "Yatakhane soğuk ve ölü. Boş ranzalar tabletinin ekran ışığı altında iskelet gibi dizilmiş. Kapının eşiğinden içeri bakıp ürperiyorsun; burası artık güvenli bir sığınak değil, bir mezarlık." },
       ],
       choices: [
         { id: "ranza", text: "Ranzaları ve dolapları ara", next: "n_ranza", if: { flag: "ranzaArandi", equals: false } },
@@ -103,16 +103,16 @@ export const EP01 = {
       cost: 2,
       events: [
         { type: "flag", set: { revirGezildi: true } },
-        { type: "narrate", text: "Revir. İlaç dolabı ardına kadar açık, boş. Ve muayene masasında — bir ceset. Göğüs cebindeki isimlik: 'B. SOYLU'. Tabletini taşıdığın adam. Yerini almaya geldiğin adam. Gözleri tavana dönük, yüzü... sakin. Bu gece gördüğün en korkunç şey bu sakinlik. 'Görevi bıraktı' demişlerdi. Bırakmamış — bırakılmış." },
+        { type: "narrate", text: "Revir odasındasın. Keskin antiseptik kokusu genzini yakıyor. İlaç dolabı vahşice yağmalanmış, camları yerde tuzla buz olmuş. Adımını atarken tabletinin ışığını muayene masasına doğru çeviriyorsun. Kusmamak için ağzını kapatıyorsun: orada bir ceset var. Göğsündeki kanlı isimlik zorlukla okunuyor: 'B. SOYLU'. Elindeki tabletin sahibi. Yerini almak için can attığın o adam. Gözleri sonuna kadar açılmış, donukça tavana bakıyor, ağzı açık kalmış. Yüzündeki o dehşet dolu sakinlik ruhunu kemiriyor. 'Görevi bıraktı' demişlerdi... Hayır, onu burada ölüme terk etmişler." },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "narrate", text: "Yumruğu sıkılı. Parmaklarını tek tek açıyorsun — avucunda buruşuk bir kağıt: iki rakam, acele bir el yazısıyla: \"21\". Gerisi yırtık." },
+        { type: "narrate", text: "Cesedin sağ eli sıkıca kapatılmış, kaskatı kesilmiş. Kusma dürtünü bastırarak, adamın soğuk, morarmış parmaklarını tek tek, zorlayarak açıyorsun. Derisi çıtırdıyor. Avucunun içinden kan lekeli, buruşmuş bir kağıt parçası çıkıyor. Aceleyle yazılmış iki rakam: \"21\". Devamı yırtılıp gitmiş." },
         { type: "note", id: "not_kod21", title: "Kod parçası: 21··", text: "Baturay'ın avucundan çıktı. Radyo odasının kodu ikiye bölünmüştü — bu ilk yarısı: 21. Devir raporundaki 'tutanak 7' buydu demek. Diğer yarısı nerede?" },
         { type: "flag", set: { kod21: true } },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
           id: "d_revir", title: "Revir Kaydı — Hafta 42",
           meta: "SINIR-1 SAĞLIK BİRİMİ · GİZLİLİK: KURUM İÇİ",
-          body: "TOPLU SEMPTOM BİLDİRİMİ (son 14 gün):\n\n· Kulak çınlaması ....................... 19 personel\n· Uyku bozukluğu ........................ 16 personel\n· \"Duvarlardan ses geldiği\" hissi ....... 11 personel\n· UYKUDA SAYI SAYMA ..................... 9 personel\n\nNot: Uykuda sayanların tamamı, birbirinden habersiz,\nAYNI diziyi sayıyor. Kayıtlar karşılaştırıldı.\nAçıklama bulunamadı.\n\nÖNERİ: Toplu psikolojik değerlendirme + yüzeye\ntahliye talebi. (RED — H. Tekin: 'Vardiya düzeni\nbozulamaz. Aile işini bilir.')\n\nSON KAYIT: B. Soylu tedaviyi reddetti. 'Uyumamak\nyeterli' dedi. Kendisine uyarıcı verildi." } },
+          body: "TOPLU SEMPTOM BİLDİRİMİ (son 14 gun):\n\n· Kulak çınlaması ....................... 19 personel\n· Uyku bozukluğu ........................ 16 personel\n· \"Duvarlardan ses geldiği\" hissi ....... 11 personel\n· UYKUDA SAYI SAYMA ..................... 9 personel\n\nNot: Uykuda sayanların tamamı, birbirinden habersiz,\nAYNI diziyi sayıyor. Kayıtlar karşılaştırıldı.\nAçıklama bulunamadı.\n\nÖNERİ: Toplu psikolojik değerlendirme + yüzeye\ntahliye talebi. (RED — H. Tekin: 'Vardiya düzeni\nbozulamaz. Aile işini bilir.')\n\nSON KAYIT: B. Soylu tedaviyi reddetti. 'Uyumamak\nyeterli' dedi. Kendisine uyarıcı verildi." } },
       ],
       choices: [
         { id: "gunluk", text: "Baturay'ın göğüs cebindeki defteri al", next: "n_revir2" },
@@ -123,14 +123,14 @@ export const EP01 = {
     n_revir2: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Ceketinin cebinden küçük, şişkin bir defter çıkıyor. Kapağında tek kelime: SAYMA. Sayfaları ıslak, ama okunuyor." },
+        { type: "narrate", text: "Baturay'ın sırılsıklam olmuş ceketinin iç cebine elini sokuyorsun. Küçük, parmak izleriyle ve kirli sıvılarla kaplı bir defter çıkarıyorsun. Kapağında delirmiş bir el yazısıyla tek bir kelime kazınmış: SAYMA. Sayfaları birbirine yapışmış, tablet ışığının soluk parıltısında zar zor seçiliyor." },
         { type: "stat", stat: "akil", delta: -5 },
         { type: "document", open: true, doc: {
           id: "d_gunluk", title: "Baturay'ın Günlüğü", style: "hand",
           meta: "— gece vardiyası defteri —",
-          body: "3 Ekim\nKulaklarım bütün gün çınladı. Jeneratörün sesi\nsandım. Değilmiş. Jeneratörü kapattırdım, çınlama\ndurmadı. Ses makinede değil. Ses BENDE.\n\n9 Ekim\nMakinedeki ses; sanki kafamın içindeki sesin aynısı.\nGözümü kırpınca cızırtı görüyorum. Yağlı, karanlık\nbir şey iniyor göz kapaklarımın arkasından. Ama ses\nduvarların İÇİNDEN de geliyor. O sesi tanıyorum.\n\n14 Ekim\nVedat uykusunda sayı sayıyor. Altı. Beş. Dört.\nUyandırdım, hatırlamıyor. Bu gece revirde dokuz\nkişi saydık. HEPSİ AYNI YERDEN başlıyor.\n\n21 Ekim\nŞef 'aile toplantısı' yaptı. Kimse toplantıdan\nkonuşmuyor ama herkes gülümsüyor artık. Aynı\ngülümseme. Radyo odasının kodunu değiştirdim ve\nİKİYE BÖLDÜM. Yarısı hep yanımda. Diğer yarısını\nsu basan tarafta, C panosunun oraya kazıdım.\nİkisi bir arada olmaz. Bana bir şey olursa:\nönce say. Sonra kaç.\n\n(son sayfa, bozuk el yazısı)\nBurada tek kurban ben değilim, hem de hiç.\nAdamın biri bu yerde kalmaktansa yanarak ölmeyi\nbekledi. Ben o kadar cesur değilim. Ben sadece\nuyumayacağım." } },
+          body: "3 Ekim\nKulaklarım bütün gün çınladı. Jeneratörün sesi\nsandım. Değilmiş. Jeneratörü kapattırdım, çınlama\ndurmadı. Ses makinede değil. Ses BENDE.\n\n9 Ekim\nMakinedeki ses; sanki kafamın içindeki sesin aynısı.\nGözümü kırpınca cızırtı görüyorum. Yağlı, karanlık\nbir şey iniyor göz kapaklarımın arkasından. Maar ses\nduvarların İÇİNDEN de geliyor. O sesi tanıyorum.\n\n14 Ekim\nVedat uykusunda sayı sayıyor. Altı. Beş. Dört.\nUyandırdım, hatırlamıyor. Bu gece revirde dokuz\nkişi saydık. HEPSİ AYNI YERDEN başlıyor.\n\n21 Ekim\nŞef 'aile toplantısı' yaptı. Kimse toplantıdan\nkonuşmuyor ama herkes gülümsüyor artık. Aynı\ngülümseme. Radyo odasının kodunu değiştirdim ve\nİKİYE BÖLÜNDÜ. Yarısı hep yanımda. Diğer yarısını\nsu basan tarafta, C panosunun oraya kazıdım.\nİkisi bir arada olmaz. Bana bir şey olursa:\nönce say. Sonra kaç.\n\n(son sayfa, bozuk el yazısı)\nBurada tek kurban ben değilim, hem de hiç.\nAdamın biri bu yerde kalmaktansa yanarak ölmeyi\nbekledi. Ben o kadar cesur değilim. Ben sadece\nuyumayacağım." } },
         { type: "battery", spares: 1 },
-        { type: "narrate", text: "Defterin arasından bir yedek pil kayıyor avucuna. Baturay'ın son iyiliği. \"Önce say. Sonra kaç.\"" },
+        { type: "narrate", text: "Defteri silkerken arasından kayan yedek pil avucuna düşüyor. Baturay'ın bu leş çukurunda bıraktığı son şey. Zihninde o lanetli cümle yankılanıyor: 'Önce say. Sonra kaç.'" },
       ],
       choices: [
         { id: "cik", text: "Revirden çık", next: "n_koridor" },
@@ -143,15 +143,15 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { kantinGezildi: true } },
-        { type: "narrate", text: "Kantin ışığı yanıyor çünkü sofra KURULU. On iki kişilik masa, on iki tabak, on iki bardak. Yemekler günler önce konmuş — üstü yeşil-siyah bir örtüyle kaplı. Ve masanın başındaki tabak... temiz. Bekliyor.", if: { flag: "kantinIlkGoruldu", equals: false } },
+        { type: "narrate", text: "Kantine girdiğinde miden isyan ediyor. Tepedeki lamba can çekişir gibi kırpışarak odayı anlık olarak aydınlatıyor. On iki kişilik devasa bir sofra kurulu. Tabaklar, çatal bıçaklar yerinde... Ancak yemeklerin üzeri yeşil, siyah, tüylü bir küf tabakasıyla kaplanmış, leş gibi kokuyor. Masanın tam başköşesindeki tabak ise pırıl pırıl, tertemiz. Korkunç bir davet gibi birini bekliyor.", if: { flag: "kantinIlkGoruldu", equals: false } },
         { type: "stat", stat: "akil", delta: -5, if: { flag: "kantinIlkGoruldu", equals: false } },
-        { type: "narrate", text: "Duvar panosunda vardiya çizelgesi. Yaklaşınca miden buruluyor.", if: { flag: "kantinIlkGoruldu", equals: false } },
+        { type: "narrate", text: "Gözlerin duvardaki vardiya çizelgesine kayıyor. Tabletinin ekranını yaklaştırıp baktığında tüylerin diken diken oluyor.", if: { flag: "kantinIlkGoruldu", equals: false } },
         { type: "document", open: true, if: { flag: "kantinIlkGoruldu", equals: false }, doc: {
           id: "d_cizelge", title: "Vardiya Çizelgesi — ?? Hafta",
           meta: "SINIR-1 PERSONEL PLANLAMA · onay: H.T.",
           body: "PAZARTESİ\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nSALI\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nÇARŞAMBA\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nPERŞEMBE\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nCUMA\n  00-08: A İ L E   08-16: A İ L E   16-24: AİLE\nCUMARTESİ\n  00-08: AİLEAİLE  08-16: AİLEAİLEAİLE\nPAZAR\n  hep birlikte hep birlikte hep birlikte hep\n\n(alt köşe, kurşun kalem, minicik:)\ngeç kalan personel için yer ayrıldı" } },
         { type: "flag", set: { kantinIlkGoruldu: true } },
-        { type: "ambient", text: "Masanın başındaki temiz tabağın yanında bir isim kartı var. Üstünde senin görev numaran yazıyor. Mutfağın arkasında, buhar borularının gölgesinde, bir servis kapısı seçiliyor." },
+        { type: "ambient", text: "Masanın başındaki o temiz, boş tabağın hemen yanında küçük bir isim kartı var. Üzerine titreyen ışığı tuttuğunda kendi görev numaranı görüyorsun. Mutfağın gerisinde, paslı boruların gölgesinde bir servis kapısı kararıyor." },
       ],
       choices: [
         { id: "servis", text: "Mutfağın arkasındaki servis kapısını zorla", next: "n_servis" },
@@ -162,10 +162,10 @@ export const EP01 = {
     n_servis: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Servis kapısı yarıya kadar açılıp sıkışıyor; omuz atıyorsun — menteşe İNLEYEREK teslim oluyor.", if: { flag: "servisAcildi", equals: false } },
+        { type: "narrate", text: "Paslı servis kapısı sadece birkaç parmak açılıp sıkışıyor. Dişlerini sıkıp omuz atıyorsun, metal menteşe acı dolu bir çığlık atarak kırılıyor ve koridorda yankılanıyor.", if: { flag: "servisAcildi", equals: false } },
         { type: "stat", stat: "gurultu", delta: 5, note: "GÜRÜLTÜ +5 — Menteşe bütün kata duyuldu", noteKind: "alert", if: { flag: "servisAcildi", equals: false } },
         { type: "flag", set: { servisAcildi: true } },
-        { type: "narrate", text: "Dar bir servis geçidi: erzak kolileri, boru hatları, tavandan sarkan et kancaları — boş kancalar, kendine bunu tekrarlıyorsun. Geçit, ileride daha geniş bir karanlığa açılıyor." },
+        { type: "narrate", text: "Kapının ardı klostrofobik bir kabus. Daracık, pis bir geçit... Çürümüş erzak kolileri, yağlı borular ve tavandan sarkan koca et kancaları başının hemen üzerinden geçiyor. Boş kancalar... Kendini buna inandırmaya çalışıyorsun. Tabletin ekran ışığı, ilerideki daha yoğun, dipsiz bir karanlığın sınırında eriyor." },
       ],
       choices: [
         { id: "depo", text: "Geçidin açıldığı karanlığa ilerle", next: "n_depo" },
@@ -179,11 +179,11 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Kavşak: K-6'nın dört yolunun düğümü. Sağda, aşağı kıvrılan merdivenden SU SESİ yankılanıyor — düzenli, ağır bir çalkantı. Karşıda dar bir bakım geçidi soğuk hava üflüyor. Solda ise çelik bir çift kapı: ESKİ ASANSÖR — üstünde sarkmış, yırtık bir uyarı bandı.", if: { flag: "kavsakIlk", equals: false } },
+        { type: "narrate", text: "Kavşaktasın; K-6'nın tüm ölümcül yolları burada birleşiyor. Sağ taraftaki merdivenlerden aşağıdan karanlık, yoğun bir su sesi geliyor — dalgaların çeliğe vuran düzenli çarpıntıları. Karşıdaki dar delik andıran bakım geçidinden yüzüne buz gibi, pis bir hava üflüyor. Solunda ise çelik kapıları eğrilmiş ESKİ ASANSÖR duruyor, üzerinde yırtılmış, adeta tırnaklanmış bir uyarı bandı var.", if: { flag: "kavsakIlk", equals: false } },
         { type: "flag", set: { kavsakIlk: true } },
-        { type: "narrate", text: "İleride bir kapı daha var: 6-B koridorunun elektronik kilidi. Panelinin ışığı ÖLÜ — güç olmadan bu kapı bir duvar.", if: { flag: "gucAcik", equals: false } },
-        { type: "narrate", text: "6-B koridorunun elektronik kilidi artık YEŞİL yanıyor. Güç geldi — kapı seni bekliyor.", if: { flag: "gucAcik", equals: true } },
-        { type: "ambient", text: "Zemindeki ıslak sürüklenme izi burada ikiye ayrılıyor: biri merdivenden aşağı, suya. Öbürü... asansör kapısının ALTINDAN içeri." },
+        { type: "narrate", text: "İlerideki 6-B koridorunun elektronik kapısına yöneliyorsun ama panel zifiri, ölü duruyor. Güç gelmeden bu kapı aşılmaz bir duvar.", if: { flag: "gucAcik", equals: false } },
+        { type: "narrate", text: "6-B koridorunun elektronik kilidi nihayet yeşil bir ışık kusuyor. Güç paneli uyanık, seni o zifiri karanlığa davet ediyor.", if: { flag: "gucAcik", equals: true } },
+        { type: "ambient", text: "Zemindeki o korkunç ıslak sürüklenme izi tam burada ikiye bölünüyor: Bir kolu merdivenlerden aşağıya, suya iniyor. Diğeri ise... asansör kapısının ezilmiş alt aralığından içeri sızıyor." },
       ],
       choices: [
         { id: "merdiven", text: "Su sesine doğru merdivenden aşağı in", next: "n_platform" },
@@ -196,7 +196,7 @@ export const EP01 = {
 
     n_olum_asansor: {
       death: true,
-      deathText: "Kapı, iki asılışta teslim oluyor — çünkü tutan bir şey yok. Kabin de yok. Sadece 214 metrelik tesisin dibine inen boş, ıslak bir boğaz. Uyarı bandı bir şey söylüyordu. Rapor da. Kroki de. Karanlıkta düşerken aklına hepsi birden geliyor — ve aşağıda, seni yumuşak bir şey karşılıyor. Yumuşak ve UYANIK.",
+      deathText: "Çaresizlik gözünü kör etmiş. Kapıyı iki asılışta açıyorsun çünkü ardında kapıyı tutacak hiçbir mekanizma kalmamış. Kabin yok. Sadece 214 metrelik tesisin dibine, zifiri karanlığa inen ıslak, devasa bir boğaz. Uyarılar, raporlar, krokiler... Karanlıkta hızla aşağı düşerken hepsi zihninde patlıyor. Ve düşüşün bittiğinde seni sert bir zemin değil, aşağıda bekleyen yumuşak, vıcık vıcık ve bütünüyle UYANIK bir et yığını karşılıyor.",
       events: [
         { type: "glitch", ms: 900 },
       ],
@@ -207,9 +207,9 @@ export const EP01 = {
     n_gecit: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Bakım geçidi omuz genişliğinde. Boru hatları iki yandan sıkıştırıyor; bir yerlerde bir vana sızdırıyor, damlalar çelikte saat gibi vuruyor. Tık. Tık. Tık.", if: { flag: "gecitIlk", equals: false } },
+        { type: "narrate", text: "Bakım geçidi o kadar dar ki omuzların iki yandaki çeliğe sürtünüyor, paslı vidalar kıyafetini tırmalıyor. Bir yerlerdeki kaçak vana zifiri karanlıkta delice sızdırıyor, damlalar çeliğin üzerine beynini tırmalayan bir ritimle düşüyor: Tık. Tık. Tık.", if: { flag: "gecitIlk", equals: false } },
         { type: "flag", set: { gecitIlk: true } },
-        { type: "ambient", text: "Damlaların ritmi bir an BOZULUYOR — sanki araya başka bir tık karıştı. Sonra düzeliyor. Saymadın. Saymayacaksın." },
+        { type: "ambient", text: "Damlaların ritmi bir anlığına boğuk bir şekilde kesiliyor... Sanki araya basan başka bir ağırlığın sesi karıştı. Sonra yeniden tıkırtılar başlıyor. Titreyen ellerinle tableti sıkıca kavruyorsun. Saymadın. Saymayacaksın." },
       ],
       choices: [
         { id: "depo", text: "Geçidin sonundaki kapıyı omuzla", next: "n_depo" },
@@ -222,13 +222,13 @@ export const EP01 = {
     n_depo: {
       cost: 1,
       events: [
-        { type: "narrate", text: "B-2 deposu: raf raf yedek parça, konserve kuleleri, yağ bidonları. Tavandaki tek acil lamba, tozun içinde ölü bir güneş gibi asılı. İki girişi var: geldiğin taraf ve karşıdaki — biri kantinin servis geçidine, öbürü kavşağın bakım geçidine çıkıyor.", if: { flag: "depoIlk", equals: false } },
+        { type: "narrate", text: "B-2 deposunun devasa silüeti tabletinin cılız ışığında beliriyor. Raf raf paslı parçalar, küflü konserveler, devrilmiş yağ bidonları... Tavandaki tek acil lamba içten içe kararmış, ölü bir göz gibi sarkıyor. İki çıkışın var: Biri kantinin o et kancalı pis geçidine, diğeri kavşağın dar tüneline açılıyor.", if: { flag: "depoIlk", equals: false } },
         { type: "document", open: true, if: { flag: "depoIlk", equals: false }, doc: {
           id: "d_basinc", title: "Basınç Günlüğü — K-6 Dış Gövde",
           meta: "OTOMATİK SENSÖR ÇIKTISI + VARDİYA EL KAYDI · depo arşivi",
           body: "GECE 1 — 03:00-04:00\n  Dış gövde temas: 6 vuruş. Kaynak: DIŞ. Balina? (V.)\n\nGECE 2 — 03:10-03:40\n  Dış gövde temas: 5 vuruş. Düzenli aralık.\n  Balinalar düzenli vurmaz. (B.S.)\n\nGECE 3 — 03:20-03:55\n  Temas: 4 vuruş. SENSÖR NOTU: titreşim imzası\n  İÇ kaynak paterni gösteriyor. Teknik hata? (B.S.)\n\nGECE 4 — 03:47\n  Temas: 3 vuruş. İçeriden. Kesin. Üç vuruş,\n  sintine tarafından. Aşağıda kimse yoktu.\n  KİMSE YOKTU. (B.S.)\n\nGECE 5 —\n  (kayıt yok)\n\nGECE 6 —\n  (bu gece)" } },
         { type: "flag", set: { depoIlk: true } },
-        { type: "ambient", text: "Rafların birinde, göz hizasında, şablon harflerle: \"ELEKTRİK YEDEK — SİGORTA/RÖLE\"." },
+        { type: "ambient", text: "Tableti raflara doğru tutuyorsun, göz hizandaki tozlu metalin üzerinde kazınmış şablon harfleri görüyorsun: \"ELEKTRİK YEDEK — SİGORTA/RÖLE\"." },
       ],
       choices: [
         { id: "sigorta", text: "Sigorta kutusunu ara", next: "n_depo_sigorta", if: { flag: "sigortaAlindi", equals: false } },
@@ -242,7 +242,7 @@ export const EP01 = {
     n_devre_pano: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Deponun arka duvarında, cam kapağı çatlamış bir devre panosu. İçindeki dokuz modül yerinden oynamış, sökülmüş ve yanlış yuvalara tıkılmış — sanki biri aceleyle karıştırmış. Panonun üstünde küçük bir etiket: \"K-6 YEDEK AYDINLATMA HATTI\". Modülleri doğru sıraya dizersen deponun ölü lambaları geri gelebilir." },
+        { type: "narrate", text: "Deponun arkasındaki küf kokulu duvarda, koruma camı parça pinçik edilmiş bir devre panosu duruyor. İçindeki dokuz modül vahşice yuvalarından sökülmüş, ezilmiş ve rastgele yerlerine tıkıştırılmış... Sanki biri delirerek ışıkları kapatmaya çalışmış. Panonun üstündeki etiket lekeli: \"K-6 YEDEK AYDINLATMA HATTI\". Eğer bu modülleri doğru sıraya sokabilirsen, deponun can çekişen lambalarını uyarabilirsin." },
         { type: "note", id: "not_devre", title: "Devre panosu", text: "Depodaki yedek aydınlatma panosu karışmış — dokuz modül yanlış yuvalarda. Doğru sıraya dizersem K-6'nın yedek ışıkları çalışır. Işık, karanlıkta avantaj demek." },
       ],
       interaction: {
@@ -258,7 +258,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "system", text: "YEDEK AYDINLATMA HATTI: AKTİF" },
-        { type: "narrate", text: "Son modül yerine oturduğu an pano vızıldıyor ve deponun tavan lambaları — biri biri — titreyerek uyanıyor. Kirli sarı bir ışık odayı dolduruyor. Karanlık geri çekiliyor; en azından burada, bir süreliğine, görebiliyorsun." },
+        { type: "narrate", text: "Son modülü yerine oturttuğun an pano yüksek sesle vızıldıyor ve deponun tavanındaki tozlu tüpler — kırpışarak — aniden uyanıyor. Hastalıklı, kirli sarı bir ışık odayı dolduruyor. Karanlık köşelere doğru çekiliyor; en azından bu odada tabletinin ışığı dışında bir şeyler görebilmek göğsünü rahatlatıyor." },
         { type: "flag", set: { devreOnarildi: true, yolAydinlik: true } },
         { type: "stat", stat: "akil", delta: 5, note: "AKIL +5 — Işık, küçük bir zafer", noteKind: "system" },
         { type: "battery", spares: 1 },
@@ -272,10 +272,10 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { sigortaAlindi: true } },
-        { type: "narrate", text: "Kutunun içinde tek bir yedek sigorta kalmış — ağır, cam gövdeli, avucunu dolduran cinsten. Birileri diğerlerini çoktan almış. Ya da SAKLAMIŞ." },
+        { type: "narrate", text: "Kutuyu açıyorsun, içinde yalnızca tek bir ağır, cam gövdeli, içi kablo dolu yedek sigorta kalmış. Avucunu dolduruyor, buz gibi. Diğerlerini birileri kırmış ya da kasıtlı olarak bir yerlere SAKLAMIŞ." },
         { type: "note", id: "not_sigorta", title: "Yedek sigorta (C pompası)", text: "B-2 deposundan aldım. Devir raporu 'C'nin sigortası yandı ve çıkarıldı' diyordu — demek pompa C'nin panosuna bunu takacağım. Pano su basan tarafta olmalı: Baturay 'su basan tarafta, C panosunun oraya' diye yazmıştı." },
         { type: "battery", spares: 1 },
-        { type: "narrate", text: "Kutunun dibinde bir de yedek tablet pili — depo, bu gece cömert davranıyor. Bir şeyler hep kötü gitmeden hemen önce cömert davranır." },
+        { type: "narrate", text: "Kutunun karanlık dibinde bir de yedek tablet pili parlıyor. Şimdilik şansın yaver gidiyor... Ama bilirsin, bu tesis bir şeyi elinden almadan hemen önce mutlaka küçük bir yem atar." },
       ],
       choices: [
         { id: "servis", text: "Servis geçidinden kantin tarafına geç", next: "n_servis_geri" },
@@ -286,7 +286,7 @@ export const EP01 = {
     n_servis_geri: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Servis geçidinden kantine süzülüyorsun. Sofranın yanından geçerken gözlerini tabaklardan kaçırıyorsun — ama masadaki temiz tabağın SANDALYESİ, hatırladığından bir karış geride duruyor sanki. Bakma. Yürü." },
+        { type: "narrate", text: "Dar servis tünelinden sürünerek kantine geri çıkıyorsun. O koku... Küflü sofranın yanından geçerken gözlerini o tabaklardan kaçırmak için kör gibi yapıyorsun. Ancak masanın başındaki o temiz tabağın sandalyesi... Hatırladığından bir karış geriye çekilmiş duruyor. Biri oraya oturmuş gibi. Bakma. Delireceksin. Yürü." },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
@@ -301,15 +301,15 @@ export const EP01 = {
       cost: 1,
       noiseGate: [{ min: 50, once: "pusu1", node: "n_enc1" }],
       events: [
-        { type: "narrate", text: "Merdiven, bileğe kadar kara suya iniyor. Pompa platformu: sağda A hattının gemi dümeni büyüklüğündeki vanası, solda B odasının aralık kapısı. Köşede, kırmızı acil lambasının altında ana kontrol paneli bekliyor. Ve platformun dibinde, suyun İÇİNDEN devam eden dar bir geçit: sintine tarafı.", if: { flag: "platIlk", equals: false } },
-        { type: "objective", text: "Üç pompayı elle aç, ana panelden hattı başlat", if: { flag: "platIlk", equals: false } },
+        { type: "narrate", text: "Demir merdivenlerden aşağı, bileklerine kadar yükselen simsiyah, buz gibi suya iniyorsun. Pompa platformu... Sağında paslı, devasa A vanası; solunda ise karanlığa açılan B odasının kapısı duruyor. Karşıda, çiğ kırmızı bir acil durum ışığı ana paneli aydınlatıyor. Ve platformun dip tarafında, suyun İÇİNE DOĞRU gömülerek devam eden o daracık, klostrofobik sintine tüneli uzanıyor.", if: { flag: "platIlk", equals: false } },
+        { type: "objective", text: "Üç pompayı elle aç, ana panelden hattı başlat" },
         { type: "flag", set: { platIlk: true } },
         { type: "status", items: [
           { label: "POMPA A", flag: "pompaA" },
           { label: "POMPA B", flag: "pompaB" },
           { label: "POMPA C", flag: "pompaC" },
         ] },
-        { type: "ambient", text: "Su, ayak bileklerinde nabız gibi atıyor. C pompası ortalıkta görünmüyor — hat, suyun içindeki geçidin karanlığına doğru kayboluyor." },
+        { type: "ambient", text: "Siyah su ayak bileklerinde nabız gibi ağır ağır atıyor, tenini donduruyor. C pompası buralarda değil; boru hatları suyun içindeki o karanlık dehlize doğru batıp kayboluyor." },
       ],
       choices: [
         { id: "pa", text: "Dev vananın olduğu A hattına git", next: "n_pompaA", if: { flag: "pompaA", equals: false } },
@@ -324,9 +324,9 @@ export const EP01 = {
     n_bekle: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Bir borunun gölgesine çöküp KIMILDAMIYORSUN. Nefesini sayıyorsun. Bir. İki. Su yatışıyor, metal susuyor, tesis seni unutuyor — ya da unutmuş gibi yapıyor." },
+        { type: "narrate", text: "Paslı bir borunun gölgesine sinip sırtını çeliğe yaslıyorsun ve ASLA KIMILDAMIYORSUN. Gözlerini kapatıp nefeslerini sayıyorsun. Bir... İki... Su sakinleşiyor, metal inlemeleri duruluyor. Tesis seni unuttu sanıyorsun... Ya da avını izleyen bir avcı gibi numara yapıyor." },
         { type: "stat", stat: "gurultu", delta: -25, note: "Ortalık sakinleşti — GÜRÜLTÜ azaldı", noteKind: "system" },
-        { type: "ambient", text: "Çok derinden, düzenli bir tıkırtı: tık... tık... tık. Dış gövdeye vuruluyor. İçeriden mi, dışarıdan mı — artık emin değilsin." },
+        { type: "ambient", text: "Çok derinden, düzenli bir metalik darbe sesi geliyor: Tık... tık... tık... Dış gövdeye içeriden vuruluyor. Emin olamıyorsun, çıldırmak üzeresin." },
       ],
       choices: [
         { id: "don", text: "Platforma dön", next: "n_platform" },
@@ -336,7 +336,7 @@ export const EP01 = {
     n_pompaA: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Pompa A: ana tahliye hattı. Vanası en az on yıllık pasla kaynamış. Yanındaki askıda, basınç günlüğünün asılması gereken pano BOŞ sallanıyor — köşesine tebeşirle karalanmış: \"günlük depoya kaldırıldı — B.S.\"" },
+        { type: "narrate", text: "Pompa A dairesindesın. Dev vana kalın bir pas tabakasıyla tamamen kilitlenmiş gibi duruyor. Duvar panosunda basınç günlüğünün asılı olması gereken yer bomboş, sadece sacın üzerine beyaz tebeşirle alelacele kazınmış: \"günlük depoya kaldırıldı — B.S.\"" },
       ],
       interaction: { kind: "valve", title: "POMPA A — VANAYI ÇEVİR", turns: 9, success: "n_pompaA2", cancel: "n_platform" },
     },
@@ -346,7 +346,7 @@ export const EP01 = {
       events: [
         { type: "flag", set: { pompaA: true } },
         { type: "system", text: "POMPA A: AKTİF ▮ — TAHLİYE HATTI 1 AÇIK" },
-        { type: "narrate", text: "Vana son turda teslim oluyor ve hat, boğulan bir adamın ilk nefesi gibi suyu emmeye başlıyor. Kollarında pas ve yağ, kulaklarında pompanın homurtusu. Bir tanesi tamam." },
+        { type: "narrate", text: "Vana son bir gayretle, çığlık atarak dönüyor. Boruların içinden boğulan birinin gırtlağından çıkan o leş ses gibi su emilmeye başlıyor. Kolların pas ve kir içinde kalmış, kulaklarında pompanın canavarca homurtusu... İlki bitti." },
       ],
       choices: [
         { id: "don", text: "Platforma dön", next: "n_platform" },
@@ -356,8 +356,8 @@ export const EP01 = {
     n_pompaB: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Pompa B odası zifiri. Tabletin ışığı üç adım öteyi ancak gösteriyor. Şalter panosu karşı duvarda — ve sağdaki rafta, kabloların arasında, bir yedek pilin turuncu etiketi parlıyor." },
-        { type: "ambient", text: "Odanın köşesinde, ışığın ucunda, dalış kıyafetine benzer bir şey asılı. Ya da asılı olan şey bir kıyafet değil. Işığı oraya bir daha tutmuyorsun." },
+        { type: "narrate", text: "Pompa B odası zifiri karanlığın ta kendisi. Elindeki tabletin cılız ekran ışığı önündeki üç adımdan fazlasını aydınlatmaya yetmiyor, ışık karanlığın içinde boğuluyor. Şalter panosu karşıda... Sağdaki çürümüş rafın üzerinde, kablo yığınlarının arasında turuncu renkli bir yedek pil parıldıyor." },
+        { type: "ambient", text: "Odanın en karanlık köşesinde, tablet ışığının bittiği sınırda, eski bir dalış kıyafetine benzer devasa bir karaltı asılı duruyor... Ya da o asılı duran şey bir kıyafet değil, bir İNSAN bedeni. Işığı bir daha asla o köşeye tutmaya cesaret edemiyorsun." },
       ],
       choices: [
         { id: "raf", text: "Rafa uzan — pili al (raf sağlam görünmüyor)", next: "n_pompaB_raf", if: { flag: "rafAlindi", equals: false } },
@@ -370,7 +370,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { rafAlindi: true } },
-        { type: "narrate", text: "Parmakların pile değiyor — ve raf, on yıllık yorgunluğunu tek seferde bırakıyor: bütün içindekilerle birlikte çelik zemine BOŞALIYOR. Karanlıkta gözlerini kapatıp bitmesini bekliyorsun. Bitmiyor gibi geliyor." },
+        { type: "narrate", text: "Parmakların pile değdiği an, yılların yorgunluğunu taşıyan çürük metal raf tamamen çöküyor; üzerindeki tüm ağır demir parçaları büyük bir patlamayla çelik zemine saçılıyor. Karanlık odada gözlerini sımsıkı kapatıp sesin bitmesini bekliyorsun. Kalbin ağzında atıyor." },
         { type: "stat", stat: "gurultu", delta: 6, note: "GÜRÜLTÜ +6 — Raf devrildi", noteKind: "alert" },
         { type: "battery", spares: 1 },
       ],
@@ -383,7 +383,7 @@ export const EP01 = {
     n_pompaB_int: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Şalter kolu ağır ve yaylı — bırakırsan geri kaçacak türden. Tek hamlede, sonuna kadar. Karanlıkta derin bir nefes alıyorsun." },
+        { type: "narrate", text: "Şalter kolu paslı ve devasa, yayları gergin... Eğer yarıda bırakırsan parmaklarını kıracak kadar sertçe geri fırlayacak. Dişlerini sıkıp tüm ağırlığınla asılıyorsun. Karanlıkta soğuk terler döküyorsun." },
       ],
       interaction: { kind: "lever", title: "POMPA B — ŞALTERİ KALDIR", holdMs: 1800, success: "n_pompaB2", cancel: "n_platform" },
     },
@@ -393,7 +393,7 @@ export const EP01 = {
       events: [
         { type: "flag", set: { pompaB: true } },
         { type: "system", text: "POMPA B: AKTİF ▮ — TAHLİYE HATTI 2 AÇIK" },
-        { type: "narrate", text: "Kol yuvasına oturuyor ve karanlık oda titreşimle doluyor. Asılı duran şey — kıyafet ya da her neyse — titreşimle birlikte hafifçe SALLANIYOR. Çıkarken arkana bakmıyorsun." },
+        { type: "narrate", text: "Metal kol yerine oturuyor ve koca oda muazzam bir titreşimle sarsılıyor. O köşede asılı duran şey — o leş kıyafet ya da her neyse — bu sarsıntıyla birlikte yavaşça SALLANMAYA başlıyor. Arkana bile bakmadan odadan fırlıyorsun." },
       ],
       choices: [
         { id: "don", text: "Platforma dön", next: "n_platform" },
@@ -405,10 +405,10 @@ export const EP01 = {
     n_sintine: {
       cost: 2,
       events: [
-        { type: "narrate", text: "Geçit, bel hizasına kadar suyun içinde. Her adım, istemesen de ses çıkarıyor — su, yürüyeni İHBAR eden cinsten. Tavan alçalıyor, boru hatları saça sürtüyor.", if: { flag: "sintineIlk", equals: false } },
+        { type: "narrate", text: "Sintine tüneline giriyorsun. Siyah su artık bel hizana kadar yükselmiş durumda, buz gibi soğuk etini dağlıyor. Her adımında su delice çalkalanıyor, çıkardığın sesler tünelde yankılanarak seni kelimenin tam anlamıyla buradaki her şeye İHBAR ediyor. Tavan iyice basıklaşıyor, sarkan paslı borular saçlarına sürtünüyor, seni daracık bir tabuta sıkıştırıyor.", if: { flag: "sintineIlk", equals: false } },
         { type: "stat", stat: "gurultu", delta: 4, note: "GÜRÜLTÜ +4 — Suda sessiz yürünmez", noteKind: "alert", if: { flag: "sintineIlk", equals: false } },
         { type: "flag", set: { sintineIlk: true } },
-        { type: "ambient", text: "İleride, geçidin dibinde, bir panonun ölü ekranı seçiliyor. Ve suyun yüzeyinde, senin yarattığın dalgalara KARIŞMAYAN, başka bir yerden gelen halkalar var." },
+        { type: "ambient", text: "Önünde, tünelin dibinde bir sigorta panosunun ölü ekranı zar zor seçiliyor. Ve tam o anda fark ediyorsun: suyun yüzeyinde, senin adımlarının yaratmadığı, karşı taraftan, karanlığın içinden gelen ters dalgalar ve halkalar var... Bir şey sana doğru yüzüyor." },
       ],
       choices: [
         { id: "pano", text: "Dipteki panoya kadar ilerle", next: "n_pompaC" },
@@ -419,12 +419,12 @@ export const EP01 = {
     n_pompaC: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Pompa C panosu — ve yuvasında sigorta YOK: boş yuva, yanık izleriyle çerçeveli bir göz çukuru gibi bakıyor. Panonun yanında, çelik duvara bir anahtarla KAZINMIŞ iki rakam: \"47\". Altında aynı elden: \"öbürü bende\".", if: { flag: "kod47", equals: false } },
+        { type: "narrate", text: "Pompa C panosunun önüne ulaşıyorsun. Yuvası BOMBOŞ. Sigorta yerinde değil, o boş delik yanık izleriyle çevrelenmiş simsiyah bir göz çukuru gibi sana bakıyor. Panonun hemen yanındaki çelik sacın üzerine keskin bir cisimle vahşice kazınmış iki rakam var: \"47\". Altında ise titrek bir el yazısıyla: \"öbürü bende\" yazıyor.", if: { flag: "kod47", equals: false } },
         { type: "note", id: "not_kod47", title: "Kod parçası: ··47", text: "C panosunun duvarına kazınmış: 47. 'Öbürü bende' diyor — Baturay'ın el yazısı bu. Demek kod: [ilk yarı][47]. İki parçayı birleştirmem gerek.", if: { flag: "kod47", equals: false } },
         { type: "flag", set: { kod47: true } },
-        { type: "narrate", text: "Boş yuva bir yedek sigorta istiyor — sende yok. Devir raporu bir şey söylüyordu... yedekler nerede tutuluyordu?", if: { flag: "sigortaAlindi", equals: false } },
+        { type: "narrate", text: "Bu aç göz çukuru bir yedek sigorta istiyor ama senin elinde hiçbir şey yok. Devir raporundaki notu hatırlamaya çalışıyorsun... Yedekler neredeydi?", if: { flag: "sigortaAlindi", equals: false } },
         { type: "alert", text: "POMPA C: SİGORTA YOK — YEDEK GEREKLİ", if: { flag: "sigortaAlindi", equals: false } },
-        { type: "narrate", text: "Depodan aldığın cam gövdeli sigorta avucunda ağırlaşıyor. İbre yeşil bölgeden geçerken takman gerek — ıskalarsan pano, bu su dolu çukurda kıvılcım kusar.", if: { flag: "sigortaAlindi", equals: true } },
+        { type: "narrate", text: "Depodan aldığın o ağır, cam gövdeli büyük sigorta parmaklarının arasında sırılsıklam oluyor. Hat çılgınlar gibi titriyor; ibre yeşil bölgeye geldiği an sigortayı yuvaya çakman gerek. Eğer ıskalarsan bu su dolu ölüm çukurunda binlerce voltluk elektrik akımı seni kömüre çevirecek.", if: { flag: "sigortaAlindi", equals: true } },
       ],
       choices: [
         { id: "tak", text: "Sigortayı yuvaya yerleştir", next: "n_pompaC_int", if: { flag: "sigortaAlindi", equals: true } },
@@ -434,7 +434,7 @@ export const EP01 = {
 
     n_pompaC_int: {
       events: [
-        { type: "narrate", text: "Nefesini tutup ibreyi izliyorsun. Su, dizlerinin etrafında bekliyor. O da bekliyor." },
+        { type: "narrate", text: "Nefesini tamamen tutuyorsun, kalbinin kulaklarındaki o güm güm sesini dinleyerek ibreyi kolluyorsun. Kara su dizlerinin, göğsünün etrafında yükseliyor. Karanlık da seninle birlikte bekliyor." },
       ],
       interaction: { kind: "fuse", title: "POMPA C — SİGORTAYI HİZALA", hits: 2, success: "n_pompaC2", cancel: "n_pompaC" },
     },
@@ -444,7 +444,7 @@ export const EP01 = {
       events: [
         { type: "flag", set: { pompaC: true } },
         { type: "system", text: "POMPA C: AKTİF ▮ — TAHLİYE HATTI 3 AÇIK" },
-        { type: "narrate", text: "Sigorta yuvaya çıt diye oturuyor ve üçüncü hat da koroya katılıyor. Su, gözle görülür biçimde çekilmeye başlıyor — sintine geçidinden geri dönerken artık diz hizasında. Şimdi ana panel. Şimdi kırmızı buton." },
+        { type: "narrate", text: "Sigorta yuvaya büyük bir 'çıt' sesiyle oturuyor ve üçüncü hat da devasa bir kükremeyle çalışmaya başlıyor. Su büyük bir girdap oluşturarak hızla çekilmeye başlıyor; tünelden geri kaçarken seviye dizlerine kadar iniyor. Şimdi tek şansın ana panel. O büyük kırmızı buton." },
       ],
       choices: [
         { id: "don", text: "Platforma dön", next: "n_platform" },
@@ -457,7 +457,7 @@ export const EP01 = {
       events: [
         { type: "glitch", ms: 500 },
         { type: "alert", text: "⚠ SU HATTINDA HAREKET — YAKIN" },
-        { type: "narrate", text: "Pompaların uğultusunun altından BAŞKA bir ses sıyrılıyor: suyu yararak, acele etmeden, sana doğru gelen ıslak bir ağırlık. Işığını kapatacak vaktin yok. Düşünecek vaktin yok." },
+        { type: "narrate", text: "Pompaların yırtıcı uğultusunun altından, ruhunu sokecek BAŞKA bir ses sıyrılıyor... Suyu yararak, hiç acele etmeden, ağır ve emin adımlarla sana doğru yürüyen ıslak, devasa bir ağırlık. Tabletinin ışığını kapatıp gizlenecek tek bir saniyen bile yok. Düşünürsen öleceksin!" },
       ],
       timer: { seconds: 5 },
       choices: [
@@ -470,9 +470,9 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { isaret: true } },
-        { type: "narrate", text: "Kendini platform iskelesine çekip TAŞLAŞIYORSUN. Ses üç adım ötende duruyor. Su damlıyor — ondan, tavana değecek kadar yüksek bir yerden. Sonra, sonsuz bir dakika sonra, ağırlık geri dönüyor ve karanlıkta çözülüyor." },
+        { type: "narrate", text: "Kendini sudan söküp platformun demir iskelesine atıyorsun ve orada bir taş gibi DONUP KALIYORSUN. Gözlerini kapatıyorsun. O ıslak, devasa ağırlık tam üç adım önünde duruyor. Şırıl şırıl su damlıyor... Tavana değecek kadar uzun, devasa gövdesinden akan sular çeliğe vuruyor. Sonsuzluk gibi geçen bir dakikanın ardından, o yaratık arkasını dönüyor ve karanlığın içinde eriyip gidiyor." },
         { type: "stat", stat: "akil", delta: -10, note: "AKIL −10 — Onu duydun. Çok yakındı.", noteKind: "alert" },
-        { type: "ambient", text: "Gittiği yönden, kısık, metalik bir İNLEME geliyor. Acı çeken bir makine. Ya da makine taklidi yapan bir acı." },
+        { type: "ambient", text: "Yaratığın gittiği dehlizden kısık, derinden gelen metalik bir İNLEME yankılanıyor. Acı çeken bir makine gibi... Ya da kurbanını kandırmak için insan taklidi yapan bir iblis gibi." },
       ],
       choices: [
         { id: "don", text: "Platforma dön", next: "n_platform" },
@@ -481,7 +481,7 @@ export const EP01 = {
 
     n_olum_su: {
       death: true,
-      deathText: "Suda koşulmaz. Su, her adımını tesisin her köşesine ilan eder. Merdivene üç basamak kala ıslak ağırlık sırtına biniyor — ve K-6'nın kara suyu, bir sır gibi üstüne kapanıyor.",
+      deathText: "Aptal! Suda koşulamaz! Attığın her çılgın adım, çıkardığın her şapırtı bu katın duvarlarında yankılanarak yerini belli etti. Merdivenlere daha üç basamak kala, o ıslak, devasa ağırlık arkandan sırtına biniyor. Kemiklerinin kırılma sesini duyuyorsun ve K-6'nın simsiyah, leş suyu bir sır gibi üzerine kapanıyor.",
       events: [
         { type: "glitch", ms: 900 },
       ],
@@ -490,7 +490,7 @@ export const EP01 = {
     n_anapanel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Ana kontrol paneli. Kırmızı acil lambasının altında, çatlak CRT ekran pompa hattını listeliyor. Camında senin yansımandan başka bir şey yok — şimdilik. Ekranın altında, tozlu koruma kapağının ardında: büyük, kırmızı buton." },
+        { type: "narrate", text: "Ana kontrol panelinin önündesin. Çiğ kırmızı acil durum ışığı yüzüne vuruyor. Çatlak, tozlu CRT ekranının camında kendi korkudan delirmek üzere olan solgun yansımandan başka bir şey yok. Ekranın hemen altında, kalın bir pislik tabakasıyla kaplanmış plastik koruma kapağının ardında o duruyor: büyük, kan kırmızısı buton." },
       ],
       interaction: {
         kind: "panel",
@@ -512,9 +512,9 @@ export const EP01 = {
       events: [
         { type: "flag", set: { gucAcik: true } },
         { type: "system", text: "ANA HAT BAŞLATILDI — GÜÇ DAĞITIMI: K-6 %100" },
-        { type: "narrate", text: "Işıklar katar katar uyanıyor: platform, merdiven, koridorlar. On bir aydır duyduğun o jeneratör homurtusu geri geliyor ve bir an — sadece bir an — her şey normalmiş gibi." },
+        { type: "narrate", text: "Büyük kırmızı butona tüm gücünle vuruyorsun. Koca istasyon bir deprem gibi sarsılıyor; platformlar, merdivenler, koridorlar devasa sarı ışıklarla tek tek uyanıyor! O eski jeneratörlerin sağır edici canavarca homurtusu geri dönüyor ve bir anlığına... her şey çözülmüş gibi hissediyorsun." },
         { type: "pause", ms: 1200 },
-        { type: "ambient", text: "Sonra, çok yukarıdan, katların arasından, metalik bir İNLEME cevap veriyor. Uzun. Sabırlı. Neredeyse... minnettar." },
+        { type: "ambient", text: "Ancak hemen ardından, çok yukarılardan, katların çelik zeminlerinden dehşet verici, acı dolu bir İNLEME yükseliyor. Uzun, sabırlı ve sanki... avını bulan bir avcının minnettarlığıyla." },
         { type: "stat", stat: "gurultu", delta: 15, note: "GÜRÜLTÜ +15 — Işık ve makine sesi. Artık herkes biliyor.", noteKind: "alert" },
         { type: "pause", ms: 800 },
         { type: "glitch", ms: 400 },
@@ -537,10 +537,10 @@ export const EP01 = {
       cost: 1,
       noiseGate: [{ min: 65, once: "pusu2", node: "n_enc2" }],
       events: [
-        { type: "narrate", text: "6-B koridoru artık aydınlık. Keşke olmasaydı. Gözlem camlarının İÇİ buğulu — biri az önce camlara nefes vermiş gibi. Ve üçüncü camda, buğunun ortasında, YENİ silinmiş bir el izi: parmaklar fazla uzun, fazla ince.", if: { flag: "kor2Ilk", equals: false } },
+        { type: "narrate", text: "6-B koridoru artık tamamen aydınlık... Keşke karanlık kalsaydı diyorsun. Yanından geçtiğin gözlem odalarının kalın camlarının İÇ TARAFINDA taze bir buğu var. Biri az önce içeriden camlara nefes üflemiş gibi... Ve tam önündeki üçüncü camda, o buğunun tam ortasında yeni silinmiş kocaman bir el izi duruyor. Parmak boğumları insan olamayacak kadar uzun, ince ve çarpık." },
         { type: "stat", stat: "akil", delta: -5, if: { flag: "kor2Ilk", equals: false } },
         { type: "flag", set: { kor2Ilk: true } },
-        { type: "narrate", text: "Koridorun sonunda radyo odasının çelik kapısı: yeşil ekranlı erişim paneli sabırla bekliyor." },
+        { type: "narrate", text: "Koridorun tam sonunda radyo odasının ağır çelik kapısı görünüyor. Üzerindeki yeşil ekranlı kod paneli dijital bir ışık saçarak seni bekliyor." },
       ],
       choices: [
         { id: "kapi", text: "Erişim paneline git", next: "n_kapipanel" },
@@ -552,7 +552,7 @@ export const EP01 = {
       events: [
         { type: "glitch", ms: 600 },
         { type: "alert", text: "⚠ KORİDOR IŞIKLARI SIRAYLA PATLIYOR — SANA DOĞRU" },
-        { type: "narrate", text: "Koridorun öbür ucundaki lamba patlıyor. Sonra bir sonraki. Sonra bir sonraki — karanlık, sana doğru KOŞUYOR ve içinde bir şey var." },
+        { type: "narrate", text: "Koridorun en uzak ucundaki lamba büyük bir gürültüyle patlıyor. Hemen ardından bir sonraki... Sonra diğeri! Karanlık, aç bir canavar gibi koridorda SANA DOĞRU DELİCE KOŞUYOR ve o karanlığın içinden üzerine doğru gelen bir karaltı var!" },
       ],
       timer: { seconds: 4 },
       choices: [
@@ -565,9 +565,9 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { isaret: true } },
-        { type: "narrate", text: "Sırtını çeliğe yapıştırıp gözlerini kapatıyorsun. Karanlık üstünden geçiyor — soğuk, ıslak bir rüzgar ve keskin bir deniz dibi kokusu. Bir şey yüzünün bir karış önünde DURUYOR. Nefes almıyorsun. Saymıyorsun bile." },
+        { type: "narrate", text: "Sırtını çılgınlar gibi çelik duvara yapıştırıp gözlerini sımsıkı kapatıyorsun. Karanlık dalgası üstünden geçip gidiyor; yüzüne çarpan buz gibi, leş kokulu ıslak bir rüzgar... Keskin bir deniz dibi ve çürümüş et kokusu. Bir şey tam yüzünün bir karış önünde DURUYOR. Nefes almayı kesiyorsun, kalbin duracak gibi. Saymıyorsun bile, sadece ölmemek için dua ediyorsun." },
         { type: "stat", stat: "akil", delta: -10, note: "AKIL −10 — Yüzünü hatırlamana gerek yok. Kokusu yeter.", noteKind: "alert" },
-        { type: "narrate", text: "Geçiyor. Koridorun ucunda lambalar tek tek geri geliyor — sanki hiçbir şey olmamış gibi. Camdaki el izi artık İKİ tane." },
+        { type: "narrate", text: "Yavaşça uzaklaşıyor. Koridorun lambaları titreyerek sanki hiçbir şey olmamış gibi yeniden yanıyor. Başını çevirip cama bakıyorsun; o buğulu camdaki el izi artık İKİ tane." },
       ],
       choices: [
         { id: "kapi", text: "Erişim paneline git — hemen", next: "n_kapipanel" },
@@ -576,7 +576,7 @@ export const EP01 = {
 
     n_olum_koridor: {
       death: true,
-      deathText: "Karanlıktan kaçılmaz. Karanlık, koridorun iki ucunu da bilir. Işıklar geri geldiğinde koridor bomboş — sadece camlardaki buğu artık içeriden değil.",
+      deathText: "Korkuna yenik düşüp koşmaya başladın! Ama o karanlıktan kaçamazsın; o bu koridorun her deliğini biliyor. Enseni kavrayan buz gibi, ıslak parmakları hissediyorsun. Işıklar yeniden yandığında koridor bomboş... Sadece camlardaki o kanlı buğu izleri artık dışarıdan değil, içeriden yapılmış.",
       events: [
         { type: "glitch", ms: 900 },
       ],
@@ -585,7 +585,7 @@ export const EP01 = {
     n_kapipanel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Erişim paneli dört haneli kod istiyor. Ekranında tek satır: 'YENİDEN KODLANDI — B.S.'" },
+        { type: "narrate", text: "Kapıdaki panel dört haneli bir şifre istiyor. Dijital ekranda soğuk bir yazı yanıp sönüyor: 'YENİDEN KODLANDI — B.S.'" },
         { type: "system", text: "İPUCU: Kod iki parçaya bölünmüş durumda. Arşivindeki notları birleştir.", if: { flag: "kod21", equals: true } },
         { type: "alert", text: "Kodun ilk yarısı sende YOK. Baturay 'yarısı hep yanımda' yazmıştı... O şimdi nerede?", if: { flag: "kod21", equals: false } },
       ],
@@ -597,12 +597,12 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "system", text: "KOD KABUL — RADYO ODASI KİLİDİ AÇILDI" },
-        { type: "narrate", text: "Radyo odası: bir duvar dolusu ölü ekipman ve ortada, tozun altında, acil durum telsiz konsolu. Masada yarım kalmış bir evrak, çekmecede bir şeyler tıkırdıyor." },
+        { type: "narrate", text: "Ağır kapı tıslayarak açılıyor. Radyo odası... Bir duvar dolusu parçalanmış, kabloları dışarı sarkmış ölü cihazlar ve tam ortada acil durum telsiz konsolu duruyor. Çekmecelerden birinden gelen tuhaf bir tıkırtı sessizliği bozuyor." },
         { type: "document", open: true, doc: {
           id: "d_talep", title: "Numune Transfer Talebi — RED",
           meta: "SINIR-1 İÇ YAZIŞMA · FORM 4-A · ARŞİV KOPYASI",
           body: "TALEP EDEN: Dr. Nevin Aras (K-3 Biyoloji)\nTALEP: K-2 arkeoloji ambarındaki 'BULUNTU-1'\nüzerinden ek doku örneği alınması ve K-3\nlaboratuvarına transferi.\n\nGEREKÇE: ████████████████████████████████\n█████████ sayma davranışı ████████████\n██████████ kızımın kayıtları ██████████\n████████████ cevap veriyor ████████\n\nKARAR: RED.\n'Buluntuya kimse dokunmayacak. O, ailenin.\nAnlaşıldı mı Nevin? AİLENİN.'\n— H. Tekin, İstasyon Şefi" } },
-        { type: "narrate", text: "Telsiz konsolu ölü. Arka panelini açıyorsun: güç devresinin beş lambalık sigorta dizisi karışmış — biri yanıyor, dördü kör. Devreyi dizmeden bu telsiz tek kelime etmez." },
+        { type: "narrate", text: "Telsiz masasına çöküyorsun ama cihaz ölü. Arka kapağını telaşla söküyorsun: Beş lambalık sigorta devresi tamamen karmakarışık edilmiş, biri yanıyor, dördü kör göz gibi duruyor. Bu devreyi düzeltmeden dünyaya tek bir çığlık bile gönderemezsin." },
       ],
       choices: [
         { id: "cekmece", text: "Çekmeceyi aç", next: "n_radyo_cek", if: { flag: "cekmeceAcik", equals: false } },
@@ -615,7 +615,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { cekmeceAcik: true } },
-        { type: "narrate", text: "Çekmecede: bir avuç boş kovan gibi dizilmiş kalem pilleri — hepsi ölü — ve en arkada, ambalajında, DOLU bir tablet pili. Birinin sakladığı. Birinin geri gelmeyi planladığı." },
+        { type: "narrate", text: "Tıkırdayan çekmeceyi çekiyorsun. İçinde boş silah kovanları gibi dizilmiş onlarca ölü pil var... Ama en arkada, ambalajı hiç açılmamış pırıl pırıl DOLU bir tablet pili duruyor. Birinin buraya geri dönebilmek için can havliyle sakladığı bir pil." },
         { type: "battery", spares: 1 },
       ],
       choices: [
@@ -626,7 +626,7 @@ export const EP01 = {
 
     n_lights: {
       events: [
-        { type: "narrate", text: "Beş lamba, beş anahtar. Her anahtar kendisiyle birlikte komşularını da değiştiriyor. Baturay olsa bir bakışta çözerdi. Baturay artık hiçbir şeye bakmıyor." },
+        { type: "narrate", text: "Beş lamba, beş paslı anahtar... Birini çevirdiğinde yanındakiler de delirip yön değiştiriyor. Baturay olsaydı bunu hemen çözerdi ama Baturay artık revirde bir et parçasından ibaret." },
       ],
       interaction: { kind: "lights", success: "n_radyo2", cancel: "n_radyo" },
     },
@@ -635,7 +635,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "system", text: "TELSİZ GÜÇ DEVRESİ: AKTİF — BANT TARAMASI HAZIR" },
-        { type: "narrate", text: "Konsol ısınırken hoparlörden yükselen statik, odayı dolduruyor. 410 ile 450 arasında bir yerde — birileri olmalı. Yüzey. Sahil güvenlik. Herhangi biri." },
+        { type: "narrate", text: "Konsol büyük bir cızırtıyla ısınıyor ve odanın içini yoğun bir statik gürültü kaplıyor. Frekansların arasında bir yerlerde... Yaşayan bir insan olmalı. Sahil güvenlik, yüzey, herhangi biri..." },
         { type: "objective", text: "Acil durum bandını tara — 432.0 MHz civarını dene" },
       ],
       interaction: { kind: "radio", target: 432.0, success: "n_ece", cancel: "n_radyo" },
@@ -645,7 +645,7 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "ambient", text: "«Yüzey mi? ...Yüzey üç haftadır cevap vermiyor.» Kadın sesi. Genç, bitkin, GERÇEK. Statiğin içinden sana tutunuyor." },
+        { type: "ambient", text: "«Yüzey mi? ...Yüzey üç haftadır cevap vermiyor.» Statiğin içinden aniden bir kadın sesi yükseliyor. Bitkin, çaresiz ama GERÇEK bir insan sesi. Kulaklarına inanamıyorsun." },
         { type: "ambient", text: "«Sen... K-6'dan mı geliyorsun? Sen normal misin? Sayı saymıyorsun, değil mi? — Cevap verme. Sayıyorsan zaten anlardım.»" },
         { type: "ambient", text: "«Beni dinle. Adım Ece, sonar operatörüyüm, hâlâ... hâlâ benim. Işıkları neden açtın?! ŞEF ışıkları görür. Işıkları kapat ve sakın kantindeki masaya—»" },
         { type: "glitch", ms: 800 },
@@ -658,7 +658,7 @@ export const EP01 = {
         { type: "flag", set: { eceIlkTemas: true, frekanslariDuydun: true } },
         { type: "note", id: "not_ece", title: "Ece — sonar operatörü", text: "432.0'da bir kadın: Ece. Dönüşmemiş, saklanıyor, üç haftadır tek başına. 'Şef ışıkları görür' dedi ve kantindeki masa hakkında bir şey söyleyecekti ki hat kesildi. Deniz kesti. İkisi birbirini tanıyor. Ece'yi bulmalıyım — ama önce bu geceden çıkmalıyım." },
         { type: "pause", ms: 1000 },
-        { type: "narrate", text: "Sonra duyuyorsun: koridordan gelen ıslak, ağır adımlar. Kapının buzlu camında bir gölge büyüyor. Kapı kulpu — yavaşça — dönmeye başlıyor." },
+        { type: "narrate", text: "Ve tam o anda duyuyorsun: Koridordan gelen o ıslak, ağır, sürüklenen adımlar... Kapının buzlu camına vuran sarı ışıkta devasa bir gölge büyüyor. Kapının kolu — yavaşça — aşağı doğru dönmeye başlıyor!" },
         { type: "objective", text: "SAKLAN. HEMEN." },
       ],
       choices: [
@@ -668,14 +668,14 @@ export const EP01 = {
 
     n_saklan: {
       events: [
-        { type: "narrate", text: "Dolabın çelik karanlığına sığınıyorsun. Menfez aralığından odanın bir dilimi görünüyor. Kapı açılıyor. Islak bir ağırlık içeri giriyor — ve dalış kıyafetinden arta kalan şeyin içinde, bir zamanlar insan olan bir şey, İNLİYOR." },
+        { type: "narrate", text: "Kendini can havliyle çelik ekipman dolabının içine atıp kapağı çekiyorsun. İçerisi kapkara. Dolap kapağının küçük ızgarasından dışarısı görünüyor. Kapı büyük bir gıcırtıyla açılıyor. O ıslak, devasa ağırlık odaya giriyor... Parçalanmış dalış kıyafetinin içindeki o korkunç yaratık, burnunun dibinde delice İNLİYOR." },
       ],
       interaction: { kind: "breath", holdMs: 8500, lungMs: 10000, success: "n_saklan_ok", fail: "n_olum_nefes" },
     },
 
     n_olum_nefes: {
       death: true,
-      deathText: "Ciğerlerin, korkundan önce pes etti. Dolabın kapağı açılırken son duyduğun, kendi nefesin. Son gördüğün ise — bir dalgıç maskesinin arkasında — sana bakan, tanıdık, İNSAN bir çift göz.",
+      deathText: "Ciğerlerin patlamak üzere! Korkudan kalbin öyle bir çarpıyor ki dolabın sacı titriyor ve nefesini daha fazla tutamayıp hıçkırarak koyuveriyorsun. Dolabın kapağı tek bir hamlede vahşice sökülüp fırlatılıyor. Son duyduğun şey kendi çığlığın... Son gördüğün şey ise o parçalanmış dalgıç maskesinin arkasından sana bakan, kan çanağına dönmüş, delirmiş ama tanıdık bir İNSAN çift göz.",
       events: [
         { type: "glitch", ms: 1000 },
       ],
@@ -685,13 +685,13 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Adımlar uzaklaşıyor. Kapı çarpıyor. Bir dakika daha sayıyorsun — Baturay'ın dediği gibi: önce say, sonra kaç — ve dolaptan çıkıyorsun." },
+        { type: "narrate", text: "Ağır adımlar yavaşça odadan çıkıyor, kapı büyük bir gürültüyle çarpıyor. Dolabın içinde tam bir dakika daha sayıyorsun... Baturay'ın o altın değerindeki sözü zihninde kazılı: Önce say, sonra kaç. Titreyerek dolaptan çıkıyorsun." },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "narrate", text: "Telsiz konsolu paramparça. Hoparlör, bir göğüs kafesi gibi sökülüp açılmış. O şey konuşamadığın şeyi ANLAMIŞ ve sesini kopardığın yeri cezalandırmış. Ece'ye buradan bir daha ulaşamazsın." },
+        { type: "narrate", text: "Telsiz masasına baktığında dehşete düşüyorsun: Cihaz vahşice parçalanmış, hoparlör bir göğüs kafesi gibi ikiye yarılmış. O şey... Dünyayla konuşmaya çalıştığını ANLAMIŞ ve sesini çıkardığın o makineyi cezalandırmış. Ece'ye buradan bir daha ulaşmanın imkanı yok." },
         { type: "alert", text: "RADYO: KALICI HASAR — K-6'DAN YAYIN ARTIK MÜMKÜN DEĞİL" },
         { type: "waitTap" },
         { type: "objective", text: "K-5 hava kilidine ulaş — bu kattan çık" },
-        { type: "ambient", text: "Koridordan, hâlâ yakından, o metalik inleme geliyor. Gitmedi. BEKLİYOR." },
+        { type: "ambient", text: "Koridordan, çok yakından o tüyler ürperten metalik inleme sesi hâlâ geliyor. Gitmemiş... Kapının hemen ardında BEKLİYOR." },
       ],
       choices: [
         { id: "kacis", text: "Kapıya yaklaş ve koridoru dinle", next: "n_kacis" },
@@ -704,8 +704,8 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Kapı aralığından bakıyorsun: İnleyen, koridorun ortasında, sırtı sana dönük, SAYIYOR gibi sallanıyor. K-5 hava kilidi koridorun öbür ucunda. İki yol var ve ikisi de onun yanından geçiyor." },
-        { type: "narrate", text: "Soldaki duvarda kat şalteri: indirirsen K-6 kör olur — o yavaşlar, ama tabletin son ışığıyla karanlıkta yürürsün. Ya da ışıklar açıkken, gürültüyü göze alıp KOŞARSIN." },
+        { type: "narrate", text: "Kapı aralığından dışarı bakıyorsun: O yaratık koridorun tam ortasında durmuş, sırtı sana dönük, kendi etrafında delice sallanarak uykusunda SAYIYOR gibi titriyor. K-5 hava kilidi koridorun tam diğer ucunda. İki yolun var ve ikisi de onun hemen yanından geçmek zorunda." },
+        { type: "narrate", text: "Sol duvarda katın ana şalteri duruyor. Eğer onu indirirsen K-6 katı tamamen kör olacak; o canavar karanlıkta yavaşlayacak ama sen de tabletinin o çatlak, soluk ekran ışığına mahkum kalacaksın. Ya da ışıklar açıkken, gürültüyü göze alıp deliler gibi KOŞACAKSIN." },
         { type: "alert", text: "KARAR VER — UZUN DÜŞÜNENLERİ BU TESİS SEVMEZ" },
       ],
       timer: { seconds: 8 },
@@ -719,8 +719,8 @@ export const EP01 = {
       cost: 4,
       events: [
         { type: "system", text: "K-6 GÜÇ HATTI: MANUEL KESİNTİ — TÜM KAT KARANLIK" },
-        { type: "narrate", text: "Şalter inince kat, tek kalp atışında ölüyor. Şimdi evrendeki tek ışık avucundaki çatlak ekran — ve o ekran her adımda biraz daha soluyor. İnleme bir an duruyor. Kafası karışmış gibi. İyi." },
-        { type: "ambient", text: "Karanlıkta duvarı sayarak yürüyorsun. Bir menfez. Bir yangın dolabı. Bir duvar nişi — içinde bir şey tıkırdadı mı?" },
+        { type: "narrate", text: "Şalteri aşağı indiriyorsun ve koca kat tek bir saniyede kapkara, sağır bir sessizliğe gömülüyor. Şimdi evrendeki tek ışığın elindeki o çatlak tablet ekranı... Ve o ekranın ışığı her adımında biraz daha zayıflıyor, pilli tükeniyor. Yaratığın inlemesi aniden kesiliyor, kafası karışmış gibi duraksıyor... Güzel." },
+        { type: "ambient", text: "Kör karanlıkta elinle duvarı sayarak, sürünerek ilerliyorsun. Bir havalandırma... Bir yangın dolabı... Bir duvar nişi... O nişin içinden az önce bir şeyin tıkırtısı mı geldi?" },
       ],
       choices: [
         { id: "nis", text: "Duvar nişini yokla (vakit kaybı — ama belki...)", next: "n_yolA_nis", if: { flag: "nisYoklandi", equals: false } },
@@ -732,7 +732,7 @@ export const EP01 = {
       cost: 2,
       events: [
         { type: "flag", set: { nisYoklandi: true } },
-        { type: "narrate", text: "Parmakların nişin içinde örümcek ağı, vida kutusu ve — işte: acil durum kiti. Yırtık, yağmalanmış, ama en dibinde ambalajlı bir tablet pili duruyor. Karanlıkta biri sana göz kırpıyor sanki." },
+        { type: "narrate", text: "Parmaklarını korkuyla o karanlık nişin içine sokuyorsun... Örümcek ağları, paslı vidalar ve... evet! Bir acil durum kiti buluyorsun. Parçalanmış, yağmalanmış ama en dibinde ambalajlı, sıfır bir tablet pili duruyor! Karanlığın içinde sana verilmiş bir lütuf gibi." },
         { type: "battery", spares: 1 },
       ],
       choices: [
@@ -743,7 +743,7 @@ export const EP01 = {
     n_yolA2: {
       cost: 4,
       events: [
-        { type: "narrate", text: "Karanlığın son on metresi en uzunu. İnlemenin yönünü kaybettin — arkanda mı, önünde mi, yoksa duvarların içinde mi? Elin hava kilidinin soğuk çarkına değdiğinde neredeyse sesli güleceksin." },
+        { type: "narrate", text: "Karanlıkta ilerlediğin o son on metre ömründen ömür götürüyor. O canavarın inleme sesinin yönünü kaybettin... Arkanda mı? Önünde mi? Yoksa tam tepende mi? Elin nihayet hava kilidinin o buz gibi çelik çarkına değdiğinde hıçkırarak ağlamamak için kendini zor tutuyorsun." },
       ],
       choices: [
         { id: "kapak", text: "Hava kilidi çarkını çevir", next: "n_kapak" },
@@ -756,7 +756,7 @@ export const EP01 = {
       events: [
         { type: "flag", set: { yolAydinlik: true } },
         { type: "stat", stat: "gurultu", delta: 20, note: "GÜRÜLTÜ +20 — Çelik zeminde koşan botlar", noteKind: "alert" },
-        { type: "narrate", text: "KOŞUYORSUN. Botların çelikte davul çalıyor, umurunda değil. İnleyen dönüyor — dalış maskesinin ölü camı bir an ışığı yakalıyor — ve HAREKET EDİYOR. Islak bir şey için imkansız bir hızla." },
+        { type: "narrate", text: "DELİLER GİBİ KOŞUYORSUN! Ağır botların çelik zeminde adeta davul çalıyor, artık hiçbir şey umurunda değil! O inleyen canavar aniden sana doğru dönüyor —parçalanmış dalgıç maskesinin ölü camı koridor ışığını yakalayıp parlıyor— ve HAREKET EDİYOR! O hantal beden, ıslak bir et yığını için imkansız, korkunç bir hızla üzerine doğru fırlıyor!" },
       ],
       choices: [
         { id: "kapak", text: "Hava kilidine atıl", next: "n_kapak" },
@@ -766,7 +766,7 @@ export const EP01 = {
     n_enc3: {
       events: [
         { type: "alert", text: "⚠ ÖNÜNDEKİ BORU HATTI ÇÖKÜYOR" },
-        { type: "narrate", text: "Tavandaki boru, tam önüne, bir tuzak gibi iniyor — buhar ve çelik!" },
+        { type: "narrate", text: "Tavandaki devasa yüksek basınç borusu büyük bir patlamayla tam önüne, bir giyotin gibi iniyor! Her yeri kızgın buhar ve çelik parçaları kaplıyor!" },
       ],
       timer: { seconds: 3 },
       choices: [
@@ -778,7 +778,7 @@ export const EP01 = {
     n_enc3_ok: {
       events: [
         { type: "flag", set: { isaret: true } },
-        { type: "narrate", text: "Dizlerinin üstünde, buharın altından kayıyorsun; sırtını çelik sıyırıyor ama ayaktasın ve hava kilidi ORADA." },
+        { type: "narrate", text: "Kendini yere fırlatıp dizlerinin üstünde o kızgın buharın altından kayarak geçiyorsun; sırtını sıyıran çelik kıyafetini yırtıyor, etini yakıyor ama ayaktasın ve hava kilidi TAM KARŞINDA!" },
         { type: "stat", stat: "akil", delta: -10 },
       ],
       choices: [
@@ -788,7 +788,7 @@ export const EP01 = {
 
     n_olum_boru: {
       death: true,
-      deathText: "Geri çekildiğin yarım saniye, onun kapattığı mesafeydi. Buhar perdesinin arkasından uzanan şey soğuk — ve bu derinlikte kimse çığlığını duymuyor. Duyanlar ise... zaten dinliyordu.",
+      deathText: "Korkup durakladığın o yarım saniye... Onun aradaki mesafeyi kapatması için yetti de arttı bile. Buhar perdesinin arkasından uzanan o devasa, buz gibi eller enseni kavrıyor. Bu derinlikte kimse çığlıklarını duymuyor... Duyanlar ise zaten zifiri karanlıkta senin can çekişmeni dinliyordu.",
       events: [
         { type: "glitch", ms: 900 },
       ],
@@ -798,7 +798,7 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "K-5 hava kilidi: bir tabut kapısı kadar ağır çelik çark. Her tur, on bir aylık pasa karşı bir güreş. Ve arkanda, koridorun ucunda, inleme YENİDEN başlıyor — bu kez yaklaşarak." },
+        { type: "narrate", text: "K-5 hava kilidinin önündesin; bir tabut kapağı kadar ağır, devasa paslı bir çelik çark. Her bir turun, on bir aylık katılaşmış pasa karşı verdiğin bir ölüm kalım savaşı... Ve hemen arkanda, koridorun ucunda o korkunç inleme yeniden başlıyor; bu kez koşarak, hızla yaklaşıyor!" },
       ],
       interaction: { kind: "valve", title: "K-5 HAVA KİLİDİ — ÇARKI ÇEVİR", turns: 6, success: "n_kapak2", cancel: "n_kapak" },
     },
@@ -807,8 +807,8 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "system", text: "HAVA KİLİDİ: AÇIK — K-5 GEÇİŞİ HAZIR" },
-        { type: "narrate", text: "Son turda kapak teslim oluyor. Ve tam eşikten geçerken — dönüp bakıyorsun. Yarım saniye. Işıklı koridorun ucunda: dalış kıyafeti, eğik duran bir baş ve maske camının ardında seni izleyen bir KARALTI.", if: { flag: "yolAydinlik", equals: true } },
-        { type: "narrate", text: "Son turda kapak teslim oluyor. Ve tam eşikten geçerken — karanlığın içinde, tabletinin son ışığının değdiği yerde: bir dalış maskesinin camı, yarım saniye, seni YANSITIYOR.", if: { flag: "yolAydinlik", equals: false } },
+        { type: "narrate", text: "Son bir çılgın hamleyle çarkı çeviriyorsun ve kapak nihayet açılıyor. Tam eşikten öbür tarafa geçerken... Arkana bakma dürtüsüne yenik düşüyorsun. Yarım saniye... Aydınlık koridorun tam ucunda: O dalış kıyafeti, yana doğru tamamen kırılmış eğik bir baş ve maske camının ardındaki o simsiyah, dipsiz delilik seni izliyor.", if: { flag: "yolAydinlik", equals: true } },
+        { type: "narrate", text: "Son bir çılgın hamleyle çarkı çeviriyorsun ve kapak nihayet açılıyor. Tam eşikten öbür tarafa geçerken... Kör karanlığın içinde, elindeki tabletin son nefesini veren soluk ışığının çarptığı yerde: Bir dalgıç maskesinin camı, yarım saniye boyunca senin o dehşet içindeki suratını sana GERİ YANSITIYOR.", if: { flag: "yolAydinlik", equals: false } },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
@@ -819,14 +819,14 @@ export const EP01 = {
     n_son: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kapak oturuyor, sürgü kilitleniyor. Sırtını çeliğe verip kayıyorsun; ciğerlerin ancak şimdi, izinli, boşalıyor." },
-        { type: "narrate", text: "Kapağın öbür yüzüne, tam kulağının hizasına, bir şey YASLANIYOR. Vurmuyor. Zorlamıyor. Sadece... duruyor. Sonra, çeliğin içinden, neredeyse nazik: tık. Tek bir vuruş. Sanki 'biliyorum' der gibi.", if: { flag: "isaret", equals: true } },
-        { type: "narrate", text: "Kapağın öbür yüzü sessiz. Ne vuruş ne inleme. Bu gece boyunca ilk kez, kimse nerede olduğunu bilmiyor. Küçük bir zafer — ama senin.", if: { flag: "isaret", equals: false } },
+        { type: "narrate", text: "Kapak büyük bir gürültüyle oturuyor, sürgüler kilitleniyor. Sırtını o kalın çeliğe verip yere çöküyorsun; ciğerlerin ancak şimdi, delice bir hıçkırıkla boşalıyor." },
+        { type: "narrate", text: "Ve tam o anda, o kalın kapağın tam öbür yüzüne, kulağının hemen hizasına ağır bir şeyin YASLANDIĞINI hissediyorsun. Vurmuyor. Zorlamıyor. Sadece... Orada öylece duruyor. Sonra, çeliğin içinden gelen o ses, neredeyse nazikçe: Tık. Tek bir vuruş... Sanki 'buradayım ve seni biliyorum' der gibi.", if: { flag: "isaret", equals: true } },
+        { type: "narrate", text: "Kapağın öbür yüzü tamamen sessiz. Ne bir inleme ne bir darbe sesi... Bu lanetli gece boyunca ilk kez, bu tesisteki hiçbir şey senin tam olarak nerede olduğunu bilmiyor. Küçük, zavallı bir zafer... Ama bütünüyle senin.", if: { flag: "isaret", equals: false } },
         { type: "pause", ms: 1200 },
         { type: "glitch", ms: 400 },
-        { type: "ambient", text: "Ve cebinde, kapalı duran tablet, kendi kendine cızırdıyor. Bir çocuk sesi. Sayıyor: «altı... beş...» Sonra susuyor. K-5'in karanlığı, merdivenin dibinde seni bekliyor." },
-        { type: "ambient", text: "Cızırtının altında, çok daha derinde, ikinci bir katman duyuyorsun: ıslak nefes ve bir ninninin kırıntısı. Sen dinlediğini sanıyordun. Oysa bütün gece, DİNLENEN sendin.", if: { flag: "frekanslariDuydun", equals: true } },
-        { type: "system", text: "— BÖLÜM 1 SONU: GECE VARDİYASI —" },
+        { type: "ambient", text: "Ve tam cebinde kapalı duran o çatlak tablet, aniden kendi kendine cızırdayarak uyanıyor. Hoparlöründen dijital, bozuk bir çocuk sesi yükseliyor. Ağır ağır sayıyor: «...altı... beş...» Sonra aniden susuyor. K-5 katının dipsiz karanlığı, merdivenlerin dibinde seni bekliyor." },
+        { type: "ambient", text: "O cızırtının altında, çok daha derinde ikinci bir ses katmanı duyuyorsun: Islak, hırıltılı bir nefes ve bozuk bir ninninin mırıltıları... Sen bütün gece etrafı dinlediğini sanıyordun. Oysa tüm bu zaman boyunca, karanlığın içinden DİNLENEN sendin.", if: { flag: "frekanslariDuydun", equals: true } },
+        
       ],
       choices: [
         { id: "k5", text: "Merdiveni tırman — K-5: Yaşam Destek", next: "n_k5_giris" },
@@ -835,22 +835,16 @@ export const EP01 = {
   },
 };
 
-// Bu bölümün başlangıç bayrakları:
 export const EP01_FLAGS = {
   devreOnarildi: false,
-  // keşif
   ranzaArandi: false, korIlk: false, revirGezildi: false,
   kantinGezildi: false, kantinIlkGoruldu: false,
   kavsakIlk: false, gecitIlk: false, depoIlk: false, sintineIlk: false,
   servisAcildi: false, platIlk: false, kor2Ilk: false,
   rafAlindi: false, cekmeceAcik: false, nisYoklandi: false,
-  // ilerleme
   pompaA: false, pompaB: false, pompaC: false, gucAcik: false,
   kod21: false, kod47: false, sigortaAlindi: false,
-  // pusular ve işaret
   pusu1: false, pusu2: false, pusu3: false, isaret: false,
-  // hikaye
   eceIlkTemas: false, yolAydinlik: false,
-  // gizli frekanslar (motor set eder)
   frekansCocuk: false, frekansNefes: false, frekanslariDuydun: false,
 };

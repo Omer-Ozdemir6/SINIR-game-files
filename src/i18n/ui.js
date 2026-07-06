@@ -18,7 +18,7 @@ export const UI = {
     },
     warn: {
       p1: "SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. En iyi deneyim için karanlık bir ortamda ve kulaklıkla oynayın.",
-      p2: "SINIR-1 su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde yalnızca çatlak ekranlı bakım tabletin var: ışığın, kaydın ve tek dostun. Hayatta kalabildiğin kadar kal. Her şeyi belgele. Savaşçı değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
+      p2: "SINIR-1 su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde sadece ekranı çatlamış, bataryası can çekişen bir bakım tableti var. O senin tek ışığın, tek kaydın ve bu zifiri karanlıktaki tek dostun. Hayatta kalabildiğin kadar kal.Ama asla unutma: Sen bir asker değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
       cont: "Devam Et",
     },
     intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra.", pressSend: "MESAJI GÖNDERMEK İÇİN 'MESAJI GÖNDER'E BAS" },
@@ -41,7 +41,7 @@ export const UI = {
         { title: "SONLAR", body: "Verdiğin kararlar oyunun sonunu belirler. Beş farklı son var. Kimi kurtardığın, kime güvendiğin, neyi feda ettiğin — hepsi önemli. Her şeyi görmek için birden fazla oyna." },
       ],
     },
-    disclaimer: { body: "Bu oyun tamamen kurgudur. Anlatılan olaylar, geçen kişiler ve kurumlar hayal ürünüdür. Gerçek kişi, kurum veya olaylarla benzerlik göstermesi tamamen tesadüftür." },
+    disclaimer: { body: "Bu oyundaki bütün karakter ve yerler hayal ürünüdür. Gerçek kişi ve yerlerle benzerlikler tamamen tesadüf eseridir." },
     hud: {
       noise: "GÜRÜLTÜ", mind: "AKIL", archive: "ARŞİV",
       objective: "Görev: ",

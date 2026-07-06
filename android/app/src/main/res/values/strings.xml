@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SINIR-1</string>
+    <string name="title_activity_main">SINIR-1</string>
+    <string name="package_name">com.sahip.sinir1</string>
+    <string name="custom_url_scheme">com.sahip.sinir1</string>
+</resources>
