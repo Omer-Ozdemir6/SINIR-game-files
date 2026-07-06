@@ -138,7 +138,7 @@ export const EP04 = {
       events: [
         { type: "narrate", text: "Keseyi koparıyorsun — mavi spor bulutu yüzüne patlıyor. Nefesini tutuyorsun; gözlerin yanıyor, ciğerlerin temiz hava için haykırıyor ama nefes alırsan sporları içine çekersin." },
       ],
-      interaction: { kind: "breath", holdMs: 6000, lungMs: 8500, success: "n_fide_al", fail: "n_olum_spor" },
+      interaction: { kind: "breath", holdMs: 7500, lungMs: 9000, success: "n_fide_al", fail: "n_olum_spor" },
     },
 
     n_olum_spor: {
@@ -276,7 +276,7 @@ export const EP04 = {
         target: { spor: 1, ozut: 2, kan: 3 },
         success: "n_serum_hazir",
         cancel: "n_lab",
-        penalty: { akil: -5, text: "YANLIŞ ORAN — karışım köpürüp bozuldu, baştan" },
+        penalty: { akil: -12, gurultu: 6, text: "YANLIŞ ORAN — zehirli gaz! AKIL -12" },
       },
     },
 

@@ -670,7 +670,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "Dolabın çelik karanlığına sığınıyorsun. Menfez aralığından odanın bir dilimi görünüyor. Kapı açılıyor. Islak bir ağırlık içeri giriyor — ve dalış kıyafetinden arta kalan şeyin içinde, bir zamanlar insan olan bir şey, İNLİYOR." },
       ],
-      interaction: { kind: "breath", holdMs: 7000, lungMs: 9500, success: "n_saklan_ok", fail: "n_olum_nefes" },
+      interaction: { kind: "breath", holdMs: 8500, lungMs: 10000, success: "n_saklan_ok", fail: "n_olum_nefes" },
     },
 
     n_olum_nefes: {

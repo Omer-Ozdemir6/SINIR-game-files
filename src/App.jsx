@@ -7,6 +7,8 @@ import { Haptics } from "./engine/haptics";
 import {
   STAT_MAX, BATTERY_START, SPARES_START, SPARES_MAX, INITIAL_STATS,
   LIGHTS_INIT, SPEED_OPTIONS, DARK_MS, IS_RELEASE,
+  BATTERY_DRAIN_MS, BATTERY_DRAIN_TENSE,
+  NOISE_THRESHOLDS, SANITY_THRESHOLDS,
 } from "./engine/constants";
 import { batteryColorOf, paginateDoc } from "./engine/textFx";
 import { saveGame, loadGame, clearGame } from "./save/storage";
@@ -67,6 +69,7 @@ export default function App() {
   const [endFade, setEndFade] = useState(false);
   const [pendingBattery, setPendingBattery] = useState(null);
   const batteryResolveRef = useRef(null);
+  const firedThresholdsRef = useRef(new Set());
   const [timeLeft, setTimeLeft] = useState(null);
   const [typing, setTyping] = useState(false);
   const [screen, setScreen] = useState(null);
@@ -335,6 +338,8 @@ export default function App() {
         next[ev.stat] = Math.max(0, Math.min(STAT_MAX[ev.stat] || 100, (next[ev.stat] || 0) + ev.delta));
         statsRef.current = next;
         setStats(next);
+        // merkezî eşik izleyicisi: gürültü/akıl eşiklerini kontrol et
+        if (checkThresholds(runId)) return;   // ölüm tetiklendiyse akışı durdur
         if (ev.note) return typeLine(ev.noteKind || "alert", "⚠ " + ev.note, runId, 14);
         return;
       }
@@ -410,6 +415,49 @@ export default function App() {
     later(() => setDeath(payload), 2000);
   };
 
+  /* ---- MERKEZÎ EŞİK İZLEYİCİSİ (watchdog) ----
+     Her stat değişiminden sonra çağrılır. Gürültü ve akıl eşiklerini
+     kontrol eder; eşik ilk kez aşıldığında uyarı verir veya öldürür.
+     Her bölümde otomatik çalışır — ayrıca noiseGate koymaya gerek yok.
+     Dönüş: true = ölüm tetiklendi (akış durmalı). */
+  const checkThresholds = (runId) => {
+    if (death || dying) return false;
+    const s = statsRef.current;
+    const noise = s.gurultu || 0;
+    const sanity = s.akil != null ? s.akil : 100;
+    const fired = firedThresholdsRef.current;
+
+    // GÜRÜLTÜ: yükseldikçe tehlike (at değerini AŞUNCA)
+    for (const th of NOISE_THRESHOLDS) {
+      if (noise >= th.at && !fired.has(th.key)) {
+        fired.add(th.key);
+        if (th.kind === "death") {
+          Haptics.death();
+          die({ text: t("eng." + th.key) });
+          return true;
+        }
+        Haptics.low();
+        AudioSys.blipSfx(220);
+        showToast("⚠", t("eng." + th.key), "#c2884a");
+      }
+    }
+    // AKIL: düştükçe tehlike (at değerinin ALTINA inince)
+    for (const th of SANITY_THRESHOLDS) {
+      if (sanity <= th.at && !fired.has(th.key)) {
+        fired.add(th.key);
+        if (th.kind === "death") {
+          Haptics.death();
+          die({ text: t("eng." + th.key) });
+          return true;
+        }
+        Haptics.glitch();
+        AudioSys.blipSfx(180);
+        showToast("⚠", t("eng." + th.key), "#a06ac2");
+      }
+    }
+    return false;
+  };
+
   /* ---------------- node oynatıcı ---------------- */
 
   const playNode = useCallback(async (nodeId) => {
@@ -434,16 +482,8 @@ export default function App() {
     setInteraction(null);
     clearTimer();
 
-    if (node.cost) {
-      const left = Math.max(0, batteryRef.current - node.cost);
-      setBatteryBoth(left);
-      if (left === 0) {
-        Haptics.low();
-        startDarkness(); // oyun durmaz — karanlıkta oynamaya devam
-      } else if (left <= 20) {
-        await typeLine("alert", t("eng.batteryCritical", { n: left }), runId, 14);
-      }
-    }
+    // NOT: pil artık node başına DEĞİL, zamanla otomatik azalıyor (Outlast tarzı).
+    // Eski 'cost' alanları hikâyede kalabilir ama pili düşürmez.
 
     if (node.checkpoint) {
       checkpointRef.current = {
@@ -569,6 +609,7 @@ export default function App() {
     if (p?.gurultu) {
       statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + p.gurultu) };
       setStats({ ...statsRef.current });
+      checkThresholds(runIdRef.current);
     }
     if (p?.akil) {
       statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) + p.akil) };
@@ -627,6 +668,7 @@ export default function App() {
       if (fails === 3) {
         statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + 10) };
         setStats({ ...statsRef.current });
+        checkThresholds(runIdRef.current);
         setKpMsg({ text: t("keypad.badNoisy"), ok: false });
       } else {
         setKpMsg({ text: t("keypad.bad"), ok: false });
@@ -781,6 +823,7 @@ export default function App() {
       glitchBurst(180);
       statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + 4) };
       setStats({ ...statsRef.current });
+      checkThresholds(runIdRef.current);
       setFuseMsg({ text: t("mech.fuseSpark"), ok: false });
     }
   };
@@ -853,6 +896,9 @@ export default function App() {
   const restoreFrom = (cp) => {
     statsRef.current = { ...cp.stats };
     setStats({ ...cp.stats });
+    // eşik izleyicisini sıfırla: geri yüklenen değerin ötesindeki eşikleri
+    // yeniden "silahlı" hale getir (checkpoint'teki gürültü/akıl seviyesine göre)
+    firedThresholdsRef.current = new Set();
     setBatteryBoth(cp.battery);
     setSparesBoth(cp.spares);
     flagsRef.current = { ...cp.flags };
@@ -894,6 +940,7 @@ export default function App() {
     setEnded(false);
     statsRef.current = { ...INITIAL_STATS };
     setStats({ ...INITIAL_STATS });
+    firedThresholdsRef.current = new Set();
     setBatteryBoth(BATTERY_START);
     setSparesBoth(SPARES_START);
     flagsRef.current = { ...INITIAL_FLAGS };
@@ -961,6 +1008,27 @@ export default function App() {
     setStoryLang(code);   // hikaye havuzu (yoksa TR'ye düşer)
     setLangState(code);   // yeniden çizim
   };
+
+  /* ---------------- otomatik pil azalması (Outlast tarzı) ---------------- */
+  // oyun ekranı aktifken pil sürekli azalır; oyuncu yedekle değiştirmeli
+  useEffect(() => {
+    // sadece oyun oynanırken azalt: bulmaca/menü/ölüm/pil-seçimi yokken
+    const active = mode === "game" && !death && !dying && !pendingBattery
+      && !interaction && !screen && !ended;
+    if (!active) return;
+    // gerilim durumu: karanlık modu veya düşük akıl → daha hızlı erir
+    const tense = dark || (stats.akil != null && stats.akil <= 30) || (stats.gurultu || 0) >= 60;
+    const rate = tense ? BATTERY_DRAIN_TENSE : BATTERY_DRAIN_MS;
+    const iv = setInterval(() => {
+      if (batteryRef.current <= 0) return;
+      const nb = Math.max(0, batteryRef.current - 1);
+      setBatteryBoth(nb);
+      if (nb === 0) startDarkness();          // pil bitti → karanlık
+      else if (nb <= 20) Haptics.low();        // kritik uyarı titreşimi
+    }, rate);
+    return () => clearInterval(iv);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, death, dying, pendingBattery, interaction, screen, ended, dark, stats.akil, stats.gurultu]);
 
   /* ---------------- ses durumları ---------------- */
 
@@ -1053,7 +1121,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = battery > 0 && battery <= 12 && screen !== "blackout";
+  const flickering = (battery > 0 && battery <= 12 && screen !== "blackout") || (akil > 0 && akil <= 20);
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
   // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ

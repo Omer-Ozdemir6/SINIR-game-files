@@ -95,7 +95,7 @@ export const EP02 = {
           { id: "p5", label: "5" },
         ],
         pairs: { c_o2: "p3", c_co2: "p1", c_pmp: "p5", c_fan: "p2", c_val: "p4" },
-        penalty: { gurultu: 4, text: "YANLIŞ BAĞLANTI — kıvılcım, kısa devre" },
+        penalty: { gurultu: 12, akil: -4, text: "YANLIŞ BAĞLANTI — yüksek kıvılcım! GÜRÜLTÜ +12" },
         success: "n_destek_onarildi",
         cancel: "n_hub",
       },
@@ -354,7 +354,7 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "Kendini dikey menfeze zorluyorsun; çelik göğsünü sıkıyor. Tableti göğsüne bastırıp ışığı gömüyorsun. Islak sürünme bir kol boyu ötendeki tünelden yavaşça geçmeye başlıyor." },
       ],
-      interaction: { kind: "breath", holdMs: 6500, lungMs: 9000, success: "n_t3", fail: "n_olum_tunel" },
+      interaction: { kind: "breath", holdMs: 8000, lungMs: 9500, success: "n_t3", fail: "n_olum_tunel" },
     },
 
     n_olum_tunel: {
@@ -647,7 +647,7 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "Menfez kapağını tırnaklarınla söküp kendini içeri çekiyorsun. Bir saniye sonra fener ızgaranın çubuklarında — yüzünün üstünde çizgi çizgi. Botları ızgaranın hemen ötesinde duruyor. Bekliyor. DİNLİYOR." },
       ],
-      interaction: { kind: "breath", holdMs: 6500, lungMs: 9000, success: "n_menfez_ok", fail: "n_olum_menfez" },
+      interaction: { kind: "breath", holdMs: 8000, lungMs: 9500, success: "n_menfez_ok", fail: "n_olum_menfez" },
     },
 
     n_olum_menfez: {
