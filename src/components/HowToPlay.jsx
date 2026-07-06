@@ -1,9 +1,9 @@
-import { t } from "../i18n";
+import { t, tRaw } from "../i18n";
 
 /* NASIL OYNANIR — oyun mekaniklerini anlatan overlay.
    Ana menüden ve duraklat menüsünden açılabilir. */
 export default function HowToPlay({ onClose }) {
-  const sections = t("howto.sections"); // dizi: [{title, body}]
+  const sections = tRaw("howto.sections"); // dizi: [{title, body}]
   return (
     <div
       onClick={onClose}

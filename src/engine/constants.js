@@ -9,6 +9,7 @@ export const STAT_MAX = { gurultu: 100, akil: 100, eceGuven: 100, denizOfke: 100
 
 export const BATTERY_START = 42;   // yeni oyunda pil yüzdesi
 export const SPARES_START = 0;     // yeni oyunda yedek pil sayısı
+export const SPARES_MAX = 5;       // taşınabilecek maksimum yedek pil
 
 // gurultu/akil ekranda görünür; diğerleri gizli anlatı statlarıdır:
 // eceGuven (Ece'nin sana güveni), denizOfke (Deniz'in tavrı),

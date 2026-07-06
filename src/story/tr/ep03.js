@@ -70,7 +70,7 @@ export const EP03 = {
         { type: "narrate", text: "Masaya yaklaştıkça gövde büyüyor. Sonra, sen daha bir kelime etmeden, çatal duruyor ve o boğuk, baba sesi bütün odayı dolduruyor:" },
         { type: "narrate", text: "\"Geç kaldın.\" Dönmüyor. \"Ailede yemek birlikte yenir. Otur. Tabağın hazır.\" Masanın senin tarafındaki tek boş sandalyenin önünde, gerçekten, bir tabak var — üstü kapaklı, buğu tütüyor." },
         { type: "waitTap" },
-        { type: "alert", text: "Kaçış yok — koridorun tek çıkışı onun arkasında. Oturman gerekiyor.", if: { flag: "sefFarkindalik", equals: false } },
+        { type: "alert", text: "Kaçış yok — koridorun tek çıkışı onun arkasında. Oturman gerekiyor." },
       ],
       choices: [
         { id: "otur", text: "Sandalyeye otur", next: "n_sofra_otur" },
@@ -179,7 +179,46 @@ export const EP03 = {
         { id: "sef", text: "Üst kata, kapısı kilitli odaya çık", next: "n_sef_kapi" },
         { id: "depo", text: "Soğuk hava sızan ağır kapıya yaklaş", next: "n_depo_kapi" },
         { id: "mutfak", text: "Mutfağa göz at (Şef orada)", next: "n_mutfak" },
+        { id: "vitray", text: "Sofanın üstündeki renkli cam paneli incele", next: "n_vitray_panel", if: { flag: "vitrayCozuldu", equals: false } },
         { id: "sandik", text: "Şefin odasındaki sandığı açmayı dene", next: "n_sef_sandik", if: { flag: "sefOdaAcik", equals: true } },
+      ],
+    },
+
+    /* YENİ: aile vitrayı — colorgrid bulmacası (renk deseni) */
+    n_vitray_panel: {
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Holün duvarında, eskiden güzel olduğu belli renkli bir cam panel — bir aile portresi: baba, anne, bir çocuk, hepsi el ele. Ama camlar kırılıp yanlış renklerle yamanmış; portre bir kâbusa dönmüş, yüzler karışmış. Panelin altında Deniz'in çocuk el yazısı: 'annem doğru renkleri bilir. ben unuttum.' Renkleri doğru desene getirirsen panel ışığı geçirir — ve arkasındaki oyuk açığa çıkar." },
+        { type: "note", id: "not_vitray", title: "Aile vitrayı", text: "Holdeki renkli cam aile portresi yanlış renklerle yamanmış. Doğru desene getirmem gerek — hücrelere dokununca renk değişiyor. Deniz'in notu: doğru renkler annesinin hatırası. Arkasında bir oyuk var." },
+      ],
+      interaction: {
+        kind: "colorgrid",
+        title: "AİLE VİTRAYI — DESENİ ONAR",
+        palette: ["#2a2a30", "#b23a3a", "#c2a24a", "#3a6a9a", "#5a9a6a"],
+        // 4x4 = 16 hücre; hedef desen: aile figürü (koyu zemin, kırmızı/altın/mavi/yeşil figürler)
+        target: [0,3,3,0, 3,1,1,3, 2,1,1,2, 0,4,4,0],
+        start:  [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+        cols: 4,
+        success: "n_vitray_cozuldu",
+        cancel: "n_hol",
+      },
+    },
+
+    n_vitray_cozuldu: {
+      cost: 1,
+      events: [
+        { type: "system", text: "VİTRAY: TAMAMLANDI" },
+        { type: "narrate", text: "Son renk yerine oturduğu an panel canlanıyor — arkadan sızan soluk ışık, aile portresini bütünlüyor. Bir an, gerçekten güzel: mutlu bir aile, el ele. Sonra ışık kayıyor ve panelin arkasındaki oyuk beliriyor. İçinde küçük bir teselli: yedek pil ve annenin bir notu." },
+        { type: "flag", set: { vitrayCozuldu: true } },
+        { type: "battery", spares: 1 },
+        { type: "document", open: true, doc: {
+          id: "d_anne", title: "Annenin Notu", style: "hand",
+          meta: "— vitrayın arkasındaki oyukta —",
+          body: "Denizim,\n\nBabası değişti. O aşağıdaki şeyi bulduklarından\nberi. Artık 'aile' derken bambaşka bir şey\nkastediyor. Seni de katmak istiyor.\n\nBu paneli senin için yaptım — doğru renkleri\nhatırlarsan, hâlâ benim oğlum olduğunu\nbilirim. Kaç. Yukarı çık. Beni bekleme.\n\n— Annen" } },
+        { type: "stat", stat: "akil", delta: 4 },
+      ],
+      choices: [
+        { id: "geri", text: "Hole dön", next: "n_hol" },
       ],
     },
 
@@ -286,7 +325,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Botlar sonunda dönüp çıkıyor. \"...Sonra oynarız,\" diyor kapıda. Bir dakika daha bekleyip ranzanın altından çıkıyorsun. Kalbin kulaklarında." },
-        { type: "flag", set: { sefNerede: "" } },
+        { type: "flag", set: { sefNerede: "", cocukBitti: true } },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
@@ -502,6 +541,7 @@ export const EP03 = {
       choices: [
         { id: "coz", text: "Cam panoyu çevir — armayı tamamla", next: "n_sandik_puzzle", if: { flag: "yadigar3", equals: true } },
         { id: "ara", text: "Eksik yadigârları aramaya dön", next: "n_hol", if: { flag: "yadigar3", equals: false } },
+        { id: "cik", text: "Sandığı bırak, hole dön", next: "n_hol", if: { flag: "yadigar3", equals: true } },
       ],
     },
 
@@ -627,6 +667,7 @@ export const EP03 = {
 };
 
 export const EP03_FLAGS = {
+  vitrayCozuldu: false,
   // giriş / sofra
   sofraYedi: false, sofraSakladi: false, sofraReddetti: false,
   // hub / keşif

@@ -619,7 +619,7 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
 
   const grid = (vals, size, clickable) => (
     <div style={{
-      display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 3,
+      display: "grid", gridTemplateColumns: `repeat(${config.cols || 3}, 1fr)`, gap: 3,
       width: size, padding: 5,
       backgroundColor: "#0c0f0d", border: "2px solid #2a3a30", borderRadius: 5,
     }}>

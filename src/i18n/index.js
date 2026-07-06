@@ -47,3 +47,17 @@ export function t(key, vars) {
   if (vars) for (const k of Object.keys(vars)) s = s.split("{" + k + "}").join(String(vars[k]));
   return s;
 }
+
+// diziler / objeler için (ör. howto.sections) — string olmayan değerleri döndürür
+export function tRaw(key) {
+  const pick = (lang) => {
+    let cur = UI[lang];
+    for (const part of key.split(".")) {
+      if (cur == null) return undefined;
+      cur = cur[part];
+    }
+    return cur;
+  };
+  const v = pick(current);
+  return v !== undefined ? v : pick("tr");
+}

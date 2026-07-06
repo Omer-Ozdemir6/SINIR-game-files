@@ -64,8 +64,54 @@ export const EP02 = {
         { id: "basinc", text: "Basınç sesinin geldiği ıslak koridora sap", next: "n_s1_kapi", if: { flag: "kart1", equals: false } },
         { id: "tunel", text: "Tavan ağızlarının alçaldığı dar geçide gir", next: "n_s2_kapi", if: { flag: "kart2", equals: false } },
         { id: "gozlem", text: "Cam bölmeli sessiz koridoru izle", next: "n_s3_kapi", if: { flag: "kart3", equals: false } },
+        { id: "destek", text: "Kıvılcım saçan yaşam destek paneline bak", next: "n_destek_panel", if: { flag: "destekOnarildi", equals: false } },
         { id: "cikis", text: "Ağır çıkış kapısına git", next: "n_cikis" },
         { id: "dinlen", text: "Bir borunun gölgesinde durup soluklan", next: "n_hub_dinlen", ifStat: { stat: "gurultu", gte: 30 } },
+      ],
+    },
+
+    /* YENİ: yaşam destek paneli — wires bulmacası (kablo eşleştirme) */
+    n_destek_panel: {
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Kavşağın köşesinde, sökülmüş bir yaşam destek panelinin kapağı sarkıyor. İçeride beş kablo yuvalarından çıkmış, uçları çıplak, ara sıra kıvılcım atıyor. Panel etiketi: \"K-5 HAVA DÖNGÜSÜ — O2/CO2 DENGE\". Deniz'in — ya da başka birinin — bu paneli kasten sabote ettiği belli. Kabloları doğru portlara bağlarsan bu kattaki hava temizlenir; gürültün daha az iz bırakır." },
+        { type: "note", id: "not_destek", title: "Yaşam destek paneli", text: "K-5 hava döngüsü paneli sabote edilmiş — beş kablo yuvalarından sökülmüş. Renkleri portlarla eşleştirmem gerek. Onarırsam hava temizlenir, hareketim daha sessiz olur." },
+      ],
+      interaction: {
+        kind: "wires",
+        title: "HAVA DÖNGÜSÜ — KABLOLARI BAĞLA",
+        cables: [
+          { id: "c_o2", label: "O₂", color: "#4aa2c2" },
+          { id: "c_co2", label: "CO₂", color: "#8a8a8a" },
+          { id: "c_pmp", label: "POMPA", color: "#c2a24a" },
+          { id: "c_fan", label: "FAN", color: "#5aa26a" },
+          { id: "c_val", label: "VALF", color: "#c25a5a" },
+        ],
+        ports: [
+          { id: "p1", label: "1" },
+          { id: "p2", label: "2" },
+          { id: "p3", label: "3" },
+          { id: "p4", label: "4" },
+          { id: "p5", label: "5" },
+        ],
+        pairs: { c_o2: "p3", c_co2: "p1", c_pmp: "p5", c_fan: "p2", c_val: "p4" },
+        penalty: { gurultu: 4, text: "YANLIŞ BAĞLANTI — kıvılcım, kısa devre" },
+        success: "n_destek_onarildi",
+        cancel: "n_hub",
+      },
+    },
+
+    n_destek_onarildi: {
+      cost: 1,
+      events: [
+        { type: "system", text: "HAVA DÖNGÜSÜ: DENGELENDİ" },
+        { type: "narrate", text: "Son kablo yuvasına oturduğu an panel canlanıyor; fanlar dönmeye başlıyor, havadaki o ağır, metalik koku dağılıyor. İlk kez K-5'te derin bir nefes alabiliyorsun. Temiz hava, temiz kafa demek." },
+        { type: "flag", set: { destekOnarildi: true } },
+        { type: "stat", stat: "akil", delta: 6, note: "AKIL +6 — Temiz hava", noteKind: "system" },
+        { type: "battery", spares: 1 },
+      ],
+      choices: [
+        { id: "geri", text: "Kavşağa dön", next: "n_hub" },
       ],
     },
 
@@ -658,6 +704,7 @@ export const EP02 = {
 
 // Bölüm başlangıç bayrakları:
 export const EP02_FLAGS = {
+  destekOnarildi: false,
   // hub / ilerleme
   hubIlk: false, s1Ilk: false, t1Ilk: false, t3Ilk: false,
   s1SemaOkundu: false, tHarita: false, tCep: false,

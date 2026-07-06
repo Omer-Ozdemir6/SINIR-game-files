@@ -73,8 +73,43 @@ export const EP04 = {
         { id: "fide", text: "Fide fısıltılarının geldiği nemli odaya gir", next: "n_fide", if: { flag: "fideBitti", equals: false } },
         { id: "lab", text: "Cam kırıklı laboratuvara yönel", next: "n_lab" },
         { id: "su", text: "Su damlayan deponun geçidine gir (spor bulutu)", next: "n_su_gecit" },
+        { id: "iklim", text: "Yanıp sönen sera iklim paneline bak", next: "n_iklim_panel", if: { flag: "iklimCozuldu", equals: false } },
         { id: "kompost", text: "Çürük kokan çukura yaklaş", next: "n_kompost_kapi" },
         { id: "kasa", text: "Nevin'in tohum kasasını açmayı dene", next: "n_kasa" },
+      ],
+    },
+
+    /* YENİ: sera iklim paneli — colorgrid bulmacası (ışık spektrumu) */
+    n_iklim_panel: {
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Seranın bir köşesinde, köklerin henüz sarmadığı bir iklim kontrol paneli. Dokuz gösterge, her biri bir ışık spektrumunu temsil ediyor ama hepsi yanlış renkte yanıyor — bu yüzden fideler çıldırmış, insan tenine benzemiş. Panelin yanında Nevin'in eski, insani el yazısı: 'doğru spektrum onları uyutur. kırmızı büyütür, mavi durdurur.' Renkleri doğru desene getirirsen bu bölümdeki kökler bir süreliğine uyuşur." },
+        { type: "note", id: "not_iklim", title: "Sera iklim paneli", text: "Seranın ışık spektrumu paneli yanlış ayarlı — bu yüzden fideler kontrolden çıkmış. Nevin'in notu: doğru spektrum kökleri uyutur (mavi durdurur, kırmızı büyütür). Doğru desene getirirsem kökler uyuşur, geçişim güvenli olur." },
+      ],
+      interaction: {
+        kind: "colorgrid",
+        title: "IŞIK SPEKTRUMU — DOĞRU DESENİ AYARLA",
+        palette: ["#1a1a22", "#3a5a9a", "#5a9a6a", "#c2a24a"],
+        // 3x3 = 9 hücre; hedef: mavi baskın (uyutucu) desen
+        target: [1,2,1, 2,1,2, 1,2,1],
+        start:  [0,0,0, 0,0,0, 0,0,0],
+        cols: 3,
+        success: "n_iklim_cozuldu",
+        cancel: "n_sera",
+      },
+    },
+
+    n_iklim_cozuldu: {
+      cost: 1,
+      events: [
+        { type: "system", text: "IŞIK SPEKTRUMU: MAVİ — UYUTUCU" },
+        { type: "narrate", text: "Spektrum maviye döndüğü an sera değişiyor: köklerin gerilimi çözülüyor, sarmaşıklar gevşiyor, fideler başlarını eğip uykuya dalıyor. Nevin'in bile nefesi yavaşlıyor. Bir süreliğine bahçe, sadece bir bahçe. Bu pencereyi iyi kullan." },
+        { type: "flag", set: { iklimCozuldu: true } },
+        { type: "stat", stat: "akil", delta: 5, note: "AKIL +5 — Bahçe sakinleşti", noteKind: "system" },
+        { type: "battery", spares: 1 },
+      ],
+      choices: [
+        { id: "geri", text: "Seraya dön", next: "n_sera" },
       ],
     },
 
@@ -116,7 +151,7 @@ export const EP04 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Bulut dağılırken keseyi cebine mühürlüyorsun. Mavi spor — birinci örnek. Ciğerlerin hâlâ yanıyor ama temiz." },
-        { type: "flag", set: { ornek1: true } },
+        { type: "flag", set: { ornek1: true, fideBitti: true } },
         { type: "note", id: "not_ornek1", title: "Örnek 1/3: Mavi spor", text: "Buluntu'nun mavi spor kesesi. Serum için üç örnekten biri. Diğerleri: kök özütü ve Selin'in kan örneği." },
       ],
       choices: [
@@ -221,6 +256,7 @@ export const EP04 = {
       choices: [
         { id: "yap", text: "Serumu karıştır", next: "n_lab_mix", if: { flag: "ornek3", equals: true } },
         { id: "ara", text: "Önce üç örneği topla (eksik)", next: "n_sera", if: { flag: "ornek3", equals: false } },
+        { id: "cik", text: "Laboratuvardan çık, seraya dön", next: "n_sera", if: { flag: "ornek3", equals: true } },
       ],
     },
 
@@ -380,6 +416,7 @@ export const EP04 = {
 };
 
 export const EP04_FLAGS = {
+  iklimCozuldu: false,
   // giriş / hub
   seraIlk: false, fideBitti: false,
   // örnekler (kasa + serum)

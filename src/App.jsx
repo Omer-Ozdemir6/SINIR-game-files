@@ -5,7 +5,7 @@ import { t, getLang, setLang, LANGS } from "./i18n";
 import { STORY, INITIAL_FLAGS, setStoryLang, DEMO_START } from "./story";
 import { Haptics } from "./engine/haptics";
 import {
-  STAT_MAX, BATTERY_START, SPARES_START, INITIAL_STATS,
+  STAT_MAX, BATTERY_START, SPARES_START, SPARES_MAX, INITIAL_STATS,
   LIGHTS_INIT, SPEED_OPTIONS, DARK_MS, IS_RELEASE,
 } from "./engine/constants";
 import { batteryColorOf, paginateDoc } from "./engine/textFx";
@@ -65,6 +65,8 @@ export default function App() {
   const [ended, setEnded] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const [endFade, setEndFade] = useState(false);
+  const [pendingBattery, setPendingBattery] = useState(null);
+  const batteryResolveRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [typing, setTyping] = useState(false);
   const [screen, setScreen] = useState(null);
@@ -337,12 +339,13 @@ export default function App() {
         return;
       }
       case "battery": {
-        if (ev.spares) {
-          setSparesBoth(sparesRef.current + ev.spares);
-          AudioSys.pickup();
-          showToast("▲", t("eng.spareGain", { n: ev.spares }), "#7fae86");
-        }
+        // pil DÜŞÜŞÜ otomatik (delta), ama YEDEK PİL için oyuncuya sor
         if (ev.delta) setBatteryBoth(Math.max(0, Math.min(100, batteryRef.current + ev.delta)));
+        if (ev.spares) {
+          // akışı durdur, oyuncuya "Pili al / Bırak" seçeneği göster
+          setPendingBattery({ n: ev.spares });
+          return new Promise((resolve) => { batteryResolveRef.current = resolve; });
+        }
         return wait(600, runId);
       }
       case "anons": return typeLine("anons", ev.text, runId, 20);
@@ -401,6 +404,8 @@ export default function App() {
   const die = (payload) => {
     AudioSys.boom();
     AudioSys.heart(null);
+    setPendingBattery(null);
+    if (batteryResolveRef.current) { batteryResolveRef.current(); batteryResolveRef.current = null; }
     setDying(true);
     later(() => setDeath(payload), 2000);
   };
@@ -513,6 +518,31 @@ export default function App() {
     setBatteryBoth(100);
     AudioSys.pickup();
     showToast("⚡", t("eng.swapped"), "#7fae86");
+  };
+
+  // oyuncu bulunan pili almayı seçti
+  const takeBattery = () => {
+    const n = pendingBattery?.n || 1;
+    const before = sparesRef.current;
+    const after = Math.min(SPARES_MAX, before + n);
+    const gained = after - before;
+    if (gained > 0) {
+      setSparesBoth(after);
+      AudioSys.pickup();
+      showToast("▲", t("eng.spareGain", { n: gained }), "#7fae86");
+    } else {
+      // yer yok
+      AudioSys.blipSfx(300);
+      showToast("■", t("eng.spareFull", { max: SPARES_MAX }), "#b89a4a");
+    }
+    setPendingBattery(null);
+    if (batteryResolveRef.current) { batteryResolveRef.current(); batteryResolveRef.current = null; }
+  };
+
+  // oyuncu pili bırakmayı seçti
+  const skipBattery = () => {
+    setPendingBattery(null);
+    if (batteryResolveRef.current) { batteryResolveRef.current(); batteryResolveRef.current = null; }
   };
 
   const markRead = (kind, id) => {
@@ -1114,7 +1144,7 @@ export default function App() {
         }}
         className={glitching ? "s1-glitch" : flickering ? "s1-flicker" : ""}>
         <GameHeader
-          gurultuPct={gurultuPct} akil={akil} battery={battery} bColor={bColor} spares={spares}
+          gurultuPct={gurultuPct} akil={akil} battery={battery} bColor={bColor} spares={spares} sparesMax={SPARES_MAX}
           onGear={() => setScreen("pause")}
           onBattery={swapBattery}
           onArchive={() => { setScreen("menu"); setOpenItem(null); }}
@@ -1130,6 +1160,66 @@ export default function App() {
       </div>
 
       <Hud dimOpacity={dimOpacity} objectiveFlash={objectiveFlash} toast={toast} />
+
+      {pendingBattery && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 53,
+          background: "rgba(4,7,9,0.82)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          padding: 24,
+        }} className="s1-fadein">
+          <div style={{
+            maxWidth: 360, width: "100%",
+            background: "rgba(12,18,16,0.96)", border: "1px solid #2f4a42",
+            borderRadius: 8, padding: "22px 20px", textAlign: "center",
+          }} className="s1-panel">
+            <div style={{
+              fontFamily: "'Courier New', ui-monospace, monospace",
+              fontSize: 30, marginBottom: 10,
+            }}>🔋</div>
+            <div style={{
+              fontFamily: "'Courier New', ui-monospace, monospace",
+              fontSize: 14, fontWeight: 700, letterSpacing: "0.1em",
+              color: "#dfe6df", marginBottom: 6,
+            }}>
+              {t("eng.batteryFound", { n: pendingBattery.n })}
+            </div>
+            <div style={{
+              fontFamily: "'Courier New', ui-monospace, monospace",
+              fontSize: 12, color: spares >= SPARES_MAX ? "#c2884a" : "#7a9a86",
+              marginBottom: 18,
+            }}>
+              {spares >= SPARES_MAX
+                ? t("eng.batteryPouchFull", { max: SPARES_MAX })
+                : t("eng.batterySlots", { cur: spares, max: SPARES_MAX })}
+            </div>
+            <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+              <button className="s1-btn" onClick={takeBattery}
+                style={{
+                  flex: 1, maxWidth: 150,
+                  fontFamily: "'Courier New', ui-monospace, monospace",
+                  fontSize: 13, letterSpacing: "0.1em",
+                  color: spares >= SPARES_MAX ? "#8a8478" : "#cdf0d6",
+                  background: spares >= SPARES_MAX ? "rgba(30,30,26,0.7)" : "rgba(20,40,28,0.85)",
+                  border: "1px solid " + (spares >= SPARES_MAX ? "#4a4a42" : "#4a7a5a"),
+                  padding: "11px 14px", cursor: "pointer", borderRadius: 5,
+                }}>
+                {t("eng.batteryTake")}
+              </button>
+              <button className="s1-btn" onClick={skipBattery}
+                style={{
+                  flex: 1, maxWidth: 150,
+                  fontFamily: "'Courier New', ui-monospace, monospace",
+                  fontSize: 13, letterSpacing: "0.1em", color: "#9db0a6",
+                  background: "rgba(20,26,24,0.7)", border: "1px solid #3a4a42",
+                  padding: "11px 14px", cursor: "pointer", borderRadius: 5,
+                }}>
+                {t("eng.batteryLeave")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {endFade && (
         <div style={{

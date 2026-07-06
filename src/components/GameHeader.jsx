@@ -2,7 +2,7 @@ import { styles as S } from "../styles/theme";
 import { t } from "../i18n";
 
 /* Üst bar: çark menüsü, GÜRÜLTÜ/AKIL göstergeleri, pil, arşiv */
-export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, onGear, onBattery, onArchive }) {
+export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, sparesMax, onGear, onBattery, onArchive }) {
   // Outlast tarzı dilimli pil: 10 dikey dilim, doluluk kadar yanar
   const segsOn = battery <= 0 ? 0 : Math.max(1, Math.ceil(battery / 10));
   return (
@@ -30,17 +30,23 @@ export default function GameHeader({ gurultuPct, akil, battery, bColor, spares, 
             </div>
           </div>
         </div>
-        <button className="s1-btn" style={S.batteryWrap} title={t("hud.batteryTitle")}
+        <button className={"s1-btn" + (battery <= 20 && battery > 0 ? " s1-batblink" : "")}
+          style={S.batteryWrap} title={t("hud.batteryTitle")}
           onClick={(e) => { e.stopPropagation(); onBattery(); }}>
-          <div style={S.batteryShell}
-            className={battery <= 20 && battery > 0 ? "s1-batblink" : ""}>
+          <div style={{
+            ...S.batteryShell,
+            borderColor: battery <= 20 && battery > 0 ? "#c23b2e" : "#9a9884",
+          }}>
             {Array.from({ length: 10 }).map((_, i) => (
               <div key={i}
                 style={{ ...S.batterySeg, backgroundColor: i < segsOn ? bColor : "transparent" }} />
             ))}
           </div>
-          <div style={S.batteryCap} />
-          <span style={{ ...S.spareText, color: spares > 0 ? "#b8b49a" : "#5a584a" }}>×{spares}</span>
+          <div style={{
+            ...S.batteryCap,
+            backgroundColor: battery <= 20 && battery > 0 ? "#c23b2e" : "#9a9884",
+          }} />
+          <span style={{ ...S.spareText, color: spares > 0 ? "#b8b49a" : "#5a584a" }}>{spares}/{sparesMax}</span>
         </button>
         <button className="s1-btn" style={S.archiveBtn}
           onClick={(e) => { e.stopPropagation(); onArchive(); }}>

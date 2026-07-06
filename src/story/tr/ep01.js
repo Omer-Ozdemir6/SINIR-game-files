@@ -232,8 +232,39 @@ export const EP01 = {
       ],
       choices: [
         { id: "sigorta", text: "Sigorta kutusunu ara", next: "n_depo_sigorta", if: { flag: "sigortaAlindi", equals: false } },
+        { id: "pano", text: "Duvardaki bozuk devre panosunu incele", next: "n_devre_pano", if: { flag: "devreOnarildi", equals: false } },
         { id: "servis", text: "Servis geçidinden kantin tarafına geç", next: "n_servis_geri" },
         { id: "gecit", text: "Bakım geçidinden kavşağa dön", next: "n_kavsak" },
+      ],
+    },
+
+    /* YENİ: devre panosu — tiles bulmacası (kayan parça) */
+    n_devre_pano: {
+      cost: 1,
+      events: [
+        { type: "narrate", text: "Deponun arka duvarında, cam kapağı çatlamış bir devre panosu. İçindeki dokuz modül yerinden oynamış, sökülmüş ve yanlış yuvalara tıkılmış — sanki biri aceleyle karıştırmış. Panonun üstünde küçük bir etiket: \"K-6 YEDEK AYDINLATMA HATTI\". Modülleri doğru sıraya dizersen deponun ölü lambaları geri gelebilir." },
+        { type: "note", id: "not_devre", title: "Devre panosu", text: "Depodaki yedek aydınlatma panosu karışmış — dokuz modül yanlış yuvalarda. Doğru sıraya dizersem K-6'nın yedek ışıkları çalışır. Işık, karanlıkta avantaj demek." },
+      ],
+      interaction: {
+        kind: "tiles",
+        title: "DEVRE PANOSU — MODÜLLERİ SIRALA",
+        scramble: [4, 2, 8, 6, 0, 7, 1, 5, 3],
+        success: "n_devre_onarildi",
+        cancel: "n_depo",
+      },
+    },
+
+    n_devre_onarildi: {
+      cost: 1,
+      events: [
+        { type: "system", text: "YEDEK AYDINLATMA HATTI: AKTİF" },
+        { type: "narrate", text: "Son modül yerine oturduğu an pano vızıldıyor ve deponun tavan lambaları — biri biri — titreyerek uyanıyor. Kirli sarı bir ışık odayı dolduruyor. Karanlık geri çekiliyor; en azından burada, bir süreliğine, görebiliyorsun." },
+        { type: "flag", set: { devreOnarildi: true, yolAydinlik: true } },
+        { type: "stat", stat: "akil", delta: 5, note: "AKIL +5 — Işık, küçük bir zafer", noteKind: "system" },
+        { type: "battery", spares: 1 },
+      ],
+      choices: [
+        { id: "geri", text: "Depoya dön", next: "n_depo" },
       ],
     },
 
@@ -624,7 +655,7 @@ export const EP01 = {
         { type: "anons", text: "「...Duydun mu bakım? Adını da öğrendik. Yukarıda görüşürüz.」" },
         { type: "waitTap" },
         { type: "stat", stat: "akil", delta: 10, note: "AKIL +10 — Bu tesiste hâlâ bir İNSAN var. Yalnız değilsin.", noteKind: "system" },
-        { type: "flag", set: { eceIlkTemas: true } },
+        { type: "flag", set: { eceIlkTemas: true, frekanslariDuydun: true } },
         { type: "note", id: "not_ece", title: "Ece — sonar operatörü", text: "432.0'da bir kadın: Ece. Dönüşmemiş, saklanıyor, üç haftadır tek başına. 'Şef ışıkları görür' dedi ve kantindeki masa hakkında bir şey söyleyecekti ki hat kesildi. Deniz kesti. İkisi birbirini tanıyor. Ece'yi bulmalıyım — ama önce bu geceden çıkmalıyım." },
         { type: "pause", ms: 1000 },
         { type: "narrate", text: "Sonra duyuyorsun: koridordan gelen ıslak, ağır adımlar. Kapının buzlu camında bir gölge büyüyor. Kapı kulpu — yavaşça — dönmeye başlıyor." },
@@ -806,6 +837,7 @@ export const EP01 = {
 
 // Bu bölümün başlangıç bayrakları:
 export const EP01_FLAGS = {
+  devreOnarildi: false,
   // keşif
   ranzaArandi: false, korIlk: false, revirGezildi: false,
   kantinGezildi: false, kantinIlkGoruldu: false,
