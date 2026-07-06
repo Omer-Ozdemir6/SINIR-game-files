@@ -13,18 +13,18 @@
 export const SFX_FILES = {
   blip: "",       // arayüz bip'i (tuşlar, onaylar)
   buzz: "",       // hata vızıltısı
-  clank: "",      // metal darbe (vana turu, kilit)
-  tick: "",       // klavye tık'ı (intro)
-  click: "",      // arayüz buton tıklaması
-  scratch: "",    // kalemle not yazma
-  page: "",       // kâğıt/sayfa hışırtısı
-  pickup: "",     // pil/eşya alma
-  valve: "",      // vana gıcırtısı
-  fuse: "",       // sigorta oturması
-  objective: "",  // yeni görev çanı
-  boom: "",       // ölüm/darbe vuruşu
-  glitch: "",     // parazit patlaması
-  heartbeat: "",  // TEK kalp vuruşu (ritmi motor tekrarlar)
+  clank: "/public/audio/sfx/clank.mp3",      // metal darbe (vana turu, kilit)
+  tick: "/public/audio/sfx/tick.mp3",       // klavye tık'ı (intro)
+  click: "/public/audio/sfx/click.mp3",      // arayüz buton tıklaması
+  scratch: "/public/audio/sfx/scratch.mp3",    // kalemle not yazma
+  page: "/public/audio/sfx/page.mp3",       // kâğıt/sayfa hışırtısı
+  pickup: "/public/audio/sfx/pickup.mp3",     // pil/eşya alma
+  valve: "/public/audio/sfx/valve.mp3",      // vana gıcırtısı
+  fuse: "/public/audio/sfx/fuse.mp3",       // sigorta oturması
+  objective: "/public/audio/sfx/objective.mp3",  // yeni görev çanı
+  boom: "/public/audio/sfx/boom.mp3",       // ölüm/darbe vuruşu
+  glitch: "/public/audio/sfx/glitch.mp3",     // parazit patlaması
+  heartbeat: "/public/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
 };
 
 export const MUSIC_FILES = {

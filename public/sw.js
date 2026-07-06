@@ -1,7 +1,7 @@
 /* SINIR-1 — basit offline cache (uygulama kabuğu).
    Vite build sonrası hash'li dosyalar için "network-first, cache fallback". */
 const CACHE = "sinir1-v1";
-const CORE = ["/", "/index.html", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png", "/reddoors-logo.png", "/menu-bg.jpg", "/desktop-bg.jpg"];
+const CORE = ["/", "/index.html", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png", "/red-doors-logo.jpg", "/menu-bg.jpg", "/desktop-bg.jpg"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

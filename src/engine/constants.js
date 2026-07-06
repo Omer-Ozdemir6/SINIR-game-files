@@ -7,7 +7,7 @@ export const IS_RELEASE = true;
 
 export const STAT_MAX = { gurultu: 100, akil: 100, eceGuven: 100, denizOfke: 100, sefFarkindalik: 100 };
 
-export const BATTERY_START = 35;   // yeni oyunda pil yüzdesi (düşük — yedek yönetimi kritik)
+export const BATTERY_START = 25;   // yeni oyunda pil yüzdesi (düşük — yedek yönetimi kritik)
 export const SPARES_START = 1;     // yeni oyunda 1 yedek pil (başlangıç güvencesi)
 export const SPARES_MAX = 5;       // taşınabilecek maksimum yedek pil
 
@@ -17,7 +17,7 @@ export const SPARES_MAX = 5;       // taşınabilecek maksimum yedek pil
 export const INITIAL_STATS = { gurultu: 0, akil: 85, eceGuven: 0, denizOfke: 0, sefFarkindalik: 0 };
 
 // Lights-Out bulmacası başlangıç dizilimi (çözüm: 2. ve 4. butonlar)
-export const LIGHTS_INIT = [false, false, true, false, false];
+export const LIGHTS_INIT = [false, true, true, true, false];
 
 export const DOC_LINES_PER_PAGE = 14;
 
