@@ -23,7 +23,7 @@ export const EP02 = {
         { type: "anons", text: "「İşte geldin. Prosedürü biliyorsun: yeni personel oryantasyondan geçer. Üç ders. Geçersen K-4 kapısı açılır. Kalırsan... aile büyür.」" },
         { type: "anons", text: "「Kurallar: kopya serbest, yalan serbest, ağlamak serbest. Sadece SIKICI olmak yasak. Başlıyoruz.」" },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "objective", text: "Deniz'in üç 'dersini' atlat — K-4 geçişini açtır" },
+        { type: "objective", text: "Deniz'in üç 'dersini' atlat" },
         { type: "note", id: "not_deniz", title: "Deniz Okur", text: "Anonstaki adam: Deniz. Sistem mühendisi — kapılar, kameralar, hoparlörler onun. Beni bir laboratuvar faresi gibi koridorlarına saldı. Sesinde nefret yok. Daha kötüsü var: EĞLENCE." },
       ],
       choices: [
@@ -518,7 +518,7 @@ export const EP02 = {
         { type: "anons", text: "「Tebrikler bakım. Mezunsun. Dört adayda bir ilk.」 Tependeki menfez takırdıyor ve içinden ayaklarının dibine bir şey düşüyor: ambalajlı bir tablet pili. 「Kıyak. Kimseye söyleme — imajım var.」" },
         { type: "battery", spares: 1 },
         { type: "anons", text: "「Son ders bedava: K-4 kapısından çıkınca uzun koridor. O koridor benim değil. O koridor kimsenin değil.」 Bir duraklama. 「...Babama selam söyle.」" },
-        { type: "objective", text: "K-4 geçiş koridorunu aş — ana bacaya ulaş" },
+        { type: "objective", text: "K-4 geçiş koridorunu aş" },
       ],
       choices: [
         { id: "cik", text: "K-4 geçiş kapısından çık", next: "n_harun1" },
@@ -621,7 +621,7 @@ export const EP02 = {
         { type: "ambient", text: "«beş... dört...» Bir kadın sesi. Uykulu, yumuşak — rüyasının içinden sayan biri. Kim olduğunu bilmiyorsun. Henüz.", if: { flag: "frekansNinni", equals: false } },
         { type: "pause", ms: 1200 },
         { type: "narrate", text: "Sonra baca susuyor ve geriye yalnız hava akımı kalıyor. Kapağı itiyorsun: üstünde, K-4'ün loş ışığı ve o sıcak, yanlış yemek kokusu. Ev kokusu. Kimin evi — birazdan öğreneceksin." },
-        { type: "system", text: "— BÖLÜM 2 SONU: SINAV —" },
+        { type: "system", text: "SINAV TAMAMLANDI" },
         { type: "system", text: "K-4: 'EV' — Şef Harun'un katı — yakında" },
       ],
     },

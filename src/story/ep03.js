@@ -161,7 +161,7 @@ export const EP03 = {
         { type: "narrate", text: "Kabine girip çelik sürgüyü çekiyorsun. Kabin büyük bir sarsıntıyla yukarı, K-3 seviyesine doğru ivmeleniyor. K-4'ün karanlık tünelleri aşağıda kalırken telsizinden bir kez daha o çocuk frekansı statik gürültüyle cızlıyor." },
         { type: "pause", ms: 700 },
         { type: "system", text: "K-4 ASANSÖR BOŞLUĞUNDAN ÇIKILDI — ÜST KATLARA İLERLENİYOR" },
-        { type: "objective", text: "BÖLÜM SONU. K-3: ARKEOLOJİ AMBARI KATINA GEÇİLİYOR." },
+        { type: "objective", text: "K-3: ARKEOLOJİ AMBARI KATINA GEÇİLİYOR." },
       ],
       choices: [
         {

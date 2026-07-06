@@ -5,10 +5,31 @@ import { t } from "../../i18n";
    burada yalnız görsel: fazlar, TEHLİKE ve CİĞER barları. */
 export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) {
   return (
-    <div style={S.breathOverlay}
-      onPointerDown={(e) => { e.stopPropagation(); onDown(); }}
-      onPointerUp={(e) => { e.stopPropagation(); onUp(); }}
-      onPointerCancel={(e) => { e.stopPropagation(); onUp(); }}>
+    <div 
+      style={{ 
+        ...S.breathOverlay, 
+        // Tıklamaları kesin olarak yakalaması için pointer olaylarını aktif ediyoruz
+        pointerEvents: "auto",
+        // Mobil cihazlarda basılı tutarken ekranın kaymasını ve metin seçilmesini engeller
+        touchAction: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none"
+      }}
+      onPointerDown={(e) => { 
+        e.preventDefault();
+        e.stopPropagation(); 
+        onDown(); 
+      }}
+      onPointerUp={(e) => { 
+        e.preventDefault();
+        e.stopPropagation(); 
+        onUp(); 
+      }}
+      onPointerCancel={(e) => { 
+        e.stopPropagation(); 
+        onUp(); 
+      }}
+    >
       <div style={S.breathTitle}>
         {breath.phase === "release" ? t("breath.release") : t("breath.hold")}
       </div>

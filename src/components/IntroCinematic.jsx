@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { styles as S } from "../styles/theme";
 import { AudioSys } from "../audio/AudioSys";
 import { t } from "../i18n";
@@ -15,16 +15,12 @@ import { t } from "../i18n";
       başlık kartı) → yavaş fade-out → "Birkaç gün sonra." → oyun.
    ============================================================ */
 
-// Ekran açıldığında ZATEN yazılmış olan kısım:
 const PREFILLED =
 "Beni tanımıyorsunuz. Hızlı yazmak zorundayım — ağı izliyor olabilirler.\n\nSINIR-1'de gece vardiya amiriyim. Karadeniz'de, hiçbir haritada olmayan bir araştırma istasyonu. Burada korkunç şeyler oluyor ve gördüklerimin yarısına kendim de inanmıyorum.\n\nMürettebat uykusunda sayı sayıyor. Hepsi. Aynı sayıları. İstasyon şefi buna 'aile düzeni' diyor. Revir kayıtları saklanıyor, denetim taleplerim";
 
-// Gözümüzün önünde yazılan SON kısım:
 const TYPED_END =
 " cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— Baturay Soylu, gece vardiya amiri";
 
-/* ---- SECURE MAIL — Outlast görseline birebir:
-   açık gri pencere, mavi başlık bandı, düz MAVİ yazı ---- */
 const ui = "Tahoma, 'Segoe UI', Arial, sans-serif";
 const W = {
   backdrop: {
@@ -35,7 +31,6 @@ const W = {
     backgroundImage: "url(/desktop-bg.jpg)",
     backgroundSize: "cover", backgroundPosition: "center",
   },
-  // pencere: ekrana SIĞAR (kaydırma yok), sabit iç oran, viewport'a göre ölçek
   win: {
     position: "relative",
     width: "min(94vw, 680px)",
@@ -45,7 +40,6 @@ const W = {
     boxShadow: "0 18px 70px rgba(0,0,0,0.85), inset 0 1px 0 #eceade",
     fontFamily: ui, overflow: "hidden",
   },
-  // pencere başlık çubuğu (koyu gri)
   titleBar: {
     display: "flex", justifyContent: "space-between", alignItems: "center",
     padding: "3px 6px", fontSize: 10, color: "#e8e6de",
@@ -61,16 +55,13 @@ const W = {
     whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
     display: "flex", alignItems: "center", gap: 5,
   },
-  // MAVİ "SECURE MAIL" bandı
   bandRow: {
     display: "flex", alignItems: "center", gap: 8, padding: "7px 12px",
     background: "linear-gradient(#3f5876, #2f4560)", color: "#eef2f6",
     fontSize: 13, letterSpacing: "0.12em", fontWeight: 700, flexShrink: 0,
   },
-  // araç çubuğu (Send / Spelling / Attach...)
   toolRow: { display: "flex", gap: 16, padding: "5px 12px", fontSize: 9.5, color: "#3a382f", borderBottom: "1px solid #b0ac9f", backgroundColor: "#e8e5da", flexShrink: 0 },
   bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#d7d4cc", flex: 1, minHeight: 0 },
-  // solda Attachments paneli
   attach: {
     width: "22%", minWidth: 78, flexShrink: 0, borderRight: "1px solid #b0ac9f",
     backgroundColor: "#dedbd0", padding: "6px 7px", fontSize: 9, color: "#55524a",
@@ -81,7 +72,6 @@ const W = {
   fieldLabel: { width: 44, flexShrink: 0, color: "#6a675c", fontSize: 9 },
   fieldVal: { flex: 1, borderBottom: "1px solid #bdbaad", paddingBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   subLinks: { display: "flex", gap: 8, padding: "1px 10px 3px 62px", fontSize: 8, color: "#4a6a9a", flexShrink: 0 },
-  // yazı sayfası — BEYAZ, DÜZ MAVİ yazı; yazıldıkça otomatik alta kayar
   page: {
     margin: "6px 10px", backgroundColor: "#ffffff",
     border: "1px solid #b0ac9f", flex: 1, minHeight: 0, overflowY: "auto",
@@ -128,7 +118,6 @@ export default function IntroCinematic({ onFinish }) {
   const phaseRef = useRef("mail");
   const setPh = (p) => { phaseRef.current = p; setPhase(p); };
 
-  // yazı yazıldıkça mail sayfasını otomatik en alta kaydır (manuel kaydırma gerekmez)
   useEffect(() => {
     if (pageRef.current) pageRef.current.scrollTop = pageRef.current.scrollHeight;
   }, [body]);
@@ -139,7 +128,6 @@ export default function IntroCinematic({ onFinish }) {
     onFinish();
   };
 
-  /* OYUNCUNUN GÖNDER'İ — sinematiğin tek etkileşimli anı */
   const playerSend = async () => {
     if (phaseRef.current !== "waitSend" || doneRef.current) return;
     setPh("sent");
@@ -151,7 +139,6 @@ export default function IntroCinematic({ onFinish }) {
       if (doneRef.current) return;
       setStatus("GÖNDERİLDİ ✓");
       AudioSys.blipSfx(880);
-      // Whistleblower başlık kartı:
       setTimeout(() => { if (!doneRef.current) { setPh("title"); AudioSys.boom(); } }, 900);
       setTimeout(() => { if (!doneRef.current) setPh("titleout"); }, 3400);
       setTimeout(() => { if (!doneRef.current) setPh("card"); }, 5400);
@@ -164,30 +151,34 @@ export default function IntroCinematic({ onFinish }) {
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const alive = () => aliveRef.current && !doneRef.current;
 
-    const typeText = async (text, base = 60) => {
+    // Harf harf ve noktalama duraksamalı gerçekçi yazım fonksiyonu
+    const typeText = async (text) => {
       let i = 0;
-      let blipCount = 0;
       while (i < text.length) {
         if (!alive()) return;
-        // yeni satırda dur; aksi halde 2-5 karakterlik öbek ekle
-        if (text[i] === "\n") {
-          setBody((b) => b + "\n");
-          i += 1;
-          await sleep(220);
-          continue;
+        
+        const currentChar = text[i];
+        setBody((b) => b + currentChar);
+        
+        // Klavye ses taklidi
+        if (i % 2 === 0) AudioSys.blipSfx(180);
+        
+        i += 1;
+
+        // Gerçekçi klavye duraksama dinamikleri
+        if (currentChar === "\n") {
+          await sleep(400); // Alt satıra geçerken düşünme süresi
+        } else if (currentChar === "." || currentChar === ":" || currentChar === "—") {
+          await sleep(550); // Cümle sonlarında derin duraksama
+        } else if (currentChar === ",") {
+          await sleep(250); // Virgüllerde kısa nefes alma
+        } else {
+          // Normal harfler arası stabil ve sinematik tempo (70ms - 110ms arası)
+          await sleep(70 + Math.random() * 40);
         }
-        // öbek boyu: 2-5 karakter, ama satır sonunu aşma
-        let chunk = 2 + Math.floor(Math.random() * 4);   // 2..5
-        let end = i + chunk;
-        const nl = text.indexOf("\n", i);
-        if (nl !== -1 && nl < end) end = nl;              // satır sonuna kadar
-        const piece = text.slice(i, end);
-        setBody((b) => b + piece);
-        i = end;
-        if (blipCount++ % 2 === 0) AudioSys.blipSfx(190);
-        await sleep(base + Math.random() * 55);
       }
     };
+
     const moveTo = async (ref, ms = 900) => {
       if (!alive() || !ref.current || !rootRef.current) return;
       const r = ref.current.getBoundingClientRect();
@@ -199,6 +190,7 @@ export default function IntroCinematic({ onFinish }) {
       });
       await sleep(ms + 120);
     };
+
     const click = async (name) => {
       if (!alive()) return;
       setPressed(name);
@@ -209,29 +201,33 @@ export default function IntroCinematic({ onFinish }) {
     };
 
     (async () => {
-      await sleep(1600);
-      // 1) yazının SONU gözümüzün önünde yazılır
-      await typeText(TYPED_END, 55);
+      await sleep(1800);
+      // 1) Metnin kalanı gözümüzün önünde yavaşça yazılır
+      await typeText(TYPED_END);
       if (!alive()) return;
-      await sleep(2000); // ekran biraz bekler — yazdığına bakıyor
-      // 2) imleç belirir, SİL'e gider
-      await moveTo(silRef, 1000);
+      await sleep(2500); // Yazılan metne bakarak duraksama süresi
+      
+      // 2) İmleç uyanır ve SİL (Vazgeç) butonuna gider
+      await moveTo(silRef, 1100);
       await click("sil");
       if (!alive()) return;
       AudioSys.buzzSfx();
       setDialog(true);
-      await sleep(900);
-      // 3) tereddüt: EVET'in üstünde uzun bekleyiş...
-      await moveTo(evetRef, 800);
-      await sleep(1900);
-      // ...ve HAYIR
-      await moveTo(hayirRef, 700);
+      await sleep(1200);
+      
+      // 3) Tereddüt anı: İmleç EVET'in üzerine gider, bekler ama basamaz...
+      await moveTo(evetRef, 900);
+      await sleep(2200);
+      
+      // Vazgeçip HAYIR'a kayar
+      await moveTo(hayirRef, 800);
       await click("hayir");
       if (!alive()) return;
       setDialog(false);
       setCursor((c) => ({ ...c, visible: false }));
-      await sleep(700);
-      // 4) söz oyuncuda: GÖNDER'e o basacak
+      await sleep(900);
+      
+      // 4) Kontrol oyuncuya devredilir: GÖNDER talimatı çıkar
       if (!alive()) return;
       setStatus(t("intro.pressSend"));
       setPh("waitSend");

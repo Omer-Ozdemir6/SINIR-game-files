@@ -146,7 +146,7 @@ export const EP04 = {
         { type: "flag", set: { k7Görüldü: true } },
         { type: "pause", ms: 800 },
         { type: "system", text: "K-3 ARKEOLOJİ AMBARINDAN ÇIKILDI — FINAL KATINA DOĞRU YÜKSELEN ASANSÖR" },
-        { type: "objective", text: "BÖLÜM SONU. K-2: KOMUTA MERKEZİ VE FİNAL KATINA GEÇİLİYOR." },
+        { type: "objective", text: "K-2: KOMUTA MERKEZİ VE FİNAL KATINA GEÇİLİYOR." },
       ],
       choices: [
         {

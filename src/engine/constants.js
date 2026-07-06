@@ -37,8 +37,8 @@ export const DARK_MS = 75000;
    bir kaynak baskısına dönüştürür.
    BATTERY_DRAIN_MS: kaç ms'de bir %1 azalır (normal durum).
    Düşük = hızlı tükenir. */
-export const BATTERY_DRAIN_MS = 6000;      // her 6 sn'de %1 (normal) → ~%42 pil ≈ 4 dk
-export const BATTERY_DRAIN_TENSE = 3500;   // gerilim/keşif anında daha hızlı
+export const BATTERY_DRAIN_MS = 1000;      // her 6 sn'de %1 (normal) → ~%42 pil ≈ 4 dk
+export const BATTERY_DRAIN_TENSE = 500;   // gerilim/keşif anında daha hızlı
 
 /* ---- MERKEZÎ EŞİK SİSTEMİ (her bölümde otomatik çalışır) ----
    Gürültü ve akıl sürekli izlenir; eşik aşılınca sistem tetiklenir.

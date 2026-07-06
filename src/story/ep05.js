@@ -82,7 +82,7 @@ export const EP05 = {
         { type: "narrate", text: "Deniz'in bedeni kablolardan ayrılıp yere yığılırken, zihnindeki ses son bir kez fısıldıyor: 'Gidiyorsun demek... En dibe. O kütlenin kalbine. Oraya inen hiç kimse yukarıya bir daha insan olarak çıkamadı teknisyen...'" },
         { type: "pause", ms: 900 },
         { type: "system", text: "K-2 KOMUTA MERKEZİNDEN ÇIKILDI — ASANSÖR EN DİBE, K-1 KATINA İNİYOR" },
-        { type: "objective", text: "BÖLÜM SONU. BÖLÜM 6: K-1 DERİNLİK KAZI ALANI (FİNAL) KATINA GEÇİLİYOR." },
+        { type: "objective", text: "K-1 DERİNLİK KAZI ALANI (FİNAL) KATINA GEÇİLİYOR." },
       ],
       choices: [
         {

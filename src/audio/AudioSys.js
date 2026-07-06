@@ -104,6 +104,7 @@ export const AudioSys = {
     this.heartId = setInterval(() => {
       if (!this.enabled) return;
       try {
+        // Outlast tarzı göğüste gümleyen derin kalp ritmi (C1 -> G0 aşırı düşük frekans bas)
         if (!this.playSample("heartbeat", 0.9)) this.n.memb.triggerAttackRelease("C1", "16n");
         setTimeout(() => { try { this.n.memb.triggerAttackRelease("G0", "16n"); } catch (e) {} }, 140);
       } catch (e) {}
@@ -121,16 +122,18 @@ export const AudioSys = {
       setTimeout(() => { try { this.n.burstG.gain.rampTo(0, 0.08); } catch (e) {} }, ms);
     } catch (e) {}
   },
-  blipSfx(freq = 740) {
+  blipSfx(freq = 90) { 
     if (this.playSample("blip")) return;
     if (!this.inited || !this.enabled) return;
-    try { this.n.blip.triggerAttackRelease(freq, "32n"); } catch (e) {}
+    try { this.n.blip.triggerAttackRelease(freq, "16n"); } catch (e) {}
   },
   uiClick() {
-    // arayüz buton tıklaması — kısa, tok blip
     if (this.playSample("click")) return;
     if (!this.inited || !this.enabled) return;
-    try { this.n.blip.triggerAttackRelease(430, "64n"); } catch (e) {}
+    try { 
+      // Tiz klik yerine kameranın plastik mekanik deklanşör butonu gibi kalın ve çok kısa bir tık
+      this.n.blip.triggerAttackRelease(110, "64n"); 
+    } catch (e) {}
   },
   buzzSfx() {
     if (this.playSample("buzz")) return;
@@ -144,7 +147,6 @@ export const AudioSys = {
   },
   scratch() {
     if (this.playSample("scratch")) return;
-    // kalemle not yazma — kısa kısık cızırtılar
     if (!this.inited || !this.enabled) return;
     try {
       let i = 0;
@@ -159,7 +161,6 @@ export const AudioSys = {
   },
   page() {
     if (this.playSample("page")) return;
-    // sayfa/kâğıt hışırtısı — tek yumuşak süpürme
     if (!this.inited || !this.enabled) return;
     try {
       this.n.burstG.gain.rampTo(0.028, 0.07);
@@ -168,16 +169,15 @@ export const AudioSys = {
   },
   pickup() {
     if (this.playSample("pickup")) return;
-    // pil/eşya alma — iki yükselen blip
     if (!this.inited || !this.enabled) return;
     try {
-      this.n.blip.triggerAttackRelease(520, "32n");
-      setTimeout(() => { try { this.n.blip.triggerAttackRelease(840, "32n"); } catch (e) {} }, 110);
+      // Yükselen eğlenceli bip sesleri yerine pilin kameranın yuvasına mekanik olarak oturma sesi (Ağır tık)
+      this.n.blip.triggerAttackRelease(220, "32n");
+      setTimeout(() => { try { this.n.blip.triggerAttackRelease(110, "32n"); } catch (e) {} }, 110);
     } catch (e) {}
   },
   valveSfx() {
     if (this.playSample("valve")) return;
-    // vana çevirme — gıcırtılı metal dönüş
     if (!this.inited || !this.enabled) return;
     try {
       this.n.memb.triggerAttackRelease("G1", "16n");
@@ -187,26 +187,28 @@ export const AudioSys = {
   },
   fuseSfx() {
     if (this.playSample("fuse")) return;
-    // sigorta oturması — tak + çıt
     if (!this.inited || !this.enabled) return;
     try {
       this.n.memb.triggerAttackRelease("C2", "32n");
-      setTimeout(() => { try { this.n.blip.triggerAttackRelease(920, "32n"); } catch (e) {} }, 70);
+      // Sigorta otururken gelen kıvılcım/çıt sesini 920Hz'den 240Hz'e çekerek analog hale getirdik
+      setTimeout(() => { try { this.n.blip.triggerAttackRelease(240, "32n"); } catch (e) {} }, 70);
     } catch (e) {}
   },
   tick() {
     if (this.playSample("tick")) return;
-    // klavye tuşu — çok kısa, kısık tık
     if (!this.inited || !this.enabled) return;
-    try { this.n.blip.triggerAttackRelease(1320, "64n"); } catch (e) {}
+    try { 
+      // Klavye tuş basımını aşırı ince (1320Hz) dijital ton yerine, eski bir terminal klavyesi kıvamına (180Hz) getirdik
+      this.n.blip.triggerAttackRelease(180, "64n"); 
+    } catch (e) {}
   },
   objectiveSfx() {
     if (this.playSample("objective")) return;
-    // yeni görev — iki yumuşak nota
     if (!this.inited || !this.enabled) return;
     try {
-      this.n.blip.triggerAttackRelease(660, "16n");
-      setTimeout(() => { try { this.n.blip.triggerAttackRelease(880, "16n"); } catch (e) {} }, 140);
+      // Yeni görev geldiğinde çalan o parlak melodiyi, insanı huzursuz eden bas ağırlıklı bir telsiz/uyarı sinyaline çevirdik
+      this.n.blip.triggerAttackRelease(160, "8n");
+      setTimeout(() => { try { this.n.blip.triggerAttackRelease(120, "4n"); } catch (e) {} }, 140);
     } catch (e) {}
   },
   boom() {

@@ -130,7 +130,7 @@ export const EP01 = {
       noiseGate: [{ min: 50, once: "pusu1", node: "n_enc1" }],
       events: [
         { type: "narrate", text: "Platform merdiveni bileğe kadar suya iniyor. Kara, yağlı, soğuk su. Üç pompa hattı da ölü; ana kontrol paneli köşede, kırmızı acil lambasının altında kilitli bekliyor.", if: { flag: "platIlk", equals: false } },
-        { type: "objective", text: "Üç pompayı elle aç, ana panelden hattı başlat", if: { flag: "platIlk", equals: false } },
+        { type: "objective", text: "Üç pompayı elle aç", if: { flag: "platIlk", equals: false } },
         { type: "flag", set: { platIlk: true } },
         { type: "status", items: [
           { label: "POMPA A", flag: "pompaA" },
@@ -326,7 +326,7 @@ export const EP01 = {
         { type: "anons", text: "「...Hoş geldin, geç kalan personel. Ben Deniz. Oryantasyonun başlamıştır.」" },
         { type: "stat", stat: "akil", delta: -5 },
         { type: "note", id: "not_anons", title: "Anonstaki ses", text: "Hoparlörden bir adam konuştu. Genç. Neşeli. 'Aile bilgilendirildi' dedi. Deniz — mühendislerden. Sesi... normaldi. En korkuncu bu: sesi tamamen normaldi." },
-        { type: "objective", text: "6-B koridorundan radyo odasına ulaş, yardım çağır" },
+        { type: "objective", text: "6-B koridorundan radyo odasına ulaş" },
       ],
       choices: [
         { id: "ilerle", text: "6-B koridoruna ilerle", next: "n_koridor2" },
@@ -438,7 +438,7 @@ export const EP01 = {
       events: [
         { type: "system", text: "TELSİZ GÜÇ DEVRESİ: AKTİF — BANT TARAMASI HAZIR" },
         { type: "narrate", text: "Konsol ısınırken hoparlörden yükselen statik, odayı dolduruyor. 410 ile 450 arasında bir yerde — birileri olmalı. Yüzey. Sahil güvenlik. Herhangi biri." },
-        { type: "objective", text: "Acil durum bandını tara — 432.0 MHz civarını dene" },
+        { type: "objective", text: "Acil durum bandını tara" },
       ],
       interaction: { kind: "radio", target: 432.0, success: "n_ece", cancel: "n_radyo" },
     },
@@ -490,7 +490,7 @@ export const EP01 = {
         { type: "stat", stat: "akil", delta: -5 },
         { type: "narrate", text: "Telsiz konsolu paramparça. Hoparlör, bir göğüs kafesi gibi sökülüp açılmış. O şey konuşamadığın şeyi ANLAMIŞ ve sesini kopardığın yeri cezalandırmış. Ece'ye buradan bir daha ulaşamazsın." },
         { type: "alert", text: "RADYO: KALICI HASAR — K-6'DAN YAYIN ARTIK MÜMKÜN DEĞİL" },
-        { type: "objective", text: "K-5 hava kilidine ulaş — bu kattan çık" },
+        { type: "objective", text: "K-5 hava kilidine ulaş" },
         { type: "ambient", text: "Koridordan, hâlâ yakından, o metalik inleme geliyor. Gitmedi. BEKLİYOR." },
       ],
       choices: [
@@ -626,7 +626,7 @@ export const EP01 = {
         { type: "glitch", ms: 400 },
         { type: "ambient", text: "Ve cebinde, kapalı duran tablet, kendi kendine cızırdıyor. Bir çocuk sesi. Sayıyor: «altı... beş...» Sonra susuyor. K-5'in karanlığı, merdivenin dibinde seni bekliyor." },
         { type: "ambient", text: "Cızırtının altında, çok daha derinde, ikinci bir katman duyuyorsun: ıslak nefes ve bir ninninin kırıntısı. Sen dinlediğini sanıyordun. Oysa bütün gece, DİNLENEN sendin.", if: { flag: "frekanslariDuydun", equals: true } },
-        { type: "system", text: "— BÖLÜM 1 SONU: GECE VARDİYASI —" },
+        
       ],
       choices: [
         { id: "k5", text: "Merdiveni tırman — K-5: Yaşam Destek", next: "n_k5_giris" },
