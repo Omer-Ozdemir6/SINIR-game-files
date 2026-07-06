@@ -46,7 +46,7 @@ export function ArchiveList({ kind, items, onOpen, onBack }) {
 /* El yazısı not kağıdı */
 export function NotePaper({ item, onBack }) {
   return (
-    <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+    <div style={{ ...S.overlayDim, ...S.noteOverlay }} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.notePaper} className="s1-paper">
         <div style={S.noteTitleRow}>
           <span style={S.notePaperTitle}>{item.title}</span>

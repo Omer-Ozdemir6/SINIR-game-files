@@ -38,6 +38,7 @@ export const EP03 = {
         { type: "music", track: "k4" },
         { type: "system", text: "KAT: K-4 — PERSONEL YAŞAM ALANI · YEMEKHANE · KAMARALAR" },
         { type: "narrate", text: "Baca kapağından bir eve tırmanıyorsun. Ama burası bir yuva değil, akıl hastanesinin ortasına kurulmuş bir mezbaha. Çelik duvarların üzerine hışırdayan çiçekli duvar kâğıtları yapıştırılmış, zemine kalın halılar serilmiş. Elindeki tek şey, ekranının çiğ ve pikselli ışığı yüzünü aydınlatan soluk bir tablet. Tabletin ışığı zifiri karanlığı yırtmaya yetmiyor; duvar kağıtlarının arkasından gelen pas ve lağım kokusunu, nemden kabarmış çürümeyi çıplak kılacak kadar zayıf." },
+        { type: "narrate", text: "Bu ev taklit edilmemiş, ezberlenmiş. Birileri aile olmanın şeklini fotoğraflardan, yemek saatlerinden, çocuk odası ölçülerinden öğrenmiş ve hepsini çeliğin içine yanlış sırayla çakmış. Burada sevgi yok; sevginin prosedürü var. Otur, ye, gülümse, itaat et. Etmezsen sofranın bir parçası ol." },
         { type: "narrate", text: "İleride, koridorun mutlak karanlığında uzun bir yemek masası uzanıyor. On iki sandalye. Ve masanın başında, sırtı sana dönük, kımıldamadan oturan o devasa, kambur gövde. Elindeki çatalı paslı ve boş bir tabağa vuruyor: tık. Tık. Tık. Karanlıkta yankılanan bu metalik ses, bir sonraki kurbanın sen olacağını fısıldıyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Tabletin hoparlöründen Ece'nin titreyen fısıltısı statik gürültüyle bölünüyor: «Oraya çıktın demek... K-4. O canavarın katı. Sakın ışığını doğrudan ona tutma... Beni duyuyorsan iki kez öksür — hattı K-4 interkomlarına bağladım.»", if: { flag: "eceEleVerildi", equals: false } },
@@ -108,7 +109,7 @@ export const EP03 = {
         { type: "narrate", text: "Korkudan titreyen parmaklarınla tabağın kapağını kaldırıyorsun. İçinde... insani uzuvları andıran, dumanı tüten, baharatlanmış et parçaları var. Kokusu dehşet verici derecede iyi kokuyor ve bu seni kusmanın eşiğine getiriyor, çünkü açsın! Tabağın hemen kenarında, kanlı yağların arasında parıldayan küçük bir personel künyesi var: 'AYKUT D., teknisyen'." },
         { type: "note", id: "not_kunye", title: "Tabaktaki künye", text: "Tabağın yanında bir personel künyesi vardı — 'AYKUT D., teknisyen'. Etin yanında. Bunu düşünmeyeceğim. Düşünemem." },
         { type: "waitTap" },
-        { type: "narrate", text: "\"Ye,\" diyor, sesi bu sefer derin bir hırıltıya dönüşüyor. \"Reddetmek... anneni üzer. Ve inan bana, o üzülürse bu masayı senin kanınla boyarım.\" Çatalı kaldırıyorsun. Akıl sağlığının pamuk ipliğine bağlı olduğu an." },
+        { type: "narrate", text: "\"Ye,\" diyor, sesi bu sefer derin bir hırıltıya dönüşüyor. \"Reddetmek... anneni üzer. Ve inan bana, o üzülürse bu masayı senin kanınla boyarım.\" Çatalı kaldırıyorsun. Miden, hatıraların ve insan kalmaya çalışan son parçan aynı anda kasılıyor." },
       ],
       choices: [
         { id: "ye", text: "Bir lokma al — hayatta kalmak için", next: "n_sofra_ye" },
@@ -189,6 +190,9 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Holün duvarında, renkli camlardan yapılmış bir panel duruyor. Eski bir aile portresi bu. Ama camlar kırılmış, sanki üzerlerine kan sıçramış gibi yanlış, hastalıklı renklerle yamanmış. Yüzler birbirine karışmış birer kâbus tablosu gibi. Panelin hemen altında Deniz'in çocuksu ama titrek el yazısı kazınmış: 'Annem doğru renkleri bilir. Ben unuttum. Babam canavarlaştı.' Renkleri doğru desene getirirsen arkadaki gizli oyuk açılacak." },
+        { type: "document", open: false, doc: {
+          id: "d_aile_uyum", title: "Aile Uyum Gözlem Formu",
+          body: "DENEK GRUBU: K-4 yerleşik aile birimi\nGÖZLEMCİ: D. Okur\n\nGözlenen ritüeller:\n- Sofra çağrısı duyulduğunda tüm bireyler oturur.\n- Yemek reddi, baba figüründe aşırı koruyucu şiddet doğurur.\n- Çocuk odası sesi, baba figüründe yönelim kaybı yaratır.\n- Anneye ait renk/desen uyaranları, kilitli bölmelerde olumlu tepki üretir.\n\nDEĞERLENDİRME: Aile davranışı gerçek sevgiye değil, tekrar edilen ceza ve ödül döngüsüne bağlıdır. Dışarıdan gelen kişi 'evlat' rolünü yeterince taklit ederse kısa süreli hayatta kalabilir." } },
         { type: "note", id: "not_vitray", title: "Aile vitrayı", text: "Holdeki renkli cam aile portresi yanlış renklerle yamanmış. Doğru desene getirmem gerek — hücrelere dokununca renk değişiyor. Deniz'in notu: doğru renkler annesinin hatırası. Arkasında bir oyuk var." },
       ],
       interaction: {
@@ -367,7 +371,7 @@ export const EP03 = {
     n_depo_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Soğuk deponun ağır, çelik kapısının önündesin. Kenarlardan sızan buzlu hava tabletinin ekranını buğulandırıyor. Şef buraya kesinlikle 'girme' demişti. Outlast labirentlerindeki o tekinsiz ölüm odalarından biri tam önünde duruyor." },
+        { type: "narrate", text: "Soğuk deponun ağır, çelik kapısının önündesin. Kenarlardan sızan buzlu hava tabletinin ekranını buğulandırıyor. Şef buraya kesinlikle 'girme' demişti. SINIR-1'in kayıt dışı, kapısı içeriden çizilmiş ölüm odalarından biri tam önünde duruyor." },
         { type: "alert", text: "SENSÖR ALARMI — ŞEF ŞU AN İÇERİDE! İçeriden gelen et parçalama seslerini tabletinin mikrofonu bile algılıyor. Giremezsin!", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [

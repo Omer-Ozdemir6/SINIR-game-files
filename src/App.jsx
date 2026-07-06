@@ -8,7 +8,7 @@ import {
   STAT_MAX, BATTERY_START, SPARES_START, SPARES_MAX, INITIAL_STATS,
   LIGHTS_INIT, SPEED_OPTIONS, DARK_MS, IS_RELEASE,
   BATTERY_DRAIN_MS, BATTERY_DRAIN_TENSE,
-  NOISE_THRESHOLDS, SANITY_THRESHOLDS,
+  NOISE_THRESHOLDS,
 } from "./engine/constants";
 import { batteryColorOf, paginateDoc } from "./engine/textFx";
 import { saveGame, loadGame, clearGame } from "./save/storage";
@@ -101,6 +101,7 @@ export default function App() {
   const [lightsDone, setLightsDone] = useState(false);
   // valve / lever / fuse
   const [valveDeg, setValveDeg] = useState(0);
+  const [valveBusy, setValveBusy] = useState(false);
   const [leverProg, setLeverProg] = useState(0);
   const [fuseMarker, setFuseMarker] = useState(0);
   const [fuseHits, setFuseHits] = useState(0);
@@ -127,6 +128,7 @@ export default function App() {
   const timerRef = useRef(null);
   const flashRef = useRef(null);
   const toastRef = useRef(null);
+  const batteryWarnRef = useRef(null);
   const timeoutsRef = useRef([]);
   const scrollRef = useRef(null);
   const clockRef = useRef(227);
@@ -134,6 +136,7 @@ export default function App() {
   const glitchFxRef = useRef(true);
   const darkIntRef = useRef(null);
   const darkRef = useRef(false);
+  const valveBusyRef = useRef(false);
   const leverIntRef = useRef(null);
   const leverHoldingRef = useRef(false);
   const fuseIntRef = useRef(null);
@@ -240,6 +243,7 @@ export default function App() {
   };
   const statOk = (cond) => {
     if (!cond) return true;
+    if (cond.stat === "akil") return true;
     const v = statsRef.current[cond.stat] || 0;
     if (cond.gte !== undefined && v < cond.gte) return false;
     if (cond.lte !== undefined && v > cond.lte) return false;
@@ -334,6 +338,7 @@ export default function App() {
       }
       case "objective": { AudioSys.objectiveSfx(); showObjective(ev.text); return wait(1800, runId); }
       case "stat": {
+        if (ev.stat === "akil") return;
         const next = { ...statsRef.current };
         next[ev.stat] = Math.max(0, Math.min(STAT_MAX[ev.stat] || 100, (next[ev.stat] || 0) + ev.delta));
         statsRef.current = next;
@@ -416,15 +421,14 @@ export default function App() {
   };
 
   /* ---- MERKEZÎ EŞİK İZLEYİCİSİ (watchdog) ----
-     Her stat değişiminden sonra çağrılır. Gürültü ve akıl eşiklerini
-     kontrol eder; eşik ilk kez aşıldığında uyarı verir veya öldürür.
+     Her stat değişiminden sonra çağrılır. Gürültü eşiklerini kontrol
+     eder; eşik ilk kez aşıldığında uyarı verir veya öldürür.
      Her bölümde otomatik çalışır — ayrıca noiseGate koymaya gerek yok.
      Dönüş: true = ölüm tetiklendi (akış durmalı). */
   const checkThresholds = (runId) => {
     if (death || dying) return false;
     const s = statsRef.current;
     const noise = s.gurultu || 0;
-    const sanity = s.akil != null ? s.akil : 100;
     const fired = firedThresholdsRef.current;
 
     // GÜRÜLTÜ: yükseldikçe tehlike (at değerini AŞUNCA)
@@ -439,20 +443,6 @@ export default function App() {
         Haptics.low();
         AudioSys.blipSfx(220);
         showToast("⚠", t("eng." + th.key), "#c2884a");
-      }
-    }
-    // AKIL: düştükçe tehlike (at değerinin ALTINA inince)
-    for (const th of SANITY_THRESHOLDS) {
-      if (sanity <= th.at && !fired.has(th.key)) {
-        fired.add(th.key);
-        if (th.kind === "death") {
-          Haptics.death();
-          die({ text: t("eng." + th.key) });
-          return true;
-        }
-        Haptics.glitch();
-        AudioSys.blipSfx(180);
-        showToast("⚠", t("eng." + th.key), "#a06ac2");
       }
     }
     return false;
@@ -524,7 +514,7 @@ export default function App() {
       if (k === "panel") { setPanelMsg(null); }
       if (k === "radio") { setRadioFreq(425.0); setRadioPhase("tune"); }
       if (k === "lights") { setLights([...LIGHTS_INIT]); setLightsDone(false); }
-      if (k === "valve") { setValveDeg(0); setMechDone(false); }
+      if (k === "valve") { setValveDeg(0); setMechDone(false); setValveBusy(false); valveBusyRef.current = false; }
       if (k === "lever") { setLeverProg(0); setMechDone(false); leverHoldingRef.current = false; }
       if (k === "fuse") { setFuseHits(0); setFuseMsg(null); setMechDone(false); }
       if (k === "breath") { breathHoldingRef.current = false; setBreath({ t: 0, lung: 0, holding: false, phase: "wait" }); }
@@ -611,10 +601,6 @@ export default function App() {
       setStats({ ...statsRef.current });
       checkThresholds(runIdRef.current);
     }
-    if (p?.akil) {
-      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) + p.akil) };
-      setStats({ ...statsRef.current });
-    }
     if (p?.text) showToast("⚠", p.text, "#c23b2e");
   };
   const puzzleWin = () => {
@@ -695,13 +681,9 @@ export default function App() {
     // gizli yayınlar — dinlemek iz bırakır
     if (Math.abs(f - 437.4) <= 0.05 && !flagsRef.current.frekansCocuk) {
       setFlagsBoth({ frekansCocuk: true, frekanslariDuydun: !!flagsRef.current.frekansNefes });
-      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) - 5) };
-      setStats({ ...statsRef.current });
     }
     if (Math.abs(f - 421.8) <= 0.05 && !flagsRef.current.frekansNefes) {
       setFlagsBoth({ frekansNefes: true, frekanslariDuydun: !!flagsRef.current.frekansCocuk });
-      statsRef.current = { ...statsRef.current, akil: Math.max(0, (statsRef.current.akil || 100) - 5) };
-      setStats({ ...statsRef.current });
     }
     if (Math.abs(f - interaction.target) <= 0.05) {
       setRadioPhase("lock");
@@ -751,16 +733,24 @@ export default function App() {
   /* ---------------- VANA ---------------- */
 
   const valveTurn = () => {
-    if (mechDone || !interaction) return;
+    if (mechDone || !interaction || valveBusyRef.current) return;
+    valveBusyRef.current = true;
+    setValveBusy(true);
     AudioSys.valveSfx();
     const step = 360 / interaction.turns;
     const next = valveDeg + step;
     setValveDeg(next);
+    const delay = interaction.turnDelayMs ?? 420;
     if (next >= 360) {
       setMechDone(true);
       const target = interaction.success;
-      later(() => { setInteraction(null); playNode(target); }, 800);
+      later(() => { valveBusyRef.current = false; setValveBusy(false); setInteraction(null); playNode(target); }, Math.max(800, delay));
+      return;
     }
+    later(() => {
+      valveBusyRef.current = false;
+      setValveBusy(false);
+    }, delay);
   };
 
   /* ---------------- ŞALTER (basılı tut) ---------------- */
@@ -807,7 +797,9 @@ export default function App() {
 
   const fuseTap = () => {
     if (mechDone || !interaction) return;
-    const inZone = fuseMarker >= 40 && fuseMarker <= 60;
+    const min = interaction.zoneMin ?? 44;
+    const max = interaction.zoneMax ?? 56;
+    const inZone = fuseMarker >= min && fuseMarker <= max;
     if (inZone) {
       AudioSys.fuseSfx();
       const next = fuseHits + 1;
@@ -837,9 +829,13 @@ export default function App() {
     }
     const holdMs = interaction.holdMs || 7000;
     const lungMs = interaction.lungMs || 9500;
+    const releaseWindows = interaction.releaseWindows || [
+      [Math.round(holdMs * 0.34), Math.round(holdMs * 0.46)],
+      [Math.round(holdMs * 0.67), Math.round(holdMs * 0.78)],
+    ];
     const failTo = interaction.fail;
     AudioSys.heart(520);
-    let t = 0, lung = 0, resolved = false;
+    let t = 0, lung = 0, resolved = false, hasHeld = false;
     const finish = (target) => {
       if (resolved) return;
       resolved = true;
@@ -855,10 +851,14 @@ export default function App() {
       t += 60;
       const holding = breathHoldingRef.current;
       // ADRENALİN DALGALARI: iki pencerede ciğer 2 kat hızlı dolar
+      const releaseWindow = releaseWindows.find(([a, b]) => t >= a && t <= b);
+      const safeRelease = Boolean(releaseWindow);
       const spike = (t > 2600 && t < 3900) || (t > 5100 && t < 6300);
-      if (holding) lung += spike ? 120 : 60;
-      const phase = t >= holdMs ? "release" : holding ? "hold" : "wait";
-      setBreath({ t, lung, holding, phase, spike });
+      if (holding) hasHeld = true;
+      if (holding) lung += safeRelease ? 90 : spike ? 120 : 60;
+      else if (safeRelease && lung > 0) lung = Math.max(0, lung - 150);
+      const phase = t >= holdMs ? "release" : safeRelease ? "vent" : holding ? "hold" : "wait";
+      setBreath({ t, lung, holding, phase, spike, safeRelease, releaseWindows });
       // ciğer doldukça kalp hızlanır
       const stage = lung / lungMs > 0.62 ? 2 : lung / lungMs > 0.3 ? 1 : 0;
       if (stage !== heartStage) {
@@ -866,7 +866,9 @@ export default function App() {
         AudioSys.heart(stage === 2 ? 360 : stage === 1 ? 440 : 520);
       }
       // hiç basmadan 2 sn geçti → nefesin duyuldu
-      if (!holding && t < holdMs && t > 2000 && lung === 0) return finish(failTo);
+      if (!holding && t >= holdMs && lung > 0) return finish(interaction.success);
+      if (!holding && t < holdMs && t > 2000 && !hasHeld) return finish(failTo);
+      if (!holding && !safeRelease && t < holdMs && hasHeld) return finish(failTo);
       // ciğer patladı
       if (lung >= lungMs) return finish(failTo);
     }, 60);
@@ -883,12 +885,13 @@ export default function App() {
     if (!breath || !interaction || interaction.kind !== "breath") return;
     const holdMs = interaction.holdMs || 7000;
     if (breath.lung === 0) return; // hiç basılmamıştı
-    const target = breath.t >= holdMs ? interaction.success : interaction.fail;
-    if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
-    AudioSys.heart(null);
-    setInteraction(null);
-    setBreath(null);
-    playNode(target);
+    if (breath.t >= holdMs) {
+      if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
+      AudioSys.heart(null);
+      setInteraction(null);
+      setBreath(null);
+      playNode(interaction.success);
+    }
   };
 
   /* ---------------- akış kontrol: yeni oyun / devam / respawn ---------------- */
@@ -1016,19 +1019,36 @@ export default function App() {
     const active = mode === "game" && !death && !dying && !pendingBattery
       && !interaction && !screen && !ended;
     if (!active) return;
-    // gerilim durumu: karanlık modu veya düşük akıl → daha hızlı erir
-    const tense = dark || (stats.akil != null && stats.akil <= 30) || (stats.gurultu || 0) >= 60;
+    // gerilim durumu: karanlık modu veya yüksek gürültü → daha hızlı erir
+    const tense = dark || (stats.gurultu || 0) >= 60;
     const rate = tense ? BATTERY_DRAIN_TENSE : BATTERY_DRAIN_MS;
     const iv = setInterval(() => {
       if (batteryRef.current <= 0) return;
       const nb = Math.max(0, batteryRef.current - 1);
       setBatteryBoth(nb);
       if (nb === 0) startDarkness();          // pil bitti → karanlık
-      else if (nb <= 20) Haptics.low();        // kritik uyarı titreşimi
+      else if (nb <= 30) Haptics.low();        // kritik uyarı titreşimi
     }, rate);
     return () => clearInterval(iv);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, death, dying, pendingBattery, interaction, screen, ended, dark, stats.akil, stats.gurultu]);
+  }, [mode, death, dying, pendingBattery, interaction, screen, ended, dark, stats.gurultu]);
+
+  useEffect(() => {
+    if (batteryWarnRef.current) {
+      clearInterval(batteryWarnRef.current);
+      batteryWarnRef.current = null;
+    }
+    const active = mode === "game" && battery > 0 && battery <= 30 && !death && !dying && !screen;
+    if (!active) return;
+    AudioSys.tick();
+    batteryWarnRef.current = setInterval(() => AudioSys.tick(), 1200);
+    return () => {
+      if (batteryWarnRef.current) {
+        clearInterval(batteryWarnRef.current);
+        batteryWarnRef.current = null;
+      }
+    };
+  }, [battery, mode, death, dying, screen]);
 
   /* ---------------- ses durumları ---------------- */
 
@@ -1105,6 +1125,7 @@ export default function App() {
 
   useEffect(() => () => {
     clearPending(); clearTimer(); clearIntervals();
+    if (batteryWarnRef.current) clearInterval(batteryWarnRef.current);
     AudioSys.heart(null); AudioSys.ambient(false); AudioSys.staticLevel(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1112,8 +1133,6 @@ export default function App() {
   /* ---------------- türetilen değerler ---------------- */
 
   const node = currentNodeId ? STORY.nodes[currentNodeId] : null;
-  const gurultuPct = Math.round(((stats.gurultu || 0) / (STAT_MAX.gurultu || 100)) * 100);
-  const akil = stats.akil !== undefined ? stats.akil : 100;
   const bColor = batteryColorOf(battery);
 
   const visibleChoices = (node?.choices || []).filter((c) => flagOk(c.if) && statOk(c.ifStat));
@@ -1121,7 +1140,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = (battery > 0 && battery <= 12 && screen !== "blackout") || (akil > 0 && akil <= 20);
+  const flickering = battery > 0 && battery <= 12 && screen !== "blackout";
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
   // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ
@@ -1212,13 +1231,13 @@ export default function App() {
         }}
         className={glitching ? "s1-glitch" : flickering ? "s1-flicker" : ""}>
         <GameHeader
-          gurultuPct={gurultuPct} akil={akil} battery={battery} bColor={bColor} spares={spares} sparesMax={SPARES_MAX}
+          battery={battery} bColor={bColor} spares={spares} sparesMax={SPARES_MAX}
           onGear={() => setScreen("pause")}
           onBattery={swapBattery}
           onArchive={() => { setScreen("menu"); setOpenItem(null); }}
         />
         <StoryStream
-          scrollRef={scrollRef} lines={lines} typing={typing} akil={akil}
+          scrollRef={scrollRef} lines={lines} typing={typing}
           wordsObscured={wordsObscured} choicesObscured={choicesObscured}
           timeLeft={timeLeft} choicesVisible={choicesVisible} choices={visibleChoices}
           flags={flags} onChoice={handleChoice}
@@ -1319,7 +1338,8 @@ export default function App() {
           onPress={lightsPress} onReset={lightsReset} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "valve" && (
-        <ValveOverlay title={interaction.title} deg={valveDeg} done={mechDone} onTurn={valveTurn} onCancel={interactionCancel} />
+        <ValveOverlay title={interaction.title} deg={valveDeg} done={mechDone} busy={valveBusy}
+          onTurn={valveTurn} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "lever" && (
         <LeverOverlay title={interaction.title} prog={leverProg} done={mechDone} onDown={leverDown} onUp={leverUp} onCancel={interactionCancel} />

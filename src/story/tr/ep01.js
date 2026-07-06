@@ -30,12 +30,14 @@ export const EP01 = {
         { type: "pause", ms: 900 },
         { type: "system", text: "ATANMA: BAKIM TEKNİSYENİ · SİCİL YENİ · GÖREV: RUTİN DENETİM" },
         { type: "narrate", text: "Üç gün önce gelen o e-posta bir lütuf gibiydi. 'SINIR-1 araştırma istasyonu, acil bakım personeli aranıyor.' Maaş akılalmazdı, tek bir mülakat bile yapılmadı. Denizaltının kapakları üzerime kapandığında geriye dönüş olmadığını biliyordum ama bu zifiri çelik mezarla karşılaşacağımı tahmin etmemiştim. On bir aydır aralıksız çalışan koca tesiste çıt çıkmıyor." },
+        { type: "narrate", text: "İşe alım formunda 'kapalı alan toleransı' diye tek satırlık bir kutucuk vardı. O kutucuğu işaretlediğin an bu yer seni yasal olarak yutmuş. Kimliğin, imzan, acil durumda aranacak kişinin numarası... Hepsi yüzeyde kalmış. Burada aşağıda yalnızca görev numaran var ve görev numarası çığlık atamaz." },
         { type: "narrate", text: "Seni uyandıran şey kulakları tırmalayan bir alarm değil. Jeneratörün aniden ÖLMESİ. Kulaklarındaki o uğultu bıçak gibi kesiliyor ve K-6 katının mutlak, boğucu karanlığı göğsüne bir karabasan gibi çöküyor. Kalbinin göğüs kafesini zorladığını hissediyorsun." },
         { type: "narrate", text: "Ranzadan doğrulurken nefesin daralıyor. Acil durum aydınlatmasının o hastalıklı kırmızı pırıltısı bile sönmüş, her yer kör karanlık. Panikle elini uzatıyorsun ve parmakların sana verilen şirketin bakım tabletini buluyor. Güç tuşuna bastığında çatlak ekran aniden parlıyor; çiğ, mavi-beyaz, buz gibi bir ışık suratına çarpıyor. Şu an bu zifiri dünyadaki tek dayanağın, tek ışık kaynağın bu ekran. Önceki teknisyenden kalmış; parmak izleriyle lekelenmiş kilit ekranında silinmemiş bir isim parıldıyor: 'B. Soylu'." },
         { type: "note", id: "not_uyanis", title: "İlk gece", text: "SINIR-1'e bakım teknisyeni olarak atandım — önceki personel 'görevi bırakmış'. İlk gecem ve jeneratör çoktan susmuş, alarm yok, yüzeyle bağlantı üç saattir kopuk. Kimse beni karşılamadı, kimse uyandırmadı. Tablet önceki teknisyene aitmiş: B. Soylu. O nerede?" },
         { type: "waitTap" },
         { type: "objective", text: "Güç kesintisinin kaynağını bul" },
         { type: "ambient", text: "Yatakhanenin dışındaki koridordan, çok uzaktan, et parçası sürükleniyormuş gibi ıslak, ağır bir ses geliyor. Birkaç saniye sürüyor, sonra yerini ölümcül bir sessizliğe bırakıyor." },
+        { type: "system", text: "TESİS İÇİ UYARI: Personel kaybı durumunda görev sürekliliği esastır. Kayıp personelin yerine atanan personel, önceki görevlinin ekipmanından sorumludur." },
       ],
       choices: [
         { id: "ranza", text: "Diğer ranzaları ve dolapları ara", next: "n_ranza", if: { flag: "ranzaArandi", equals: false } },
@@ -104,6 +106,7 @@ export const EP01 = {
       events: [
         { type: "flag", set: { revirGezildi: true } },
         { type: "narrate", text: "Revir odasındasın. Keskin antiseptik kokusu genzini yakıyor. İlaç dolabı vahşice yağmalanmış, camları yerde tuzla buz olmuş. Adımını atarken tabletinin ışığını muayene masasına doğru çeviriyorsun. Kusmamak için ağzını kapatıyorsun: orada bir ceset var. Göğsündeki kanlı isimlik zorlukla okunuyor: 'B. SOYLU'. Elindeki tabletin sahibi. Yerini almak için can attığın o adam. Gözleri sonuna kadar açılmış, donukça tavana bakıyor, ağzı açık kalmış. Yüzündeki o dehşet dolu sakinlik ruhunu kemiriyor. 'Görevi bıraktı' demişlerdi... Hayır, onu burada ölüme terk etmişler." },
+        { type: "narrate", text: "Masasının yanında hâlâ açık duran medikal terminalde tek satırlık bir kayıt donup kalmış: 'Vardiya sürekliliği sağlandı.' Ölüm raporu değil. Acil tahliye değil. İnsan bedeni soğumadan önce sistemin ilk yaptığı şey, boşalan pozisyona yeni bir isim yazmak olmuş. Senin adın." },
         { type: "stat", stat: "akil", delta: -5 },
         { type: "narrate", text: "Cesedin sağ eli sıkıca kapatılmış, kaskatı kesilmiş. Kusma dürtünü bastırarak, adamın soğuk, morarmış parmaklarını tek tek, zorlayarak açıyorsun. Derisi çıtırdıyor. Avucunun içinden kan lekeli, buruşmuş bir kağıt parçası çıkıyor. Aceleyle yazılmış iki rakam: \"21\". Devamı yırtılıp gitmiş." },
         { type: "note", id: "not_kod21", title: "Kod parçası: 21··", text: "Baturay'ın avucundan çıktı. Radyo odasının kodu ikiye bölünmüştü — bu ilk yarısı: 21. Devir raporundaki 'tutanak 7' buydu demek. Diğer yarısı nerede?" },
@@ -112,7 +115,7 @@ export const EP01 = {
         { type: "document", open: true, doc: {
           id: "d_revir", title: "Revir Kaydı — Hafta 42",
           meta: "SINIR-1 SAĞLIK BİRİMİ · GİZLİLİK: KURUM İÇİ",
-          body: "TOPLU SEMPTOM BİLDİRİMİ (son 14 gun):\n\n· Kulak çınlaması ....................... 19 personel\n· Uyku bozukluğu ........................ 16 personel\n· \"Duvarlardan ses geldiği\" hissi ....... 11 personel\n· UYKUDA SAYI SAYMA ..................... 9 personel\n\nNot: Uykuda sayanların tamamı, birbirinden habersiz,\nAYNI diziyi sayıyor. Kayıtlar karşılaştırıldı.\nAçıklama bulunamadı.\n\nÖNERİ: Toplu psikolojik değerlendirme + yüzeye\ntahliye talebi. (RED — H. Tekin: 'Vardiya düzeni\nbozulamaz. Aile işini bilir.')\n\nSON KAYIT: B. Soylu tedaviyi reddetti. 'Uyumamak\nyeterli' dedi. Kendisine uyarıcı verildi." } },
+          body: "NÖROİŞİTSEL TARAMA SONUÇLARI — ÖZET\nDÖNEM: Hafta 42 / Son 14 gün\n\nTest edilen personel: 23\nAnormal kulak çınlaması: 19\nUyku bölünmesi ve ani irkilme: 16\nDuvar içinden ses duyma beyanı: 11\nUykuda eş zamanlı sayı sayma: 9\n\nORTAK BULGU:\nUykuda sayı sayan dokuz personelin ses kayıtları karşılaştırıldı.\nDizinin başlangıcı, durakları ve nefes aralıkları aynıdır. Kayıtlar\nbirbirinden habersiz vardiyalarda alınmıştır.\n\nKLİNİK NOT:\nB. Soylu tedaviyi reddetti. 'Uyumamak yeterli' dedi. Kendisine düşük doz\nuyarıcı verildi. Nabız normale döndü; hasta çıkışta kendi gölgesine\nbakıp üç kez özür diledi.\n\nÖNERİ: Toplu tahliye ve yüzey psikiyatri sevki.\nKARAR: RED — H. Tekin / 'Vardiya düzeni bozulamaz.'" } },
       ],
       choices: [
         { id: "gunluk", text: "Baturay'ın göğüs cebindeki defteri al", next: "n_revir2" },
@@ -598,6 +601,7 @@ export const EP01 = {
       events: [
         { type: "system", text: "KOD KABUL — RADYO ODASI KİLİDİ AÇILDI" },
         { type: "narrate", text: "Ağır kapı tıslayarak açılıyor. Radyo odası... Bir duvar dolusu parçalanmış, kabloları dışarı sarkmış ölü cihazlar ve tam ortada acil durum telsiz konsolu duruyor. Çekmecelerden birinden gelen tuhaf bir tıkırtı sessizliği bozuyor." },
+        { type: "narrate", text: "Duvarın üstündeki panoda eski yayın protokolü hâlâ asılı: 'Önce kayıt al, sonra yardım iste.' Harflerin altına birileri tırnaklarıyla ikinci bir cümle kazımış: 'Yardım gelmeyecekse en azından ölürken anlat.' Tabletini daha sıkı tutuyorsun. Bu küçük ekran artık fenerden çok mezar taşına benziyor." },
         { type: "document", open: true, doc: {
           id: "d_talep", title: "Numune Transfer Talebi — RED",
           meta: "SINIR-1 İÇ YAZIŞMA · FORM 4-A · ARŞİV KOPYASI",

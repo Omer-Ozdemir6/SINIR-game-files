@@ -41,6 +41,7 @@ export const EP04 = {
         { type: "music", track: "k3" },
         { type: "system", text: "DEHŞET KATMANI: K-3 — TERK EDİLMİŞ SERA VE ET VE KÖK" },
         { type: "narrate", text: "Merdivenin dibinde seni boğucu, leş gibi kokan sıcak ve nemli bir zifiri karanlık karşılıyor. K-3 nefes alıyor... Ama ciğerlerle değil. Duvarlardan etli sülükler gibi sarkan kalın kökler sıvanmış, tavan damar gibi atan sarmaşıklarla kaplı. Adım attığın zemin, basılmaması gereken canlı bir deri gibi altından kayıyor. Elindeki tabletin soğuk, çiğ ekran ışığı bu çürümeden başka bir şeyi aydınlatmıyor. Işık yüzüne vururken karanlığın içinde tamamen savunmasız ve açık bir hedefsin." },
+        { type: "narrate", text: "Buradaki her şey büyümüş ama hiçbir şey yaşamıyor. Kökler damar gibi atıyor, yapraklar deri gibi terliyor, çiçekler açmak yerine küçük ağızlar gibi aralanıp kapanıyor. K-3 doğa değil; laboratuvarın Tanrı’yı taklit etmeye çalışırken yaptığı düşük, yarım ve acı çeken bir kopya." },
         { type: "narrate", text: "Karanlığın derinliklerinden derisi yüzülmüş bir insanın iniltisini andıran hırıltılı bir kadın fısıltısı yayılıyor. Şarkı söylemiyor; çürüyen tohumlara çocuklarıymış gibi delice sayıklıyor: 'Selin... Selin nerede... Bebeğimi benden aldılar...'" },
         { type: "waitTap" },
         { type: "ambient", text: "Tabletinin hoparlöründen parazitler arasından Ece'nin titreyen sesi yükseliyor: «K-3'e indin... Tanrım, o koku buraya kadar geliyor. Nevin orada. Şef onu o şeye yem etti. Beni dinle, sakın basma! Ses çıkarmak umurunda değil, bastığın her kök direkt onun sinir ucuna bağlı. Nereye basarsan doğrudan üzerine çullanacak!»", if: { flag: "eceEleVerildi", equals: false } },
@@ -117,12 +118,15 @@ export const EP04 = {
     n_fide: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Fide odası: Küf kokulu raflarda yan yana dizilmiş yüzlerce saksı... Ve her birinin içinden fırlayan, insan derisi renginde, kesik çocuk ellerine benzeyen solgun filizler titriyor. Ortadaki devasa saksıda ise parlayan, irin dolu bir çıban gibi şişmiş MAVİ bir spor kesesi nabız gibi atıyor. Bu, Murkoff'un yarattığı o lanet hücrenin ta kendisi." },
+        { type: "narrate", text: "Fide odası: Küf kokulu raflarda yan yana dizilmiş yüzlerce saksı... Ve her birinin içinden fırlayan, insan derisi renginde, kesik çocuk ellerine benzeyen solgun filizler titriyor. Ortadaki devasa saksıda ise parlayan, irin dolu bir çıban gibi şişmiş MAVİ bir spor kesesi nabız gibi atıyor. Bu, SINIR-1 biyoloji biriminin canlı doku üzerinde yaptığı o yasak deneyin ta kendisi." },
+        { type: "document", open: false, doc: {
+          id: "d_spor_test", title: "Biyolojik Uyum Testi — Mavi Spor",
+          body: "BİRİM: K-3 Biyoloji / Kapalı Kök Ağı\nTEST: Spor kesesi temas protokolü\n\nGözlem 12-A: Spor bulutu solunduğunda deneklerde ilk 9 saniyede göz kanaması, 14 saniyede kontrolsüz kasılma, 31 saniyede deri altı filizlenme görüldü.\n\nGözlem 12-B: Nefesini tutan deneklerde spor yüzeyde kaldı. Panik anında alınan tek nefes bile köklenmeyi başlatmaya yetti.\n\nSONUÇ: Spor, akciğer dokusunu giriş kapısı olarak kullanıyor. Koruyucu maske yetersiz. Tek geçici yöntem: temas anında kontrollü nefes kesme ve aralıklı sessiz boşaltma.\n\nUYARI: Deneklerden biri ölmeden önce 'beni toprağa geri koymayın' cümlesini 46 kez tekrarladı." } },
         { type: "narrate", text: "Raflardan birinin üzerinde paslı, kana bulanmış bir ses kayıt cihazı kırmızı ışığını yakıp söndürüyor. Nevin'in henüz delirmeden önceki, korkudan titreyen insan sesi odada yankılanıyor:" },
         { type: "document", open: true, doc: {
           id: "d_nevin_kayit", title: "Dr. Nevin Aras — Gizli Ses Kaydı", style: "hand",
           meta: "— Odadaki Kanlı Kaydediciden —",
-          body: "Kayıt 1: Şef aşağıdan, K-2'den o şeyi getirdi. Canlı bir doku... Korkunç bir frekansta fısıldıyor. 432 hertz. Kulaklarımı kanatıyor ama bitkiler ona itaat ediyor. Biz de edeceğiz, hissediyorum.\n\nKayıt 9: Ölen kızımın uyku kayıtlarını dinlettim o şeye... Ve Tanrım! Buluntu kızımın sesiyle geriye doğru saymaya başladı! Altı, beş, dört... Kızım geri geldi sandım! Akıl sağlığımı kaybediyorum, o bir iblis!\n\nKayıt 14: Şef beni cezalandırdı, buraya diri diri gömdü. Gitgide daha az insan oluyorum. Ama Selin kaçmayı başardı. Kompostun oradaki dondurucuya kendi kan örneğimi bıraktım. Bir panzehir... Tek kurtuluş o.\n\nKayıt son: Artık parmaklarım yok, dallarım var. Çok güzeller... Acı hissetmiyorum. Sadece... Selin... Bebeğim nerede?" } },
+          body: "SES KAYDI DÖKÜMÜ — DR. NEVİN ARAS\nGİZLİLİK: K-3 BİYOLOJİ / OLAY SONRASI İNCELEME\n\nKayıt 01: Şef, K-2 arkeoloji ambarından canlı doku örneği getirdi.\nÖrnek 432 Hz çevresinde işitilebilir olmayan bir titreşim üretiyor.\nBitki dokuları bu titreşime yöneliyor. Personelde burun kanaması başladı.\n\nKayıt 09: Merhum kızımın uyku kaydı örneğe dinletildi. Doku,\nkayıttaki çocuk sesiyle geriye doğru saydı. Ses analizi birebir eşleşiyor.\nAçıklama yok. Kayıt odasında bulunan üç personel aynı anda ağladı.\n\nKayıt 14: H. Tekin disiplin gerekçesiyle beni K-3'te tuttu. Deri altında\nköklenme başladı. Selin kaçtı. Kompost dondurucusuna kan örneği bıraktım.\nFormül hâlâ çalışabilir.\n\nSon kayıt: Parmaklar işlevini yitirdi. Uçlarda dal benzeri sertleşme var.\nAğrı azaldı. Selin'in adını duyduğumda kökler hâlâ geri çekiliyor." } },
         { type: "note", id: "not_nevin_kayit", title: "Nevin'in Deliliği", text: "K-2'deki o yaratık insan seslerini taklit ediyor. Nevin'i delirtip bu seraya kurban etmişler. Selin adında biri kaçarken kompost yoluna kan bırakmış. Mavi spor, kök özütü ve o kan... Eğer ölmek istemiyorsam o serumu yapmak zorundayım." },
         { type: "waitTap" },
         { type: "narrate", text: "Mavi spor kesesini almak için elini o iğrenç saksıya sokman gerek. Dokunduğun an zehirli spor bulutu doğrudan yüzüne patlayacak. Nefesini tutmazsan ciğerlerin saniyeler içinde eriyecek." },
@@ -205,7 +209,7 @@ export const EP04 = {
     n_kompost_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kompost çukuru: Katın en altındaki devasa lağım ve çürüme havuzu. Kokusu o kadar ağır ki burnundan beynine bir bıçak saplanıyor gibi hissediyorsun. Burası Murkoff'un başarısız deneylerini, insan cesetlerini fırlattığı bir kuyu. Nevin'in bahsettiği Selin'in kanı bu yolun üzerinde bir yerde olmalı. Çukurun kenarında, balçıkla kaplı tehlikeli bir patika uzanıyor." },
+        { type: "narrate", text: "Kompost çukuru: Katın en altındaki devasa lağım ve çürüme havuzu. Kokusu o kadar ağır ki burnundan beynine bir bıçak saplanıyor gibi hissediyorsun. Burası istasyonun başarısız deneyleri, atık dokuları ve kayıtsız cesetleri fırlattığı bir kuyu. Nevin'in bahsettiği Selin'in kanı bu yolun üzerinde bir yerde olmalı. Çukurun kenarında, balçıkla kaplı tehlikeli bir patika uzanıyor." },
         { type: "alert", text: "Kompost gazı halüsinasyonlara sebep olur, zemin tamamen ceset parçalarıyla kaplı ve kaygan!" },
       ],
       choices: [
@@ -275,7 +279,7 @@ export const EP04 = {
         target: { spor: 1, ozut: 2, kan: 3 },
         success: "n_serum_hazir",
         cancel: "n_lab",
-        penalty: { akil: -12, gurultu: 6, text: "KORKUNÇ HATA — Tüp patladı, odaya asit gazı yayıldı! AKIL SAĞLIĞI -12" },
+        penalty: { gurultu: 6, text: "KORKUNÇ HATA — Tüp patladı, odaya asit gazı yayıldı. GÜRÜLTÜ +6" },
       },
     },
 
@@ -299,7 +303,7 @@ export const EP04 = {
     n_kasa: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Nevin'in tohum kasası: Kalın köklerin arkasına gizlenmiş çelik bir Murkoff güvenli kabini. Üzerinde biyometrik üç adet yuva var ama parmak izi değil, kanlı canlı ÖRNEK istiyorlar. Kasa açılırsa içindeki K-2 anahtar kartını alabilirsin. Durumun ne?" },
+        { type: "narrate", text: "Nevin'in tohum kasası: Kalın köklerin arkasına gizlenmiş çelik bir SINIR-1 güvenlik kabini. Üzerinde biyometrik üç adet yuva var ama parmak izi değil, kanlı canlı ÖRNEK istiyorlar. Kasa açılırsa içindeki K-2 anahtar kartını alabilirsin. Durumun ne?" },
         { type: "alert", text: "SİSTEM KİLİTLİ — Malzemeler eksik! Mavi spor, kök özütü ve kanı bulmadan bu çelik kapı açılmaz.", if: { flag: "ornek3", equals: false } },
         { type: "narrate", text: "Üç örneği de kullandın ve serumu yaptın. Kasanın üzerindeki köklü okuyucu mekanizma, şırıngadaki altın sıvıya doğru aç bir sülük gibi uzanıyor. Serumu bir anahtar gibi kabul edecek.", if: { flag: "serumHazir", equals: true } },
         { type: "narrate", text: "Üç örnek de cebinde ama henüz kimya masasına dokunmadın. Bu ham malzemeleri doğrudan kasaya kurban edip kartı alabilirsin ama o zaman Nevin'i kurtaracak bir serumun asla olmayacak. Karar ver.", if: { flag: "ornek3", equals: true, }, },
@@ -323,7 +327,7 @@ export const EP04 = {
         { type: "document", open: true, doc: {
           id: "d_nevin_son", title: "Nevin'in Son İtirafı", style: "hand",
           meta: "— Çelik Kasanın Tabanından —",
-          body: "Eğer bu yazıyı okuyorsan o altın sıvıyı yapmayı başarmışsın demektir. Beni bu etten hapishaneden çekip çıkarabilir.\n\nAma sana dürüst olacağım: Geri dönmek istiyor muyum, emin değilim. Kök olmak... Duyguların olmaması, korkunun bitmesi demek. Murkoff'un bu cehenneminde insan kalmak saf acıdan başka bir şey değil.\n\nSeçim senin. Beni uyandır ve ikimiz de bu istasyonun vahşetini çekmeye devam edelim... Ya da beni burada bırak, bu katın bir parçası olarak çürüyeyim.\n\nNe yaparsan yap, K-2'ye in. Selin orada. O yaratık orada. Bu kabus orada bitecek.\n\n— N." } },
+          body: "Eğer bu yazıyı okuyorsan o altın sıvıyı yapmayı başarmışsın demektir. Beni bu etten hapishaneden çekip çıkarabilir.\n\nAma sana dürüst olacağım: Geri dönmek istiyor muyum, emin değilim. Kök olmak... Duyguların olmaması, korkunun bitmesi demek. Bu istasyonun cehenneminde insan kalmak saf acıdan başka bir şey değil.\n\nSeçim senin. Beni uyandır ve ikimiz de bu istasyonun vahşetini çekmeye devam edelim... Ya da beni burada bırak, bu katın bir parçası olarak çürüyeyim.\n\nNe yaparsan yap, K-2'ye in. Selin orada. O yaratık orada. Bu kabus orada bitecek.\n\n— N." } },
         { type: "objective", text: "Nevin ile son kez yüzleş ve K-2 cehennemine giden kapıyı aç." },
       ],
       choices: [
@@ -397,7 +401,7 @@ export const EP04 = {
         { type: "system", text: "K-2 TAHLİYE KAPISI AÇILDI" },
         { type: "narrate", text: "Kapı ağır ağır açılıyor ve aşağıdan yüzüne çarpan hava tüylerini diken diken ediyor... Buz gibi, mineral kokan, antik bir hava. Burası artık istasyonun beton duvarları değil; burası doğrudan yerin altına, kadim kayaların içine oyulmuş devasa bir maden ve kazı sahası. Delilik burada başladı." },
         { type: "waitTap" },
-        { type: "ambient", text: "Tablet ekranı cızırdayarak Ece'nin ağlamaklı sesini veriyor: «K-2'ye iniyorsun... Tanrım, orası asıl cehennem. Orada ne olduğunu Murkoff bile kontrol edemedi. Buluntu orada... Selin orada... Lütfen dikkat et. Ve... beni Şef'e satmadığın, beni koruduğun için teşekkür ederim. Yaşa lütfen.»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "ambient", text: "Tablet ekranı cızırdayarak Ece'nin ağlamaklı sesini veriyor: «K-2'ye iniyorsun... Tanrım, orası asıl cehennem. Orada ne olduğunu istasyon yönetimi bile kontrol edemedi. Buluntu orada... Selin orada... Lütfen dikkat et. Ve... beni Şef'e satmadığın, beni koruduğun için teşekkür ederim. Yaşa lütfen.»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "Tabletinin ekranı son bir kez güçlüce titriyor, parazit yapıyor ve tamamen sessizliğe gömülüyor. Ece'yi satmıştın; yerin kilometrelerce altındaki bu zifiri karanlık madende artık çığlıklarını duyacak hiç kimse yok. Tamamen yapayalnızsın. Sadece tabletinin soğuk ışığı ve sen.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "waitTap" },
         { type: "ambient", text: "Ve aşağıdan, o simsiyah kayalıkların derinliklerinden, bozuk bir çocuk frekansıyla o ses yükseliyor. Artık çok net, artık tam kulığının dibinde: «...Üç... İki...» Buluntu geri sayımını sürdürüyor. Ve sıfıra neredeyse hiçbir şey kalmadı.", if: { flag: "frekanslariDuydun", equals: true } },

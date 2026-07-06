@@ -22,7 +22,7 @@
    · YÜZEY    — sustur + kaç (en iyi): Selin + Ece + doğru seçimler
    · SESSİZLİK— yok et ama kendini feda et
    · DERİN    — Buluntu'ya katıl (karanlık)
-   · KAYIT    — belgele ve öl (whistleblower sonu)
+   · KAYIT    — belgele ve öl (ihbarcı sonu)
    · SIFIR    — geri sayımı durduramamak (kötü son / gizli değil)
    ============================================================ */
 
@@ -39,6 +39,9 @@ export const EP05 = {
         { type: "system", text: "KAT: K-2 — ARKEOLOJİ · KAZI SAHASI · [KAYIT DIŞI]" },
         { type: "narrate", text: "Bastığın son metal basamak da kırılıp arkanda çınlarken, ayakların ıslak, soğuk ve yabancı bir KAYAYA basıyor. Burası K-2. İstasyonun bir parçası değil; bu lanet deliyi o çiğ çelik yapının altına gizlemişler. Elindeki tek şey, yüzünü keskin, hastalıklı bir beyazlıkla aydınlatan tabletin ekranı. Işık hüzmesi duvardaki binlerce yıllık lekelere vuruyor... Hayır, leke değil. Deriye kazınır gibi taşa oyulmuş çentikler. Azalan, tükenen bir geri sayım. Karanlık, tabletinin ışığını adeta yutmak için üzerine çullanıyor." },
         { type: "narrate", text: "Boşluğun ortasında paslı iskeleler, birbirine dolanmış kalın siyah kablolar ve adeta tapan kör bir tarikat gibi dizilmiş çürüyen ekipmanlar var... Hepsi merkezdeki o dipsiz anomalinin etrafını sarmış. Onu göremiyorsun, çünkü tabletinin zayıf ışığı o zifiri karanlığı yırtmaya yetmiyor. Ama kusma hissiyle gelen o berbat titreşimi HİSSEDİYORSUN. Diş köklerin sızlıyor, kulak zarların patlayacak gibi parazit yapıyor ve zihninin içine kirli bir pas gibi bir sayı çakılıyor: Üç." },
+        { type: "document", open: false, doc: {
+          id: "d_k2_karantina", title: "K-2 Karantina Tutanağı — Kayıt Dışı",
+          body: "SINIR-1 / KAZI SAHASI K-2\nDURUM: Karantina süresiz uzatıldı.\n\nTespit edilen belirtiler:\n- Personel aynı rakamı farklı vardiyalarda eş zamanlı tekrar ediyor.\n- Ses kaydı alınan denekler, kendi seslerinden önce ölmüş personelin sesleriyle cevap veriyor.\n- Karanlıkta kalan personel kendisini 'ben' yerine 'biz' diye tanımlamaya başlıyor.\n- Buluntu çevresinde alınan biyolojik örnekler insan dokusuyla uyumlu değil, ancak insan dokusunu taklit etmeye çalışıyor.\n\nYÖNETİM KARARI: Yüzeye bildirim yapılmayacak. Kazı durdurulmayacak. Yeni teknik personel, olayın doğal bakım arızası olarak kayda geçirilmesi için yönlendirilecek.\n\nEK NOT: Aşağıdan gelen üç vuruş duyulursa cevap verilmemelidir." } },
         { type: "waitTap" },
         { type: "stat", stat: "akil", delta: -10, note: "AKIL -10 — Zihnine etli, ıslak bir şey dokundu", noteKind: "alert" },
         { type: "narrate", text: "«Kımıldama... Nefes bile alma...» Gölgelerin içinden çiğ, dehşet dolu bir fısıltı yükseliyor. Gerçek bir insan sesi. Toz fırtınasından çıkmış gibi hırpalanmış bir kazı tulumu içinde, elinde titreyen bir fener ve kan lekeli paslı bir levye tutan bir kadın belikliyor. Tabletinin ışığı yüzüne vurduğunda göz bebeklerinin korkudan büyüdüğünü görüyorsun. «Sen... senin bilincin hâlâ yerinde. Gözlerin etrafı görüyor... Tanrım, üç haftadır buradaki tek canlı insan sensin.» Selin.", if: { flag: "eceEleVerildi", equals: true } },
@@ -144,7 +147,7 @@ export const EP05 = {
         { type: "document", open: true, doc: {
           id: "d_kazi_gunluk", title: "Kazı Şefi'nin Günlüğü", style: "type",
           meta: "— Dr. R. Vardar, sondaj ekibi —",
-          body: "14. gün. Buluntu'yu ilk çıkardığımızda tek parçaydı.\nSimdi buyuyor mu, yoksa biz mi kuculuyoruz\nbilmiyorum. Ekipten ucu uykusunda sayiyor.\n\n19. gun. Sayi herkesin kafasinda. 'Yedi' diyorlar,\nhep bir agizdan. Ben duymuyorum, henuz. Kulak\ntikaci ise yaramiyor; ses disaridan degil, iceriden\ngeliyor.\n\n21. gun. Yarisi gitti. Asagi indiler, Buluntu'ya.\nGulumseyerek. Ben son kalanim. Bu gunlugu bulan\nkisiye: sayma. Ne olursa olsun, o sayiyi zihninde\ntekrarlama. Saydigin an, seni bulur." } },
+          body: "SONDAJ EKİBİ OLAY RAPORU — DR. R. VARDAR\nKAZI GÜNÜ 14: Buluntu ilk çıkarıldığında tek parçaydı. Bugün çevre\nkablolarına tutunan yeni dokular gözlendi. Büyüme hızı ölçülemedi;\nölçüm yapan teknisyen uykusunda sayı saymaya başladı.\n\nKAZI GÜNÜ 19: Personel aynı sayıyı bildiriyor: yedi. Kulak tıkacı,\nsedasyon ve izolasyon etkisiz. Ses dış ortamdan gelmiyor. Kişi kendi\nkafatasının içinden duyduğunu söylüyor.\n\nKAZI GÜNÜ 21: Ekibin yarısı aşağı indi. Komut verilmedi. Hepsi gülümsüyordu.\nKamera kayıtlarında ağızlarının aynı anda hareket ettiği görülüyor.\nBu raporu bulan personele talimat: Sayıyı tekrar etmeyin. Zihinde bile." } },
         { type: "stat", stat: "akil", delta: -8, note: "AKIL -8 — Kelimeler zihninde bir ur gibi büyüyor", noteKind: "alert" },
         { type: "flag", set: { kampGoruldu: true } },
       ],
@@ -341,7 +344,7 @@ export const EP05 = {
         { type: "document", open: true, doc: {
           id: "d_tunel_gunluk", title: "Son Kazıcının Günlüğü", style: "type",
           meta: "— tünelin dibinde —",
-          body: "Ikimiz kaldik. Digerleri 'aile' oldu. Biz asagi\nindik, kaynagi gormek icin. Simdi anliyorum:\nBuluntu tek degil. Bu sadece bir ucu. Govdesi\ndaha derinde, denizin altinda, kilometrelerce.\n\nStasyon onu 'besliyor' — insanlarla. Susturursan\naclik kalir. Ve ac bir sey, er ya da gec, disari\nuzanir. Yuzeye dogru vurmaya baslar. Uc kez.\nHer zaman uc kez." } },
+          body: "K-2 ARAŞTIRMA NOTU — KISMİ KAYIT\n\nİkimiz kaldık. Diğerleri 'aile' oldu. Kaynağı doğrulamak için aşağı\nindik. Artık net: Buluntu tekil bir parça değil; yalnızca yukarı uzanan\nbir uç. Ana gövde daha derinde, deniz tabanının altında kilometrelerce\nyayılıyor olabilir.\n\nSINIR-1 onu insanlarla besledi. Akış kesilirse açlık başlayacak.\nAç kalan yapı yüzeye doğru vuruyor: üç temas, düzenli aralık,\nher kayıtta aynı imza.\n\nBu not bulunursa üst yönetime gönderilmesin. Üst yönetim zaten biliyor." } },
         { type: "flag", set: { tunelSandik: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
@@ -372,7 +375,7 @@ export const EP05 = {
         { type: "document", open: true, doc: {
           id: "d_baturay_son", title: "Baturay'ın Son Notu", style: "hand",
           meta: "— sığınakta, elinde —",
-          body: "Beni okuyan sensin, biliyorum. Benden sonra gelen.\nSeni buraya getirdiler cunku ben reddettim.\n\nO sana da 'uc' diyecek. Sakin sayma. Ben bir kez\nsaydim, sadece bir kez, merak ettim diye. O kadari\nyetti. Simdi hem oradayim hem burada.\n\nMaili gonderdim ama gec kaldim. Sen gec kalma.\nYukarida bir gazeteci var, Ergin. Ona ulas.\nDunya bilsin. — B." } },
+          body: "KİŞİSEL BEYAN — B. SOYLU\n\nBunu okuyan kişi benden sonra gelen bakım personeli olmalı. Seni buraya\ngetirdiler çünkü ben görevi reddettim.\n\nO sana da 'üç' diyecek. Sayma. Ben bir kez saydım; yalnızca merak ettim.\nBu kadarı yetti. O günden beri sesimin bir kısmı aşağıda, bir kısmı hâlâ\nbu odada kalıyor.\n\nİhbar postasını gönderdim ama geç kaldım. Sen geç kalma. Yüzeyde Ergin\nadında bir gazeteci var. Ona ulaş. Dünya bilsin.\n\n— Baturay Soylu" } },
         { type: "flag", set: { izBaturay: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
@@ -586,7 +589,7 @@ export const EP05 = {
           { id: "vp5", label: "V" },
         ],
         pairs: { w_ana: "vp1", w_sonar: "vp4", w_amp: "vp2", w_faz: "vp5", w_top: "vp3" },
-        penalty: { gurultu: 14, akil: -5, text: "KIVILCIM — Metal çarpıştı, Buluntu irkildi! GÜRÜLTÜ +14" },
+        penalty: { gurultu: 14, text: "KIVILCIM — Metal çarpıştı, Buluntu irkildi. GÜRÜLTÜ +14" },
         success: "n_verici_guc_ok",
         cancel: "n_platform_ulas",
       },
@@ -629,10 +632,10 @@ export const EP05 = {
         kind: "symbols",
         title: "BULUNTU'NUN DİLİ — 'SUS' DİZİSİNİ GİR",
         glyphs: ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8"],
-        sequence: ["g5", "g4", "g6", "g7"],
+        sequence: ["g5", "g4", "g6", "g7", "g2", "g8"],
         success: "n_sembol_ok",
         cancel: "n_verici",
-        penalty: { akil: -15, gurultu: 10, text: "YANLIŞ TUŞ — Beyninde şimşekler çaktı! AKIL -15" },
+        penalty: { gurultu: 10, text: "YANLIŞ TUŞ — Konsol çığlık gibi öttü. GÜRÜLTÜ +10" },
       },
     },
 
@@ -776,7 +779,7 @@ export const EP05 = {
         { type: "waitTap" },
         { type: "narrate", text: "«Ne bok yiyorsun sen?! Bırak o lanet cihazı, geri sayım bitiyor, KAÇMAMIZ GEREK!» diye yırtınıyor Selin. Ama sen parmaklarını ekrana vurarak kaydı durdurmuyorsun. Buluntu can çekişiyor ama ölmedi, geri sayım beyninin içinde son sürat devam ediyor. «İki» diyor o ses. Sonra «Bir»." },
         { type: "narrate", text: "Selin sana dehşet ve acıyla karışık son bir kez bakıp o tabletten aldığı veri kopyasıyla merdivenlere doğru fırlıyor. O kaçıyor, elinde o dünyayı sarsacak kanıtla. Sen burada kalıyorsun, o etin karşısında. Buluntu o son sayıyı fısıldarken tabletinin belleği doluyor ve veriyi yukarı fırlatıyor. Selin o kapıdan çıktığında dünya bu cehennemi öğrenecek... Senin sayende." },
-        { type: "ambient", text: "Tabletinin sönen ekran ışığının yansımasında kendi yüzünü görüyorsun: Tamamen sakin. Baturay gibi. Görevini bitirmiş gerçek bir whistleblower gibi. Ve beyninin içindeki o etsi delik son kez fısıldıyor: «...Sıfır.»" },
+        { type: "ambient", text: "Tabletinin sönen ekran ışığının yansımasında kendi yüzünü görüyorsun: Tamamen sakin. Baturay gibi. Görevini bitirmiş gerçek bir ihbarcı gibi. Ve beyninin içindeki o etsi delik son kez fısıldıyor: «...Sıfır.»" },
         { type: "system", text: "— SON: KAYIT —" },
         { type: "system", text: "Kaçmadın — belgelemeyi seçtin. Öldün, ama Selin kanıtı yüzeye çıkardı. Gerçek artık saklanamaz. Baturay gurur duyardı." },
         { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },

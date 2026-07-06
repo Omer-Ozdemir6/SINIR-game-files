@@ -4,15 +4,15 @@ import { AudioSys } from "../audio/AudioSys";
 import { t } from "../i18n";
 
 /* ============================================================
-   AÇILIŞ SİNEMATİĞİ v2 — "İHBARCI" (Outlast: Whistleblower akışı)
+   AÇILIŞ SİNEMATİĞİ v2 — "İHBARCI" (SINIR-1 kayıt akışı)
    1) Mail YARISI YAZILMIŞ halde açılır — sadece SONUNUN yazılışını
       izleriz (Baturay'ın ihbar maili, bir gazeteciye).
    2) Bekleme → imleç SİL'e gider, basar → "TASLAK SİLİNSİN Mİ?"
       → tereddüt → HAYIR.
    3) Ekranda talimat belirir: "MESAJI GÖNDERMEK İÇİN GÖNDER'E BAS"
       — GÖNDER'e OYUNCU basar (ihbarı oyuncu yollar).
-   4) Basar basmaz: kapkara ekranda OYUN İSMİ parlar (Whistleblower
-      başlık kartı) → yavaş fade-out → "Birkaç gün sonra." → oyun.
+   4) Basar basmaz: kapkara ekranda OYUN İSMİ parlar
+      → yavaş fade-out → "Birkaç gün sonra." → oyun.
    ============================================================ */
 
 const PREFILLED =
@@ -27,44 +27,48 @@ const W = {
     position: "fixed", inset: 0, zIndex: 5,
     display: "flex", alignItems: "center", justifyContent: "center",
     padding: 0, overflow: "hidden",
-    backgroundColor: "#1a1410",
-    backgroundImage: "url(/desktop-bg.jpg)",
+    backgroundColor: "#130d0b",
+    backgroundImage: [
+      "radial-gradient(circle at 82% 58%, rgba(255,221,151,0.82) 0 4%, rgba(214,111,55,0.42) 5%, transparent 17%)",
+      "linear-gradient(180deg, rgba(80,45,43,0.95) 0%, rgba(143,82,49,0.92) 45%, rgba(31,20,14,0.96) 78%, #050403 100%)",
+    ].join(", "),
     backgroundSize: "cover", backgroundPosition: "center",
   },
   win: {
     position: "relative",
-    width: "min(94vw, 680px)",
+    width: "min(78vw, 860px)",
+    minWidth: "min(94vw, 320px)",
     maxHeight: "92vh",
     display: "flex", flexDirection: "column",
-    backgroundColor: "#d7d4cc", border: "1px solid #55524a",
-    boxShadow: "0 18px 70px rgba(0,0,0,0.85), inset 0 1px 0 #eceade",
+    backgroundColor: "#d7dce7", border: "2px solid #5a708c",
+    boxShadow: "0 18px 70px rgba(0,0,0,0.82), inset 0 1px 0 rgba(255,255,255,0.75)",
     fontFamily: ui, overflow: "hidden",
   },
   titleBar: {
     display: "flex", justifyContent: "space-between", alignItems: "center",
     padding: "3px 6px", fontSize: 10, color: "#e8e6de",
-    background: "linear-gradient(#7c8590, #5f6771)", flexShrink: 0,
+    background: "linear-gradient(#8ca5c4, #526b8b)", flexShrink: 0,
   },
   winBtns: { display: "flex", gap: 3 },
   winBtn: { width: 15, height: 12, textAlign: "center", lineHeight: "11px", fontSize: 8, backgroundColor: "#c8c4b8", color: "#3a3a34", border: "1px solid #6a675c" },
-  menuRow: { display: "flex", gap: 11, padding: "2px 8px", fontSize: 9, color: "#3a382f", borderBottom: "1px solid #b0ac9f", backgroundColor: "#ece9df", flexShrink: 0 },
-  urlRow: { display: "flex", alignItems: "center", gap: 6, padding: "3px 8px", borderBottom: "1px solid #b0ac9f", backgroundColor: "#e4e1d6", flexShrink: 0 },
+  menuRow: { display: "flex", gap: 11, padding: "2px 8px", fontSize: 9, color: "#26384f", borderBottom: "1px solid #9aabc0", backgroundColor: "#edf3fb", flexShrink: 0 },
+  urlRow: { display: "flex", alignItems: "center", gap: 6, padding: "3px 8px", borderBottom: "1px solid #9aabc0", backgroundColor: "#e2eaf5", flexShrink: 0 },
   urlBox: {
-    flex: 1, fontSize: 9, color: "#2a3a2e", backgroundColor: "#fbfaf4",
-    border: "1px solid #9a978a", padding: "2px 7px",
+    flex: 1, fontSize: 9, color: "#26384f", backgroundColor: "#fbfdff",
+    border: "1px solid #91a5bf", padding: "2px 7px",
     whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
     display: "flex", alignItems: "center", gap: 5,
   },
   bandRow: {
     display: "flex", alignItems: "center", gap: 8, padding: "7px 12px",
-    background: "linear-gradient(#3f5876, #2f4560)", color: "#eef2f6",
+    background: "linear-gradient(#3e5879, #263f5d)", color: "#eef2f6",
     fontSize: 13, letterSpacing: "0.12em", fontWeight: 700, flexShrink: 0,
   },
-  toolRow: { display: "flex", gap: 16, padding: "5px 12px", fontSize: 9.5, color: "#3a382f", borderBottom: "1px solid #b0ac9f", backgroundColor: "#e8e5da", flexShrink: 0 },
-  bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#d7d4cc", flex: 1, minHeight: 0 },
+  toolRow: { display: "flex", gap: 16, padding: "5px 12px", fontSize: 9.5, color: "#26384f", borderBottom: "1px solid #9aabc0", backgroundColor: "#e7eef8", flexShrink: 0 },
+  bodyWrap: { display: "flex", alignItems: "stretch", backgroundColor: "#d7dce7", flex: 1, minHeight: 0 },
   attach: {
     width: "22%", minWidth: 78, flexShrink: 0, borderRight: "1px solid #b0ac9f",
-    backgroundColor: "#dedbd0", padding: "6px 7px", fontSize: 9, color: "#55524a",
+    backgroundColor: "#d8e2f0", padding: "6px 7px", fontSize: 9, color: "#465b75",
   },
   attachTitle: { borderBottom: "1px solid #b0ac9f", paddingBottom: 4, marginBottom: 6, fontSize: 9.5, color: "#3a382f" },
   rightCol: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column" },
@@ -74,7 +78,7 @@ const W = {
   subLinks: { display: "flex", gap: 8, padding: "1px 10px 3px 62px", fontSize: 8, color: "#4a6a9a", flexShrink: 0 },
   page: {
     margin: "6px 10px", backgroundColor: "#ffffff",
-    border: "1px solid #b0ac9f", flex: 1, minHeight: 0, overflowY: "auto",
+    border: "1px solid #9aabc0", flex: 1, minHeight: 0, overflowY: "auto",
     padding: "14px 18px",
   },
   ink: {
@@ -98,6 +102,93 @@ const W = {
   dialogBody: { padding: "16px 16px 12px", fontSize: 11, color: "#2e2c26", textAlign: "center" },
   dialogRow: { display: "flex", justifyContent: "center", gap: 10, padding: "0 12px 12px" },
 };
+
+function SinirTitleCard({ leaving }) {
+  return (
+    <div className={leaving ? "s1-fadeout" : "s1-fadein"} style={{
+      position: "absolute", inset: 0,
+      overflow: "hidden",
+      background: "radial-gradient(ellipse at 48% 47%, rgba(42,61,39,0.72) 0%, rgba(11,22,15,0.92) 44%, rgba(0,5,4,1) 100%)",
+    }}>
+      <div style={{
+        position: "absolute", inset: 0,
+        background: [
+          "radial-gradient(circle at 14% 18%, rgba(210,225,205,0.16), transparent 5%)",
+          "radial-gradient(circle at 72% 16%, rgba(210,225,205,0.11), transparent 6%)",
+          "radial-gradient(circle at 82% 66%, rgba(180,205,170,0.16), transparent 8%)",
+          "radial-gradient(circle at 38% 66%, rgba(210,225,205,0.1), transparent 6%)",
+          "linear-gradient(120deg, transparent 0 38%, rgba(220,245,220,0.05) 39%, transparent 43%)",
+          "linear-gradient(63deg, transparent 0 57%, rgba(220,245,220,0.04) 58%, transparent 62%)",
+          "linear-gradient(90deg, rgba(0,0,0,0.58), transparent 18%, transparent 82%, rgba(0,0,0,0.68))",
+        ].join(", "),
+        filter: "blur(1.4px)",
+        opacity: 0.98,
+      }} />
+      <div style={{
+        position: "absolute", left: "9%", top: "18%",
+        width: "18vw", maxWidth: 220, aspectRatio: "1",
+        border: "1px solid rgba(220,245,220,0.14)",
+        transform: "rotate(21deg)",
+        boxShadow: "0 0 26px rgba(190,225,190,0.08)",
+      }} />
+      <div style={{
+        position: "absolute", right: "12%", bottom: "17%",
+        width: "24vw", maxWidth: 280, height: 1,
+        background: "rgba(220,245,220,0.2)",
+        boxShadow: "0 0 30px rgba(220,245,220,0.18)",
+        transform: "rotate(-13deg)",
+      }} />
+      <div style={{
+        position: "absolute", right: "19%", top: "24%",
+        width: 92, height: 92,
+        borderRadius: "50%",
+        border: "1px dashed rgba(220,245,220,0.16)",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "repeating-radial-gradient(circle at 45% 45%, rgba(220,235,215,0.12) 0 1px, transparent 1px 8px)",
+        opacity: 0.18,
+        mixBlendMode: "screen",
+      }} />
+      <div style={{
+        position: "absolute", left: "50%", top: "38%",
+        width: 88, height: 122, transform: "translate(-50%, -50%)",
+        opacity: 0.62,
+        filter: "drop-shadow(0 0 9px rgba(220,245,220,0.5))",
+      }}>
+        <svg viewBox="0 0 90 130" style={{ width: "100%", height: "100%" }}>
+          <path d="M45 8 L45 118 M25 80 L65 80 M31 72 L59 72 M36 64 L54 64" stroke="#e5f4df" strokeWidth="3" strokeLinecap="round" opacity="0.82" />
+          <path d="M45 14 C36 28 42 38 35 52 C49 45 42 28 55 17" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.55" />
+          <path d="M20 90 C32 82 58 82 70 90 M24 98 C38 92 52 92 66 98" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.7" />
+          <path d="M45 8 L45 118" stroke="#e5f4df" strokeWidth="1" strokeDasharray="2 4" opacity="0.9" />
+        </svg>
+      </div>
+      <div style={{
+        position: "absolute", left: "6%", right: "6%", top: "47%",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        gap: "clamp(14px, 3.8vw, 54px)",
+        color: "rgba(235,248,232,0.94)",
+        fontFamily: "Arial, Helvetica, sans-serif",
+        fontSize: "clamp(30px, 5.5vw, 72px)",
+        fontWeight: 900,
+        letterSpacing: "0.24em",
+        textShadow: "0 0 18px rgba(220,248,220,0.68), 0 0 3px rgba(255,255,255,0.84)",
+        filter: "blur(0.05px)",
+      }}>
+        {["S", "I", "N", "I", "R", "-", "1"].map((ch, i) => (
+          <span key={i} style={{
+            transform: i === 2 ? "translateY(-5px) scaleY(1.16)" : "none",
+            opacity: i === 5 ? 0.72 : 1,
+          }}>{ch}</span>
+        ))}
+      </div>
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.36) 72%, rgba(0,0,0,0.82))",
+      }} />
+    </div>
+  );
+}
 
 export default function IntroCinematic({ onFinish }) {
   const [body, setBody] = useState(PREFILLED);
@@ -241,16 +332,7 @@ export default function IntroCinematic({ onFinish }) {
   if (phase === "title" || phase === "titleout") {
     return (
       <div style={S.introBlack}>
-        <div className={phase === "title" ? "s1-fadein" : "s1-fadeout"} style={{
-          fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: "clamp(30px, 9vw, 52px)", fontWeight: 700,
-          letterSpacing: "0.45em", paddingLeft: "0.45em",
-          color: "#e8ecdf",
-          textShadow: "0 0 18px rgba(220,240,210,0.85), 0 0 46px rgba(160,220,180,0.4)",
-          whiteSpace: "nowrap",
-        }}>
-          SINIR-1
-        </div>
+        <SinirTitleCard leaving={phase === "titleout"} />
       </div>
     );
   }
@@ -264,6 +346,22 @@ export default function IntroCinematic({ onFinish }) {
 
   return (
     <div ref={rootRef} style={W.backdrop} className={phase === "sent" && status === "GÖNDERİLDİ ✓" ? "s1-fadeout" : "s1-fadein"}>
+      <div style={{
+        position: "absolute", left: "4%", bottom: "20%",
+        width: "20%", height: "24%",
+        borderLeft: "2px solid rgba(6,5,4,0.9)",
+        borderBottom: "2px solid rgba(6,5,4,0.9)",
+        transform: "skewX(-8deg)",
+        opacity: 0.64,
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: [
+          "radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,0.64) 100%)",
+          "linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.62) 78%, rgba(0,0,0,0.86))",
+        ].join(", "),
+        pointerEvents: "none",
+      }} />
       <div style={W.win}>
         {/* pencere başlığı */}
         <div style={W.titleBar}>

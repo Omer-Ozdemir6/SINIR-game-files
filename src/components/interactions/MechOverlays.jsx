@@ -2,7 +2,7 @@ import { styles as S } from "../../styles/theme";
 import { t } from "../../i18n";
 
 /* POMPA A — vana: dokundukça çark döner (turns kadar dokunuş) */
-export function ValveOverlay({ title, deg, done, onTurn, onCancel }) {
+export function ValveOverlay({ title, deg, done, busy, onTurn, onCancel }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.keypadPanel} className="s1-panel">
@@ -17,7 +17,11 @@ export function ValveOverlay({ title, deg, done, onTurn, onCancel }) {
         <div style={S.mechProgTrack}>
           <div style={{ ...S.mechProgFill, width: Math.min(100, (deg / 360) * 100) + "%" }} />
         </div>
-        <button className="s1-btn s1-key" style={S.bigActionBtn} onClick={onTurn}>
+        <button className="s1-btn s1-key" style={{
+          ...S.bigActionBtn,
+          opacity: busy && !done ? 0.62 : 1,
+          pointerEvents: busy && !done ? "none" : "auto",
+        }} disabled={busy && !done} onClick={onTurn}>
           {done ? t("mech.valveDone") : t("mech.valveTurn")}
         </button>
         {!done && (

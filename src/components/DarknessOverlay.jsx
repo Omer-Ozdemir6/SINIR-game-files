@@ -1,6 +1,6 @@
 import { styles as S } from "../styles/theme";
 
-/* KARANLIK MODU v2 — Outlast'ın pil bitişi gibi:
+/* KARANLIK MODU v2 — pil bitişi karanlığı:
    · süre GİZLİ: bar/rakam yok
    · ekran aralıklı pırpırlar (s1-darkmode)
    · süre azaldıkça (p→1) kenarlar KIZARIR, oyun katmanı App'te

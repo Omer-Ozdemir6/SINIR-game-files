@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { styles as S } from "../../styles/theme";
 import { t } from "../../i18n";
+import { AudioSys } from "../../audio/AudioSys";
 
 // Global ses motoru tetikleyicileri
 const playSwitchSound = () => {
-  if (window.audioManager && window.audioManager.uiClick) {
-    window.audioManager.uiClick(); // Şalter/Ağır çıt sesi
-  }
+  AudioSys.uiClick();
 };
 
 const playResetSound = () => {
-  if (window.audioManager && window.audioManager.burst) {
-    window.audioManager.burst(150); // Devreye elektrik yüklenmesi / Kısa ark tıslaması
-  }
+  AudioSys.burst(150);
 };
 
 export default function LightsOverlay({ lights, done, onPress, onReset, onCancel }) {
@@ -34,8 +31,8 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
 
   // Bulmaca çözüldüğünde başarı sesi tetiklemesi
   useEffect(() => {
-    if (done && window.audioManager && window.audioManager.objectiveSfx) {
-      window.audioManager.objectiveSfx(); // Güç aktarım/Ağır kapı kilit açılma sesi
+    if (done) {
+      AudioSys.objectiveSfx();
     }
   }, [done]);
 
@@ -107,13 +104,12 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
             <button 
               key={i} 
               disabled={done}
-              className="s1-btn s1-key group" 
+              className="s1-btn s1-key group w-10 h-10 border-2 border-zinc-800 rounded bg-zinc-900 font-black text-xs text-zinc-400 hover:border-zinc-700 hover:text-zinc-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center justify-center shadow-md" 
               style={{
                 ...S.lightBtn,
                 // Özel durum buton tasarımları
                 background: 'linear-gradient(180deg, #27272a 0%, #18181b 100%)',
-              }} 
-              className="w-10 h-10 border-2 border-zinc-800 rounded bg-zinc-900 font-black text-xs text-zinc-400 hover:border-zinc-700 hover:text-zinc-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all flex items-center justify-center shadow-md"
+              }}
               onClick={() => handlePress(i)}
             >
               <span className="group-active:translate-y-0.5 transition-transform">{i + 1}</span>

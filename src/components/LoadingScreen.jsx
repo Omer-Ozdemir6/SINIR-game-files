@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { t } from "../i18n";
 
 /* ============================================================
-   YÜKLEME EKRANI — dairesel dönen noktalar (Outlast tarzı).
+   YÜKLEME EKRANI — dairesel dönen noktalar.
    12 nokta bir çember üzerinde; "aktif" nokta çemberde döner,
    ona yakın noktalar daha parlak. Karanlık, atmosferik zemin.
    ============================================================ */
@@ -43,7 +42,12 @@ export default function LoadingScreen({ onDone }) {
         background: "radial-gradient(circle at 22% 30%, rgba(60,80,70,0.12) 0%, transparent 30%), radial-gradient(circle at 78% 68%, rgba(50,70,60,0.10) 0%, transparent 28%)",
       }} />
 
-      <svg width="150" height="150" viewBox="0 0 100 100" style={{ filter: "drop-shadow(0 0 6px rgba(0,0,0,0.8))" }}>
+      <svg width="96" height="96" viewBox="0 0 100 100" style={{
+        position: "absolute",
+        right: "clamp(22px, 7vw, 84px)",
+        bottom: "clamp(22px, 7vh, 70px)",
+        filter: "drop-shadow(0 0 6px rgba(0,0,0,0.8))",
+      }}>
         {Array.from({ length: DOTS }).map((_, i) => {
           const ang = (i / DOTS) * Math.PI * 2 - Math.PI / 2;
           const x = cx + R * Math.cos(ang);
@@ -59,14 +63,6 @@ export default function LoadingScreen({ onDone }) {
           );
         })}
       </svg>
-
-      <div style={{
-        marginTop: 26,
-        fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 10,
-        letterSpacing: "0.35em", color: "#5f7573",
-      }}>
-        {t("sys.loading")}
-      </div>
     </div>
   );
 }

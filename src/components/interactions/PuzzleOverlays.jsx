@@ -4,7 +4,7 @@ import { AudioSys } from "../../audio/AudioSys";
 import { t } from "../../i18n";
 
 /* ============================================================
-   SINIR-1 — BULMACA BİLEŞENLERİ v2 (Outlast / RE7 / RE8 esintili)
+   SINIR-1 — BULMACA BİLEŞENLERİ v2
    Hepsi kendi durumunu tutar; dış kancalar: onSuccess / onFail / onCancel.
    Story kullanımı: interaction: { kind, ...config, success, cancel }
 
@@ -96,12 +96,12 @@ function shadowPath(pts2d) {
 }
 
 export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
-  const step = config.step || 15;
-  const tol = config.tol ?? 12;                       // derece toleransı
+  const step = config.step || 10;
+  const tol = config.tol ?? 6;                        // derece toleransı
   const targetYaw = config.targetYaw ?? 0;
   const targetPitch = config.targetPitch ?? 0;
-  const [yaw, setYaw] = useState(config.startYaw ?? 65);
-  const [pitch, setPitch] = useState(config.startPitch ?? -40);
+  const [yaw, setYaw] = useState(config.startYaw ?? 130);
+  const [pitch, setPitch] = useState(config.startPitch ?? -55);
   const [locked, setLocked] = useState(false);
 
   const angNear = (a, b) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
@@ -149,10 +149,10 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
           </defs>
           {/* projeksiyon lambası (duvar) */}
           <circle cx="0" cy="0" r="104" fill="url(#s1lamp)" />
-          {/* hedef silüet — soluk kesikli, ne yapman gerektiğini gösterir */}
+          {/* hedef silüet — zor modda sadece belge ipucu varsa görünür */}
           <path d={targetD} fill="none"
             stroke="#5a8a6a" strokeWidth="2.4" strokeLinecap="round"
-            strokeDasharray="4 5" opacity={locked ? 0 : 0.32} />
+            strokeDasharray="4 5" opacity={locked ? 0 : config.showTarget ? 0.32 : 0.08} />
           {/* nesnenin gölgesi — açı değiştikçe ŞEKİL değişir */}
           <path d={curD} fill="none"
             stroke={locked ? "#7cc39a" : "#05080799"}
@@ -527,7 +527,7 @@ const TILE_ART = [
 
 export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
   const n = 3;
-  const [perm, setPerm] = useState(config.scramble || [4, 2, 8, 6, 0, 7, 1, 5, 3]);
+  const [perm, setPerm] = useState(config.scramble || [8, 6, 7, 2, 5, 4, 3, 0, 1]);
   const [sel, setSel] = useState(null);
   const [done, setDone] = useState(false);
 

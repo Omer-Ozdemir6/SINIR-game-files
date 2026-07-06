@@ -2,7 +2,7 @@ import { useState } from "react";
 import { t } from "../i18n";
 
 /* ============================================================
-   ANA MENÜ — Outlast 2 tarzı.
+   ANA MENÜ — SINIR-1 karanlık menü.
    Atmosferik arka plan (su altı tesisi), sol hizalı liste,
    üzerine gelinen/seçili öğe vurgulu (kutu + parlaklık).
    ============================================================ */

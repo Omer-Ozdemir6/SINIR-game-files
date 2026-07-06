@@ -36,7 +36,7 @@ export default function FrequencyTunerPuzzle({ config, onSuccess }) {
     
     setSignalStrength(strength);
 
-    // [Outlast Atmosferi]: Oyuncu hedeften uzaklaştıkça arkadaki parazit (static) sesini artır
+    // Oyuncu hedeften uzaklaştıkça arkadaki parazit (static) sesini artır
     // Hedef %100 yakalandığında parazit tamamen sıfırlanır.
     if (window.audioManager && window.audioManager.staticLevel) {
       const staticVolume = (100 - strength) / 100;

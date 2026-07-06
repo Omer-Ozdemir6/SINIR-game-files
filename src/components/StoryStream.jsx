@@ -1,11 +1,11 @@
 import { styles as S } from "../styles/theme";
-import { corruptText, obscureText } from "../engine/textFx";
+import { obscureText } from "../engine/textFx";
 import { t } from "../i18n";
 
-/* Hikaye akışı: satırlar (akıl bozulması + pil karartması uygulanır),
+/* Hikaye akışı: satırlar (düşük pil karartması uygulanır),
    karar zamanlayıcısı, seçim butonları ve bölüm sonu ekranı. */
 export default function StoryStream({
-  scrollRef, lines, typing, akil, wordsObscured, choicesObscured,
+  scrollRef, lines, typing, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
   ended, onEndContinue, tapWait,
 }) {
@@ -14,7 +14,6 @@ export default function StoryStream({
       {lines.map((l, i) => {
         let txt = l.text;
         if (l.kind === "narrate" || l.kind === "ambient") {
-          txt = corruptText(txt, akil);
           if (wordsObscured) txt = obscureText(txt);
         }
         return (

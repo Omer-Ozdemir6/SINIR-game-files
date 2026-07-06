@@ -1,13 +1,13 @@
 /* ================= ===========================================
-   SINIR-1 — BÖLÜM 2: "K-5 / SINAV" (v4 — OUTLAST TONE & TABLET LIGHT MECHANIC)
+   SINIR-1 — BÖLÜM 2: "K-5 / SINAV" (v4 — SERT PSİKOLOJİK GERİLİM & TABLET IŞIĞI)
    Katın sahibi: DENİZ OKUR — sistemden konuşan mühendis.
 
-   YAPI & ATMOSFER (Outlast Horrific Realism):
+   YAPI & ATMOSFER (SINIR-1 psikolojik gerçekçilik):
    · n_hub: dört dala açılır; oyuncu sınavların sırasını SEÇER.
    · Oyuncunun elinde GECE GÖRÜŞÜ veya vizör yok. Sadece TABLET var.
    · Tabletin ekran ışığı (ya da feneri) tek ışık kaynağı; pili bittiğinde mutlak karanlık ve ölüm kaçınılmaz.
-   · Anlatım dili tamamen Outlast klasiği olan çaresizlik, ağır psikolojik gerilim, et kesilmesi, kemik çatlaması, nefes darlığı ve bedensel korku üzerine kuruldu.
-   · Kod yapısı, bayraklar, etkileşimler eksiksiz korundu; sadece metinler, anonslar ve tasvirler Outlast vahşeti ve o klostrofobik atmosfere göre revize edildi.
+   · Anlatım dili çaresizlik, ağır psikolojik gerilim, bedensel korku ve klostrofobik baskı üzerine kuruldu.
+   · Kod yapısı, bayraklar, etkileşimler eksiksiz korundu; metinler SINIR-1'in kendi vahşeti ve kapalı istasyon atmosferine göre revize edildi.
    ============================================================ */
 
 export const EP02 = {
@@ -22,6 +22,7 @@ export const EP02 = {
         { type: "music", track: "k5_outlast_dread" },
         { type: "system", text: "KAT: K-5 — YAŞAM DESTEK · ÖLÜMÜN EŞİĞİ · SU VE KAN DÖNGÜSÜ" },
         { type: "narrate", text: "Merdivenlerden indiğin an, ciğerlerine dolan hava pas, küf ve çürüyen et kokusuyla ağırlaşıyor. K-5 devasa bir canavarın içi gibi; borular delice zonkluyor, filtreler sanki boğuluyormuş gibi hırıltıyla tıslıyor, tavan şaftları karanlık dişlerini etine geçirmek için bekleyen ağızlar gibi açılıyor." },
+        { type: "narrate", text: "Burada korku rastgele değil. Duvarlardaki kameralar, hoparlörler ve paneller öyle düzenli yerleştirilmiş ki K-5 bir kat değil, gözlem odası olmayan dev bir deney kafesi gibi. Her koridorun sonunda seni ölçen bir şey var: ne kadar ses çıkarıyorsun, ne kadar hızlı panikliyorsun, yalvarmadan önce kaç saniye dayanıyorsun." },
         { type: "narrate", text: "Öne doğru üç titrek adım atıyorsun. Arkandaki ağır çelik kapı birden öyle bir gürültüyle kapanıyor ki, darbe dalgası sırtında patlıyor. Kilidin yuvasına oturma sesi: TIK. TIK. Bir farenin kapana kısılması gibi, burası bir deney sahası ve sen sadece can çekişmesi izlenecek bir kurbansın." },
         { type: "narrate", text: "Karanlığı yırtan tek şey, parmaklarının arasında titreyen tabletin çiğ, beyaz ekran ışığı. Bu ışık seni kurtarmıyor; sadece seni avlayacak şeylere nerede olduğunu gösteren bir fener gibi yüzünü aydınlatıyor. Pil çubuğu yavaşça göz kırpıyor." },
         { type: "waitTap" },
@@ -31,6 +32,9 @@ export const EP02 = {
         { type: "stat", stat: "akil", delta: -5 },
         { type: "objective", text: "Mutlak karanlık çökmeden üç kart parçasını söküp al ve çıkışı zorla" },
         { type: "note", id: "not_deniz", title: "Deniz Okur — Hücremin Gardiyanı", text: "Hoparlörden salyalarını akıtarak konuşan o psikopat: Deniz. Sistem mühendisi. Kapılar, kameralar, buradaki her ölüm tuzağı onun parmaklarının ucunda. Beni bu lağım kokulu koridorlara bir laboratuvar faresi gibi fırlattı. Sesindeki o sapkın eğlence, saf nefretten çok daha korkunç. Üç 'ders', üç kart parçası... Eğer pillerim bitmeden o kartı tamamlayamazsam, bu tabletin soğuk ışığı altında can vereceğim." },
+        { type: "document", open: false, doc: {
+          id: "d_deniz_protokol", title: "Davranış Ölçüm Protokolü — K-5",
+          body: "KONU: Bakım personeli / dış kaynaklı denek\nGÖZLEM AMACI: Kapalı sistemde korku tepkisi, itaat, yön bulma ve ses üretimi.\n\n1. Denek, çıkış bilgisi verilmeden kontrollü kavşağa alınır.\n2. Denek üç ayrı görev hattına yönlendirilir. Her hatta eksik bilgi, fiziksel tehdit ve ses cezası bulunur.\n3. Denek yardım çağırmaya çalışırsa iletişim hattı kayda alınır, sonra kesilir.\n4. Denek adını söylerse kayıt kişiselleştirilir. Kişiselleştirme, panik süresini uzatır.\n\nNOT: Deneklerin çoğu üçüncü görev öncesinde konuşmayı bırakır. Sessizlik başarı değil, çözülme belirtisidir.\nONAY: D. Okur / Sistem Denetimi" } },
       ],
       choices: [
         { id: "ilerle", text: "Tabletin titrek ışığını önüme tutarak koridora sız", next: "n_hub" },
@@ -87,7 +91,7 @@ export const EP02 = {
           { id: "p5", label: "5" },
         ],
         pairs: { c_o2: "p3", c_co2: "p1", c_pmp: "p5", c_fan: "p2", c_val: "p4" },
-        penalty: { gurultu: 12, akil: -4, text: "GÜM! Yanlış bağlantı! Yüksek voltaj parmaklarında patladı ve çelik duvarlarda yankılandı! GÜRÜLTÜ +12" },
+        penalty: { gurultu: 12, text: "GÜM! Yanlış bağlantı. Yüksek voltaj parmaklarında patladı ve çelik duvarlarda yankılandı. GÜRÜLTÜ +12" },
         success: "n_destek_onarildi",
         cancel: "n_hub",
       },
@@ -139,7 +143,7 @@ export const EP02 = {
         { type: "document", open: true, doc: {
           id: "d_havasema", title: "Dehşet Altında Basınç Protokolü",
           meta: "SINIR-1 · K-5 ÖLÜM HESAPLARI · TALİMAT 3-C",
-          body: "BASINÇ ODASI — İŞKENCEYİ DURDURMA SIRASI\n\nKURAL: Bu sırayı bozan içeride paramparça olur.\n\n  1) DENGELEME  (sarı)  — kafanın içindeki baskıyı durdurur\n  2) TAHLİYE    (kırmızı)— biriken kanlı gazı sintineye fırlatır\n  3) ANA BESLEME(yeşil)  — kilidi patlatır\n\nHATA YAPARSAN, BEYNİN KULAKLARINDAN AKAR.\n(Kayıt, hafta 12: T. Demir — Sol kulak zarı patladı, delirdi.)" } },
+          body: "BASINÇ ODASI — ACİL MANUEL BOŞALTMA PROTOKOLÜ\n\nGİZLİLİK: KURUM İÇİ / TIBBİ OLAY KAYDI EKLİDİR\n\nUygulama sırası değiştirilmeyecektir:\n\n  1) DENGELEME  (sarı)   — kraniyal basınç artışını keser\n  2) TAHLİYE    (kırmızı)— kanlı gazı sintine hattına verir\n  3) ANA BESLEME(yeşil)  — kapı kilidini serbest bırakır\n\nVAKA 12-TD: Sıra ihlali sonrası sol kulak zarı yırtığı,\ngöz içi damar patlaması ve 43 saniyelik bilinç kaybı kaydedildi.\nPersonel canlı çıkarıldı; konuşma yetisi geri dönmedi.\n\nNot: Odadaki çığlık kayıtları eğitim materyali değildir.\nTekrar dinletilmesi yasaktır." } },
         { type: "note", id: "not_havasema", title: "Kulaklarımı Kurtaracak Sıra", text: "Önce SARI vana (denge), sonra KIRMIZI (tahliye), en son o devasa YEŞİL çark. Yanlış bir hareket yaparsam kafam patlayacak." },
       ],
       choices: [
@@ -344,6 +348,7 @@ export const EP02 = {
 
     n_t2_nefes: {
       events: [
+        { type: "narrate", text: "Burada nefesini tek seferde tutup ölmeyi beklemek yetmeyecek. O şey tünelin önünden geçerken bazı anlarda kendi hırıltısı metalin içinde boğuluyor; işte sadece o kısa aralıklarda ciğerinden minicik bir hava kaçırabilirsin. Yanlış anda bırakırsan, en küçük hıçkırığın bile bu sac tabutu mezarına çevirecek." },
         { type: "narrate", text: "Kendini o dikey küçük menfezin içine etini yırtarak sokuyorsun. Çelik sac göğsünü bir mengene gibi sıkıştırıyor. Tabletini göğsüne bastırıp o çiğ ışığı tamamen vücudunla gömüyorsun. Tam o sırada, o ıslak, salyalı canavar tam önünden, bir parmak ötendeki tünelden hırıldayarak geçmeye başlıyor. Kokusu leş gibi." },
       ],
       interaction: { kind: "breath", holdMs: 8000, lungMs: 9500, success: "n_t3", fail: "n_olum_tunel" },
@@ -412,7 +417,7 @@ export const EP02 = {
         { type: "document", open: true, doc: {
           id: "d_sinavdefteri", title: "Deniz'in Kanlı Av Defteri", style: "hand",
           meta: "— kapağında vahşi bir karalamayla: 'DENEYLER. D.' —",
-          body: "KAYIP ET 1 — Kaynakçı\nds1'i tamamen şansla geçti. ds2 tünelde 41 dakika ağladı. Rezil.\nds3'te hep yalan söyledi, gözlerimin içine bakarak. -> Aileye verdim. Güzelce temizlediler.\n\nKAYIP ET 2 — Revirdeki hemşire\nds1 ve ds2'yi haritayla geçti, akıllı fahişe.\nds3'te yüzüme karşı 'Sen sadece seyirci arayan aciz bir sapıksın' dedi. NOT ALDIM. Kaçmaya çalışırken şaftta yakaladım. Yazık oldu.\n\nKAYIP ET 3 — İsmini vermeyen o gururlu pislik\nds3 boyunca tek kelime etmedi, tırnaklarını sökerken bile sustu.\n-> Aileye gitti. Artık etrafı izleyip sadece sayıları sayıyor.\n\nKAYIP ET 4 —\n(Burası boş... En üstte taze, kurumamış mürekkeple SENİN görev numaran yazıyor.)" } },
+          body: "ADAY 01 — Kaynakçı\nDS-1'i tesadüfen geçti. DS-2 tünelinde 41 dakika ağladı.\nDS-3 sırasında aynı cevabı üç kez değiştirdi.\nSONUÇ: Aile'ye teslim edildi. Temizlik tamamlandı.\n\nADAY 02 — Revir görevlisi\nDS-1 ve DS-2'yi harita yardımıyla geçti.\nDS-3 sırasında deneği yöneten kişiye doğrudan hakaret etti.\nKaçış denemesi şaft girişinde sonlandırıldı.\nSONUÇ: Ses telleri çıkarıldıktan sonra Aile'ye teslim.\n\nADAY 03 — Kimliği doğrulanamadı\nDS-3 boyunca tek kelime etmedi. Tırnak çekimi sırasında dahi\ntepki vermedi.\nSONUÇ: Aile'ye teslim. Şu an çevreyi izliyor ve yalnızca sayıyor.\n\nADAY 04 —\n(Kayıt alanı boş. Üst satırda taze mürekkeple senin görev numaran var.)" } },
         { type: "note", id: "not_sinavdefteri", title: "Ölüm Defteri", text: "Benden önceki üç kurbanın infaz kaydı burada... Deniz yalan söyleyenleri de susanları da o 'Aile' denen yamyamlara yem etmiş. Hemşire ona meydan okumuş... Dördüncü sayfa benim için açılmış. Kurtulmak için bu psikopatla oynamalıyım." },
         { type: "anons", text: "「Otur o sandalyeye. Üçüncü ders: DÜRÜSTLÜK. Sana üç soru soracağım. Yalan söyleyebilirsin, etini keserken anlarım ama serbest. Tek kural: Cevap ver. Susarsan, tırnaklarından başlarız.」" },
       ],

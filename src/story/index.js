@@ -24,10 +24,31 @@ import { EP03 as EN_EP03, EP03_FLAGS as EN_EP03_FLAGS } from "./en/ep03.js";
 import { EP04 as EN_EP04, EP04_FLAGS as EN_EP04_FLAGS } from "./en/ep04.js";
 import { EP05 as EN_EP05, EP05_FLAGS as EN_EP05_FLAGS } from "./en/ep05.js";
 
+const stripMindSystem = (nodes) => Object.fromEntries(
+  Object.entries(nodes).map(([id, node]) => {
+    const clean = { ...node };
+    if (clean.events) {
+      clean.events = clean.events.filter((ev) => !(ev.type === "stat" && ev.stat === "akil"));
+    }
+    if (clean.choices) {
+      clean.choices = clean.choices.map((choice) => {
+        if (choice.ifStat?.stat !== "akil") return choice;
+        const { ifStat, ...rest } = choice;
+        return rest;
+      });
+    }
+    if (clean.interaction?.penalty?.akil !== undefined) {
+      const { akil, ...penalty } = clean.interaction.penalty;
+      clean.interaction = { ...clean.interaction, penalty };
+    }
+    return [id, clean];
+  })
+);
+
 const buildTR = () => ({
   story: {
     start: EP01.start,
-    nodes: { ...EP01.nodes, ...EP02.nodes, ...EP03.nodes, ...EP04.nodes, ...EP05.nodes, ...EPX.nodes },
+    nodes: stripMindSystem({ ...EP01.nodes, ...EP02.nodes, ...EP03.nodes, ...EP04.nodes, ...EP05.nodes, ...EPX.nodes }),
   },
   flags: { ...EP01_FLAGS, ...EP02_FLAGS, ...EP03_FLAGS, ...EP04_FLAGS, ...EP05_FLAGS, ...EPX_FLAGS },
 });
@@ -35,7 +56,7 @@ const buildTR = () => ({
 const buildEN = () => ({
   story: {
     start: EN_EP01.start, // İngilizce başlangıç node'u
-    nodes: { ...EN_EP01.nodes, ...EN_EP02.nodes, ...EN_EP03.nodes, ...EN_EP04.nodes, ...EN_EP05.nodes, ...EPX.nodes },
+    nodes: stripMindSystem({ ...EN_EP01.nodes, ...EN_EP02.nodes, ...EN_EP03.nodes, ...EN_EP04.nodes, ...EN_EP05.nodes, ...EPX.nodes }),
   },
   flags: { ...EN_EP01_FLAGS, ...EN_EP02_FLAGS, ...EN_EP03_FLAGS, ...EN_EP04_FLAGS, ...EN_EP05_FLAGS, ...EPX_FLAGS },
 });
