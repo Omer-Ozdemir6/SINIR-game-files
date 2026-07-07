@@ -1,28 +1,50 @@
+import { memo, useMemo } from "react";
 import { styles as S } from "../styles/theme";
 import { obscureText } from "../engine/textFx";
 import { t } from "../i18n";
 
-/* Hikaye akışı: satırlar (düşük pil karartması uygulanır),
-   karar zamanlayıcısı, seçim butonları ve bölüm sonu ekranı. */
+const MAX_VISIBLE_LINES = 90;
+
+const StoryLine = memo(function StoryLine({ line, cursor, wordsObscured }) {
+  let txt = line.text;
+  if ((line.kind === "narrate" || line.kind === "ambient") && wordsObscured) {
+    txt = obscureText(txt);
+  }
+
+  return (
+    <p style={S.lineBase[line.kind] || S.lineBase.narrate} className="s1-line">
+      {txt}
+      {cursor && <span className="s1-cursor">▌</span>}
+    </p>
+  );
+});
+
 export default function StoryStream({
   scrollRef, lines, typing, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
   ended, onEndContinue, tapWait,
 }) {
+  const visibleLines = useMemo(() => {
+    if (lines.length <= MAX_VISIBLE_LINES) return lines.map((line, i) => ({ line, key: i }));
+    const offset = lines.length - MAX_VISIBLE_LINES;
+    return lines.slice(offset).map((line, i) => ({ line, key: offset + i }));
+  }, [lines]);
+  const lastLineKey = lines.length - 1;
+
   return (
     <div ref={scrollRef} style={S.stream}>
-      {lines.map((l, i) => {
-        let txt = l.text;
-        if (l.kind === "narrate" || l.kind === "ambient") {
-          if (wordsObscured) txt = obscureText(txt);
-        }
-        return (
-          <p key={i} style={S.lineBase[l.kind] || S.lineBase.narrate} className="s1-line">
-            {txt}
-            {i === lines.length - 1 && typing && <span className="s1-cursor">▌</span>}
-          </p>
-        );
-      })}
+      {lines.length > MAX_VISIBLE_LINES && (
+        <div style={S.streamTrimNotice}>ONCEKI KAYITLAR ARSIVDE</div>
+      )}
+
+      {visibleLines.map(({ line, key }) => (
+        <StoryLine
+          key={key}
+          line={line}
+          cursor={key === lastLineKey && typing}
+          wordsObscured={wordsObscured}
+        />
+      ))}
 
       {timeLeft && (
         <div style={S.timerWrap}>
@@ -60,6 +82,7 @@ export default function StoryStream({
           </button>
         </div>
       )}
+
       {tapWait && (
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 10,

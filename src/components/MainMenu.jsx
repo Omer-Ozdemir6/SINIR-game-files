@@ -24,15 +24,39 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
       backgroundImage: [
         "linear-gradient(90deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.56) 35%, rgba(0,0,0,0.2) 68%, rgba(0,0,0,0.62) 100%)",
         "linear-gradient(180deg, rgba(2,5,6,0.45) 0%, rgba(2,5,6,0.08) 45%, rgba(0,0,0,0.72) 100%)",
-        `url(${bgUrl})`,
       ].join(", "),
-      backgroundSize: "cover, cover, cover",
-      backgroundPosition: "center, center, center",
+      backgroundSize: "cover, cover",
+      backgroundPosition: "center, center",
       display: "flex", flexDirection: "column",
       justifyContent: "center",
       padding: "0 clamp(28px, 9vw, 90px)",
       userSelect: "none",
+      overflow: "hidden",
     }} className="s1-fadein">
+      <img
+        src={bgUrl}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center",
+          opacity: 0.96,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: [
+          "linear-gradient(90deg, rgba(0,0,0,0.84) 0%, rgba(0,0,0,0.58) 35%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0.64) 100%)",
+          "linear-gradient(180deg, rgba(2,5,6,0.46) 0%, rgba(2,5,6,0.08) 45%, rgba(0,0,0,0.74) 100%)",
+        ].join(", "),
+      }} />
+
       {/* kenar karartma (vignette) */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",

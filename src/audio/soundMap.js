@@ -12,17 +12,17 @@
 
 export const SFX_FILES = {
   blip: "",       // arayüz bip'i (tuşlar, onaylar)
-  buzz: "",       // hata vızıltısı
+  buzz: "/audio/sfx/buzz.mp3",       // hata vızıltısı
   clank: "/audio/sfx/clank.mp3",      // metal darbe (vana turu, kilit)
   tick: "/audio/sfx/tick.mp3",       // klavye tık'ı (intro)
-  click: "/audio/sfx/click.mp3",      // arayüz buton tıklaması
+  click: "",      // arayüz buton tıklaması
   scratch: "/audio/sfx/scratch.mp3",    // kalemle not yazma
   page: "/audio/sfx/page.mp3",       // kâğıt/sayfa hışırtısı
   pickup: "/audio/sfx/pickup.mp3",     // pil/eşya alma
   valve: "/audio/sfx/valve.mp3",      // vana gıcırtısı
   fuse: "/audio/sfx/fuse.mp3",       // sigorta oturması
   objective: "/audio/sfx/objective.mp3",  // yeni görev çanı
-  boom: "/audio/sfx/boom.mp3",       // ölüm/darbe vuruşu
+  boom: "",       // ölüm/darbe vuruşu
   glitch: "/audio/sfx/glitch.mp3",     // parazit patlaması
   heartbeat: "/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
 };

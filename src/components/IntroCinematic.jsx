@@ -108,8 +108,20 @@ function SinirTitleCard({ leaving }) {
     <div className={leaving ? "s1-fadeout" : "s1-fadein"} style={{
       position: "absolute", inset: 0,
       overflow: "hidden",
-      background: "radial-gradient(ellipse at 48% 47%, rgba(42,61,39,0.72) 0%, rgba(11,22,15,0.92) 44%, rgba(0,5,4,1) 100%)",
+      backgroundColor: "#000",
+      animationDuration: leaving ? "2600ms" : "1400ms",
     }}>
+      <img
+        src="/intro-title-bg.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute", inset: 0,
+          width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: "center",
+          opacity: 0.86,
+        }}
+      />
       <div style={{
         position: "absolute", inset: 0,
         background: [
@@ -231,9 +243,9 @@ export default function IntroCinematic({ onFinish }) {
       setStatus("GÖNDERİLDİ ✓");
       AudioSys.blipSfx(880);
       setTimeout(() => { if (!doneRef.current) { setPh("title"); AudioSys.boom(); } }, 900);
-      setTimeout(() => { if (!doneRef.current) setPh("titleout"); }, 3400);
-      setTimeout(() => { if (!doneRef.current) setPh("card"); }, 5400);
-      setTimeout(() => { if (!doneRef.current) finish(); }, 8600);
+      setTimeout(() => { if (!doneRef.current) setPh("titleout"); }, 7200);
+      setTimeout(() => { if (!doneRef.current) setPh("card"); }, 10100);
+      setTimeout(() => { if (!doneRef.current) finish(); }, 13400);
     }, 1300);
   };
 

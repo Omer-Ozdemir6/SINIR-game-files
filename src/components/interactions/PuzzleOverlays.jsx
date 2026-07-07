@@ -261,6 +261,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
   const [done, setDone] = useState(false);
   const cables = config.cables;
   const ports = config.ports;
+  const selectedCable = cables.find((c) => c.id === sel);
 
   const yOf = (i, n) => 34 + i * (150 / Math.max(1, n - 1));
   const wire = (ci, pi) =>
@@ -315,13 +316,27 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
             <path d={wire(spark.ci, spark.pi)} fill="none"
               stroke="#e06a4a" strokeWidth="3" strokeDasharray="6 5" opacity="0.9" />
           )}
+          {sel && selectedCable && ports.map((p, pi) => {
+            if (portOwner(p.id)) return null;
+            const ci = cables.findIndex((c) => c.id === sel);
+            const exact = config.pairs[sel] === p.id;
+            return (
+              <path key={`ghost-${p.id}`} d={wire(ci, pi)} fill="none"
+                stroke={selectedCable.color}
+                strokeWidth={exact ? 3 : 1.6}
+                strokeDasharray={exact ? "none" : "5 7"}
+                opacity={exact ? 0.42 : 0.14}
+                style={{ filter: exact ? `drop-shadow(0 0 7px ${selectedCable.color})` : "none" }} />
+            );
+          })}
           {cables.map((c, i) => (
             <g key={c.id} onClick={() => pickCable(c.id)} style={{ cursor: "pointer" }}>
-              <circle cx="30" cy={yOf(i, cables.length)} r="12"
-                fill={conn[c.id] ? "#0c1514" : "#0a1210"}
+              <path d={`M8 ${yOf(i, cables.length) - 5} C16 ${yOf(i, cables.length) - 12}, 24 ${yOf(i, cables.length) - 12}, 38 ${yOf(i, cables.length) - 5} L38 ${yOf(i, cables.length) + 5} C24 ${yOf(i, cables.length) + 12}, 16 ${yOf(i, cables.length) + 12}, 8 ${yOf(i, cables.length) + 5} Z`}
+                fill={conn[c.id] ? "#0c1514" : "#101815"}
                 stroke={sel === c.id ? "#e8e4d8" : c.color}
-                strokeWidth={sel === c.id ? 3 : 2} />
-              <circle cx="30" cy={yOf(i, cables.length)} r="5" fill={c.color} opacity={conn[c.id] ? 0.4 : 1} />
+                strokeWidth={sel === c.id ? 2.8 : 1.8} />
+              <path d={`M13 ${yOf(i, cables.length)} H35 M18 ${yOf(i, cables.length) - 6} L18 ${yOf(i, cables.length) + 6} M26 ${yOf(i, cables.length) - 6} L26 ${yOf(i, cables.length) + 6}`}
+                stroke={c.color} strokeWidth="2" opacity={conn[c.id] ? 0.35 : 0.95} strokeLinecap="round" />
               <text x="30" y={yOf(i, cables.length) + 26} textAnchor="middle"
                 fontFamily={mono} fontSize="8" fill="#5f7573">{c.label}</text>
             </g>
@@ -329,15 +344,29 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
           {ports.map((p, i) => {
             const owner = portOwner(p.id);
             const sparking = spark && ports[spark.pi]?.id === p.id;
+            const isCandidate = !!sel && !owner;
+            const isExact = isCandidate && config.pairs[sel] === p.id;
             return (
               <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: "pointer" }}>
-                <rect x="216" y={yOf(i, ports.length) - 11} width="26" height="22" rx="3"
-                  fill={sparking ? "#3a120c" : owner ? "#0c1a16" : "#0a1210"}
-                  stroke={sparking ? "#e06a4a" : owner ? owner.color : "#235248"}
-                  strokeWidth="2" />
+                <rect x="212" y={yOf(i, ports.length) - 13} width="34" height="26" rx="3"
+                  fill={sparking ? "#3a120c" : owner ? "#0c1a16" : isExact ? "#162419" : isCandidate ? "#121814" : "#0a1210"}
+                  stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#7a806e" : "#235248"}
+                  strokeWidth={isExact ? 3 : 2}
+                  style={{ filter: isExact ? `drop-shadow(0 0 8px ${selectedCable.color})` : "none" }} />
+                <path d={`M219 ${yOf(i, ports.length) - 6} H239 M219 ${yOf(i, ports.length)} H239 M219 ${yOf(i, ports.length) + 6} H239`}
+                  stroke={owner ? owner.color : isExact ? selectedCable.color : "#35524b"}
+                  strokeWidth="1.5" opacity="0.75" />
+                {isCandidate && (
+                  <circle cx="229" cy={yOf(i, ports.length)} r={isExact ? 17 : 14}
+                    fill="none"
+                    stroke={isExact ? selectedCable.color : "#7a806e"}
+                    strokeWidth="1.2"
+                    strokeDasharray={isExact ? "none" : "3 4"}
+                    opacity={isExact ? 0.72 : 0.28} />
+                )}
                 <text x="229" y={yOf(i, ports.length) + 4} textAnchor="middle"
                   fontFamily={mono} fontSize={sparking ? "12" : "8"}
-                  fill={sparking ? "#f0a060" : "#7fae9c"}>
+                  fill={sparking ? "#f0a060" : isExact ? "#e8e4d8" : "#7fae9c"}>
                   {sparking ? "⚡" : p.label}
                 </text>
               </g>
@@ -367,14 +396,14 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
    ============================================================ */
 
 export const GLYPHS = {
-  g1: "M20 8 A12 12 0 1 0 20.1 8 M20 15 A5 5 0 1 1 19.9 15",
-  g2: "M13 10 V30 M27 10 V30 M13 20 H27",
-  g3: "M20 8 V32 M12 14 L28 26 M28 14 L12 26",
-  g4: "M12 12 Q28 20 12 28 M28 12 Q12 20 28 28",
-  g5: "M20 8 L30 20 L20 32 L10 20 Z M20 15 V25",
-  g6: "M10 24 Q20 8 30 24 M20 24 V32 M15 30 H25",
-  g7: "M11 13 Q16 9 20 13 Q24 17 29 13 M11 20 Q16 16 20 20 Q24 24 29 20 M11 27 Q16 23 20 27 Q24 31 29 27",
-  g8: "M20 8 Q10 18 20 22 Q30 26 20 34 M13 14 L27 14",
+  g1: "M20 7 A13 13 0 1 0 20.1 7 M20 13 A7 7 0 1 0 20.1 13 M20 20 V34 M14 28 H26",
+  g2: "M9 20 H31 M20 9 V31 M13 13 L27 27 M27 13 L13 27",
+  g3: "M12 10 C17 15 23 15 28 10 M12 20 C17 25 23 25 28 20 M12 30 C17 35 23 35 28 30",
+  g4: "M20 8 L31 16 L27 31 L13 31 L9 16 Z M14 18 H26 M17 25 H23",
+  g5: "M20 7 C10 15 11 27 20 34 C29 27 30 15 20 7 Z M15 21 H25",
+  g6: "M8 28 C13 16 20 12 32 12 M10 28 C18 22 22 22 30 28 M20 12 V34",
+  g7: "M11 11 H29 M14 16 H26 M17 21 H23 M14 26 H26 M11 31 H29",
+  g8: "M20 8 V32 M12 16 C16 12 24 12 28 16 M12 24 C16 28 24 28",
 }; // ihtiyaç olursa yeni işaretler buraya eklenir
 
 export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
@@ -492,9 +521,9 @@ const wedge = (r0, r1, a0, a1) => {
 // altın figür — halkalara bölünmüş bir "anahtar/kılıç" mührü:
 // iç: gövde+kabza · orta: kollar+gövde devamı · dış: uç+tepe sivri
 const FIGURE = [
-  ["M0 -36 V36", "M-12 26 H12", "M-9 36 H9"],
-  ["M0 -70 V-40", "M0 40 V48", "M-66 8 H-42", "M42 8 H66", "M-42 8 L-24 8", "M24 8 L42 8"],
-  ["M0 -92 V-74", "M-7 -84 L0 -94 L7 -84", "M-84 8 H-70", "M70 8 H84"],
+  ["M0 -34 A34 34 0 1 0 0.1 -34", "M0 -20 A20 20 0 1 0 0.1 -20", "M0 -8 V32", "M-10 22 H10"],
+  ["M0 -70 A70 70 0 1 0 0.1 -70", "M-66 0 H-38", "M38 0 H66", "M-48 -48 L-28 -28", "M48 -48 L28 -28", "M-48 48 L-28 28", "M48 48 L28 28"],
+  ["M0 -96 V-76", "M-96 0 H-74", "M74 0 H96", "M-18 -86 H18", "M-18 86 H18"],
 ];
 
 export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }) {
@@ -623,13 +652,14 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
    ============================================================ */
 
 const TILE_ART = [
-  "M60 12 A48 48 0 1 0 60.1 12",                       // dış çember
-  "M60 24 V96",                                         // gövde
-  "M36 44 H84",                                         // kollar
-  "M60 24 L46 38 M60 24 L74 38",                        // çapa uçları
-  "M42 96 Q60 82 78 96",                                // taban yayı
-  "M24 60 Q40 52 44 60 M96 60 Q80 52 76 60",            // yan işaretler
-  "M52 70 A8 8 0 1 0 68 70 A8 8 0 1 0 52 70",           // göz
+  "M60 10 A50 50 0 1 0 60.1 10",
+  "M60 22 A38 38 0 1 0 60.1 22",
+  "M60 12 V108 M26 60 H94",
+  "M36 34 L84 86 M84 34 L36 86",
+  "M22 28 H42 M78 28 H98 M22 92 H42 M78 92 H98",
+  "M45 60 C50 50 70 50 75 60 C70 70 50 70 45 60",
+  "M54 60 A6 6 0 1 0 66 60 A6 6 0 1 0 54 60",
+  "M30 112 C40 101 50 101 60 112 C70 101 80 101 90 112",
 ];
 
 export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
@@ -756,7 +786,29 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
           <div style={{
             width: "100%", height: "100%",
             background: "linear-gradient(135deg, rgba(255,255,255,0.2), transparent 45%, rgba(0,0,0,0.22))",
-          }} />
+            position: "relative",
+          }}>
+            <svg viewBox="0 0 40 40" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.48 }}>
+              <path
+                d={[
+                  "M20 6 A14 14 0 1 0 20.1 6 M20 12 V34",
+                  "M8 21 H32 M20 8 V32 M13 13 L27 27",
+                  "M9 29 C15 18 25 18 31 29 M20 10 V35",
+                  "M11 12 H29 M14 20 H26 M11 28 H29",
+                ][v % 4]}
+                fill="none"
+                stroke="rgba(0,0,0,0.55)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M4 7 L36 5 M7 36 L35 31"
+                fill="none"
+                stroke="rgba(255,255,255,0.22)"
+                strokeWidth="1"
+              />
+            </svg>
+          </div>
         </div>
       ))}
     </div>

@@ -22,9 +22,9 @@ export const LIGHTS_INIT = [false, true, false, true, false, true, false];
 export const DOC_LINES_PER_PAGE = 14;
 
 export const SPEED_OPTIONS = [
-  { labelKey: "settings.speedSlow", mult: 1.5 },
-  { labelKey: "settings.speedNormal", mult: 1 },
-  { labelKey: "settings.speedFast", mult: 0.45 },
+  { labelKey: "settings.speedSlow", mult: 1.85 },
+  { labelKey: "settings.speedNormal", mult: 1.25 },
+  { labelKey: "settings.speedFast", mult: 0.75 },
 ];
 
 // Karanlık modu: pil %0'a inince oyun DURMAZ — ekran pırpırlı

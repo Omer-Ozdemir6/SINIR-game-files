@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { Suspense, lazy, useState, useEffect, useRef, useCallback } from "react";
 
 import { AudioSys } from "./audio/AudioSys";
 import { t, getLang, setLang, LANGS } from "./i18n";
@@ -34,10 +34,10 @@ import LightsOverlay from "./components/interactions/LightsOverlay";
 import { ValveOverlay, LeverOverlay, FuseOverlay } from "./components/interactions/MechOverlays";
 import BreathOverlay from "./components/interactions/BreathOverlay";
 import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./components/interactions/PuzzleOverlays";
-import PuzzleTest from "./components/PuzzleTest";
 import DarknessOverlay from "./components/DarknessOverlay";
 
 const MENU_AFTER_END_KEY = "sinir1_menu_after_ending";
+const PuzzleTest = lazy(() => import("./components/PuzzleTest"));
 
 /* ============================================================
    SINIR-1 — OYUN MOTORU (App)
@@ -144,12 +144,15 @@ export default function App() {
   const glitchFxRef = useRef(true);
   const darkIntRef = useRef(null);
   const darkRef = useRef(false);
+  const screenRef = useRef(null);
+  const modeRef = useRef(mode);
   const valveBusyRef = useRef(false);
   const leverIntRef = useRef(null);
   const leverHoldingRef = useRef(false);
   const fuseIntRef = useRef(null);
   const breathIntRef = useRef(null);
   const breathHoldingRef = useRef(false);
+  const breathStateRef = useRef(null);
   const tapWaitRef = useRef(null);   // "devam için dokun" kapısı
   const docCloseRef = useRef(null);  // açık döküman kapanana dek bekleme
 
@@ -170,7 +173,17 @@ export default function App() {
     if (flashRef.current) { clearTimeout(flashRef.current); flashRef.current = null; }
     if (toastRef.current) { clearTimeout(toastRef.current); toastRef.current = null; }
   };
-  const later = (fn, ms) => { const t = setTimeout(fn, ms); timeoutsRef.current.push(t); };
+  const later = (fn, ms) => {
+    const id = setTimeout(() => {
+      timeoutsRef.current = timeoutsRef.current.filter((t) => t !== id);
+      fn();
+    }, ms);
+    timeoutsRef.current.push(id);
+    return id;
+  };
+
+  useEffect(() => { screenRef.current = screen; }, [screen]);
+  useEffect(() => { modeRef.current = mode; }, [mode]);
 
   const fmtClock = () => {
     const m = clockRef.current;
@@ -208,23 +221,35 @@ export default function App() {
     if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; }
   };
 
+  const readingDelayFor = (kind, text) => {
+    const len = String(text || "").length;
+    if (kind === "system") return Math.min(1600, Math.max(650, len * 10));
+    if (kind === "alert") return Math.min(2200, Math.max(900, len * 14));
+    if (kind === "anons") return Math.min(4200, Math.max(1400, len * 20));
+    return Math.min(3600, Math.max(1100, len * 17));
+  };
+
   const typeLine = (kind, text, runId, speed = 26) =>
     new Promise((resolve) => {
       setLines((ls) => [...ls, { kind, text: "" }]);
       setTyping(true);
       let i = 0;
+      const chunk = text.length > 360 ? 4 : text.length > 180 ? 3 : text.length > 90 ? 2 : 1;
       const tick = () => {
         if (runIdRef.current !== runId) { setTyping(false); return resolve(); }
         if (skipRef.current) { i = text.length; skipRef.current = false; }
-        else i++;
+        else i = Math.min(text.length, i + chunk);
         const slice = text.slice(0, i);
         setLines((ls) => {
           const copy = ls.slice();
           copy[copy.length - 1] = { ...copy[copy.length - 1], text: slice };
           return copy;
         });
-        if (i >= text.length) { setTyping(false); resolve(); }
-        else later(tick, Math.max(6, Math.round(speed * speedMultRef.current)));
+        if (i >= text.length) {
+          setTyping(false);
+          wait(readingDelayFor(kind, text), runId).then(resolve);
+        }
+        else later(tick, Math.max(10, Math.round(speed * speedMultRef.current * chunk)));
       };
       tick();
     });
@@ -319,9 +344,14 @@ export default function App() {
     AudioSys.heart(430);
     showToast("▼", t("eng.darkStart"), "#c23b2e");
     let left = DARK_MS;
+    let last = performance.now();
     darkIntRef.current = setInterval(() => {
       if (batteryRef.current > 0) { stopDarkness(); return; }
-      left -= 100;
+      if (modeRef.current !== "game" || screenRef.current) return;
+      const now = performance.now();
+      const dt = Math.min(500, Math.max(100, now - last));
+      last = now;
+      left -= dt;
       setDark({ left });
       if (left <= 0) {
         stopDarkness(true);
@@ -330,7 +360,7 @@ export default function App() {
           battery: true,
         });
       }
-    }, 100);
+    }, 250);
   };
 
   /* ---------------- olay oynatıcı ---------------- */
@@ -377,7 +407,7 @@ export default function App() {
           setPendingBattery({ n: ev.spares });
           return new Promise((resolve) => { batteryResolveRef.current = resolve; });
         }
-        return wait(600, runId);
+        return wait(1500, runId);
       }
       case "anons": return typeLine("anons", ev.text, runId, 20);
       case "music": { currentTrackRef.current = ev.track || null; AudioSys.music(ev.track || null); return; }
@@ -396,9 +426,9 @@ export default function App() {
           setDocPage(0);
           setOpenItem({ kind: "doc", item });
           await new Promise((res) => { docCloseRef.current = res; });
-          return;
+          return wait(500, runId);
         }
-        return wait(900, runId);
+        return wait(1800, runId);
       }
       case "waitTap": return waitTap(runId);
       case "note": {
@@ -833,12 +863,16 @@ export default function App() {
       return;
     }
     let dir = 1, pos = 0;
+    let last = performance.now();
     fuseIntRef.current = setInterval(() => {
-      pos += dir * 2.4;
+      const now = performance.now();
+      const dt = Math.min(80, Math.max(20, now - last));
+      last = now;
+      pos += dir * 2.4 * (dt / 20);
       if (pos >= 100) { pos = 100; dir = -1; }
       if (pos <= 0) { pos = 0; dir = 1; }
       setFuseMarker(pos);
-    }, 20);
+    }, 40);
     return () => { if (fuseIntRef.current) { clearInterval(fuseIntRef.current); fuseIntRef.current = null; } };
   }, [interaction]);
 
@@ -912,6 +946,7 @@ export default function App() {
     const failTo = interaction.fail;
     AudioSys.heart(520);
     let t = 0, lung = 0, resolved = false, hasHeld = false;
+    let lastTick = performance.now();
     const finish = (target) => {
       if (resolved) return;
       resolved = true;
@@ -920,21 +955,28 @@ export default function App() {
       AudioSys.heart(null);
       setInteraction(null);
       setBreath(null);
+      breathStateRef.current = null;
       playNode(target);
     };
     let heartStage = 0;
     breathIntRef.current = setInterval(() => {
-      t += 60;
+      const now = performance.now();
+      const dt = Math.min(180, Math.max(40, now - lastTick));
+      lastTick = now;
+      t += dt;
       const holding = breathHoldingRef.current;
       // ADRENALİN DALGALARI: iki pencerede ciğer 2 kat hızlı dolar
       const releaseWindow = releaseWindows.find(([a, b]) => t >= a && t <= b);
       const safeRelease = Boolean(releaseWindow);
       const spike = spikes.some(([a, b]) => t >= a && t <= b);
       if (holding) hasHeld = true;
-      if (holding) lung += safeRelease ? 90 : spike ? 120 : 60;
-      else if (safeRelease && lung > 0) lung = Math.max(0, lung - 150);
+      const step = dt / 60;
+      if (holding) lung += (safeRelease ? 90 : spike ? 120 : 60) * step;
+      else if (safeRelease && lung > 0) lung = Math.max(0, lung - 150 * step);
       const phase = t >= holdMs ? "release" : safeRelease ? "vent" : holding ? "hold" : "wait";
-      setBreath({ t, lung, holding, phase, spike, safeRelease, releaseWindows, spikes });
+      const nextBreath = { t, lung, holding, phase, spike, safeRelease, releaseWindows, spikes };
+      breathStateRef.current = nextBreath;
+      setBreath(nextBreath);
       // ciğer doldukça kalp hızlanır
       const stage = lung / lungMs > 0.62 ? 2 : lung / lungMs > 0.3 ? 1 : 0;
       if (stage !== heartStage) {
@@ -947,7 +989,7 @@ export default function App() {
       if (!holding && !safeRelease && t < holdMs && hasHeld) return finish(failTo);
       // ciğer patladı
       if (lung >= lungMs) return finish(failTo);
-    }, 60);
+    }, 100);
     return () => {
       if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
       AudioSys.heart(null);
@@ -958,14 +1000,16 @@ export default function App() {
   const breathDown = () => { breathHoldingRef.current = true; };
   const breathUp = () => {
     breathHoldingRef.current = false;
-    if (!breath || !interaction || interaction.kind !== "breath") return;
+    const currentBreath = breathStateRef.current || breath;
+    if (!currentBreath || !interaction || interaction.kind !== "breath") return;
     const holdMs = interaction.holdMs || 7000;
-    if (breath.lung === 0) return; // hiç basılmamıştı
-    if (breath.t >= holdMs) {
+    if (currentBreath.lung === 0) return; // hic basilmamisti
+    if (currentBreath.t >= holdMs) {
       if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
       AudioSys.heart(null);
       setInteraction(null);
       setBreath(null);
+      breathStateRef.current = null;
       playNode(interaction.success);
     }
   };
@@ -997,6 +1041,7 @@ export default function App() {
 
   const respawn = () => {
     const cp = checkpointRef.current;
+    const batteryDeath = !!death?.battery;
     setDeath(null);
     setDying(false);
     stopDarkness(true);
@@ -1006,7 +1051,7 @@ export default function App() {
     clearPending();
     AudioSys.heart(null);
     if (!cp) return startFresh();
-    restoreFrom(cp);
+    restoreFrom(batteryDeath ? { ...cp, battery: Math.max(cp.battery || 0, 25) } : cp);
   };
 
   const startFresh = (startNode) => {
@@ -1116,10 +1161,10 @@ export default function App() {
       clearInterval(batteryWarnRef.current);
       batteryWarnRef.current = null;
     }
-    const active = mode === "game" && battery > 0 && battery <= 30 && !death && !dying && !screen;
+    const active = mode === "game" && battery > 0 && battery < 20 && !death && !dying && !screen;
     if (!active) return;
-    AudioSys.tick();
-    batteryWarnRef.current = setInterval(() => AudioSys.tick(), 1200);
+    AudioSys.batteryLowSfx();
+    batteryWarnRef.current = setInterval(() => AudioSys.batteryLowSfx(), 1600);
     return () => {
       if (batteryWarnRef.current) {
         clearInterval(batteryWarnRef.current);
@@ -1259,7 +1304,11 @@ export default function App() {
 
   /* ================= BULMACA TESTİ (geçici) ================= */
   if (mode === "puzzletest") {
-    return <PuzzleTest onBack={() => setMode("menu")} onDemo={() => startFresh(DEMO_START)} />;
+    return (
+      <Suspense fallback={<LoadingScreen onDone={() => {}} />}>
+        <PuzzleTest onBack={() => setMode("menu")} onDemo={() => startFresh(DEMO_START)} />
+      </Suspense>
+    );
   }
 
   /* ================= AÇILIŞ: YAPIMCI LOGOSU ================= */
@@ -1502,7 +1551,7 @@ export default function App() {
       )}
 
       {/* Karanlık modu — pil %0 */}
-      {dark && <DarknessOverlay p={darkP} />}
+      {dark && !screen && <DarknessOverlay p={darkP} />}
 
       {/* Ölüm */}
       {dying && <div style={S.dyingVignette} className="s1-dying" />}
