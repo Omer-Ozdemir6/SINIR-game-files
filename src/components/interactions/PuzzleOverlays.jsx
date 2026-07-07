@@ -541,6 +541,7 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
   const placedAt = (ring, shard) => pieces.some((p) => p.ring === ring && p.shard === shard && flags[p.flag]);
   const figHidden = (ring, k) => missing.some((p) => p.ring === ring && (p.fig ?? 0) === k);
   const aligned = rots.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)));
+  const clockwiseOnly = config.clockwiseOnly || config.variant === "vitray";
 
   const rotate = (i, dir) => {
     if (done) return;
@@ -575,7 +576,7 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
           <circle r="96" fill="url(#s1-glass-back)" stroke="#171c16" strokeWidth="3" />
           {rings.map((r, i) => {
             const [r0, r1] = radii[i];
-            const shards = GLASS_SHARDS[i % GLASS_SHARDS.length];
+            const shards = r.shards || GLASS_SHARDS[i % GLASS_SHARDS.length];
             const n = shards.length;
             return (
               <g key={i} style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
@@ -609,25 +610,33 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
         </svg>
         <div style={P.ctrlRow}>
           {rings.map((r, i) => (
-            <span key={i} style={{ display: "flex", gap: 6 }}>
+            <span key={i} style={{ display: "flex", gap: 6, flexDirection: clockwiseOnly ? "column" : "row", alignItems: "center" }}>
+              {!clockwiseOnly && (
+                <button className="s1-btn s1-key"
+                  style={{
+                    ...S.keyBtn,
+                    width: 48, minWidth: 48, height: 42, borderRadius: "50%",
+                    borderColor: r.color,
+                    backgroundColor: r.color + "33",
+                    boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
+                  }}
+                  onClick={() => rotate(i, -1)}>⟲</button>
+              )}
               <button className="s1-btn s1-key"
                 style={{
                   ...S.keyBtn,
-                  width: 48, minWidth: 48, height: 42, borderRadius: "50%",
+                  width: clockwiseOnly ? 76 : 48,
+                  minWidth: clockwiseOnly ? 76 : 48,
+                  height: clockwiseOnly ? 48 : 42,
+                  borderRadius: clockwiseOnly ? 6 : "50%",
                   borderColor: r.color,
-                  backgroundColor: r.color + "33",
-                  boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
+                  backgroundColor: r.color + (clockwiseOnly ? "55" : "33"),
+                  color: "#efe9d2",
+                  boxShadow: `inset 0 0 10px rgba(0,0,0,0.75), 0 0 12px ${r.color}33`,
                 }}
-                onClick={() => rotate(i, -1)}>⟲</button>
-              <button className="s1-btn s1-key"
-                style={{
-                  ...S.keyBtn,
-                  width: 48, minWidth: 48, height: 42, borderRadius: "50%",
-                  borderColor: r.color,
-                  backgroundColor: r.color + "33",
-                  boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
-                }}
-                onClick={() => rotate(i, 1)}>⟳</button>
+                onClick={() => rotate(i, 1)}>
+                {clockwiseOnly ? (r.label || "RENK") : "⟳"}
+              </button>
             </span>
           ))}
         </div>
