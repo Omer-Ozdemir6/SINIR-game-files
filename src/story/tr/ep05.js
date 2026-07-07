@@ -37,7 +37,7 @@ export const EP05 = {
       events: [
         { type: "music", track: "k2" },
         { type: "system", text: "KAT: K-2 — ARKEOLOJİ · KAZI SAHASI · [KAYIT DIŞI]" },
-        { type: "narrate", text: "Bastığın son metal basamak da kırılıp arkanda çınlarken, ayakların ıslak, soğuk ve yabancı bir KAYAYA basıyor. Burası K-2. İstasyonun bir parçası değil; bu lanet deliyi o çiğ çelik yapının altına gizlemişler. Elindeki tek şey, yüzünü keskin, hastalıklı bir beyazlıkla aydınlatan tabletin ekranı. Işık hüzmesi duvardaki binlerce yıllık lekelere vuruyor... Hayır, leke değil. Deriye kazınır gibi taşa oyulmuş çentikler. Azalan, tükenen bir geri sayım. Karanlık, tabletinin ışığını adeta yutmak için üzerine çullanıyor." },
+        { type: "narrate", text: "Son metal basamak kırılıp arkanda çınlıyor ve ayakların ıslak, soğuk, yabancı kayaya basıyor. K-2 istasyonun parçası değil; istasyon onun üstüne kapatılmış bir kapak. Tablet ışığı duvardaki lekeleri yakalıyor. Hayır, leke değil. Deriye kazınır gibi taşa oyulmuş çentikler. Binlerce yıllık bir kayıt sistemi. İnsan yazısı değil ama yine de tutanak gibi: azalan, tükenen, sayan bir şey." },
         { type: "narrate", text: "Boşluğun ortasında paslı iskeleler, birbirine dolanmış kalın siyah kablolar ve adeta tapan kör bir tarikat gibi dizilmiş çürüyen ekipmanlar var... Hepsi merkezdeki o dipsiz anomalinin etrafını sarmış. Onu göremiyorsun, çünkü tabletinin zayıf ışığı o zifiri karanlığı yırtmaya yetmiyor. Ama kusma hissiyle gelen o berbat titreşimi HİSSEDİYORSUN. Diş köklerin sızlıyor, kulak zarların patlayacak gibi parazit yapıyor ve zihninin içine kirli bir pas gibi bir sayı çakılıyor: Üç." },
         { type: "document", open: false, doc: {
           id: "d_k2_karantina", title: "K-2 Karantina Tutanağı — Kayıt Dışı",
@@ -46,7 +46,7 @@ export const EP05 = {
         { type: "stat", stat: "akil", delta: -10, note: "AKIL -10 — Zihnine etli, ıslak bir şey dokundu", noteKind: "alert" },
         { type: "narrate", text: "«Kımıldama... Nefes bile alma...» Gölgelerin içinden çiğ, dehşet dolu bir fısıltı yükseliyor. Gerçek bir insan sesi. Toz fırtınasından çıkmış gibi hırpalanmış bir kazı tulumu içinde, elinde titreyen bir fener ve kan lekeli paslı bir levye tutan bir kadın beliriyor. Tabletinin ışığı yüzüne vurduğunda göz bebeklerinin korkudan büyüdüğünü görüyorsun. «Sen... senin bilincin hâlâ yerinde. Gözlerin etrafı görüyor... Tanrım, üç haftadır buradaki tek canlı insan sensin.» Selin.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "narrate", text: "«Kımıldama... Sakın ses çıkarma...» Kaya yarığından fırlayan ıslak bir el neredeyse tabletini düşürmene sebep oluyor. Bir kadın, kazı tulumu içinde nefes nefese. «Sonar hattındaki ölü frekanstan bir çığlık geldi... Ece. Seni söyledi. Sana güveniyor. Ben Selin. Ve eğer buradan canlı çıkmak istiyorsan, ikimizin o şeyi gebertmesi gerekiyor.» ", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "objective", text: "Selin'i dinle — Buluntu'yu durdurmanın yolunu öğren" },
+        { type: "objective", text: "Selin'in planını dinle." },
         { type: "note", id: "not_k2", title: "K-2: Buluntu", text: "İstasyon bu kazının üstüne kurulmuş. Hayır, üstüne değil; onu saklamak için etrafına inşa edilmiş. Duvarlardaki her oyma bir geri sayım. Merkezde Buluntu var. Henüz göremiyorum ama zihnimde 'üç' diye bir çivi var. Selin canlı. Bu bilgiyi yazıyorum çünkü burada canlı insan görmek akıldan çok belgeye ihtiyaç duyuyor." },
       ],
       choices: [
@@ -58,7 +58,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Selin seni sertçe bir kaya çıkıntısının arkasına çekiyor. Sırtını taşa yasladığında nefes alış verişleri hırıltılı, elleri tırnak etlerine kadar parçalanmış ama gözlerinde hayatta kalma çılgınlığı var. «Dinle beni, zamanımız saniyelerle ölçülüyor. Kafanın içinde çınlayan o sayı... Üç... Bir halüsinasyon değil. Buluntu kusuyor, geri sayıyor ve o sayı sıfıra vurduğunda...» Boğazından kuru bir hıçkırık kaçıyor. «Nevin'in o çürüyen cesedinden kalan kayıtları okumadın mı? Herkes tek bir et yığını olacak. Tek bir kovan zihni. Yüzeydeki herkes dahil.»" },
+        { type: "narrate", text: "Selin seni kaya çıkıntısının arkasına çekiyor. Elleri parçalanmış, nefesi hırıltılı, ama gözlerinde hâlâ karar verebilen bir insan var. «Kafanın içindeki üç halüsinasyon değil,» diyor. «Buluntu geri sayıyor.» Bunu söylerken bir bilim insanı gibi değil, bir tanık gibi konuşuyor. Artık kimse teşhis koymuyor. Herkes sadece gördüğünü kayda geçirmeye çalışıyor. Sıfır olduğunda herkes tek bir et yığını, tek bir kovan zihni olacak. Yüzey dahil." },
         { type: "narrate", text: "«Buluntu saniyede 432 hertz dalga yayan canlı bir frekans. Onu GEBERTMENİN tek yolu, kendi kusmuğunu onun boğazına geri tıkamak: onun leş dilini tersten okuyacağız. Ben o duvarlardaki habis sembolleri çözdüm. Ama verici paneline ulaşmak tek başına intihar. Sen o lanet radyoyu frekansa kilitleyeceksin, bense o sembolleri panele kusacağım.»" },
         { type: "waitTap" },
         { type: "narrate", text: "«Ama can alıcı berbat bir detay var. Vericiye ulaşmak için o şeyin tam önünden, o kör edici karanlığın göbeğinden geçmek zorundasın. Seni görecek. Ruhunun en pis köşesine kadar seni okuyacak... Söyle bana, yukarı katlarda ne bok yedin? O delilerin sofrasına oturdun mu? Onların kusmuk kokan etlerinden yediysen, Buluntu seni kendi kanından sayar. Bu lanet bir avantaj olabilir... Ya da tamamen yutulacağın bir tuzak.» Sana baka kalıyor.", if: { flag: "sofraYedi", equals: true } },
@@ -76,8 +76,8 @@ export const EP05 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Selin parmaklarını omzuna geçirip seni karanlığa doğru itiyor: «Ben burada kalıp konsolu uyaracağım. Sen bu leş kokulu labirente gir — ölenlerin arkalarında bıraktığı her hurda işimize yarayabilir. Ama sakın unutma: attığın her adım, çıkardığın her sürtünme sesi Buluntu'yu daha da uyandıracak. Ve tabletinin o lanet ışığıyla etrafa ne kadar BAKARSAN, o şey aklına o kadar derinden tecavüz edecek.»" },
-        { type: "narrate", text: "Önündeki saha tam bir mezarlık: devrilmiş iskeleler, içinde kurtların fink attığı terk edilmiş çadırlar, zifiri tüneller... Önünde dört yırtık yol var: ceset kokan kamp alanı, oymalarla kaplı galeri, dipsiz sondaj kuyusu ve tam ortada... O yaratığa açılan o kadim, korkunç kapı. Kafanın içindeki ses nabız gibi gümleyerek yerinde sayıyor: Üç... Hâlâ üç. Ama beyninin içinde bir ur gibi büyüyor." },
-        { type: "objective", text: "Kazı sahasını keşfet, sonra kadim kapıya git" },
+        { type: "narrate", text: "Önündeki kazı sahası mezarlık gibi dağılmış: devrilmiş iskeleler, terk edilmiş çadırlar, zifiri tüneller. Ama mezarlıklar ölülere yer açar; burası ölüleri işte tutmuş. Kamp alanı, oymalarla kaplı galeri, sondaj kuyusu ve ortadaki kadim kapı. Hepsi aynı şeyi söylüyor: Burada keşif yapılmadı, temas kuruldu. Kafandaki sayı hâlâ üç, ama artık bir ses değil; büyüyen bir tümör gibi yer istiyor." },
+        { type: "objective", text: "Kazı sahasını araştır." },
       ],
       choices: [
         { id: "kamp", text: "Kazı ekibinin kamp alanına git", next: "n_kamp", if: { flag: "kampGoruldu", equals: false } },
@@ -239,7 +239,7 @@ export const EP05 = {
       ],
     },
 
-    /* KADİM KAPI — gölge (kalıntı) bulmacası: RE7 tarzı 3D çevirme */
+    /* KADİM KAPI — gölge (kalıntı) bulmacası: 3D çevirme */
     n_kadim_kapi: {
       checkpoint: true,
       cost: 1,
@@ -280,7 +280,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "Kapının ardındaki sığınak, o leş kokulu cehennemin son eşiği. Duvarlar boyunca insan sığacak büyüklükte oyuklar var; buralar kazıya inip bir daha asla gökyüzünü göremeyenlerin mezarları. Buluntu onların zihinlerini yutmuş ama geriye kalan kokuşmuş bedenleri buraya birer sunak gibi dizilmiş. Üç oyuktan hâlâ taze kan ve irin sızıyor. O tulumları, o eşyaları tanıyorsun. Onlar buradalar." },
         { type: "waitTap" },
-        { type: "objective", text: "Sığınağı geç — ama istersen üç izi incele" },
+        { type: "objective", text: "Sığınağı geç." },
       ],
       choices: [
         { id: "baturay", text: "İlk oyuktaki tanıdık tulumu incele", next: "n_siginak_baturay", if: { flag: "izBaturay", equals: false } },
@@ -449,7 +449,7 @@ export const EP05 = {
         { type: "waitTap" },
         { type: "narrate", text: "Kamp alanından bulduğun o kulak tıkaçları cebinde... O içteki lağım sesini tamamen kesmeyecek ama tam delireceğin an beynine bir saniye nefes aldırabilir.", if: { flag: "kampArandi", equals: true } },
         { type: "narrate", text: "O tünelin dibinde duyduğun o iğrenç ölülerin korosu hâlâ kulaklarında parazit yapıyor. Artık o sesin nereden vuracağını biliyorsun — ona karşı kendini nasıl savunacağını şimdiden ezberledin.", if: { flag: "tunelFisilti", equals: true } },
-        { type: "objective", text: "Hazır olduğunda Buluntu'nun önüne çık" },
+        { type: "objective", text: "Buluntu'nun önüne çık." },
       ],
       choices: [
         { id: "hazir", text: "Hazırım — Buluntu'nun önüne çık", next: "n_k2_gecit" },
@@ -473,9 +473,9 @@ export const EP05 = {
       checkpoint: true,
       cost: 2,
       events: [
-        { type: "narrate", text: "Ve o yarıktan dışarı adım atıyorsun... Canavarın tam önündesin. Tabletinin ışığı o devasa kütleye vurduğu an kusmamak için kendini zor tutuyorsun." },
+        { type: "narrate", text: "Yarıktan dışarı adım atıyorsun ve nihayet onun önündesin. Bunca kat boyunca belgeler, sesler, cesetler ve aile masalları aynı merkeze işaret etti. Şimdi merkez ışığının altında. Kusmamak için kendini tutuyorsun; çünkü gördüğün şey bir canavar kadar basit olsaydı dayanması daha kolay olurdu." },
         { type: "waitTap" },
-        { type: "narrate", text: "Kayanın içine ur gibi gömülmüş, devasa, ıslak, titreyen etsi bir kütle... Ne bitki, ne hayvan, ne de bir makine... Üçünün de en iğrenç hallerinin birleşimi. Üzerinde düzensizce açılıp kapanan, içinden irin sızan delikler var; göz olabilir, ağız olabilir ya da sadece nefes alan yaralar... Ondan yayılan o devasa radyoaktif titreşim kemiklerini sızatıyor. Ve beyninin tam ortasında, ölmüş annenin o yumuşak, hileli sesi fısıldıyor: «Üç... Neden geç kaldın evladım... Üç... Hadi gel...»" },
+        { type: "narrate", text: "Kayanın içine ur gibi gömülmüş devasa, ıslak, titreyen bir kütle. Ne bitki, ne hayvan, ne makine. Belki de SINIR-1'in bütün sınıflandırmaları bu yüzden başarısız oldu; yanlış dosya başlığı aradılar. Üzerindeki delikler göz de olabilir, ağız da, yalnızca nefes alan yaralar da. Titreşimi kemiklerini sızlatıyor. Sonra beyninin ortasında ölmüş annenin sesiyle konuşuyor: «Üç... Neden geç kaldın evladım... Üç... Hadi gel...» Kendi hatıralarını delil gibi sana karşı kullanıyor." },
         { type: "stat", stat: "akil", delta: -12, note: "AKIL -12 — O yaratık ruhunu ameliyat ediyor", noteKind: "alert" },
         { type: "narrate", text: "Verici platformu o leş havuzunun tam karşı ucunda duruyor. Aranızda sadece o devasa kütle ve onun açılan delikleri var. Selin bağırıyor: «Sana yol açıyorum! Nevin’in o lanet kökleri hareket ediyor! Yukarıda ne yaptıysan, şimdi canını kurtarıyor!»", if: { flag: "nevinKurtarildi", equals: true } },
         { type: "narrate", text: "Verici platformu tam karşıda ama aranızda bomboş, korumasız bir ölüm alanı var. Selin çaresizce fısıldıyor: «Hiçbir siper yok! Sadece deli gibi koş ve o seni okurken ruhun için dua et! Nevin’i yukarıda kurtarabilseydik o kökler siper olurdu ama şimdi yalnızız!»", if: { flag: "nevinKurtarildi", equals: false } },
@@ -557,7 +557,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "Platformun üstündesin. O iğrenç kütle arkanda kaldı, yaydığı o sıcak rüzgâr sırtını yalıyor ama artık konsolun başındasın. Selin saklandığı kaya yarığından fırlayıp yanına çöküyor, suratı kireç gibi: «Başardın... Tanrım, o cehennemden sağ çıktın!» Nefes nefese bağırıyor. «Şimdi en berbat kısım başlıyor.»" },
         { type: "narrate", text: "Bu verici, ölen kazı ekibinin o canavarla konuşmak için yaptığı ama beceremediği ilkel bir sonar paneli. Ama ekranların yarısı ölü — Jeneratörden gelen ana hat kopuk. Önce bu hurdaya can vermen gerek: Kesik kabloları bağla. Selin titreyen elleriyle eski bir şemayı tabletinin ışığına tutuyor: «Kabloları renk kodlarına göre oturt! Sakın yanlış bağlama, kıvılcım çıkarsa çıkacak ses o piçi tamamen uyandırır!»" },
-        { type: "objective", text: "Vericiye güç ver — kesik hatları bağla" },
+        { type: "objective", text: "Vericiye güç ver." },
         { type: "note", id: "not_verici_guc", title: "Verici güç hattı", text: "Verici ölü. Kablolar kesilmiş, sanki biri son anda dünyaya konuşmasın diye boğazını kesmiş. Renk kodlarını bağlayabilirsem Buluntu'nun frekansını tersine çevireceğiz. Bu artık tamir değil; mezarın dibinden atılan bir ihbar." },
       ],
       choices: [
@@ -614,7 +614,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Bu paslı sonar konsolu şimdi önünde bir ölüm faturası gibi parıldıyor. İki ölümcül aşama var: Önce Buluntu’nun o duvardaki habis oymalarından çözdüğümüz o sembol dizisini panele kusacaksın, ardından radyoyu o 432 hertzlik canavar frekansın tam zıttına kilitleyeceksin." },
+        { type: "narrate", text: "Paslı sonar konsolu önünde ölüm faturası gibi parlıyor. İki aşama var: önce Buluntu'nun taşlara kazıdığı dili panele gireceksin, sonra 432 hertzlik nabzını tersine kilitleyeceksin. Bir ritüeli teknolojiyle bozmak gibi. Ya da kurumun yıllarca sakladığı suçu kendi cihazıyla itiraf ettirmek." },
         { type: "narrate", text: "Selin konsolun üstüne abanmış, ağzından köpükler sızıyor: «Diziyi ben okuyorum, sen o lanet düğmelere basacaksın! Sıra şu: Üçgen-göz, Kıvrım, Dört-çentik ve Dalga... Bu o piçin dilinde 'GEBER' demek! Hazırsın de bana!»" },
         { type: "waitTap" },
       ],
@@ -676,11 +676,11 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Her şey hazır, parmağın o ölüm düğmesinin üzerinde. Ama tetiğe basmadan önce son bir kez... O iğrenç et yığınına bakıyorsun. O açık delikleriyle doğrudan senin ruhunun içine bakıyor. Ve o delirtici sayının altında, ilk kez başka bir his duyuyorsun: Vahşi, kadim bir yalnızlık. Milyonlarca yıl bu karanlık lağımda yapayalnız kalmış bir yaratık... İnsanları avlayıp et yığını yapması bir katliam değil, yalnız kalmamak için atılmış iğrenç bir çığlık olabilir mi? Sadece bir aile istiyor." },
+        { type: "narrate", text: "Her şey hazır, parmağın ölüm düğmesinin üzerinde. Tetiğe basmadan önce ona bir kez daha bakıyorsun. Deliklerinden sana bakıyor, ya da sen öyle sanıyorsun. Sayının altında ilk kez başka bir şey duyuyorsun: yalnızlık. Kadim, aç, insan mantığını aşağılayan bir yalnızlık. Korkunç düşünce şu: Belki insanları yok etmiyor. Belki yalnız kalmamak için onları kendine ekliyor. Katliam ile aile arasındaki farkı bilmeyen bir şey." },
         { type: "waitTap" },
         { type: "narrate", text: "Selin tırnaklarını omzuna geçirip seni sarsıyor: «Ne düşündüğünü biliyorum... O pisliğe acıma! O merhamet değil, onun senin beynine sıktığı son kurşun! Seni de o kovanın içine çekmeye çalışıyor! Kararını ver, sıfıra saniyeler kaldı!»" },
         { type: "narrate", text: "Sen o canavarın dilini yukarıda çözmüştün... Ve o an beyninde şimşek çakıyor: 'Üç' bir geri sayım değil! O bir kurban listesi! O bugüne kadar üç kez seslendi ve üç ruhu yuttu: Baturay, Deniz, Nevin. Sen o kovanın dördüncü duvarı olmayı reddeden ilk canlı et parçasısın.", if: { flag: "frekanslariDuydun", equals: true } },
-        { type: "objective", text: "Buluntu'yu sustur — frekansı ateşle" },
+        { type: "objective", text: "Frekansı ateşle." },
       ],
       choices: [
         { id: "atesle", text: "Frekansı ateşle — Buluntu'yu sustur", next: "n_sustur" },
@@ -695,7 +695,7 @@ export const EP05 = {
         { type: "stat", stat: "akil", delta: -10 },
         { type: "waitTap" },
         { type: "narrate", text: "«Ölüyor! Can çekişiyor!» diye bağırıyor Selin, kulaklarından akan kanları silerek. «Ama frekans yetmiyor, tam gebermiyor! Son bir karar vermek zorundayız, şimdi!» O yaratığın can çekişirken yaydığı o son radyasyon dalgası tabletinin ekranını titretirken, önündeki o berbat yollar beliriyor." },
-        { type: "objective", text: "Buluntu'yla ne yapacağına karar ver" },
+        { type: "objective", text: "Son kararını ver." },
       ],
       choices: [
         { id: "yuzey", text: "Frekansı kilitle, Selin'le yüzeye kaç", next: "n_veda_selin", if: { flag: "eceEleVerildi", equals: false } },
@@ -725,7 +725,7 @@ export const EP05 = {
     n_son_yuzey: {
       ending: true,
       events: [
-        { type: "narrate", text: "Frekansı tamamen kilitliyorsun. Buluntu’nun o delirtici uğultusu sönen bir ocak gibi alçalıyor, hırıldıyor... Ve bitiyor. İlk kez, on bir uzun aydır ilk kez, bu lanet istasyon TAMAMEN sessizliğe gömülüyor. Sadece sizin nefes alışlarınız var." },
+        { type: "narrate", text: "Frekansı tamamen kilitliyorsun. Buluntu'nun uğultusu önce alçalıyor, sonra hırıldıyor, sonra bitiyor. İlk kez istasyon sessiz. Gerçek sessizlik bu değilmiş; bu, bir suç makinesinin nihayet kayıt dışı kalması. Sadece sizin nefes alışlarınız var. Yaşayan iki insanın çıkardığı küçük, düzensiz, kusurlu sesler. Hiçbir protokol bu sesi temizleyemiyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Sonar hattından Ece’nin hıçkırarak ağlama sesi geliyor: «Durdu... O piç kurusu sustu. Yukarı katlardaki işçiler uyanıyor... Gözlerindeki o kırmızılık gidiyor. Başardın... Tanrım, başardın!»" },
         { type: "narrate", text: "Selin elini sıkıca tutuyor: «Kaçış kapsülü K-1 komuta katında! İstasyon susmuşken tüm elektronik kilitler açık! KOŞ!» Birlikte yukarıya, o zifiri katlara doğru tırmanıyorsunuz. Elinde sadece o zayıf tabletin ışığı... Altı kat. Beş kat. Dört kat." },
@@ -749,7 +749,7 @@ export const EP05 = {
         { type: "narrate", text: "Bütün mağara kör edici beyaz bir ışıkla kaplanıyor. Buluntu’nun o acı feryadı ile senin gırtlağından yükselen çığlık aynı frekansta birleşip havayı yakıyor. Onu hücrelerine kadar yok ediyorsun — Ama o devasa enerji patlaması senin de bedenini kayaya çiviliyor. Son hissettiğin, Selin’in seni kurtarmak için kapıya doğru çekiştirmesi ama senin onu itmen oluyor: «Git... Kendini kurtar...»" },
         { type: "waitTap" },
         { type: "ambient", text: "Selin kendini zar zor dışarı fırlatıyor ve kalın çelik kapak aranızda kapanıyor. Sen o beyaz cehennemin tam merkezinde kalıyorsun. O et kütlesi küle dönerken, zihnine son bir hediye bırakıyor: Artık kulaklarında ne parazit var ne de o lanet sayılar... Sadece mutlak, temiz bir sessizlik. Ve bu sessizlik sonsuza dek senin." },
-        { type: "narrate", text: "Selin tek başına yüzeye çıkacak. İstasyon kurtuldu. Kimse aşağıda o canavarı kendi canıyla boğan o teknisyenin adını bilmeyecek... Ama o gece yüzeydeki herkes, göğsünde tuhaf bir hafiflikle uykusundan uyandı. Sanki biri onların yerine o ağır laneti taşımış ve feda olmuştu." },
+        { type: "narrate", text: "Selin tek başına yüzeye çıkacak. İstasyon kurtuldu. Kimse aşağıda frekansı kendi bedeniyle kapatan teknisyenin adını bilmeyecek. Bu da kurumların sevdiği türden bir son: isimsiz fedakârlık, temiz rapor, eksik kayıt. Ama o gece yüzeydeki herkes göğsünde tuhaf bir hafiflikle uyandı. Birinin onların yerine o ağır sayıyı taşıyıp susturduğunu bilmeden." },
         { type: "system", text: "— SON: SESSİZLİK —" },
         { type: "system", text: "Buluntu'yu yok ettin. Kendini feda ederek istasyonu — belki dünyayı — kurtardın. Selin kaçtı ve gerçeği anlatacak." },
         { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
@@ -760,7 +760,7 @@ export const EP05 = {
     n_son_derin: {
       ending: true,
       events: [
-        { type: "narrate", text: "Artık direnecek tek bir hücren bile kalmadı. On bir ay süren bu klostrofobik kabus, altı katlık ceset yığınları ve bitmeyen ölümler... Ve Buluntu’nun beyninin içindeki o hileli sesi o kadar yumuşak, o kadar sıcak ki: «Üç... Bırak o tabletini... Üç... Burada hiç acı yok... Herkes burada, seni bekliyor...» Kasılan parmaklarını konsoldan yavaşça çekiyorsun." },
+        { type: "narrate", text: "Artık direnecek tek bir hücren bile kalmadı. Altı kat boyunca her şey seni bir yere hazırlamış: personel olmaya, evlat olmaya, örnek olmaya, kayıt olmaya. Buluntu'nun sesi yumuşak ve sıcak: «Üç... Bırak o tabletini... Burada hiç acı yok... Herkes burada, seni bekliyor...» Kasılan parmakların konsoldan çekiliyor. Teslim olmak korkaklık gibi değil, eve dönmek gibi hissettiriyor. İşte bu yüzden dehşet verici." },
         { type: "waitTap" },
         { type: "narrate", text: "«Ne yapıyorsun?! Kendine gel, bas o düğmeye!» Selin’in o dehşet dolu çığlığı beyninin içinde giderek uzaklaşıyor, eriyor... O etsi kütleden yayılan o sıcak dalga ruhunu kaplarken ilk kez direnmiyorsun, kendini o ıslak akıntıya bırakıyorsun. Ve o sahte huzur... Tanrım, o kadar güzel ki. Aykut orada gülümsüyor. Nevin orada. Baturay, küçük Deniz... Hepsi el ele tutuşmuş. Aile." },
         { type: "narrate", text: "Selin arkasına bakıp dehşet içinde tek başına yüzeye kaçıyor, geride o kovanın yuttuğu bir kurban daha bırakarak. Sen o et kütlesinin bir hücresi oldun artık. Kendi adın yok, kendi bilincin yok; sen artık 'Biz'sin. Ve Biz o karanlıkta sabırla sayıyoruz... Sonsuza dek. Yukarıdan yeni bir et parçasının, elinde bir tabletle altı kat aşağı inip bizi bulmasını bekleyerek." },

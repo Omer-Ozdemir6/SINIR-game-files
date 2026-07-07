@@ -3,6 +3,7 @@ import { t } from "../../i18n";
 
 export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) {
   const releaseWindows = breath.releaseWindows || [];
+  const spikes = breath.spikes || [];
   const title = breath.phase === "release"
     ? t("breath.release")
     : breath.phase === "vent"
@@ -19,6 +20,17 @@ export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) 
       boxShadow: "inset 0 0 12px rgba(0,0,0,0.75)",
       overflow: "hidden",
     }}>
+      {spikes.map(([a, b], i) => (
+        <div key={`spike-${i}`} style={{
+          position: "absolute",
+          left: Math.max(0, Math.min(100, (a / holdMs) * 100)) + "%",
+          width: Math.max(3, ((b - a) / holdMs) * 100) + "%",
+          top: 0,
+          bottom: 0,
+          backgroundColor: "rgba(150, 40, 34, 0.34)",
+          boxShadow: breath.spike ? "0 0 12px rgba(190,50,42,0.45)" : "none",
+        }} />
+      ))}
       {releaseWindows.map(([a, b], i) => (
         <div key={i} style={{
           position: "absolute",

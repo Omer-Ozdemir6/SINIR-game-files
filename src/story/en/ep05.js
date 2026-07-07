@@ -22,7 +22,7 @@
    · SURFACE   — silence + escape (best): Selin + Ece + correct choices
    · SILENCE   — destroy but sacrifice yourself
    · DEEP      — join the Artifact (dark)
-   · RECORD    — document and die (whistleblower ending)
+   · RECORD    — document and die (witness ending)
    · ZERO      — failing to stop the countdown (bad ending / not hidden)
    ============================================================ */
 
@@ -43,7 +43,7 @@ export const EP05 = {
         { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — Something fleshy and wet touched your mind", noteKind: "alert" },
         { type: "narrate", text: "«Don't move... Don't even breathe...» A raw, terror-filled whisper rises from the shadows. A real human voice. A woman emerges dressed in a battered excavation jumpsuit as if she just came out of a dust storm, holding a flickering flashlight and a blood-stained, rusty crowbar. When the light of your tablet hits her face, you see her pupils dilated with fear. «You... your consciousness is still intact. Your eyes can see the surroundings... My God, you are the only living human here for three weeks.» Selin.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "narrate", text: "«Don't move... Don't make a sound...» A wet hand darting out from a rock crevice almost makes you drop your tablet. A woman, panting inside an excavation jumpsuit. «A scream came from the dead frequency on the sonar line... Ece. She told me about you. She trusts you. I am Selin. And if you want to get out of here alive, the two of us need to kill that thing.» ", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "objective", text: "Listen to Selin — Learn the way to stop the Artifact" },
+        { type: "objective", text: "Listen to Selin's plan." },
         { type: "note", id: "not_k2", title: "K-2: The Artifact", text: "The station was built on top of this excavation. Every carving on the walls shows a countdown. In the center is the Artifact — I can't see it yet, but the number 'three' dropped into my mind. Selin is here, alive, untransformed." },
       ],
       choices: [
@@ -74,7 +74,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "Selin digs her fingers into your shoulder and pushes you toward the darkness: «I will stay here and alert the console. You enter this foul-smelling labyrinth — any scrap left behind by those who died could be useful to us. But never forget: every step you take, every friction sound you make will awaken the Artifact even more. And the more you LOOK around with that damn light of your tablet, the deeper that thing will violate your mind.»" },
         { type: "narrate", text: "The site ahead of you is a total graveyard: overturned scaffoldings, abandoned tents where worms run wild, pitch-black tunnels... There are four torn paths before you: the corpse-smelling camp area, the gallery covered in carvings, the bottomless borehole, and right in the middle... That ancient, terrifying door opening to that creature. The voice inside your head keeps counting in place, pounding like a pulse: Three... Still three. But it grows like a tumor inside your brain." },
-        { type: "objective", text: "Explore the excavation site, then go to the ancient door" },
+        { type: "objective", text: "Search the excavation site." },
       ],
       choices: [
         { id: "kamp", text: "Go to the excavation team's camp area", next: "n_kamp", if: { flag: "kampGoruldu", equals: false } },
@@ -236,7 +236,7 @@ export const EP05 = {
       ],
     },
 
-    /* ANCIENT DOOR — shadow (relic) puzzle: RE7 style 3D turning */
+    /* ANCIENT DOOR — shadow (relic) puzzle: 3D turning */
     n_kadim_kapi: {
       checkpoint: true,
       cost: 1,
@@ -277,7 +277,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "The sanctuary behind the door is the final threshold of that foul-smelling hell. Along the walls are hollows large enough to fit a human; these are the graves of those who went down to the excavation and never saw the sky again. The Artifact swallowed their minds but their remaining putrid bodies are lined up here like altars. Fresh blood and pus are still leaking from three hollows. You recognize those jumpsuits, those belongings. They are here." },
         { type: "waitTap" },
-        { type: "objective", text: "Pass through the sanctuary — but you can examine the three traces if you want" },
+        { type: "objective", text: "Cross the shelter." },
       ],
       choices: [
         { id: "baturay", text: "Examine the familiar jumpsuit in the first hollow", next: "n_siginak_baturay", if: { flag: "izBaturay", equals: false } },
@@ -367,7 +367,7 @@ export const EP05 = {
     n_siginak_baturay: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You hold the light of your tablet over the jumpsuit in the first hollow. The plastic tag on its chest is stuck in mud: B. SOYLU. Baturay. The first victim who dragged you into this hell, who sent that whistleblower email. You had found his body completely mangled in the K-6 infirmary... But it turns out that damn echo of his soul has always been among the flesh here. Between his clenched, decayed fingers, there is a bloody piece of paper he holds tightly." },
+        { type: "narrate", text: "You hold the light of your tablet over the jumpsuit in the first hollow. The plastic tag on its chest is stuck in mud: B. SOYLU. Baturay. The first victim who dragged you into this hell, who sent that witness email. You had found his body completely mangled in the K-6 infirmary... But it turns out that damn echo of his soul has always been among the flesh here. Between his clenched, decayed fingers, there is a bloody piece of paper he holds tightly." },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
           id: "d_baturay_son", title: "Baturay's Last Note", style: "hand",
@@ -446,7 +446,7 @@ export const EP05 = {
         { type: "waitTap" },
         { type: "narrate", text: "Those earplugs you found from the camp area are in your pocket... They won't completely cut that internal sewer sound but they can give your brain a second to breathe at the moment you are about to go completely mad.", if: { flag: "kampArandi", equals: true } },
         { type: "narrate", text: "That chorus of those disgusting dead people you heard at the bottom of that tunnel is still making static in your ears. Now you know where that sound will hit from — you have already memorized how to defend yourself against it.", if: { flag: "tunelFisilti", equals: true } },
-        { type: "objective", text: "Step in front of the Artifact when you are ready" },
+        { type: "objective", text: "Step in front of the Artifact." },
       ],
       choices: [
         { id: "hazir", text: "I am ready — Step in front of the Artifact", next: "n_k2_gecit" },
@@ -554,7 +554,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "You are on the platform. That disgusting mass was left behind, the hot wind it emits licks your back but you are now at the head of the console. Selin leaps out from the rock crevice where she was hiding and collapses next to you, her face pale as chalk: «You made it... My God, you survived that hell!» She shouts panting. «Now the worst part begins.»" },
         { type: "narrate", text: "This transmitter is a primitive sonar panel made by the deceased excavation team to talk to that monster but failed. But half of the screens are dead — the main line coming from the generator is cut. First you need to give life to this junk: connect the cut cables. Selin holds an old schematic to the light of your tablet with trembling hands: «Fit the cables according to their color codes! Don't you dare connect them wrong, if a spark flies out, the sound it makes will completely awaken that bastard!»" },
-        { type: "objective", text: "Give power to the transmitter — connect the cut lines" },
+        { type: "objective", text: "Power the transmitter." },
         { type: "note", id: "not_verici_guc", title: "Transmitter power line", text: "The transmitter console is powerless — I need to reconnect the cut cables according to the color code. A wrong connection creates a spark (noise). Once power comes, we can reverse the Artifact's frequency." },
       ],
       choices: [
@@ -677,7 +677,7 @@ export const EP05 = {
         { type: "waitTap" },
         { type: "narrate", text: "Selin digs her nails into your shoulder and shakes you: «I know what you are thinking... Do not pity that filth! That is not mercy, it is the last bullet it fires into your brain! It is trying to drag you inside that hive too! Make your decision, seconds are left until zero!»" },
         { type: "narrate", text: "You had decoded the monster's language upstairs... And at that moment lightning flashes in your brain: 'Three' is not a countdown! It is a victim list! It called out three times until today and swallowed three souls: Baturay, Deniz, Nevin. You are the first living piece of flesh that refuses to be the fourth wall of that hive.", if: { flag: "frekanslariDuydun", equals: true } },
-        { type: "objective", text: "Silence the Artifact — fire the frequency" },
+        { type: "objective", text: "Fire the frequency." },
       ],
       choices: [
         { id: "atesle", text: "Fire the frequency — Silence the Artifact", next: "n_sustur" },
@@ -692,7 +692,7 @@ export const EP05 = {
         { type: "stat", stat: "akil", delta: -10 },
         { type: "waitTap" },
         { type: "narrate", text: "«It's dying! It's in its death throes!» shouts Selin, wiping the blood flowing from her ears. «But the frequency is not enough, it doesn't completely die! We have to make a final decision, now!» While that last radiation wave emitted by that creature while dying flickers the screen of your tablet, those awful paths before you emerge." },
-        { type: "objective", text: "Decide what to do with the Artifact" },
+        { type: "objective", text: "Make the final choice." },
       ],
       choices: [
         { id: "yuzey", text: "Lock the frequency, escape to the surface with Selin", next: "n_veda_selin", if: { flag: "eceEleVerildi", equals: false } },
@@ -776,7 +776,7 @@ export const EP05 = {
         { type: "waitTap" },
         { type: "narrate", text: "«What the fuck are you doing?! Leave that damn device, the countdown is ending, WE NEED TO ESCAPE!» tears herself apart Selin. But hitting your fingers against the screen, you do not stop the recording. The Artifact is in its death throes but it didn't die, the countdown continues at full speed inside your brain. «Two» says that voice. Then «One»." },
         { type: "narrate", text: "Selin looks at you one last time mixed with terror and pain and darts toward the stairs with that data copy she took from the tablet. She escapes, with that evidence in hand that will shake the world. You remain here, in front of that flesh. While the Artifact whispers that last number, the memory of your tablet fills up and hurls the data upward. When Selin walks out that door, the world will learn about this hell... Thanks to you." },
-        { type: "ambient", text: "In the reflection of the fading screen light of your tablet, you see your own face: completely calm. Like Baturay. Like a true whistleblower who has finished their duty. And that fleshy hole inside your brain whispers one last time: «...Zero.»" },
+        { type: "ambient", text: "In the reflection of the fading screen light of your tablet, you see your own face: completely calm. Like Baturay. Like a true witness who has finished their duty. And that fleshy hole inside your brain whispers one last time: «...Zero.»" },
         { type: "system", text: "— ENDING: RECORD —" },
         { type: "system", text: "You didn't escape — you chose to document. You died, but Selin brought the evidence to the surface. The truth can no longer be hidden. Baturay would be proud." },
         { type: "system", text: "BORDER-1 · THANK YOU" },

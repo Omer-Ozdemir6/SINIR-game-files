@@ -61,7 +61,7 @@ export function NotePaper({ item, onBack }) {
 
 /* Resmi döküman — sayfalı, kaydırmasız */
 export function DocPaper({ item, page, pages, onPrev, onNext, onClose }) {
-  const hand = item.style === "hand"; // el yazısı günlük (RE7 tarzı)
+  const hand = item.style === "hand"; // el yazısı günlük
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={hand ? S.docPaperHand : S.docPaper} className="s1-paper">

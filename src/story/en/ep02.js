@@ -1,13 +1,13 @@
 /* ============================================================
-   SECTOR-1 — CHAPTER 2: "K-5 / THE EXAM" (v4 — OUTLAST TONE & TABLET LIGHT MECHANIC)
+   SECTOR-1 — CHAPTER 2: "K-5 / THE EXAM" (v4 — SINIR-1 DREAD & TABLET LIGHT MECHANIC)
    Floor Owner: DENİZ OKUR — The engineer speaking through the system.
 
-   STRUCTURE & ATMOSPHERE (Outlast Horrific Realism):
+   STRUCTURE & ATMOSPHERE (SINIR-1 psychological realism):
    · n_hub: branches into four directions; the player CHOOSES the order of the exams.
    · The player has NO NIGHT VISION or visor. Only a TABLET.
    · The tablet's screen light (or its flashlight) is the sole light source; when its battery dies, absolute darkness and death are inevitable.
-   · The narrative tone is built entirely on the classic Outlast tropes of helplessness, heavy psychological tension, tearing flesh, snapping bones, shortness of breath, and visceral bodily terror.
-   · Code structure, flags, and interactions are completely preserved; only texts, announcements, and descriptions have been revised according to Outlast brutality and that claustrophobic atmosphere.
+   · The narrative tone is built on helplessness, heavy psychological tension, shortness of breath, bodily terror, and claustrophobic pressure.
+   · Code structure, flags, and interactions are preserved; texts, announcements, and descriptions now follow SINIR-1's own brutality and closed-station atmosphere.
    ============================================================ */
 
 export const EP02 = {
@@ -19,7 +19,7 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "music", track: "k5_outlast_dread" },
+        { type: "music", track: "k5_sinir_dread" },
         { type: "system", text: "FLOOR: K-5 — LIFE SUPPORT · THE BRINK OF DEATH · WATER AND BLOOD CYCLE" },
         { type: "narrate", text: "The moment you step off the stairs, the air filling your lungs grows heavy with the stench of rust, mildew, and rotting flesh. K-5 is like the inside of a massive beast; pipes throb violently, filters hiss with a choking wheeze, and ceiling shafts gape open like mouths waiting to sink dark teeth into your flesh." },
         { type: "narrate", text: "You take three trembling steps forward. Suddenly, the heavy steel door behind you slams shut with such force that the shockwave violently strikes your back. The sound of the lock clicking into place: CLICK. CLICK. Like a rat caught in a trap, this place is a testing ground, and you are merely a victim whose death throes are meant to be watched." },
@@ -29,7 +29,7 @@ export const EP02 = {
         { type: "anons", text: "「There you are... Fresh, living meat. I am Deniz. I am both the god of this labyrinth and its butcher. Every door, every blind camera, every rusty speaker is my eye, my tongue. And you... you are just a new toy I hope will squirm a little longer.」" },
         { type: "anons", text: "「The rules are painfully simple: there are three brutal lessons on this floor. Each lesson will grant you a KEYCARD PIECE that you must pluck out of your own flesh. If you don't combine the three with your bloody fingers and slot them into the exit door, you will rot here. The choice is yours, watching which agony you will start with takes my breath away...」" },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "objective", text: "Rip out the three keycard pieces and force the exit before absolute darkness consumes you" },
+        { type: "objective", text: "Collect the three keycard pieces." },
         { type: "note", id: "not_deniz", title: "Deniz Okur — The Warden of My Cell", text: "That psychopath spewing saliva over the loudspeaker: Deniz. The systems engineer. The doors, the cameras, every death trap here is at his fingertips. He threw me into these sewer-scented corridors like a lab rat. The twisted amusement in his voice is far more terrifying than pure hatred. Three 'lessons', three card pieces... If I can't complete that card before my batteries run out, I will perish under the cold light of this tablet." },
       ],
       choices: [
@@ -589,7 +589,7 @@ export const EP02 = {
         { type: "battery", spares: 1 },
         { type: "waitTap" },
         { type: "anons", text: "「One last free lesson for you: that endless corridor stretching before you when you exit the K-4 door... That is no longer my playground. It belongs to no one. The true overseer of death rules there... Give my regards to my father, rat.」" },
-        { type: "objective", text: "Survive the K-4 corridor of death — Reach the main ventilation shaft" },
+        { type: "objective", text: "Reach the main ventilation shaft." },
       ],
       choices: [
         { id: "cik", text: "Part the K-4 transition door and step into that unknown", next: "n_harun1" },

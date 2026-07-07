@@ -13,7 +13,7 @@ const P = {
 };
 
 /* ============================================================
-   3) KİMYASAL KARIŞIM — Nevin'in laboratuvarı (RE7 serum mantığı)
+   3) KİMYASAL KARIŞIM — Nevin'in laboratuvarı
    Üç özütten, tarifteki ölçülerle kaba damlat. Kap dolduğunda
    oran yanlışsa karışım TEPKİR: kap boşalır, ceza yazılır.
    Tarif oyuncuya döküman/bilmece ile verilir.

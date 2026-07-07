@@ -3,7 +3,7 @@
    Floor Owner: CHEF HARUN OKUR — station chef, the father of the "Family."
    (Deniz is his son: in EP02, he said "Say hello to my father.")
 
-   TONE: OUTLAST + RE7 Baker house + dinner table horror. The floor is organized like a HOUSE:
+   TONE: SINIR-1 family ritual + dinner table horror. The floor is organized like a HOUSE:
    dining hall, kitchen, children's room, chef's room, cold storage,
    intercom niche. Harun PATROLS the house; he hunts not by sound, but by habit
    — he knows where you should be and finds what is "out of place."
@@ -42,7 +42,7 @@ export const EP03 = {
         { type: "waitTap" },
         { type: "ambient", text: "Ece's trembling whisper from the tablet's speaker is cut by static noise: «So you made it up there... L-4. The floor of that monster. Whatever you do, don't shine your light directly at him... Cough twice if you can hear me — I've patched the line into the L-4 intercoms.»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "The glowing glass screen of the tablet is silent in your pocket. Ece might have connected the line, but she is not speaking to you. You are completely alone. There is only the charge of your tablet and the darkness.", if: { flag: "eceEleVerildi", equals: true } },
-        { type: "objective", text: "Find a way out of this floor" },
+        { type: "objective", text: "Find a way out of K-4." },
         { type: "note", id: "not_ev", title: "L-4: Home", text: "The floor has been turned into a house — wallpaper, carpet, chandelier. Someone is sitting at the head of the table, tapping a fork against an empty plate. Deniz had said 'say hello to my father.' This must be Chef Harun. The father of the family." },
       ],
       choices: [
@@ -367,7 +367,7 @@ export const EP03 = {
     n_depo_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You are in front of the heavy, steel door of the cold storage. The icy air leaking from the edges fogs up your tablet screen. The Chef had strictly said 'do not enter' here. One of those uncanny death rooms in Outlast labyrinths stands right before you." },
+        { type: "narrate", text: "You are in front of the heavy steel door of the cold storage. The icy air leaking from the edges fogs up your tablet screen. The Chef strictly said 'do not enter' here. One of SINIR-1's off-record death rooms stands right before you." },
         { type: "alert", text: "SENSOR ALERT — THE CHEF IS INSIDE RIGHT NOW! Even your tablet's microphone detects the meat-chopping sounds coming from inside. You cannot enter!", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [
@@ -408,7 +408,7 @@ export const EP03 = {
       events: [
         { type: "narrate", text: "You scrape off the ice on the hatch with the edge of your tablet. A frozen text emerges from underneath: 'L-3 EVACUATION — ONLY WITH HATCH KEY'. You can escape down through here, but the key is locked in the chest in that psychopath's room. You must hurry, you are about to freeze." },
         { type: "note", id: "not_depokapak", title: "L-3 evacuation", text: "Behind the cold storage, there is an evacuation hatch descending to L-3 — but the 'hatch key' is required. The key is in the locked chest in the Chef's room. The chest wants three heirlooms. The escape route is clear: open the chest, take the key, descend from here." },
-        { type: "objective", text: "Find the three heirlooms, open the chest, and descend from the storage to L-3 using the hatch key" },
+        { type: "objective", text: "Find the three family heirlooms." },
       ],
       choices: [
         { id: "cik", text: "Exit the storage before freezing", next: "n_hol" },
@@ -581,7 +581,7 @@ export const EP03 = {
           meta: "— folded at the bottom of the chest —",
           body: "To Sevgi,\n\nWhen I lost you, the station died with me too.\nBut I found it — below, the Foundling in L-2.\nIt gives us back the family. It keeps everyone\ntogether. When they hear its voice, everyone stops,\ncounts, belongs.\n\nI raised Deniz. He went down too, established his\nown family. And I continue to raise. Even without you,\nthe family grows.\n\nIf one day you go down to the Foundling — thank it.\nIt brought us back together again.\n\n— H." } },
         { type: "note", id: "not_sefmektup", title: "The Foundling — L-2", text: "The Chef's letter connects everything: the 'Foundling' in L-2 is the source of all this. When they hear its voice, everyone 'stops, counts, belongs' — those counting in their sleep, lullaby, 432 Hz. The family is built around it. The hatch key is in my hand; I can descend from the cold storage to L-3." },
-        { type: "objective", text: "Return to the cold storage, descend to L-3 with the hatch key" },
+        { type: "objective", text: "Descend to K-3 through cold storage." },
       ],
       choices: [
         { id: "depo", text: "Head to the cold storage", next: "n_final_yol" },

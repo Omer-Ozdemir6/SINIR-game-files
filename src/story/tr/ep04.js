@@ -40,14 +40,14 @@ export const EP04 = {
       events: [
         { type: "music", track: "k3" },
         { type: "system", text: "DEHŞET KATMANI: K-3 — TERK EDİLMİŞ SERA VE ET VE KÖK" },
-        { type: "narrate", text: "Merdivenin dibinde seni boğucu, leş gibi kokan sıcak ve nemli bir zifiri karanlık karşılıyor. K-3 nefes alıyor... Ama ciğerlerle değil. Duvarlardan etli sülükler gibi sarkan kalın kökler sıvanmış, tavan damar gibi atan sarmaşıklarla kaplı. Adım attığın zemin, basılmaması gereken canlı bir deri gibi altından kayıyor. Elindeki tabletin soğuk, çiğ ekran ışığı bu çürümeden başka bir şeyi aydınlatmıyor. Işık yüzüne vururken karanlığın içinde tamamen savunmasız ve açık bir hedefsin." },
+        { type: "narrate", text: "Merdivenin dibinde sıcak, nemli, leş kokan bir karanlık seni karşılıyor. K-3 nefes alıyor ama ciğerlerle değil; duvarlardan sarkan kökler damar gibi atıyor, tavan etli bir ağız gibi kapanıp açılıyor. Bilim buraya doğayı getirmemiş. Doğaya insan acısını öğretmiş. Tabletinin soğuk ışığı çürümeyi aydınlatıyor ve bir anda anlıyorsun: ışık burada görmeni sağlamıyor, seni görülebilir yapıyor." },
         { type: "narrate", text: "Buradaki her şey büyümüş ama hiçbir şey yaşamıyor. Kökler damar gibi atıyor, yapraklar deri gibi terliyor, çiçekler açmak yerine küçük ağızlar gibi aralanıp kapanıyor. K-3 doğa değil; laboratuvarın Tanrı’yı taklit etmeye çalışırken yaptığı düşük, yarım ve acı çeken bir kopya." },
         { type: "narrate", text: "Karanlığın derinliklerinden derisi yüzülmüş bir insanın iniltisini andıran hırıltılı bir kadın fısıltısı yayılıyor. Şarkı söylemiyor; çürüyen tohumlara çocuklarıymış gibi delice sayıklıyor: 'Selin... Selin nerede... Bebeğimi benden aldılar...'" },
         { type: "waitTap" },
         { type: "ambient", text: "Tabletinin hoparlöründen parazitler arasından Ece'nin titreyen sesi yükseliyor: «K-3'e indin... Tanrım, o koku buraya kadar geliyor. Nevin orada. Şef onu o şeye yem etti. Beni dinle, sakın basma! Ses çıkarmak umurunda değil, bastığın her kök direkt onun sinir ucuna bağlı. Nereye basarsan doğrudan üzerine çullanacak!»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "Karanlıkta sadece kendi ağır nefes alışın var. Telsiz hattı tamamen ölü. Ece'yi satmandan sonra K-3'ün bu yaşayan mezarında tamamen yapayalnızsın. Sadece hoparlörden gelen ölü bir cızırtı içindeki suçluluk duygusunu tırmalıyor.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "narrate", text: "Şef'in sofrasında yuttuğun o çiğ et midende adeta canlı gibi kasılıyor. Ve fark ediyorsun: sen yaklaştıkça duvardaki etli filizler aç kurtlar gibi sana doğru uzanıyor, titriyor... Şef'in ziyafetinin o iğrenç kokusunu aldılar. Seni tanıyorlar.", if: { flag: "sofraYedi", equals: true } },
-        { type: "objective", text: "Hayatta kalmak için K-3 cehenneminden çıkış yolunu bul ve K-2 kazı alanına sığın." },
+        { type: "objective", text: "K-3'ten çıkış yolu bul." },
         { type: "note", id: "not_k3", title: "K-3: Canlı Mezar", text: "K-3 bir sera değil. Birinin acısını köklendirip kat planına çevirmişler. Nevin hâlâ burada; belki bedeninin yarısı, belki tamamı, belki de yalnızca kızının adını söyleyen kısmı. Ses çıkarmak sorun değil. Yere basmak sorun. Bu kat seni duymuyor, seni hissediyor." },
       ],
       choices: [
@@ -61,7 +61,7 @@ export const EP04 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Merkez sera: Üzerindeki devasa cam kubbe kırılmış, yukarıdan süzülen acil durumun kan kırmızısı ışığı etrafı cehennem tasvirine çeviriyor. Tam ortada, çürümüş toprağın ve et kütlelerinin içine yarı beline kadar gömülmüş, kımıldamayan o korkunç figür duruyor: Nevin. Omurgasından fırlayan kalın kökler tüm katın zeminine damarlar gibi pompalanıyor. Katın kalbi o, tüm bu ıstırabın kendisi... Etrafında zifiri karanlığa açılan beş tane ölümcül patika var.", if: { flag: "seraIlk", equals: false } },
+        { type: "narrate", text: "Merkez seranın cam kubbesi kırılmış; kan kırmızısı acil durum ışığı her şeyi tıbbi bir fotoğraf gibi açık ediyor. Ortada Nevin var. İnsan demek zor, bitki demek de yalan. Omurgasından çıkan kökler zemine damar gibi yayılmış. Bir doktoru laboratuvara bağlamamışlar; laboratuvarı doktora bağlamışlar. K-3'ün kalbi atıyorsa, bu onun hâlâ acı çektiği anlamına geliyor.", if: { flag: "seraIlk", equals: false } },
         { type: "flag", set: { seraIlk: true } },
         { type: "status", items: [
           { label: "MAVİ SPOR", flag: "ornek1" },
@@ -118,7 +118,7 @@ export const EP04 = {
     n_fide: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Fide odası: Küf kokulu raflarda yan yana dizilmiş yüzlerce saksı... Ve her birinin içinden fırlayan, insan derisi renginde, kesik çocuk ellerine benzeyen solgun filizler titriyor. Ortadaki devasa saksıda ise parlayan, irin dolu bir çıban gibi şişmiş MAVİ bir spor kesesi nabız gibi atıyor. Bu, SINIR-1 biyoloji biriminin canlı doku üzerinde yaptığı o yasak deneyin ta kendisi." },
+        { type: "narrate", text: "Fide odasında yüzlerce saksı raflara dizilmiş. Etiketleri düzenli, toprakları nemli, prosedürleri tamam. İçlerinden çıkan solgun filizler çocuk ellerine benziyor; doğanın değil, arşivlenmiş suçun büyümesi bu. Ortadaki dev saksıda mavi spor kesesi irin dolu bir çıban gibi atıyor. SINIR-1 burada bitki yetiştirmemiş. Kanıtı köklendirmiş." },
         { type: "document", open: false, doc: {
           id: "d_spor_test", title: "Biyolojik Uyum Testi — Mavi Spor",
           body: "BİRİM: K-3 Biyoloji / Kapalı Kök Ağı\nTEST: Spor kesesi temas protokolü\n\nGözlem 12-A: Spor bulutu solunduğunda deneklerde ilk 9 saniyede göz kanaması, 14 saniyede kontrolsüz kasılma, 31 saniyede deri altı filizlenme görüldü.\n\nGözlem 12-B: Nefesini tutan deneklerde spor yüzeyde kaldı. Panik anında alınan tek nefes bile köklenmeyi başlatmaya yetti.\n\nSONUÇ: Spor, akciğer dokusunu giriş kapısı olarak kullanıyor. Koruyucu maske yetersiz. Tek geçici yöntem: temas anında kontrollü nefes kesme ve aralıklı sessiz boşaltma.\n\nUYARI: Deneklerden biri ölmeden önce 'beni toprağa geri koymayın' cümlesini 46 kez tekrarladı." } },
@@ -129,7 +129,7 @@ export const EP04 = {
           body: "SES KAYDI DÖKÜMÜ — DR. NEVİN ARAS\nGİZLİLİK: K-3 BİYOLOJİ / OLAY SONRASI İNCELEME\n\nKayıt 01: Şef, K-2 arkeoloji ambarından canlı doku örneği getirdi.\nÖrnek 432 Hz çevresinde işitilebilir olmayan bir titreşim üretiyor.\nBitki dokuları bu titreşime yöneliyor. Personelde burun kanaması başladı.\n\nKayıt 09: Merhum kızımın uyku kaydı örneğe dinletildi. Doku,\nkayıttaki çocuk sesiyle geriye doğru saydı. Ses analizi birebir eşleşiyor.\nAçıklama yok. Kayıt odasında bulunan üç personel aynı anda ağladı.\n\nKayıt 14: H. Tekin disiplin gerekçesiyle beni K-3'te tuttu. Deri altında\nköklenme başladı. Selin kaçtı. Kompost dondurucusuna kan örneği bıraktım.\nFormül hâlâ çalışabilir.\n\nSon kayıt: Parmaklar işlevini yitirdi. Uçlarda dal benzeri sertleşme var.\nAğrı azaldı. Selin'in adını duyduğumda kökler hâlâ geri çekiliyor." } },
         { type: "note", id: "not_nevin_kayit", title: "Nevin'in Deliliği", text: "K-2'deki o yaratık insan seslerini taklit ediyor. Nevin'i delirtip bu seraya kurban etmişler. Selin adında biri kaçarken kompost yoluna kan bırakmış. Mavi spor, kök özütü ve o kan... Eğer ölmek istemiyorsam o serumu yapmak zorundayım." },
         { type: "waitTap" },
-        { type: "narrate", text: "Mavi spor kesesini almak için elini o iğrenç saksıya sokman gerek. Dokunduğun an zehirli spor bulutu doğrudan yüzüne patlayacak. Nefesini tutmazsan ciğerlerin saniyeler içinde eriyecek." },
+        { type: "narrate", text: "Mavi spor kesesini almak için elini saksının içine sokman gerek. Bu bir malzeme toplama işi gibi görünmeli: örnek al, formüle ekle, sonucu gözlemle. Ama örnek canlı, formül kanlı, gözlemci sensin. Dokunduğun an spor bulutu yüzüne patlayacak. Nefes alırsan ciğerlerin bir giriş kapısı olacak." },
       ],
       choices: [
         { id: "al", text: "Mavi spor kesesini kop — nefesini tut", next: "n_fide_spor" },
@@ -209,7 +209,7 @@ export const EP04 = {
     n_kompost_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kompost çukuru: Katın en altındaki devasa lağım ve çürüme havuzu. Kokusu o kadar ağır ki burnundan beynine bir bıçak saplanıyor gibi hissediyorsun. Burası istasyonun başarısız deneyleri, atık dokuları ve kayıtsız cesetleri fırlattığı bir kuyu. Nevin'in bahsettiği Selin'in kanı bu yolun üzerinde bir yerde olmalı. Çukurun kenarında, balçıkla kaplı tehlikeli bir patika uzanıyor." },
+        { type: "narrate", text: "Kompost çukuru katın en altındaki lağım ve çürüme havuzu. Resmi kayıtlarda buna atık döngüsü demiş olabilirler. Gerçekte başarısız deneylerin, atık dokuların ve kayıtsız cesetlerin unutulma yeri. Kokusu burnundan beynine saplanıyor. Bir kurum bir şeyi komposta attığında onu yok ettiğini sanır; burada ise her şey çürüyüp geri dönmüş." },
         { type: "alert", text: "Kompost gazı halüsinasyonlara sebep olur, zemin tamamen ceset parçalarıyla kaplı ve kaygan!" },
       ],
       choices: [
@@ -236,7 +236,7 @@ export const EP04 = {
           meta: "— Parçalanmış Soğutucu Çantadan —",
           body: "Bunu her kim bulduysa...\n\nBenim adım Selin. Eğer bu çantayı bulduysan Nevin hâlâ kapıda bekliyor olabilir.\nO beni ölen kızı sandı. Bunu yazarken bile bu cümlenin bana sağladığı\nhayattan utanıyorum. Beni korudu, çünkü artık kim olduğumu değil, kimi\nkaybettiğini görüyor.\n\nKanımı buraya bıraktım. Formül:\nMavi spor + kök özütü + benim kanım.\nOran: 1 / 2 / 3.\nYanlış karışım onu öldürmez. Keşke öldürse. Yanlış karışım Nevin'in içinde\nkalan son insan parçasını da köklere teslim eder.\n\nBen K-2'ye iniyorum. Buluntu orada. Bütün bu ailenin, saymanın, uykuda\nkonuşan ölülerin kaynağı orada.\n\nBeni arama. Ama serumu yaparsan önce Nevin'i kurtar.\nO bu cehennemin doktoru değildi. İlk hastasıydı.\n\n— S." } },
           { type: "note", id: "not_selin", title: "Son Parça ve Tarif", text: "Selin kendi kanını soğutucu çantada bırakmış. Nevin onu kızı sandığı için hayatta tutmuş. Bu tesisin en merhametli hareketi bile bir deliliğin yan etkisi. Tarif net: 1 spor, 2 özüt, 3 kan. Yanlış karışım Nevin'i öldürmeyecek; onu tamamen burada bırakacak. Bunu yaparsam hata yapma hakkım yok." },
-        { type: "objective", text: "Üç hayati örneği laboratuvara ulaştır ve hatasız serumu üret." },
+        { type: "objective", text: "Üç örneği laboratuvara getir." },
       ],
       choices: [
         { id: "geri", text: "Geçitten seraya dön", next: "n_sera" },
@@ -249,7 +249,7 @@ export const EP04 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Laboratuvardan geriye tam bir yıkım kalmış: Devrilmiş dolaplar, yerlerde kırık tüpler ve her yeri kaplamaya başlayan kılcal damarlar... Masanın üzerinde Nevin'in insanken duvara kanla kazıdığı o tarif duruyor. Ama elinde malzemeler yoksa bu sadece bir ölüm fermanı.", if: { flag: "ornek3", equals: false } },
-        { type: "narrate", text: "Laboratuvar tezgâhındasın. Tabletinin ışığını masaya sabitledin. Üç ölümcül parça da önünde duruyor: Mavi spor, siyah özüt ve Selin'in kanı. Şimdi bu kimyasal dehşeti tam oranında birleştirmen gerek. Tek bir miligramlık hata Nevin'i tamamen delirtecek.", if: { flag: "ornek3", equals: true } },
+        { type: "narrate", text: "Laboratuvar tezgâhındasın. Tablet ışığını masaya sabitledin. Önünde üç parça var: mavi spor, siyah özüt, Selin'in kanı. Bunları bileşen diye adlandırmak rahatlatıcı olurdu. Aslında biri hastalık, biri taşıyıcı, biri insanın hâlâ insan kalmış kanıtı. Doğru oran Nevin'i geri çağırabilir. Yanlış oran, onu kurumun istediği şeye tamamlar.", if: { flag: "ornek3", equals: true } },
         { type: "document", open: true, if: { flag: "labTarif", equals: false }, doc: {
           id: "d_tarif", title: "Duvara Kazınmış Formül", style: "hand",
           meta: "— Nevin'in Kendi Kanıyla Yazdığı Formül —",
@@ -291,7 +291,7 @@ export const EP04 = {
         { type: "narrate", text: "Şırınganın içindeki altın sıvı tabletinin ışığında parıldıyor. Selin'in vasiyeti 'Nevin'i kurtar' diyordu. Ama bu serum, Nevin'in seni parçalamasını engellemek için tek kaçış biletin de olabilir. Seçim anı yaklaşıyor." },
         { type: "flag", set: { serumHazir: true } },
         { type: "battery", spares: 1 },
-        { type: "objective", text: "Seraya geri dön ve kaderini tayin edecek o canavarla yüzleş." },
+        { type: "objective", text: "Seraya dön." },
       ],
       choices: [
         { id: "sera", text: "Seraya dön", next: "n_kasa" },
@@ -328,7 +328,7 @@ export const EP04 = {
           id: "d_nevin_son", title: "Nevin'in Son İtirafı", style: "hand",
           meta: "— Çelik Kasanın Tabanından —",
           body: "Eğer bu yazıyı okuyorsan o altın sıvıyı yapmayı başarmışsın demektir. Beni bu etten hapishaneden çekip çıkarabilir.\n\nAma sana dürüst olacağım: Geri dönmek istiyor muyum, emin değilim. Kök olmak... Duyguların olmaması, korkunun bitmesi demek. Bu istasyonun cehenneminde insan kalmak saf acıdan başka bir şey değil.\n\nSeçim senin. Beni uyandır ve ikimiz de bu istasyonun vahşetini çekmeye devam edelim... Ya da beni burada bırak, bu katın bir parçası olarak çürüyeyim.\n\nNe yaparsan yap, K-2'ye in. Selin orada. O yaratık orada. Bu kabus orada bitecek.\n\n— N." } },
-        { type: "objective", text: "Nevin ile son kez yüzleş ve K-2 cehennemine giden kapıyı aç." },
+        { type: "objective", text: "K-2 kapısını aç." },
       ],
       choices: [
         { id: "yuzles", text: "Sera merkezine, Nevin'e git", next: "n_final" },
@@ -341,7 +341,7 @@ export const EP04 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Sera merkezi... Nevin, toprağa gömülmüş etten bir kütle halinde orada duruyor. K-2'ye giden ağır demir kapı tam onun arkasında; geçmek için bu canavarın dibine kadar sokulmak zorundasın. Tabletinin çiğ ışığı yüzüne vurduğu an yeşil, fosforlu, irinli gözlerini yavaşça açıyor. Bakışlarında tarifsiz bir insan yorgunluğu ve delilik var." },
+        { type: "narrate", text: "Sera merkezine dönüyorsun. Nevin toprağa gömülmüş etten bir kütle gibi duruyor; ama gözlerini açtığında canavardan önce yorgun bir insan görüyorsun. Bu daha dayanılmaz. Çünkü onu öldürmek kolay olurdu. Onu anlamak zor. K-2 kapısı arkasında, yani çıkışın bir hastanın göğüs kafesinden geçiyor. SINIR-1 her kaçış yolunu birinin suçuna bağlamış." },
         { type: "narrate", text: "\"Serumu kokluyorum...\" diye inliyor, ağzından sümüksü sıvılar dökülerek. \"Selin'in kanı... Hâlâ taze, hâlâ sıcak.\" Etraftaki devasa kökler bir kırbaç gibi havaya kalkıyor, etrafını sarıyor ama henüz darbe indirmiyor. \"Karar ver, küçük böcek. Bu acıyı bitirecek misin, yoksa beni bu kabusa mahkum mu edeceksin?\"" },
         { type: "waitTap" },
       ],
@@ -399,7 +399,7 @@ export const EP04 = {
       cost: 1,
       events: [
         { type: "system", text: "K-2 TAHLİYE KAPISI AÇILDI" },
-        { type: "narrate", text: "Kapı ağır ağır açılıyor ve aşağıdan yüzüne çarpan hava tüylerini diken diken ediyor... Buz gibi, mineral kokan, antik bir hava. Burası artık istasyonun beton duvarları değil; burası doğrudan yerin altına, kadim kayaların içine oyulmuş devasa bir maden ve kazı sahası. Delilik burada başladı." },
+        { type: "narrate", text: "Kapı ağır ağır açılıyor. Aşağıdan gelen hava buz gibi, mineral kokulu ve çok eski. Burası artık istasyon değil; istasyonun saklamak için üstüne kapandığı yara. Beton duvarlar bitiyor, kadim kayalar başlıyor. Delilik burada başlamadı belki. Belki burada bulundu, dosyalandı, bütçelendi ve yukarı katlara dağıtıldı." },
         { type: "waitTap" },
         { type: "ambient", text: "Tablet ekranı cızırdayarak Ece'nin ağlamaklı sesini veriyor: «K-2'ye iniyorsun... Tanrım, orası asıl cehennem. Orada ne olduğunu istasyon yönetimi bile kontrol edemedi. Buluntu orada... Selin orada... Lütfen dikkat et. Ve... beni Şef'e satmadığın, beni koruduğun için teşekkür ederim. Yaşa lütfen.»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "Tabletinin ekranı son bir kez güçlüce titriyor, parazit yapıyor ve tamamen sessizliğe gömülüyor. Ece'yi satmıştın; yerin kilometrelerce altındaki bu zifiri karanlık madende artık çığlıklarını duyacak hiç kimse yok. Tamamen yapayalnızsın. Sadece tabletinin soğuk ışığı ve sen.", if: { flag: "eceEleVerildi", equals: true } },

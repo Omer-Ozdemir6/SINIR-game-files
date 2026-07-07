@@ -19,9 +19,9 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "music", track: "k5_outlast_dread" },
+        { type: "music", track: "k5_sinir_dread" },
         { type: "system", text: "KAT: K-5 — YAŞAM DESTEK · ÖLÜMÜN EŞİĞİ · SU VE KAN DÖNGÜSÜ" },
-        { type: "narrate", text: "Merdivenlerden indiğin an, ciğerlerine dolan hava pas, küf ve çürüyen et kokusuyla ağırlaşıyor. K-5 devasa bir canavarın içi gibi; borular delice zonkluyor, filtreler sanki boğuluyormuş gibi hırıltıyla tıslıyor, tavan şaftları karanlık dişlerini etine geçirmek için bekleyen ağızlar gibi açılıyor." },
+        { type: "narrate", text: "Merdivenlerden indiğin an ciğerlerine dolan hava pas, küf ve çürüyen etle ağırlaşıyor. K-5 bir kat gibi değil, içine girilmiş bir organ gibi çalışıyor. Borular zonkluyor, filtreler boğulur gibi tıslıyor. Buradaki makineler arızalı değil; arıza bahanesiyle canlı tutulmuş. Sanki biri burayı yardım etmek için değil, nefes alışını ölçmek için tasarlamış." },
         { type: "narrate", text: "Burada korku rastgele değil. Duvarlardaki kameralar, hoparlörler ve paneller öyle düzenli yerleştirilmiş ki K-5 bir kat değil, gözlem odası olmayan dev bir deney kafesi gibi. Her koridorun sonunda seni ölçen bir şey var: ne kadar ses çıkarıyorsun, ne kadar hızlı panikliyorsun, yalvarmadan önce kaç saniye dayanıyorsun." },
         { type: "narrate", text: "Öne doğru üç titrek adım atıyorsun. Arkandaki ağır çelik kapı birden öyle bir gürültüyle kapanıyor ki, darbe dalgası sırtında patlıyor. Kilidin yuvasına oturma sesi: TIK. TIK. Bir farenin kapana kısılması gibi, burası bir deney sahası ve sen sadece can çekişmesi izlenecek bir kurbansın." },
         { type: "narrate", text: "Karanlığı yırtan tek şey, parmaklarının arasında titreyen tabletin çiğ, beyaz ekran ışığı. Bu ışık seni kurtarmıyor; sadece seni avlayacak şeylere nerede olduğunu gösteren bir fener gibi yüzünü aydınlatıyor. Pil çubuğu yavaşça göz kırpıyor." },
@@ -30,7 +30,7 @@ export const EP02 = {
         { type: "anons", text: "「İşte oradasın... Canlı taze et. Ben Deniz. Bu labirentin tanrısı da benim, kasabı da. Her kapı, her kör kamera, her paslı hoparlör benim gözüm, benim dilim. Sen ise... sadece biraz daha uzun süre çırpınmasını umduğum yeni oyuncağımsın.」" },
         { type: "anons", text: "「Kurallar canını yakacak kadar basit: Bu katta üç acımasız ders var. Her ders sana etinden cımbızla çekip alacağın bir KART PARÇASI verecek. Üçünü de kanlı parmaklarınla birleştirip çıkış kapısına sokamazsan, burada çürürsün. Seçim senin, hangi acıdan başlayacağını izlemek nefesimi kesiyor...」" },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "objective", text: "Mutlak karanlık çökmeden üç kart parçasını söküp al ve çıkışı zorla" },
+        { type: "objective", text: "Üç kart parçasını topla." },
         { type: "note", id: "not_deniz", title: "Deniz Okur — Hücremin Gardiyanı", text: "Deniz bu katı yönetmiyor; bu katın dili olmuş. Kapılar onun dişleri, kameralar gözleri, hoparlörler ağzı. Bana 'ders' dediği şeyler işkence istasyonları. Üç kart parçası istiyor. Bu bir oyun değil, ama o bunu oyun sanmak zorunda; yoksa aynada kendisinin de kafese kilitli olduğunu görecek." },
         { type: "document", open: false, doc: {
           id: "d_deniz_protokol", title: "Davranış Ölçüm Protokolü — K-5",
@@ -70,7 +70,7 @@ export const EP02 = {
     n_destek_panel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kavşağın en karanlık köşesinde, sanki bir balta ile parçalanmış yaşam destek panelinin kapağı sallanıyor. İçerideki beş kalın kablo damarları sökülmüş bir insan gibi dışarı sarkmış; uçlarından fırlayan mavi kıvılcımlar tabletinin ekranında anlık parlamalar yaratıyor. Paneldeki kanlı etikette \"K-5 HAVA DÖNGÜSÜ — YAŞAM / ÖLÜM DENGESİ\" yazıyor. Deniz bu paneli bilerek parçalamış; acı çekmeni istiyor. Eğer bu vahşi kabloları doğru yuvalara sokabilirsen, ciğerlerini yakan o asitli gaz temizlenecek ve attığın her korku dolu adım daha az ses çıkaracak." },
+        { type: "narrate", text: "Kavşağın en karanlık köşesinde yaşam destek paneli sallanıyor. Kapağı baltayla açılmış gibi; içerideki beş kablo, damarları sökülmüş bir göğüs kafesinden dışarı sarkıyor. Etikette hâlâ resmi bir sakinlik var: \"K-5 HAVA DÖNGÜSÜ — YAŞAM / ÖLÜM DENGESİ\". Bu denge değil. Bu, boğulmayı kalibre eden bir düzenek. Deniz paneli kırmışsa, seni öldürmek için değil; nefes almak uğruna nelere dokunacağını görmek için kırmış." },
         { type: "note", id: "not_destek", title: "Can Çekişen Hava Paneli", text: "K-5'in akciğerleri sökülmüş. Beş çıplak kablo kıvılcım saçıyor, dokunursam parmaklarımı yakacak kadar sıcaklar. Doğru portları bulmam gerek. Eğer beceremezsem, bu zehirli hava beni boğacak ve çıkardığım hırıltılar yüzünden yerimi anında bulacaklar." },
       ],
       interaction: {
@@ -128,7 +128,7 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "anons", text: "「Birinci ders: BASINÇ. İçeride etini kemiğinden ayırabilecek güçte üç vana var. Eğer doğru sırayla çevirmezsen, o çok güvendiğin kulak zarlarının kafanın içinde nasıl patladığını dinleriz. Başla bakalım fare.」" },
-        { type: "narrate", text: "Ağır demir kapının yanında paslı, yağlı bir pano duruyor. Üzerinde kurumuş kan lekelerinin altında bir şema var. Okumak için tabletinin ekran ışığını dibine kadar yaklaştırıp parmaklarınla o pisliği kazıman gerekecek. Ya da doğrudan intiharı seçip içeri dalarsın." },
+        { type: "narrate", text: "Ağır demir kapının yanında paslı bir pano var. Kurumuş kanın altında bir şema duruyor; biri ölmeden önce bunu temizlemeye çalışmış olmalı. Panoya yaklaşınca fark ediyorsun: Bu bir ipucu değil, kurumun kendini aklama biçimi. Talimat vardı. Okusaydı yaşardı. Böyle yazacaklar. Okumak için pisliği parmaklarınla kazıman gerek. İçeri doğrudan girmek ise intihar değil; onların raporuna kolaylık sağlamak." },
       ],
       choices: [
         { id: "oku", text: "Tablet ışığını panoya daya, pisliği kazıyıp oku", next: "n_s1_sema" },
@@ -286,7 +286,7 @@ export const EP02 = {
       cost: 1,
       events: [
         { type: "flag", set: { tHarita: true } },
-        { type: "narrate", text: "Dolabın kapağını zorlayarak açıyorsun, içerisi eski paslı aletler ve kurumuş fare ölüleriyle dolu. Kapağın iç yüzüne çivilerle kazınmış sararmış, kan lekeli bir tünel şeması buluyorsun. Altındaki yağlı bezlerin arasında ise canından çok seveceğin titrek bir yedek pil duruyor!" },
+        { type: "narrate", text: "Dolabın kapağını zorlayarak açıyorsun. Paslı aletler, kurumuş fareler, yağlı bezler. Kapağın iç yüzüne çivilerle tutturulmuş bir tünel şeması var; kağıt sararmış, kenarları kanla sertleşmiş. Bu harita birinin zekâsı değil, paniğinin kalıntısı. Bir insan tünelde kaybolmadan önce yönleri değil, hayatta kalma ihtimalini duvara çakmış. Bezlerin altında bir yedek pil parlıyor. Bu tesis bazen yemini ödül gibi paketliyor." },
         { type: "battery", spares: 1 },
         { type: "document", open: true, doc: {
           id: "d_tunelharita", title: "K-5 İnsan Öğütücü Tünel Şeması",
@@ -303,7 +303,7 @@ export const EP02 = {
       checkpoint: true,
       cost: 3,
       events: [
-        { type: "narrate", text: "Alüminyum, daracık, buz gibi bir tabutun içindesin. Dirseklerinin üstünde, etini çeliğe sürte sürte ilerliyorsun. Tabletinin titrek ekran ışığı önündeki sadece birkaç metrelik karanlığı yırtabiliyor, arkanda ise mutlak bir hiçlik var. İlk kavşak: Sol kol aşağı doğru dik bir eğimle iniyor, sağ koldan ise çürük bir rüzgar hırıldıyor.", if: { flag: "t1Ilk", equals: false } },
+        { type: "narrate", text: "Alüminyum, daracık, buz gibi bir tabutun içindesin. Dirseklerinle ilerlerken çelik etini soyuyor. Tablet ışığı sadece birkaç metreyi gösteriyor; arkanda kalan karanlık hemen kapanıyor, sanki geçtiğin yolu inkâr ediyor. İlk kavşak önünde. Sol kol aşağı iniyor, sağdan çürük bir rüzgar geliyor. Haritada bunun basit bir yön seçimi olduğu yazıyordu. Bedense bunun bir mezar seçimi olduğunu biliyor.", if: { flag: "t1Ilk", equals: false } },
         { type: "flag", set: { t1Ilk: true } },
         { type: "alert", text: "Harita yanında yok! Karanlıkta atacağın her adım ölümcül bir kumar!", if: { flag: "tHarita", equals: false } },
       ],
@@ -331,7 +331,7 @@ export const EP02 = {
         { type: "glitch", ms: 400 },
         { type: "anons", text: "「Dur... Dur! O ne lan... O şeyin tünelde ne işi var?! BU BENİM OYUNUM! Bakım, hemen sağındaki menfeze gir, HEMEN SAKLAN, SİKTİR—」" },
         { type: "waitTap" },
-        { type: "narrate", text: "Deniz'in sesindeki o sapık neşe anında yok oluyor, yerini saf bir dehşet alıyor. Sağında, bir kol boyu ötede küçük bir servis menfezi var. Ece 'dur' demişti, Deniz ise 'saklan' diye çığlık atıyor. O canavar ikisinden de büyük." },
+        { type: "narrate", text: "Deniz'in sesindeki o sapkın neşe bir anda yok oluyor. İlk kez rol yapmıyor. Sağında küçük bir servis menfezi var. Ece 'dur' demişti, Deniz 'saklan' diye bağırıyor. İkisi de farklı şeylerden korkuyor. O an anlıyorsun: Bu katta seni yöneten adam bile sistemin tamamını bilmiyor. Kafesin içinde başka bir kafes daha var." },
         { type: "note", id: "not_denizpanik", title: "Sistem Delindi", text: "Tünellerde yaşayan o 'İnleyen' denen şey içeri girdi ve Deniz bunu BİLMİYORDU. Kapılar onun olabilir ama o canavar bu sistemin tamamen dışında. Deniz her şeyi görmüyor, o da korkuyor." },
       ],
       choices: [
@@ -413,7 +413,7 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Camları tamamen aşağı indirilmiş, soğuk ve beyaz ameliyathane ışığıyla aydınlatılmış bir gözlem odası. Ortada paslı tek bir demir sandalye, tavanda cızırdayan tek bir hoparlör ve doğrudan sana bakan kanlı bir kamera lensi. Sandalyenin hemen altında, üzeri lekeli bir defter unutulmuş." },
+        { type: "narrate", text: "Camları indirilmiş bir gözlem odasına giriyorsun. Işık beyaz, soğuk ve suçsuz görünmeye çalışan türden. Ortada paslı bir sandalye var; insanın oturması için değil, cevap vermesi için yapılmış. Tavanda tek hoparlör, karşında kanlı kamera lensi. Sandalyenin altında lekeli bir defter duruyor. Unutulmuş gibi değil. Özellikle bırakılmış gibi. Kurbanların okunması da sınavın parçası." },
         { type: "document", open: true, doc: {
           id: "d_sinavdefteri", title: "Deniz'in Kanlı Av Defteri", style: "hand",
           meta: "— kapağında vahşi bir karalamayla: 'DENEYLER. D.' —",
@@ -594,7 +594,7 @@ export const EP02 = {
         { type: "battery", spares: 1 },
         { type: "waitTap" },
         { type: "anons", text: "「Sana son bir bedava ders: K-4 kapısından çıktığında önünde uzanan o sonsuz koridor... Orası artık benim oyun alanım değil. Orası kimsenin değil. Oraya ölümün gerçek amiri hükmeder... Babama benden selam söyle fare.」" },
-        { type: "objective", text: "K-4 ölüm koridorunu aş — Ana havalandırma bacasına ulaş" },
+        { type: "objective", text: "Ana havalandırma bacasına ulaş." },
       ],
       choices: [
         { id: "cik", text: "K-4 geçiş kapısını arala ve o bilinmezliğe adım at", next: "n_harun1" },
@@ -604,7 +604,7 @@ export const EP02 = {
     n_harun1: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Sonsuz, çıplak, duvarlarından kan sızan bir bağlantı koridoru. Yarı yola geldiğinde, öbür uçtaki karanlık köşeden devasa bir fener ışığı dönüyor — sarı, ağır ve hiç acele etmeyen bir ışık. Arkasından ise, o kapı boşluğuna sığmayan, kasap önlüklü devasa bir gövde belitiyor." },
+        { type: "narrate", text: "Sonsuz, çıplak, duvarlarından kan sızan bir bağlantı koridoru. Yarı yola geldiğinde öbür uçtan sarı bir fener dönüyor; acele etmeyen, görevini bilen bir ışık. Arkasından kapı boşluğuna sığmayan kasap önlüklü bir gövde beliriyor. Bu bir canavarın gelişi gibi değil, vardiya amirinin denetime çıkması gibi. En yanlış olan da bu: dehşetin burada mesai düzeni var." },
         { type: "narrate", text: "\"Yeni kurban...\" Ses o kadar sakin, o kadar derinden geliyor ki; sanki bir fabrikanın vardiya amiri, bir BABA gibi konuşuyor. \"Mesai saatinde koridorlarda başıboş geziyorsun. Senin için çok ağır bir ceza tutanağı hazırlamam gerekecek evlat...\" Devasa fener havaya kalkıyor ve doğrudan senin o korkudan donmuş gözlerine saplanıyor!" },
         { type: "stat", stat: "sefFarkindalik", delta: 15, note: "ŞEF SENİ GÖRDÜ — Artık onun av listesindesin!", noteKind: "alert" },
         { type: "waitTap" },

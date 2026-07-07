@@ -34,7 +34,7 @@ export const EP01 = {
         { type: "narrate", text: "Your breath shortens as you straighten up from the bunk. Even that sickly red glow of the emergency lighting has gone out, everywhere is pitch black. In a panic, you reach out your hand and your fingers find the company maintenance tablet given to you. When you press the power button, the cracked screen suddenly glows; a raw, blue-white, ice-cold light hits your face. Right now, your only support, your only source of light in this pitch-black world is this screen. Left over from the previous technician; an undeleted name glows on the lock screen stained with fingerprints: 'B. Soylu'." },
         { type: "note", id: "not_uyanis", title: "First night", text: "I've been assigned to BORDER-1 as a maintenance technician — the previous personnel 'left the duty'. My first night and the generator has already gone silent, no alarm, connection with the surface has been lost for three hours. No one welcomed me, no one woke me up. The tablet belonged to the previous technician: B. Soylu. Where is he?" },
         { type: "waitTap" },
-        { type: "objective", text: "Find the source of the power outage" },
+        { type: "objective", text: "Investigate the K-6 power outage." },
         { type: "ambient", text: "From the corridor outside the dormitory, from very far away, a wet, heavy sound comes, as if a piece of meat is being dragged. It lasts for a few seconds, then leaves its place to a deadly silence." },
       ],
       choices: [
@@ -302,7 +302,7 @@ export const EP01 = {
       noiseGate: [{ min: 50, once: "pusu1", node: "n_enc1" }],
       events: [
         { type: "narrate", text: "Down the iron stairs, you descend into the pitch-black, ice-cold water rising up to your ankles. Pump platform... On your right stands the rusty, massive valve A; on your left stands the door of room B opening into darkness. Opposite, a raw red emergency light illuminates the main panel. And at the far end of the platform, that narrow, claustrophobic bilge tunnel that continues by submerging INTO the water extends.", if: { flag: "platIlk", equals: false } },
-        { type: "objective", text: "Turn on the three pumps manually, start the line from the main panel" },
+        { type: "objective", text: "Start the pump platform." },
         { type: "flag", set: { platIlk: true } },
         { type: "status", items: [
           { label: "PUMP A", flag: "pompaA" },
@@ -523,7 +523,7 @@ export const EP01 = {
         { type: "stat", stat: "akil", delta: -5 },
         { type: "waitTap" },
         { type: "note", id: "not_anons", title: "The voice in the announcement", text: "A man spoke from the speaker. Young. Cheerful. He said 'The family has been informed'. Deniz — from the engineers. His voice... was normal. This is the scariest part: his voice was completely normal." },
-        { type: "objective", text: "Reach the radio room, call for help from the surface" },
+        { type: "objective", text: "Reach the radio room." },
         { type: "system", text: "K-6 ELECTRONIC LOCKS: ACTIVE — 6-B CORRIDOR DOOR OPENED" },
       ],
       choices: [
@@ -636,7 +636,7 @@ export const EP01 = {
       events: [
         { type: "system", text: "RADIO POWER CIRCUIT: ACTIVE — BAND SCANNING READY" },
         { type: "narrate", text: "The console warms up with a big static crackle and a dense static noise fills the room. Somewhere among the frequencies... there must be a living human. Coast guard, surface, anyone..." },
-        { type: "objective", text: "Scan the emergency band — try around 432.0 MHz" },
+        { type: "objective", text: "Scan the emergency band." },
       ],
       interaction: { kind: "radio", target: 432.0, success: "n_ece", cancel: "n_radyo" },
     },
@@ -659,7 +659,7 @@ export const EP01 = {
         { type: "note", id: "not_ece", title: "Ece — sonar operator", text: "A woman at 432.0: Ece. Not transformed, hiding, alone for three weeks. She said 'The chief sees the lights' and was going to say something about the table in the canteen when the line was cut. Deniz cut it. They know each other. I must find Ece — but first I must get out of tonight." },
         { type: "pause", ms: 1000 },
         { type: "narrate", text: "And right at that moment you hear it: those wet, heavy, dragging steps coming from the corridor... A huge shadow grows in the yellow light hitting the frosted glass of the door. The handle of the door — slowly — begins to turn downward!" },
-        { type: "objective", text: "HIDE. IMMEDIATELY." },
+        { type: "objective", text: "Hide in the locker." },
       ],
       choices: [
         { id: "dolap", text: "Get into the equipment locker — hold your breath", next: "n_saklan" },
@@ -690,7 +690,7 @@ export const EP01 = {
         { type: "narrate", text: "When you look at the radio desk, you are horrified: The device has been brutally smashed, the speaker split in two like a rib cage. That thing... UNDERSTOOD that you were trying to talk to the world and punished that machine where you made your voice heard. There is no way to reach Ece from here again." },
         { type: "alert", text: "RADIO: PERMANENT DAMAGE — BROADCAST FROM K-6 IS NO LONGER POSSIBLE" },
         { type: "waitTap" },
-        { type: "objective", text: "Reach the K-5 airlock — get off this floor" },
+        { type: "objective", text: "Reach the K-5 airlock." },
         { type: "ambient", text: "That spine-chilling metallic groaning sound from the corridor is still coming from very close. It hasn't left... It's WAITING right behind the door." },
       ],
       choices: [

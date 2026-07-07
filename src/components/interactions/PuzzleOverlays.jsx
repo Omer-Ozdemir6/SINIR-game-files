@@ -9,7 +9,7 @@ import { t } from "../../i18n";
    Story kullanımı: interaction: { kind, ...config, success, cancel }
 
    KINDS:
-   · shadow    — iki parçalı gölgeyi duvar iziyle hizala (RE7 projektör)
+   · shadow    — iki parçalı gölgeyi duvar iziyle hizala
    · wires     — kabloları doğru portlara bağla (devre yaması)
    · symbols   — dökümandaki sembolleri doğru SIRAYLA bas (RE8 çan kilidi)
    · rings     — renkli halkaları çevirip vitrayı bütünleştir (RE8 cam)
@@ -26,10 +26,29 @@ const P = {
   ctrlRow: { display: "flex", gap: 8, width: "100%", justifyContent: "center", flexWrap: "wrap" },
 };
 
+const puzzlePanel = {
+  ...S.keypadPanel,
+  backgroundColor: "#120f0b",
+  backgroundImage: [
+    "linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px)",
+    "linear-gradient(180deg, rgba(60,38,22,0.5), rgba(6,8,7,0.96))",
+    "radial-gradient(ellipse at 50% 0%, rgba(120,92,52,0.28), rgba(0,0,0,0) 55%)",
+  ].join(", "),
+  border: "1px solid #4a3524",
+  boxShadow: "0 24px 70px rgba(0,0,0,0.82), inset 0 0 0 1px rgba(210,170,95,0.08)",
+};
+
+const puzzleFace = {
+  backgroundColor: "#1a140f",
+  backgroundImage: "linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 34px), linear-gradient(180deg, rgba(84,55,32,0.45), rgba(11,12,10,0.9))",
+  border: "2px solid #3f2c1d",
+  boxShadow: "inset 0 0 18px rgba(0,0,0,0.85), 0 10px 26px rgba(0,0,0,0.45)",
+};
+
 const near = (a, b, tol) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
 
 /* ============================================================
-   1) GÖLGE HİZALAMA v3 — RE7 projektör: nesne HER YÖNE döner.
+   1) GÖLGE HİZALAMA v3 — nesne HER YÖNE döner.
    Üç eksen: DÖNDÜR (Z), EĞ (X — dikey basıklık), YATIR (Y — yatay
    basıklık). Sözde-3B: eğimler silüeti cos ile sıkıştırır; yanlış
    eksende doğru görüntü İMKANSIZ olur. Yeşil ipucu YOK — göz kararı.
@@ -44,7 +63,7 @@ const rad = (d) => (d * Math.PI) / 180;
    3D GÖLGE NESNESİ — "kalıntı".
    Nesne 3B çizgi segmentlerinden oluşur. Oyuncu iki eksende
    döndürür (yaw = yatay, pitch = dikey). Her açıda nesnenin
-   2B izdüşümü (gölgesi) FARKLI görünür — gerçek RE7 mekaniği.
+   2B izdüşümü (gölgesi) FARKLI görünür.
    Doğru açı çiftinde gölge hedef silüete oturur → kilit.
 
    Nesne: SINIR-1 evrenine ait deforme bir kalıntı. Doğru açıda
@@ -136,34 +155,78 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.shadowTitle")}</div>
-        <svg viewBox="-110 -110 220 220" style={{ width: "100%", maxWidth: 260 }}>
+        <svg viewBox="0 0 420 210" style={{ width: "100%", maxWidth: 430 }}>
           <defs>
-            <radialGradient id="s1lamp" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor={locked ? "#4a6a52" : "#2f3d32"} />
-              <stop offset="55%" stopColor="#12191400" />
-              <stop offset="55%" stopColor="#141d18" />
-              <stop offset="100%" stopColor="#070a08" />
+            <radialGradient id="s1-shadow-wall" cx="34%" cy="42%" r="72%">
+              <stop offset="0%" stopColor="#344742" />
+              <stop offset="58%" stopColor="#151d1b" />
+              <stop offset="100%" stopColor="#070807" />
             </radialGradient>
+            <linearGradient id="s1-shadow-frame" x1="0" x2="1">
+              <stop offset="0%" stopColor="#6a573a" />
+              <stop offset="42%" stopColor="#2d2418" />
+              <stop offset="100%" stopColor="#907246" />
+            </linearGradient>
+            <linearGradient id="s1-relic-block" x1="0" x2="1">
+              <stop offset="0%" stopColor="#efe2c4" />
+              <stop offset="48%" stopColor="#a58f68" />
+              <stop offset="100%" stopColor="#4f4638" />
+            </linearGradient>
+            <filter id="s1-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="1.4" />
+            </filter>
           </defs>
           {/* projeksiyon lambası (duvar) */}
-          <circle cx="0" cy="0" r="104" fill="url(#s1lamp)" />
+          <rect x="0" y="0" width="420" height="210" fill="url(#s1-shadow-wall)" />
+          <path d="M236 48 L360 32 L360 176 L236 160 Z" fill="#d8e3ce" opacity={locked ? 0.19 : 0.12} />
+          <path d="M222 70 L360 42 L360 166 L222 140 Z" fill="#cfd9c4" opacity="0.08" />
+          <g transform="translate(22 40)">
+            <rect x="0" y="0" width="164" height="118" fill="url(#s1-shadow-frame)" />
+            <rect x="9" y="9" width="146" height="100" fill="#c8b893" />
+            <rect x="13" y="13" width="138" height="92" fill="#a79a7d" opacity="0.58" />
+            <path d="M18 90 C48 58 84 82 146 36" fill="none" stroke="#6f684f" strokeWidth="2" opacity="0.42" />
+            <path d="M20 70 C48 44 70 64 92 48 C112 34 130 44 146 24" fill="none" stroke="#574f3f" strokeWidth="1.5" opacity="0.35" />
+            <g transform="translate(82 59) scale(0.62)">
+              <path d={targetD} fill="none"
+                stroke="#211d18" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"
+                filter="url(#s1-soft-shadow)"
+                opacity={locked ? 0.18 : config.showTarget ? 0.32 : 0.12} />
+              <path d={curD} fill="none"
+                stroke={locked ? "#10100d" : "#11100dcc"}
+                strokeWidth={locked ? 8 : 7}
+                strokeLinecap="round" strokeLinejoin="round"
+                style={{
+                  transition: "d 120ms linear",
+                  filter: glow > 0.5 ? `drop-shadow(0 0 ${glow * 5}px rgba(20,20,12,${0.28 + glow * 0.35}))` : "url(#s1-soft-shadow)",
+                }} />
+              {locked && <circle cx={curPts[0][0]} cy={curPts[0][1]} r="8" fill="#10100d" opacity="0.92" />}
+            </g>
+          </g>
+          <g transform="translate(308 105) scale(0.72)">
+            <path d={curD} fill="none"
+              stroke="#d5c39e" strokeWidth="13" strokeLinecap="square" strokeLinejoin="miter"
+              opacity="0.94"
+              style={{ filter: "drop-shadow(10px 10px 8px rgba(0,0,0,0.65))" }} />
+            <path d={curD} fill="none"
+              stroke="#584c3c" strokeWidth="4" strokeLinecap="square" strokeLinejoin="miter"
+              opacity="0.7" />
+            {curPts.map(([x, y], i) => (
+              <g key={i} transform={`translate(${x} ${y}) rotate(${(yaw + i * 23) % 360})`}>
+                <rect x="-13" y="-8" width="26" height="16" rx="1.5"
+                  fill="url(#s1-relic-block)" stroke="#6d5e46" strokeWidth="1.4" />
+                <line x1="-9" y1="0" x2="9" y2="0" stroke="#f6e8c8" strokeWidth="1" opacity="0.45" />
+              </g>
+            ))}
+            <circle cx="0" cy="0" r="8" fill={locked ? "#e8c95a" : "#6f5f43"} stroke="#f0e2b6" strokeWidth="1.2" />
+          </g>
+          <circle cx="385" cy="105" r="19" fill="#d8e3ce" opacity="0.12" />
+          <circle cx="385" cy="105" r="5" fill="#e8ead8" opacity="0.55" />
+          <rect x="0" y="0" width="420" height="210" fill="none" stroke="rgba(210,170,95,0.14)" strokeWidth="2" />
           {/* hedef silüet — zor modda sadece belge ipucu varsa görünür */}
-          <path d={targetD} fill="none"
-            stroke="#5a8a6a" strokeWidth="2.4" strokeLinecap="round"
-            strokeDasharray="4 5" opacity={locked ? 0 : config.showTarget ? 0.32 : 0.08} />
           {/* nesnenin gölgesi — açı değiştikçe ŞEKİL değişir */}
-          <path d={curD} fill="none"
-            stroke={locked ? "#7cc39a" : "#05080799"}
-            strokeWidth={locked ? 3.4 : 3}
-            strokeLinecap="round" strokeLinejoin="round"
-            style={{
-              transition: "d 120ms linear",
-              filter: glow > 0.5 ? `drop-shadow(0 0 ${glow * 6}px rgba(120,200,150,${glow * 0.7}))` : "none",
-            }} />
           {/* merkez göz — kilitlenince açılır */}
-          {locked && <circle cx={curPts[0][0]} cy={curPts[0][1]} r="6" fill="#7cc39a" opacity="0.9" />}
         </svg>
         <div style={P.ctrlRow}>
           <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("yaw", -1)}>⟲ {t("puzzle.rot")}</button>
@@ -236,7 +299,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.wiresTitle")}</div>
         <svg viewBox="0 0 260 200" style={{ width: "100%", maxWidth: 280 }}>
           <rect x="0" y="0" width="260" height="200" rx="6" fill="#070d0c" stroke="#14312c" />
@@ -345,11 +408,25 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.symbolsTitle")}</div>
-        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 250 }}>
+        <svg viewBox="-112 -112 224 224" style={{ width: "100%", maxWidth: 270 }}>
+          <defs>
+            <radialGradient id="s1-brass-face" cx="45%" cy="35%" r="68%">
+              <stop offset="0%" stopColor="#6f5b36" />
+              <stop offset="58%" stopColor="#2c2418" />
+              <stop offset="100%" stopColor="#100d09" />
+            </radialGradient>
+            <radialGradient id="s1-stone-button" cx="38%" cy="30%" r="72%">
+              <stop offset="0%" stopColor="#4c4a40" />
+              <stop offset="62%" stopColor="#171812" />
+              <stop offset="100%" stopColor="#090a08" />
+            </radialGradient>
+          </defs>
           <polygon points="0,-100 71,-71 100,0 71,71 0,100 -71,71 -100,0 -71,-71"
-            fill="#0d1210" stroke="#2a3a30" strokeWidth="2" />
+            fill="url(#s1-brass-face)" stroke="#6e5530" strokeWidth="4" />
+          <polygon points="0,-91 64,-64 91,0 64,64 0,91 -64,64 -91,0 -64,-64"
+            fill="none" stroke="rgba(230,190,105,0.2)" strokeWidth="2" />
           {glyphs.map((id, i) => {
             const ang = (i / glyphs.length) * Math.PI * 2 - Math.PI / 2;
             const cx = Math.cos(ang) * 68, cy = Math.sin(ang) * 68;
@@ -358,12 +435,19 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
             return (
               <g key={id} transform={`translate(${cx},${cy})`}
                 onClick={() => press(id)} style={{ cursor: "pointer" }}>
-                <circle r="24"
-                  fill={fl ? (flash.ok ? "#16302a" : "#3a120c") : lit ? "#132420" : "#0a0e0c"}
-                  stroke={fl ? (flash.ok ? "#7fae86" : "#e06a4a") : lit ? "#7fae86" : "#3a4a40"}
-                  strokeWidth="2.5" style={{ transition: "stroke 200ms, fill 200ms" }} />
+                <circle r="27" fill="#0a0806" opacity="0.65" transform="translate(2,3)" />
+                <circle r="25"
+                  fill="url(#s1-stone-button)"
+                  stroke={fl ? (flash.ok ? "#d8b34a" : "#d23b2e") : lit ? "#c8332a" : "#7b6844"}
+                  strokeWidth={fl || lit ? 4 : 2.4}
+                  style={{ transition: "stroke 200ms, fill 200ms" }} />
+                {(lit || fl) && (
+                  <circle r="28" fill="none"
+                    stroke={fl && !flash.ok ? "#ff2b20" : "#c82018"}
+                    strokeWidth="3.5" opacity="0.9" />
+                )}
                 <path d={GLYPHS[id]} fill="none"
-                  stroke={lit || fl ? "#d8cfa0" : "#8a7f5a"} strokeWidth="2"
+                  stroke={lit || fl ? "#e5d08a" : "#9a885e"} strokeWidth="2.2"
                   strokeLinecap="round" transform="translate(-20,-20)" />
               </g>
             );
@@ -447,11 +531,19 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.ringsTitle")}</div>
-        <svg viewBox="-105 -105 210 210" style={{ width: "100%", maxWidth: 260 }}>
-          <circle r="100" fill="#d8d2c2" opacity="0.14" />
-          <circle r="100" fill="none" stroke="#3a4438" strokeWidth="4" />
+        <svg viewBox="-112 -112 224 224" style={{ width: "100%", maxWidth: 286 }}>
+          <defs>
+            <radialGradient id="s1-glass-back" cx="47%" cy="44%" r="64%">
+              <stop offset="0%" stopColor="#f3efd9" stopOpacity="0.58" />
+              <stop offset="58%" stopColor="#5f7d64" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#050807" stopOpacity="0.96" />
+            </radialGradient>
+          </defs>
+          <circle r="108" fill="#15110d" />
+          <circle r="103" fill="#3b3022" stroke="#6a5736" strokeWidth="5" />
+          <circle r="96" fill="url(#s1-glass-back)" stroke="#171c16" strokeWidth="3" />
           {rings.map((r, i) => {
             const [r0, r1] = radii[i];
             const shards = GLASS_SHARDS[i % GLASS_SHARDS.length];
@@ -465,9 +557,9 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
                     <path key={k}
                       d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 6)}
                       fill={hole ? "#070908" : c}
-                      opacity={hole ? 0.95 : done ? 0.5 : 0.34}
+                      opacity={hole ? 0.95 : done ? 0.78 : 0.48}
                       stroke={hole ? "#3a4438" : placed ? "#e8c95a" : "#1a1f1a"}
-                      strokeWidth={placed ? 2 : 1.2}
+                      strokeWidth={placed ? 2.4 : 1.8}
                       strokeDasharray={hole ? "4 3" : "none"} />
                   );
                 })}
@@ -475,22 +567,37 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
                   <path key={"f" + k} d={d} fill="none"
                     stroke={done ? "#e8c95a" : "#c8a94a"} strokeWidth="4"
                     strokeLinecap="round"
-                    style={{ transition: "stroke 400ms" }}
+                    style={{ transition: "stroke 400ms", filter: done ? "drop-shadow(0 0 5px rgba(232,201,90,0.7))" : "none" }}
                     opacity={done ? 1 : 0.9} />
                 ))}
               </g>
             );
           })}
+          <circle r="38" fill="none" stroke="rgba(20,24,18,0.65)" strokeWidth="2" />
+          <circle r="68" fill="none" stroke="rgba(20,24,18,0.65)" strokeWidth="2" />
+          <circle r="96" fill="none" stroke="rgba(20,24,18,0.78)" strokeWidth="2" />
           {done && <circle r="100" fill="#e8c95a" opacity="0.07" />}
         </svg>
         <div style={P.ctrlRow}>
           {rings.map((r, i) => (
             <span key={i} style={{ display: "flex", gap: 6 }}>
               <button className="s1-btn s1-key"
-                style={{ ...S.keyBtn, borderColor: r.color, minWidth: 46 }}
+                style={{
+                  ...S.keyBtn,
+                  width: 48, minWidth: 48, height: 42, borderRadius: "50%",
+                  borderColor: r.color,
+                  backgroundColor: r.color + "33",
+                  boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
+                }}
                 onClick={() => rotate(i, -1)}>⟲</button>
               <button className="s1-btn s1-key"
-                style={{ ...S.keyBtn, borderColor: r.color, minWidth: 46 }}
+                style={{
+                  ...S.keyBtn,
+                  width: 48, minWidth: 48, height: 42, borderRadius: "50%",
+                  borderColor: r.color,
+                  backgroundColor: r.color + "33",
+                  boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
+                }}
                 onClick={() => rotate(i, 1)}>⟳</button>
             </span>
           ))}
@@ -553,29 +660,35 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.tilesTitle")}</div>
         <div style={{
           display: "grid", gridTemplateColumns: `repeat(${n}, 1fr)`, gap: 4,
           width: "100%", maxWidth: 240, padding: 8,
-          backgroundColor: "#0c0f0d", border: "2px solid #2a3a30", borderRadius: 6,
+          ...puzzleFace,
+          borderRadius: 3,
         }}>
           {perm.map((tile, pos) => {
             const tx = (tile % n) * 40, ty = Math.floor(tile / n) * 40;
             const right = tile === pos;
             return (
               <div key={pos} onClick={() => tap(pos)} style={{
-                aspectRatio: "1", cursor: "pointer", borderRadius: 3,
-                backgroundColor: "#e8e2d0",
-                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7fae8644" : "1px solid #b8b09a",
-                overflow: "hidden", transition: "outline 150ms",
+                aspectRatio: "1", cursor: "pointer",
+                clipPath: "polygon(8% 0, 88% 4%, 100% 24%, 92% 92%, 20% 100%, 0 78%, 4% 16%)",
+                backgroundColor: "#c9c3b3",
+                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7fae8644" : "1px solid #4a3a28",
+                overflow: "hidden", transition: "outline 150ms, transform 150ms",
+                transform: sel === pos ? "translateY(-2px)" : "none",
+                boxShadow: "inset 0 0 12px rgba(0,0,0,0.35)",
                 opacity: done ? 1 : 0.96,
               }}>
-                <svg viewBox={`${tx} ${ty} 40 40`} style={{ width: "100%", height: "100%", display: "block" }}>
+                <svg viewBox={`${tx} ${ty} 40 40`} style={{ width: "100%", height: "100%", display: "block", background: "linear-gradient(135deg, #ded8c8, #a69b82)" }}>
+                  <rect x={tx} y={ty} width="40" height="40" fill="rgba(255,255,255,0.08)" />
                   {TILE_ART.map((d, i) => (
-                    <path key={i} d={d} fill="none" stroke="#7a6248" strokeWidth="3" strokeLinecap="round" />
+                    <path key={i} d={d} fill="none" stroke={done ? "#8f6f38" : "#6e5538"} strokeWidth="3" strokeLinecap="round" />
                   ))}
-                  <rect x={tx} y={ty} width="40" height="40" fill="none" />
+                  <path d={`M${tx} ${ty + 19} L${tx + 40} ${ty + 15} M${tx + 18} ${ty} L${tx + 22} ${ty + 40}`}
+                    stroke="rgba(80,64,45,0.32)" strokeWidth="1.2" />
                 </svg>
               </div>
             );
@@ -621,21 +734,37 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
     <div style={{
       display: "grid", gridTemplateColumns: `repeat(${config.cols || 3}, 1fr)`, gap: 3,
       width: size, padding: 5,
-      backgroundColor: "#0c0f0d", border: "2px solid #2a3a30", borderRadius: 5,
+      backgroundColor: "#080908",
+      backgroundImage: "radial-gradient(ellipse at 50% 35%, rgba(230,220,170,0.14), rgba(0,0,0,0) 70%)",
+      border: "4px solid #2d2418",
+      boxShadow: "inset 0 0 18px rgba(0,0,0,0.85)",
+      borderRadius: 4,
     }}>
       {vals.map((v, i) => (
         <div key={i} onClick={clickable ? () => tap(i) : undefined} style={{
-          aspectRatio: "1", borderRadius: 2, cursor: clickable ? "pointer" : "default",
-          backgroundColor: palette[v], border: "1px solid rgba(0,0,0,0.4)",
-          transition: "background-color 200ms",
-        }} />
+          aspectRatio: "1",
+          clipPath: i % 2 === 0
+            ? "polygon(8% 0, 100% 10%, 92% 100%, 0 88%)"
+            : "polygon(0 12%, 88% 0, 100% 92%, 10% 100%)",
+          cursor: clickable ? "pointer" : "default",
+          backgroundColor: palette[v],
+          border: "2px solid rgba(0,0,0,0.68)",
+          boxShadow: "inset 0 0 10px rgba(255,255,255,0.16), inset 0 0 18px rgba(0,0,0,0.42)",
+          transition: "background-color 200ms, filter 200ms",
+          filter: done ? "brightness(1.18)" : "brightness(0.92)",
+        }}>
+          <div style={{
+            width: "100%", height: "100%",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.2), transparent 45%, rgba(0,0,0,0.22))",
+          }} />
+        </div>
       ))}
     </div>
   );
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={S.keypadPanel} className="s1-panel">
+      <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.colorTitle")}</div>
         {config.showTarget && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>

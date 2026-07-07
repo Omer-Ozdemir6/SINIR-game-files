@@ -3,7 +3,7 @@
    Katın sahibi: ŞEF HARUN OKUR — istasyon şefi, "Aile"nin babası.
    (Deniz onun oğlu: EP02'de "Babama selam söyle" demişti.)
 
-   TON: OUTLAST + RE7 Baker evi + sofra dehşeti. Kat bir EV gibi düzenli:
+   TON: SINIR-1 aile ritüeli + sofra dehşeti. Kat bir EV gibi düzenli:
    sofra salonu, mutfak, çocuk odası, şefin odası, soğuk depo,
    interkom nişi. Harun evde DEVRİYE gezer; sesle değil, alışkanlıkla
    avlanır — nerede olman gerektiğini bilir, "yerinde olmayan"ı bulur.
@@ -37,13 +37,13 @@ export const EP03 = {
       events: [
         { type: "music", track: "k4" },
         { type: "system", text: "KAT: K-4 — PERSONEL YAŞAM ALANI · YEMEKHANE · KAMARALAR" },
-        { type: "narrate", text: "Baca kapağından bir eve tırmanıyorsun. Ama burası bir yuva değil, akıl hastanesinin ortasına kurulmuş bir mezbaha. Çelik duvarların üzerine hışırdayan çiçekli duvar kâğıtları yapıştırılmış, zemine kalın halılar serilmiş. Elindeki tek şey, ekranının çiğ ve pikselli ışığı yüzünü aydınlatan soluk bir tablet. Tabletin ışığı zifiri karanlığı yırtmaya yetmiyor; duvar kağıtlarının arkasından gelen pas ve lağım kokusunu, nemden kabarmış çürümeyi çıplak kılacak kadar zayıf." },
+        { type: "narrate", text: "Baca kapağından bir eve tırmanıyorsun. Ev kelimesi beynin için güvenli bir kelime olmalıydı; burada değil. Çelik duvarların üstüne çiçekli kağıt yapıştırılmış, zemine halı serilmiş, köşelere aile fotoğrafı taklitleri asılmış. Birileri yuva fikrini anlamamış ama tarifini ezberlemiş. Tabletinin zayıf ışığı duvar kağıdının altındaki pası, lağımı ve çürümeyi gösteriyor. Dekor ince; yalan daha kalın." },
         { type: "narrate", text: "Bu ev taklit edilmemiş, ezberlenmiş. Birileri aile olmanın şeklini fotoğraflardan, yemek saatlerinden, çocuk odası ölçülerinden öğrenmiş ve hepsini çeliğin içine yanlış sırayla çakmış. Burada sevgi yok; sevginin prosedürü var. Otur, ye, gülümse, itaat et. Etmezsen sofranın bir parçası ol." },
         { type: "narrate", text: "İleride, koridorun mutlak karanlığında uzun bir yemek masası uzanıyor. On iki sandalye. Ve masanın başında, sırtı sana dönük, kımıldamadan oturan o devasa, kambur gövde. Elindeki çatalı paslı ve boş bir tabağa vuruyor: tık. Tık. Tık. Karanlıkta yankılanan bu metalik ses, bir sonraki kurbanın sen olacağını fısıldıyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Tabletin hoparlöründen Ece'nin titreyen fısıltısı statik gürültüyle bölünüyor: «Oraya çıktın demek... K-4. O canavarın katı. Sakın ışığını doğrudan ona tutma... Beni duyuyorsan iki kez öksür — hattı K-4 interkomlarına bağladım.»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "Tabletin parıldayan cam ekranı cebinde sessiz. Ece hattı bağlamış olabilir ama seninle konuşmuyor. Tamamen yalnızsın. Sadece tabletinin şarjı ve karanlık var.", if: { flag: "eceEleVerildi", equals: true } },
-        { type: "objective", text: "Bu kattan bir çıkış yolu bul" },
+        { type: "objective", text: "K-4'ten çıkış yolu bul." },
         { type: "note", id: "not_ev", title: "K-4: Ev", text: "Kat bir eve dönüştürülmüş — duvar kağıdı, halı, avize. Masanın başında biri oturuyor, boş tabağa çatal vuruyor. Deniz 'babama selam söyle' demişti. Bu, Şef Harun olmalı. Ailenin babası." },
       ],
       choices: [
@@ -69,7 +69,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Tabletin zayıf ekran ışığını önünü görebilmek için titreyen ellerinle ileri uzatıyorsun. Masaya yaklaştıkça o devasa gövde karanlıkta daha da büyüyor, gölgesi duvara bir iblis gibi vuruyor. Sonra, sen nefes bile alamadan çatal sesleri bıçak gibi kesiliyor. O boğuk, gırtlaktan gelen vahşi baba sesi odayı inletiyor:" },
-        { type: "narrate", text: "\"Geç kaldın.\" Arkasını dönmüyor. \"Ailede yemek birlikte yenir. Otur. Tabağın hazır.\" Sandalyenin önünde, gerçekten, paslı bir tabak var — üstü kapalı, içinden ağır, mideni bulandıran bir et buğusu tütüyor." },
+        { type: "narrate", text: "\"Geç kaldın.\" Arkasını dönmüyor. \"Ailede yemek birlikte yenir. Otur. Tabağın hazır.\" Sandalyenin önünde gerçekten bir tabak var. Üstü kapalı, içinden ağır bir et buğusu tütüyor. Bunu sen gelmeden önce hazırlamış olamaz. Ama burada zaman da aile sofrasına göre düzenlenmiş gibi. Bu evde geç kalmak bile önceden yazılmış bir rol." },
         { type: "waitTap" },
         { type: "alert", text: "Kaçış yok — koridorun tek çıkışı bu psikopatın arkasında. Oturman gerekiyor." },
       ],
@@ -106,7 +106,7 @@ export const EP03 = {
     n_sofra_tabak: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Korkudan titreyen parmaklarınla tabağın kapağını kaldırıyorsun. İçinde... insani uzuvları andıran, dumanı tüten, baharatlanmış et parçaları var. Kokusu dehşet verici derecede iyi kokuyor ve bu seni kusmanın eşiğine getiriyor, çünkü açsın! Tabağın hemen kenarında, kanlı yağların arasında parıldayan küçük bir personel künyesi var: 'AYKUT D., teknisyen'." },
+        { type: "narrate", text: "Korkudan titreyen parmaklarınla kapağı kaldırıyorsun. İçerideki şey önce yemek gibi davranıyor: buhar, baharat, yağ. Sonra gözlerin şekilleri seçiyor ve beyin tadı kokudan ayırmaya çalışıyor. İnsani uzuvları andıran et parçaları. Daha kötüsü, kokusu iyi. Açlığın bir saniyeliğine taraf değiştiriyor. Tabağın kenarında kanlı yağların içinde küçük bir personel künyesi parlıyor: 'AYKUT D., teknisyen'." },
         { type: "note", id: "not_kunye", title: "Tabaktaki künye", text: "Tabağın yanında 'AYKUT D.' yazan bir personel künyesi vardı. Etin içinde değil, yanında. Bu daha kötü. Harun onun kim olduğunu biliyordu. İsmini korumuş, bedenini pişirmiş. Bunu yazıyorum çünkü beynim birkaç dakika sonra bunun gerçek olmadığına karar verebilir. Gerçekti. Kokusu hâlâ ağzımda." },
         { type: "waitTap" },
         { type: "narrate", text: "\"Ye,\" diyor, sesi bu sefer derin bir hırıltıya dönüşüyor. \"Reddetmek... anneni üzer. Ve inan bana, o üzülürse bu masayı senin kanınla boyarım.\" Çatalı kaldırıyorsun. Miden, hatıraların ve insan kalmaya çalışan son parçan aynı anda kasılıyor." },
@@ -165,7 +165,7 @@ export const EP03 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Evin holündesin. Elindeki tabletin loş ışığı duvarda asılı çerçeveli 'aile fotoğraflarına' vuruyor. Fotoğraflardaki insanların yüzleri bıçakla kazınmış ve hepsinin yerine kan kırmızısı mürekkeple çarpık, devasa gülümsemeler çizilmiş. Manyakça bir el işi.", if: { flag: "holIlk", equals: false } },
+        { type: "narrate", text: "Evin holündesin. Tablet ışığı çerçeveli 'aile fotoğraflarına' vuruyor. Yüzler bıçakla kazınmış, yerlerine kan kırmızısı mürekkeple devasa gülümsemeler çizilmiş. Bu öfkeyle yapılmış bir tahribat değil; sabırla yapılmış bir düzeltme. Harun yüzleri değil, itaatsiz ifadeleri silmiş. Geriye yalnızca aileye uygun ağızlar bırakmış.", if: { flag: "holIlk", equals: false } },
         { type: "flag", set: { holIlk: true } },
         { type: "status", items: [
           { label: "FOTOĞRAF", flag: "yadigar1" },
@@ -288,7 +288,7 @@ export const EP03 = {
     n_cocuk: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Çocuk odasından, bozuk bir televizyondan gelen cızırtılı çizgi film müziği yükseliyor — aynı dehşet verici üç saniyelik melodi sonsuz bir döngüde dönüyor. Ranzanın yanındaki duvarda boy çizgileri var ama bir çocuğun gelişimi değil bu... En alttan en üste kadar farklı kurbanların isimleri kazınmış ve hepsinin yanına vahşice 'Evlat' notu düşülmüş.", if: { flag: "sefNerede", equals: "cocuk" } },
+        { type: "narrate", text: "Çocuk odasından bozuk bir çizgi film melodisi geliyor; üç saniyelik neşe sonsuz döngüye alınmış, artık neşe değil işkence. Ranzanın yanında boy çizgileri var. İlk bakışta büyüyen bir çocuğun kaydı sanıyorsun. Sonra isimleri seçiyorsun: farklı kişiler, farklı tarihler, aynı not. 'Evlat.' Bu oda çocuk büyütmemiş. Yerine geçecek insanları ölçmüş.", if: { flag: "sefNerede", equals: "cocuk" } },
         { type: "alert", text: "DEHŞET AN KIL PAYI — ŞEF BURADA! Tabletinin ışığı duvara vurursa öldün! HEMEN ÇIK!", if: { flag: "sefNerede", equals: "cocuk" } },
         { type: "narrate", text: "Çizgi film melodisi bozuk kasetten odaya yayılıyor. Komodinin üstünde, camı çatlamış, üzeri kurumuş kan lekeleriyle kaplı bir çerçeve var. Tabletinin loş parıltısını çerçeveye doğrultuyorsun.", if: { flag: "sefNerede", equals: "cocuk", negate: true } },
       ],
@@ -340,7 +340,7 @@ export const EP03 = {
     n_cocuk_foto: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Çatlak çerçevedeki fotoğrafı söküp alıyorsun. Fotoğrafta genç, henüz delirerek canavara dönüşmemiş bir Harun, yanında temiz yüzlü bir kadın ve küçük bir çocuk var. Arkasını çeviriyorsun, tablet ışığında okuyorsun: 'Harun, Sevgi, küçük Deniz — 2009.' Demek bu kâbus bir zamanlar gerçek bir aileydi..." },
+        { type: "narrate", text: "Çatlak çerçevedeki fotoğrafı söküyorsun. Genç Harun, temiz yüzlü bir kadın, küçük bir çocuk. Arkasında 'Harun, Sevgi, küçük Deniz — 2009' yazıyor. Fotoğrafın en korkunç yanı kanlı olması değil; normal olması. Bu kabus bir delinin hayalinden doğmamış. Bir zamanlar gerçekten gülümseyen üç kişinin yavaş yavaş prosedüre, ritüele ve ete dönüşmesinden doğmuş." },
         { type: "flag", set: { yadigar1: true } },
         { type: "note", id: "not_yadigar1", title: "Yadigâr 1/3: Fotoğraf", text: "Aile fotoğrafı: Harun, karısı Sevgi, ve küçük DENİZ — 2009. Deniz gerçekten Harun'un oğlu. Bu aile bir zamanlar gerçekti. Sandık için üç yadigârdan biri bu." },
       ],
@@ -412,7 +412,7 @@ export const EP03 = {
       events: [
         { type: "narrate", text: "Kapağın üzerindeki buzları tabletinin kenarıyla kazıyorsun. Altından donmuş bir yazı çıkıyor: 'K-3 TAHLİYE — YALNIZCA AMBAR ANAHTARIYLA'. Buradan aşağı kaçabilirsin ama anahtar o psikopatın odasındaki sandıkta kilitli. Acele etmelisin, donmak üzeresin." },
         { type: "note", id: "not_depokapak", title: "K-3 tahliyesi", text: "Soğuk deponun arkasında K-3'e inen bir tahliye kapağı var — ama 'ambar anahtarı' gerekiyor. Anahtar Şef'in odasındaki kilitli sandıkta. Sandık üç yadigâr istiyor. Çıkış yolu belli: sandığı aç, anahtarı al, buradan in." },
-        { type: "objective", text: "Üç yadigârı bul, sandığı aç, ambar anahtarıyla depodan K-3'e in" },
+        { type: "objective", text: "Üç aile yadigârını bul." },
       ],
       choices: [
         { id: "cik", text: "Donmadan depodan çık", next: "n_hol" },
@@ -438,7 +438,7 @@ export const EP03 = {
     n_mutfak_ara: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Boş mutfağa dalıp çekmeceleri çılgınlar gibi karıştırıyorsun. Yağ ve kan lekeleri içindeki vardiya defterini buluyorsun. Şef'in kurban listesi bu. Son sayfayı açtığında, tabletinin loş mavi ışığı kendi görev numaranın üzerinde parlıyor... Yanındaki onay kutusu henüz boş. Seni kesip bu kazana atmak için bekliyor." },
+        { type: "narrate", text: "Boş mutfağa dalıp çekmeceleri karıştırıyorsun. Yağ, kan, yanmış et kokusu. Bir vardiya defteri buluyorsun; başlığı hâlâ idari, içeriği mezbaha. Harun kurban listesine kayıt tutar gibi insan yazmış. Son sayfada kendi görev numaran var. Yanındaki kutu boş. Burada ölüm bile tamamlanacak iş olarak bekliyor." },
         { type: "flag", set: { mutfakArandi: true } },
         { type: "document", open: true, doc: {
           id: "d_sefdefter", title: "Şef'in Vardiya Defteri",
@@ -576,7 +576,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "system", text: "OKUR SANDIĞI: AÇILDI" },
-        { type: "narrate", text: "Sandık ağır bir tabut kapağı gibi açılıyor. İçinden yayılan çürüme kokusu yüzüne vuruyor. En üstte paslı, ağır bir AMBAR ANAHTARI ve yedek piller duruyor. Onları hızla cebine atıyorsun. En altta ise kanla yazılmış bir mektup var." },
+        { type: "narrate", text: "Sandık ağır bir tabut kapağı gibi açılıyor. İçinden çürüme kokusu değil, saklanmış bir aile tarihi vuruyor yüzüne. En üstte ambar anahtarı ve piller var; kaçış araçları bile burada yadigârların altına gömülmüş. En dipte kanla yazılmış mektup duruyor. Harun'un deliliği bağırarak başlamamış. Önce mektup yazmış, sonra insan toplamış." },
         { type: "battery", spares: 2 },
         { type: "flag", set: { ambarAnahtari: true } },
         { type: "waitTap" },
@@ -585,7 +585,7 @@ export const EP03 = {
           meta: "— sandığın dibinde, katlanmış —",
           body: "Sevgi'ye,\n\nSeni kaybettiğimde istasyon da benimle öldü.\nAma buldum onu — aşağıda, K-2'deki Buluntu.\nO bize aileyi geri veriyor. Herkesi bir arada\ntutuyor. Sesini duyunca herkes duruyor,\nsayıyor, ait oluyor.\n\nDeniz'i büyüttüm. O da aşağı indi, kendi\nailesini kurdu. Ben de büyütmeye devam\nediyorum. Sen olmasan da aile büyüyor.\n\nBir gün Buluntu'ya inersen — ona teşekkür et.\nBizi yeniden bir araya getirdi.\n\n— H." } },
         { type: "note", id: "not_sefmektup", title: "Buluntu — K-2", text: "Şef'in mektubu her şeyi bağlıyor: K-2'deki 'Buluntu' bütün bunun kaynağı. Sesini duyunca herkes 'duruyor, sayıyor, ait oluyor' — uykuda sayanlar, ninni, 432 Hz. Aile onun etrafında kurulmuş. Ambar anahtarı elimde; soğuk depodan K-3'e inebilirim." },
-        { type: "objective", text: "Soğuk depoya dön, ambar anahtarıyla K-3'e in" },
+        { type: "objective", text: "Soğuk depodan K-3'e in." },
       ],
       choices: [
         { id: "depo", text: "Soğuk depoya yönel", next: "n_final_yol" },
@@ -657,7 +657,7 @@ export const EP03 = {
         { type: "waitTap" },
         { type: "ambient", text: "Kapağın hemen arkasından, o canavarın ağlamaklı, şizofrenik sesi yükseliyor: \"...Herkes beni terk ediyor. Sevgi gitti... Deniz aşağı indi... Sen de kaçtın. Ben hep bu sofrada tek başıma mı kalacağım?\" Sonra derin, tekinsiz bir sessizlik çöküyor." },
         { type: "ambient", text: "Tabletin hoparlöründen Ece'nin hırıltılı sesi geliyor: «Aman Tanrım... O sesleri duydum. Başardın... K-3'e indin. Orası Dr. Nevin'in laboratuvar katı... Biyolog. O herif gibi delirmemiş olabilir... Dikkat et, orada garip şeyler nefes alıyor...»", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "narrate", text: "Merdivenlerden aşağı, mutlak bir karanlığa doğru iniyorsun. Elindeki tabletin ışığı aşağıda kıpırdayan devasa, bitkisel ve devasa sarmaşıkları aydınlatıyor. Canlı bir bahçe burası... Ve karanlıkta bir şey çok ağır nefes alıyor. 'Bahçe' yeni kurbanını bekliyor." },
+        { type: "narrate", text: "Merdivenlerden aşağı, mutlak karanlığa iniyorsun. Tablet ışığı aşağıda kıpırdayan bitkisel kütleleri yakalıyor; sarmaşık değil, bekleyen damarlar gibi. K-4 seni aileye katmaya çalıştı. Aşağıdaki yer seni toprağa katacak. Bu istasyon her katta insanı başka bir kelimeye çeviriyor: personel, evlat, örnek. Şimdi sıradaki kelimeyi öğrenmeye gidiyorsun." },
         { type: "system", text: "— BÖLÜM 3 SONU: EV —" },
         { type: "system", text: "K-3: 'BAHÇE' — Dr. Nevin'in katı — yakında" },
       ],

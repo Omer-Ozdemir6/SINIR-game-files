@@ -6,8 +6,9 @@ import { t } from "../i18n";
    Atmosferik arka plan (su altı tesisi), sol hizalı liste,
    üzerine gelinen/seçili öğe vurgulu (kutu + parlaklık).
    ============================================================ */
-export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, onSettings, onCredits, onHowTo, onPuzzleTest }) {
+export default function MainMenu({ gameExists, confirmNew, afterEnding = false, onResume, onNewGame, onSettings, onCredits, onHowTo, onPuzzleTest }) {
   const [hover, setHover] = useState(null);
+  const bgUrl = afterEnding ? "/menu-bg-sinir1-after.png" : "/menu-bg-sinir1.png";
 
   const items = [];
   if (gameExists) items.push({ key: "resume", label: t("menu.resume"), fn: onResume });
@@ -20,8 +21,13 @@ export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, 
     <div style={{
       position: "fixed", inset: 0, zIndex: 10,
       backgroundColor: "#05090a",
-      backgroundImage: "url(/menu-bg.jpg)",
-      backgroundSize: "cover", backgroundPosition: "center",
+      backgroundImage: [
+        "linear-gradient(90deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.56) 35%, rgba(0,0,0,0.2) 68%, rgba(0,0,0,0.62) 100%)",
+        "linear-gradient(180deg, rgba(2,5,6,0.45) 0%, rgba(2,5,6,0.08) 45%, rgba(0,0,0,0.72) 100%)",
+        `url(${bgUrl})`,
+      ].join(", "),
+      backgroundSize: "cover, cover, cover",
+      backgroundPosition: "center, center, center",
       display: "flex", flexDirection: "column",
       justifyContent: "center",
       padding: "0 clamp(28px, 9vw, 90px)",
@@ -30,7 +36,13 @@ export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, 
       {/* kenar karartma (vignette) */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse at 30% 45%, transparent 30%, rgba(3,6,7,0.75) 100%)",
+        background: "radial-gradient(ellipse at 26% 44%, rgba(10,22,20,0.08) 0%, rgba(3,6,7,0.38) 48%, rgba(0,0,0,0.82) 100%)",
+      }} />
+
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.18,
+        backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 2px, transparent 5px)",
+        mixBlendMode: "screen",
       }} />
 
       {/* başlık */}
@@ -42,7 +54,7 @@ export default function MainMenu({ gameExists, confirmNew, onResume, onNewGame, 
           color: "#dfe6df",
           textShadow: "0 0 24px rgba(90,140,110,0.35), 0 2px 8px rgba(0,0,0,0.9)",
         }}>
-          SINIR<span style={{ color: "#7a3a3a" }}>-</span>1
+          SINIR<span style={{ color: afterEnding ? "#b9c9bd" : "#7a3a3a" }}>-</span>1
         </div>
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace",

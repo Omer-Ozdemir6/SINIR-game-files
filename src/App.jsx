@@ -37,6 +37,8 @@ import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, 
 import PuzzleTest from "./components/PuzzleTest";
 import DarknessOverlay from "./components/DarknessOverlay";
 
+const MENU_AFTER_END_KEY = "sinir1_menu_after_ending";
+
 /* ============================================================
    SINIR-1 — OYUN MOTORU (App)
    Hikaye verisi: src/story/ · Ses: src/audio/ · Görsel: components/
@@ -67,6 +69,10 @@ export default function App() {
   const [ended, setEnded] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const [endFade, setEndFade] = useState(false);
+  const [menuAfterEnding, setMenuAfterEnding] = useState(() => {
+    try { return localStorage.getItem(MENU_AFTER_END_KEY) === "1"; }
+    catch (e) { return false; }
+  });
   const [pendingBattery, setPendingBattery] = useState(null);
   const batteryResolveRef = useRef(null);
   const firedThresholdsRef = useRef(new Set());
@@ -123,6 +129,7 @@ export default function App() {
   const docsRef = useRef([]);
   const notesRef = useRef([]);
   const objectiveRef = useRef("—");
+  const seenObjectivesRef = useRef(new Set());
   const checkpointRef = useRef(null);
   const currentTrackRef = useRef(null);
   const timerRef = useRef(null);
@@ -251,11 +258,20 @@ export default function App() {
   };
 
   const showObjective = (text) => {
+    const key = String(text || "").trim();
+    const alreadySeen = key && seenObjectivesRef.current.has(key);
     objectiveRef.current = text;
     setObjective(text);
+    if (alreadySeen) {
+      if (flashRef.current) { clearTimeout(flashRef.current); flashRef.current = null; }
+      setObjectiveFlash(null);
+      return false;
+    }
+    if (key) seenObjectivesRef.current.add(key);
     setObjectiveFlash({ text, key: Date.now() });
     if (flashRef.current) clearTimeout(flashRef.current);
     flashRef.current = setTimeout(() => setObjectiveFlash(null), 4200);
+    return true;
   };
 
   const showToast = (icon, text, color) => {
@@ -336,7 +352,11 @@ export default function App() {
         }
         return;
       }
-      case "objective": { AudioSys.objectiveSfx(); showObjective(ev.text); return wait(1800, runId); }
+      case "objective": {
+        const shown = showObjective(ev.text);
+        if (shown) AudioSys.objectiveSfx();
+        return wait(shown ? 1800 : 200, runId);
+      }
       case "stat": {
         if (ev.stat === "akil") return;
         const next = { ...statsRef.current };
@@ -485,6 +505,7 @@ export default function App() {
         docs: docsRef.current.map((d) => ({ ...d })),
         notes: notesRef.current.map((n) => ({ ...n })),
         objective: objectiveRef.current,
+        seenObjectives: [...seenObjectivesRef.current],
         clock: clockRef.current,
       };
       saveGame(checkpointRef.current); // kalıcı kayıt
@@ -507,7 +528,14 @@ export default function App() {
     }
     if (runIdRef.current !== runId) return;
     if (node.death) { Haptics.death(); die({ text: node.deathText }); return; }
-    if (node.ending) { setEnded(true); clearGame(); setGameExists(false); return; }
+    if (node.ending) {
+      setEnded(true);
+      setMenuAfterEnding(true);
+      try { localStorage.setItem(MENU_AFTER_END_KEY, "1"); } catch (e) {}
+      clearGame();
+      setGameExists(false);
+      return;
+    }
     if (node.interaction) {
       const k = node.interaction.kind;
       if (k === "keypad") { setKpEntry(""); setKpMsg(null); setKpFails(0); }
@@ -822,6 +850,36 @@ export default function App() {
 
   /* ---------------- NEFES TUTMA ---------------- */
 
+  const makeBreathPattern = (holdMs, config = {}) => {
+    if (config.releaseWindows?.length) {
+      return {
+        releaseWindows: config.releaseWindows,
+        spikes: config.spikes || [
+          [Math.round(holdMs * 0.24), Math.round(holdMs * 0.32)],
+          [Math.round(holdMs * 0.58), Math.round(holdMs * 0.66)],
+        ],
+      };
+    }
+
+    const templates = [
+      { windows: [[0.28, 0.4], [0.66, 0.78]], spikes: [[0.45, 0.55], [0.82, 0.9]] },
+      { windows: [[0.2, 0.3], [0.5, 0.6], [0.76, 0.86]], spikes: [[0.34, 0.44], [0.62, 0.72]] },
+      { windows: [[0.36, 0.5], [0.7, 0.8]], spikes: [[0.18, 0.28], [0.54, 0.64]] },
+      { windows: [[0.18, 0.29], [0.56, 0.7]], spikes: [[0.34, 0.46], [0.75, 0.88]] },
+      { windows: [[0.3, 0.38], [0.52, 0.61], [0.79, 0.88]], spikes: [[0.18, 0.27], [0.64, 0.75]] },
+    ];
+    const template = templates[Math.floor(Math.random() * templates.length)];
+    const jitter = (Math.random() * 0.05) - 0.025;
+    const toMs = ([a, b]) => [
+      Math.round(holdMs * Math.max(0.12, Math.min(0.9, a + jitter))),
+      Math.round(holdMs * Math.max(0.18, Math.min(0.94, b + jitter))),
+    ];
+    return {
+      releaseWindows: template.windows.map(toMs),
+      spikes: template.spikes.map(toMs),
+    };
+  };
+
   useEffect(() => {
     if (interaction?.kind !== "breath") {
       if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
@@ -829,10 +887,9 @@ export default function App() {
     }
     const holdMs = interaction.holdMs || 7000;
     const lungMs = interaction.lungMs || 9500;
-    const releaseWindows = interaction.releaseWindows || [
-      [Math.round(holdMs * 0.34), Math.round(holdMs * 0.46)],
-      [Math.round(holdMs * 0.67), Math.round(holdMs * 0.78)],
-    ];
+    const breathPattern = makeBreathPattern(holdMs, interaction);
+    const releaseWindows = breathPattern.releaseWindows;
+    const spikes = breathPattern.spikes;
     const failTo = interaction.fail;
     AudioSys.heart(520);
     let t = 0, lung = 0, resolved = false, hasHeld = false;
@@ -853,12 +910,12 @@ export default function App() {
       // ADRENALİN DALGALARI: iki pencerede ciğer 2 kat hızlı dolar
       const releaseWindow = releaseWindows.find(([a, b]) => t >= a && t <= b);
       const safeRelease = Boolean(releaseWindow);
-      const spike = (t > 2600 && t < 3900) || (t > 5100 && t < 6300);
+      const spike = spikes.some(([a, b]) => t >= a && t <= b);
       if (holding) hasHeld = true;
       if (holding) lung += safeRelease ? 90 : spike ? 120 : 60;
       else if (safeRelease && lung > 0) lung = Math.max(0, lung - 150);
       const phase = t >= holdMs ? "release" : safeRelease ? "vent" : holding ? "hold" : "wait";
-      setBreath({ t, lung, holding, phase, spike, safeRelease, releaseWindows });
+      setBreath({ t, lung, holding, phase, spike, safeRelease, releaseWindows, spikes });
       // ciğer doldukça kalp hızlanır
       const stage = lung / lungMs > 0.62 ? 2 : lung / lungMs > 0.3 ? 1 : 0;
       if (stage !== heartStage) {
@@ -912,6 +969,7 @@ export default function App() {
     setNotes(notesRef.current);
     objectiveRef.current = cp.objective;
     setObjective(cp.objective);
+    seenObjectivesRef.current = new Set(cp.seenObjectives || (cp.objective && cp.objective !== "—" ? [cp.objective] : []));
     clockRef.current = cp.clock;
     setScreen(null);
     setLines([{ kind: "system", text: t("eng.restored") }]);
@@ -953,6 +1011,7 @@ export default function App() {
     notesRef.current = [];
     setNotes([]);
     objectiveRef.current = "—";
+    seenObjectivesRef.current = new Set();
     setObjective("—");
     setObjectiveFlash(null);
     setToast(null);
@@ -1153,6 +1212,7 @@ export default function App() {
         <MainMenu
           gameExists={gameExists}
           confirmNew={confirmNew}
+          afterEnding={menuAfterEnding}
           onResume={() => setMode("resumeload")}
           onNewGame={() => {
             if (gameExists && !confirmNew) { setConfirmNew(true); return; }

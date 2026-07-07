@@ -46,7 +46,7 @@ export const EP04 = {
         { type: "ambient", text: "Ece's trembling voice rises through the static from your tablet's speaker: «You descended to K-3... My God, that smell reaches all the way here. Nevin is there. The Chief fed her to that thing. Listen to me, do not step on them! She doesn't care about making noise, every root you step on is directly connected to her nerve ending. Wherever you step, she will pounce directly upon you!»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "There is only your own heavy breathing in the darkness. The radio line is completely dead. After you sold out Ece, you are completely alone in this living grave of K-3. Only a dead crackle coming from the speaker scratches the feeling of guilt inside you.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "narrate", text: "That raw meat you swallowed at the Chief's table convulses in your stomach as if it were alive. And you realize: as you approach, the fleshy sprouts on the wall stretch towards you like hungry wolves, vibrating... They caught that disgusting smell of the Chief's feast. They know you.", if: { flag: "sofraYedi", equals: true } },
-        { type: "objective", text: "Find the way out of the K-3 hell to survive and take refuge in the K-2 excavation site." },
+        { type: "objective", text: "Find a way out of K-3." },
         { type: "note", id: "not_k3", title: "K-3: Living Grave", text: "This is not a laboratory, it is a digestive system built out of flesh and plants. Dr. Nevin has woven the entire floor like a web. My ears feel like they are going to burst, but the danger is not making noise, it is stepping on the ground. If I step on the spore beds, she will bury me alive." },
       ],
       choices: [
@@ -117,7 +117,7 @@ export const EP04 = {
     n_fide: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Seedling room: Hundreds of pots lined up side by side on shelves smelling of mold... And pale sprouts popping out of each one, resembling severed children's hands the color of human skin, are trembling. In the massive pot in the middle, a glowing BLUE spore sac swollen like a pus-filled boil pulses like a heartbeat. This is the very cursed cell that Murkoff created." },
+        { type: "narrate", text: "Seedling room: Hundreds of pots lined up side by side on shelves smelling of mold... And pale sprouts popping out of each one, resembling severed children's hands the color of human skin, are trembling. In the massive pot in the middle, a glowing BLUE spore sac swollen like a pus-filled boil pulses like a heartbeat. This is the forbidden living-tissue work SINIR-1 buried in K-3." },
         { type: "narrate", text: "A rusty, blood-stained voice recorder flashes its red light on one of the shelves. Nevin's human voice, trembling with fear before she went completely mad, echoes in the room:" },
         { type: "document", open: true, doc: {
           id: "d_nevin_kayit", title: "Dr. Nevin Aras — Secret Audio Recording", style: "hand",
@@ -205,7 +205,7 @@ export const EP04 = {
     n_kompost_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Compost pit: The giant sewage and decay pool at the very bottom of the floor. Its smell is so heavy that you feel like a knife is being stabbed from your nose into your brain. This is a pit where Murkoff threw its failed experiments, human corpses. Selin's blood, which Nevin mentioned, must be somewhere along this path. A dangerous path covered in sludge extends along the edge of the pit." },
+        { type: "narrate", text: "Compost pit: The giant sewage and decay pool at the very bottom of the floor. Its smell is so heavy that you feel like a knife is being stabbed from your nose into your brain. This is where the station dumped failed experiments, waste tissue, and unregistered bodies. Selin's blood, which Nevin mentioned, must be somewhere along this path. A dangerous path covered in sludge extends along the edge of the pit." },
         { type: "alert", text: "Compost gas causes hallucinations, the ground is completely covered with corpse parts and slippery!" },
       ],
       choices: [
@@ -232,7 +232,7 @@ export const EP04 = {
           meta: "— From the Torn Cooler Bag —",
           body: "Whoever finds this...\n\nMy name is Selin. Nevin thought I was her deceased daughter. Even as she turned into that monster, she protected me with the last shred of human remnant inside her, hid me in this hole. She has a soul that needs to be saved.\n\nI left my own blood here. Nevin's formula is in my head: Blue spore + root extract + my blood. If you mix it in the right ratio, you get an antidote and you can save her from this torment. But do not mess up the ratio! A wrong mixture accelerates the decay and makes her completely a slave to that demon.\n\nI am going down. To K-2... The only way to silence that cursed thing called 'Anomaly' is to rip its heart out. Don't look for me. But if you make that serum... I beg you, save Nevin first. She was a good person.\n\n— S." } },
           { type: "note", id: "not_selin", title: "The Last Piece and Recipe", text: "I got Selin's blood. The recipe is clear: 1 spore, 2 extract, 3 blood = Antidote. If I do it wrong, Nevin will turn into a monster. Selin went down to K-2. I have all three pieces, time to go to the laboratory." },
-        { type: "objective", text: "Deliver the three vital samples to the laboratory and produce the flawless serum." },
+        { type: "objective", text: "Bring the three samples to the laboratory." },
       ],
       choices: [
         { id: "geri", text: "Return to the greenhouse from the passage", next: "n_sera" },
@@ -287,7 +287,7 @@ export const EP04 = {
         { type: "narrate", text: "The golden liquid inside the syringe glows in the light of your tablet. Selin's testament said 'save Nevin'. But this serum could also be your only escape ticket to prevent Nevin from tearing you apart. The moment of choice is approaching." },
         { type: "flag", set: { serumHazir: true } },
         { type: "battery", spares: 1 },
-        { type: "objective", text: "Return to the greenhouse and face that monster that will determine your destiny." },
+        { type: "objective", text: "Return to the greenhouse." },
       ],
       choices: [
         { id: "sera", text: "Return to the greenhouse", next: "n_kasa" },
@@ -299,7 +299,7 @@ export const EP04 = {
     n_kasa: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Nevin's seed vault: A steel Murkoff secure cabinet hidden behind thick roots. There are three biometric slots on it, but they don't want fingerprints, they want flesh-and-blood SAMPLES. If the vault opens, you can take the K-2 keycard inside. What is your status?" },
+        { type: "narrate", text: "Nevin's seed vault: A steel SINIR-1 secure cabinet hidden behind thick roots. There are three biometric slots on it, but they don't want fingerprints, they want flesh-and-blood SAMPLES. If the vault opens, you can take the K-2 keycard inside. What is your status?" },
         { type: "alert", text: "SYSTEM LOCKED — Materials missing! This steel door won't open without finding the blue spore, root extract, and blood.", if: { flag: "ornek3", equals: false } },
         { type: "narrate", text: "You used all three samples and made the serum. The rooted reader mechanism on the vault stretches towards the golden liquid in the syringe like a hungry leech. It will accept the serum like a key.", if: { flag: "serumHazir", equals: true } },
         { type: "narrate", text: "All three samples are in your pocket, but you haven't touched the chemistry table yet. You can sacrifice these raw materials directly to the vault and get the card, but then you will never have a serum to save Nevin. Decide.", if: { flag: "ornek3", equals: true, }, },
@@ -323,8 +323,8 @@ export const EP04 = {
         { type: "document", open: true, doc: {
           id: "d_nevin_son", title: "Nevin's Last Confession", style: "hand",
           meta: "— From the Bottom of the Steel Vault —",
-          body: "If you are reading this text, it means you managed to make that golden liquid. It can pull me out of this prison of flesh.\n\nBut I will be honest with you: I am not sure if I want to return. To be a root... means no emotions, the end of fear. Remaining human in this hell of Murkoff is nothing but pure pain.\n\nThe choice is yours. Wake me up and let both of us continue to endure the brutality of this station... Or leave me here, let me rot as a part of this floor.\n\nWhatever you do, go down to K-2. Selin is there. That creature is there. This nightmare will end there.\n\n— N." } },
-        { type: "objective", text: "Face Nevin for the last time and open the door leading to the K-2 hell." },
+          body: "If you are reading this text, it means you managed to make that golden liquid. It can pull me out of this prison of flesh.\n\nBut I will be honest with you: I am not sure if I want to return. To be a root... means no emotions, the end of fear. Remaining human in this station's hell is nothing but pure pain.\n\nThe choice is yours. Wake me up and let both of us continue to endure the brutality of this station... Or leave me here, let me rot as a part of this floor.\n\nWhatever you do, go down to K-2. Selin is there. That creature is there. This nightmare will end there.\n\n— N." } },
+        { type: "objective", text: "Open the K-2 door." },
       ],
       choices: [
         { id: "yuzles", text: "Go to the greenhouse center, to Nevin", next: "n_final" },
@@ -397,7 +397,7 @@ export const EP04 = {
         { type: "system", text: "K-2 DISCHARGE DOOR OPENED" },
         { type: "narrate", text: "The door opens slowly and the air hitting your face from below makes your hair stand on end... An ice-cold, mineral-smelling, ancient air. This is no longer the concrete walls of the station; this is a massive mining and excavation site carved directly underground, into ancient rocks. The madness started here." },
         { type: "waitTap" },
-        { type: "ambient", text: "The tablet screen crackles and gives Ece's tearful voice: «You are descending to K-2... My God, that place is the real hell. Even Murkoff couldn't control what was there. The Anomaly is there... Selin is there... Please be careful. And... thank you for not selling me out to the Chief, for protecting me. Please live.»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "ambient", text: "The tablet screen crackles and gives Ece's tearful voice: «You are descending to K-2... My God, that place is the real hell. Even station management couldn't control what was there. The Anomaly is there... Selin is there... Please be careful. And... thank you for not selling me out to the Chief, for protecting me. Please live.»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "ambient", text: "The screen of your tablet vibrates strongly one last time, makes static, and sinks into complete silence. You had sold out Ece; there is no one left to hear your screams in this pitch-black mine miles beneath the ground. You are completely alone. Just the cold light of your tablet and you.", if: { flag: "eceEleVerildi", equals: true } },
         { type: "waitTap" },
         { type: "ambient", text: "And from below, from the depths of those pitch-black rocks, that voice rises with a broken child frequency. Now it's very clear, now it's right by your ear: «...Three... Two...» The Anomaly continues its countdown. And almost nothing is left to zero.", if: { flag: "frekanslariDuydun", equals: true } },
