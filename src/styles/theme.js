@@ -352,6 +352,50 @@ export const styles = {
   breathBarBlock: { display: "flex", flexDirection: "column", gap: 5, alignItems: "stretch" },
   breathHint: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#c05a48", minHeight: 16 },
 
+  /* Kovalamaca */
+  chaseOverlay: {
+    position: "fixed", inset: 0, zIndex: 23,
+    backgroundColor: "rgba(2,3,3,0.96)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    padding: "0 18px", textAlign: "center", touchAction: "none",
+  },
+  chasePanel: {
+    width: "100%", maxWidth: 470, borderRadius: 8,
+    backgroundColor: "rgba(7,10,9,0.98)", border: "1px solid #2c332d",
+    boxShadow: "0 0 70px rgba(0,0,0,0.95), inset 0 0 40px rgba(80,30,20,0.18)",
+    padding: "22px 18px", display: "flex", flexDirection: "column",
+    gap: 13, alignItems: "center",
+  },
+  chaseTitle: { fontFamily: mono, fontSize: 14, letterSpacing: "0.22em", color: "#d6cfa8" },
+  chaseEnemy: { fontFamily: serif, fontStyle: "italic", fontSize: 16, color: "#b55a45" },
+  chaseCorridor: {
+    position: "relative", width: "100%", height: 84, overflow: "hidden",
+    border: "1px solid #25302b", borderRadius: 4, backgroundColor: "#050706",
+    backgroundImage: "repeating-linear-gradient(90deg, rgba(55,65,55,0.12) 0, rgba(55,65,55,0.12) 8px, transparent 8px, transparent 26px), linear-gradient(180deg, rgba(210,180,120,0.05), rgba(0,0,0,0.4))",
+  },
+  chaseBeam: {
+    position: "absolute", top: 0, bottom: 0, right: "12%", width: "52%",
+    background: "linear-gradient(90deg, transparent, rgba(220,190,120,0.34), transparent)",
+    transform: "skewX(-18deg)", transitionProperty: "opacity", transitionDuration: "250ms",
+  },
+  chaseHunter: {
+    position: "absolute", top: 20, width: 22, height: 44, borderRadius: "10px 10px 4px 4px",
+    backgroundColor: "#14110e", border: "1px solid #6f563c",
+    boxShadow: "0 0 20px rgba(210,160,90,0.25)",
+    transitionProperty: "right", transitionDuration: "320ms",
+  },
+  chasePlayer: {
+    position: "absolute", bottom: 14, width: 14, height: 24, borderRadius: 6,
+    backgroundColor: "#7fae86", boxShadow: "0 0 12px rgba(127,174,134,0.35)",
+    transitionProperty: "left", transitionDuration: "320ms",
+  },
+  chaseStatusRow: {
+    width: "100%", display: "flex", justifyContent: "space-between", gap: 12,
+    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em", color: "#9aa393",
+  },
+  chaseHint: { minHeight: 18, fontFamily: serif, fontStyle: "italic", fontSize: 14, color: "#a69b82" },
+  chaseButtons: { display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8, width: "100%" },
+
   menuPanel: {
     width: "100%", maxWidth: 520, borderRadius: 14,
     backgroundColor: "rgba(8,9,7,0.94)", border: "1px solid #23241c",

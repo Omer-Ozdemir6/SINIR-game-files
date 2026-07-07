@@ -623,11 +623,38 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "YOU ARE RUNNING LIKE CRAZY! Your heart explodes in your ears. That massive man behind you comes swinging his flashlight; his steps are heavy, but they are so large that the distance closes at an impossible speed! Two savage options lie before you: the steel door of the service stairs on the right, or that rusty ventilation vent on the floor!" },
       ],
-      timer: { seconds: 4 },
-      choices: [
-        { id: "menfez", text: "Kick the cover of the vent on the floor, dive inside!", next: "n_menfez" },
-        { id: "merdiven", text: "Slam your shoulder into the steel door of the service stairs!", next: "n_olum_harun2", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-5 CORRIDOR",
+        enemy: "CHEF HARUN IS SEARCHING",
+        success: "n_menfez",
+        fail: "n_olum_harun_kovalama",
+        startDanger: 30,
+        phaseMs: 1320,
+        ui: {
+          exit: "EXIT",
+          danger: "CAUGHT",
+          breath: "BREATH",
+          run: "RUN",
+          hide: "HIDE",
+          hold: "HOLD BREATH",
+          running: "RUNNING",
+          hiding: "HIDING",
+          holding: "HOLDING BREATH",
+          idle: "HESITATING",
+        },
+        hints: {
+          patrol: "The flashlight scrapes the wall. Steal a few steps.",
+          search: "He turns his head. Fold yourself into the locker shadows.",
+          near: "Right behind you. If he hears your breath, it is over.",
+        },
+      },
+    },
+
+    n_olum_harun_kovalama: {
+      death: true,
+      deathText: "The flashlight sticks to your back. You keep running, but the floor seems to pull away under your feet; every step drops back onto the same dirty tile. When Chef Harun catches you, he does not shout. He only bends to your ear and says, \"Meat tightens when it runs, son.\" Then the dark closes with a wet sound from inside your bones.",
+      events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_olum_harun2: {

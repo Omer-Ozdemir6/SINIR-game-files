@@ -628,11 +628,26 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "ÇILGINLAR GİBİ KOŞUYORSUN! Kalbin kulaklarında patlıyor. Arkandaki o devasa adam feneri sallayarak geliyor; adımları ağır ama o kadar büyük ki aradaki mesafe imkansız bir hızla kapanıyor! Önünde iki vahşi seçenek var: Sağdaki servis merdiveninin çelik kapısı ya da zemindeki o paslı havalandırma menfezi!" },
       ],
-      timer: { seconds: 4 },
-      choices: [
-        { id: "menfez", text: "Zemindeki menfez kapağına tekme at, içine dal!", next: "n_menfez" },
-        { id: "merdiven", text: "Servis merdiveninin çelik kapısına omuz at!", next: "n_olum_harun2", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-5 KORİDORU",
+        enemy: "ŞEF HARUN SENİ ARIYOR",
+        success: "n_menfez",
+        fail: "n_olum_harun_kovalama",
+        startDanger: 30,
+        phaseMs: 1320,
+        hints: {
+          patrol: "Fener duvarı tarıyor. Birkaç adım kazan.",
+          search: "Başını çevirdi. Dolap gölgelerine sin.",
+          near: "Tam arkanda. Nefesini bile duyarsa biter.",
+        },
+      },
+    },
+
+    n_olum_harun_kovalama: {
+      death: true,
+      deathText: "Fener sırtına yapışıyor. Koşmaya devam ediyorsun ama zemin ayağının altından çekilmiş gibi; her adımın aynı kirli fayansa geri düşüyor. Şef Harun seni yakaladığında bağırmıyor. Sadece kulağına eğilip, \"Böyle koşunca et kasılır evlat,\" diyor. Sonra karanlık, kemiklerinin içinden gelen ıslak bir sesle kapanıyor.",
+      events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_olum_harun2: {

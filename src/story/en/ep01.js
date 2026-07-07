@@ -554,11 +554,37 @@ export const EP01 = {
         { type: "alert", text: "⚠ CORRIDOR LIGHTS ARE EXPLODING IN SEQUENCE — TOWARDS YOU" },
         { type: "narrate", text: "The lamp at the farthest end of the corridor explodes with a huge noise. Immediately after, the next one... Then the other! The darkness runs MADLY TOWARDS YOU in the corridor like a hungry monster, and there is a dark shape coming towards you from inside that darkness!" },
       ],
-      timer: { seconds: 4 },
-      choices: [
-        { id: "duvar", text: "Stick to the wall, close your eyes, WAIT", next: "n_enc2_ok" },
-        { id: "kac", text: "Run in the direction you came from", next: "n_olum_koridor", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "6-B OBSERVATION CORRIDOR",
+        enemy: "STAFF IN THE DARK",
+        success: "n_enc2_ok",
+        fail: "n_olum_koridor",
+        startDanger: 36,
+        phaseMs: 1240,
+        ui: {
+          exit: "EXIT",
+          danger: "CAUGHT",
+          breath: "BREATH",
+          run: "RUN",
+          hide: "HIDE",
+          hold: "HOLD BREATH",
+          running: "RUNNING",
+          hiding: "HIDING",
+          holding: "HOLDING BREATH",
+          idle: "HESITATING",
+        },
+        phaseLabels: {
+          patrol: "FAR",
+          search: "SEARCHING",
+          near: "CLOSE",
+        },
+        hints: {
+          patrol: "The lights are bursting in sequence. Steal a few steps toward the door.",
+          search: "Breathing leaks from behind the glass. Press yourself to the wall.",
+          near: "The smell touches your face. Hold your breath or it will know you.",
+        },
+      },
     },
 
     n_enc2_ok: {

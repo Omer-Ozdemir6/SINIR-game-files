@@ -557,11 +557,20 @@ export const EP01 = {
         { type: "alert", text: "⚠ KORİDOR IŞIKLARI SIRAYLA PATLIYOR — SANA DOĞRU" },
         { type: "narrate", text: "Koridorun en uzak ucundaki lamba büyük bir gürültüyle patlıyor. Hemen ardından bir sonraki... Sonra diğeri! Karanlık, aç bir canavar gibi koridorda SANA DOĞRU DELİCE KOŞUYOR ve o karanlığın içinden üzerine doğru gelen bir karaltı var!" },
       ],
-      timer: { seconds: 4 },
-      choices: [
-        { id: "duvar", text: "Duvara yapış, gözlerini kapat, BEKLE", next: "n_enc2_ok" },
-        { id: "kac", text: "Geldiğin yöne koş", next: "n_olum_koridor", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "6-B GÖZLEM KORİDORU",
+        enemy: "KARANLIKTAKİ PERSONEL",
+        success: "n_enc2_ok",
+        fail: "n_olum_koridor",
+        startDanger: 36,
+        phaseMs: 1240,
+        hints: {
+          patrol: "Işıklar sırayla patlıyor. Kapıya doğru birkaç adım kazan.",
+          search: "Camların arkasından nefes sesi geliyor. Duvar dibine sin.",
+          near: "Koku yüzüne değdi. Nefesini tut, yoksa seni ayırt edecek.",
+        },
+      },
     },
 
     n_enc2_ok: {

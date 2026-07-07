@@ -33,6 +33,7 @@ import RadioOverlay from "./components/interactions/RadioOverlay";
 import LightsOverlay from "./components/interactions/LightsOverlay";
 import { ValveOverlay, LeverOverlay, FuseOverlay } from "./components/interactions/MechOverlays";
 import BreathOverlay from "./components/interactions/BreathOverlay";
+import ChaseOverlay from "./components/interactions/ChaseOverlay";
 import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./components/interactions/PuzzleOverlays";
 import DarknessOverlay from "./components/DarknessOverlay";
 
@@ -667,6 +668,13 @@ export default function App() {
     const target = interaction.success;
     setInteraction(null);
     playNode(target);
+  };
+  const chaseFail = () => {
+    if (!interaction) return;
+    const target = interaction.fail;
+    setInteraction(null);
+    if (target) playNode(target);
+    else puzzleFail({ text: interaction.failText || "Yakalandin." });
   };
 
   /* ---------------- ANA PANEL (kırmızı buton) ---------------- */
@@ -1508,6 +1516,10 @@ export default function App() {
         <BreathOverlay breath={breath}
           holdMs={interaction.holdMs || 7000} lungMs={interaction.lungMs || 9500}
           onDown={breathDown} onUp={breathUp} />
+      )}
+      {interaction?.kind === "chase" && (
+        <ChaseOverlay key={currentNodeId} config={interaction}
+          onSuccess={puzzleWin} onFail={chaseFail} />
       )}
 
       {/* Arşiv */}
