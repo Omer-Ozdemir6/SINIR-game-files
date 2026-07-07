@@ -95,7 +95,7 @@ export const EP03 = {
     n_sofra_otur: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Soğuk sandalyeye çaresizce oturuyorsun. Çeliğin dondurucu soğukluğu pantolonundan etine işliyor, tıpkı Mile'ın iliklerine işleyen o çaresizlik gibi. Masanın başındaki dev, ilk kez yavaşça sana doğru dönüyor... ama yüzünün üst kısmı karanlıkta; sadece çarpık çenesinin hattı ve tabletinin ışığında ıslakça parlayan, çılgın bir göz yuvarlağı görünüyor." },
+        { type: "narrate", text: "Soğuk sandalyeye çaresizce oturuyorsun. Çeliğin dondurucu soğukluğu pantolonundan etine, etinden iliğine işliyor. Masanın başındaki dev, ilk kez yavaşça sana doğru dönüyor... ama yüzünün üst kısmı karanlıkta; sadece çarpık çenesinin hattı ve tabletinin ışığında ıslakça parlayan, çılgın bir göz yuvarlağı görünüyor." },
         { type: "narrate", text: "\"Aferin. Bak ne kadar kolaymış.\" Paslı çatalı masaya saplıyor. \"Şimdi ye. Annen senin için hazırladı. Günlerdir taze malzeme arıyorduk.\"" },
       ],
       choices: [
@@ -107,7 +107,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Korkudan titreyen parmaklarınla tabağın kapağını kaldırıyorsun. İçinde... insani uzuvları andıran, dumanı tüten, baharatlanmış et parçaları var. Kokusu dehşet verici derecede iyi kokuyor ve bu seni kusmanın eşiğine getiriyor, çünkü açsın! Tabağın hemen kenarında, kanlı yağların arasında parıldayan küçük bir personel künyesi var: 'AYKUT D., teknisyen'." },
-        { type: "note", id: "not_kunye", title: "Tabaktaki künye", text: "Tabağın yanında bir personel künyesi vardı — 'AYKUT D., teknisyen'. Etin yanında. Bunu düşünmeyeceğim. Düşünemem." },
+        { type: "note", id: "not_kunye", title: "Tabaktaki künye", text: "Tabağın yanında 'AYKUT D.' yazan bir personel künyesi vardı. Etin içinde değil, yanında. Bu daha kötü. Harun onun kim olduğunu biliyordu. İsmini korumuş, bedenini pişirmiş. Bunu yazıyorum çünkü beynim birkaç dakika sonra bunun gerçek olmadığına karar verebilir. Gerçekti. Kokusu hâlâ ağzımda." },
         { type: "waitTap" },
         { type: "narrate", text: "\"Ye,\" diyor, sesi bu sefer derin bir hırıltıya dönüşüyor. \"Reddetmek... anneni üzer. Ve inan bana, o üzülürse bu masayı senin kanınla boyarım.\" Çatalı kaldırıyorsun. Miden, hatıraların ve insan kalmaya çalışan son parçan aynı anda kasılıyor." },
       ],
@@ -192,7 +192,7 @@ export const EP03 = {
         { type: "narrate", text: "Holün duvarında, renkli camlardan yapılmış bir panel duruyor. Eski bir aile portresi bu. Ama camlar kırılmış, sanki üzerlerine kan sıçramış gibi yanlış, hastalıklı renklerle yamanmış. Yüzler birbirine karışmış birer kâbus tablosu gibi. Panelin hemen altında Deniz'in çocuksu ama titrek el yazısı kazınmış: 'Annem doğru renkleri bilir. Ben unuttum. Babam canavarlaştı.' Renkleri doğru desene getirirsen arkadaki gizli oyuk açılacak." },
         { type: "document", open: false, doc: {
           id: "d_aile_uyum", title: "Aile Uyum Gözlem Formu",
-          body: "DENEK GRUBU: K-4 yerleşik aile birimi\nGÖZLEMCİ: D. Okur\n\nGözlenen ritüeller:\n- Sofra çağrısı duyulduğunda tüm bireyler oturur.\n- Yemek reddi, baba figüründe aşırı koruyucu şiddet doğurur.\n- Çocuk odası sesi, baba figüründe yönelim kaybı yaratır.\n- Anneye ait renk/desen uyaranları, kilitli bölmelerde olumlu tepki üretir.\n\nDEĞERLENDİRME: Aile davranışı gerçek sevgiye değil, tekrar edilen ceza ve ödül döngüsüne bağlıdır. Dışarıdan gelen kişi 'evlat' rolünü yeterince taklit ederse kısa süreli hayatta kalabilir." } },
+          body: "SINIR-1 DAVRANIŞ GÖZLEM FORMU\nBİRİM: K-4 yerleşik aile simülasyonu\nGÖZLEMCİ: D. Okur\nDURUM: Aktif / temas halinde yaklaşılmamalı\n\nGözlenen ritüeller:\n- Sofra çağrısı duyulduğunda tüm bireyler oturur.\n- Yemek reddi, baba figüründe aşırı koruyucu şiddet doğurur.\n- Çocuk odası sesi, baba figüründe yönelim kaybı yaratır.\n- Anneye ait renk/desen uyaranları kilitli bölmelerde olumlu tepki üretir.\n\nKlinik yorum:\nAile davranışı sevgiye değil, tekrar edilen ceza ve ödül döngüsüne bağlıdır.\nBaba figürü kayıp eşin yerine yeni bireyleri koyarak yas tepkisini sürdürüyor.\nDışarıdan gelen kişi 'evlat' rolünü yeterince taklit ederse kısa süreli\nhayatta kalabilir.\n\nUyarı:\nBu bir tedavi vakası değildir. K-4 artık konut değil, ritüel alanıdır.\nHarun Tekin'e aile bireyi olmadığınızı belli etmeyin." } },
         { type: "note", id: "not_vitray", title: "Aile vitrayı", text: "Holdeki renkli cam aile portresi yanlış renklerle yamanmış. Doğru desene getirmem gerek — hücrelere dokununca renk değişiyor. Deniz'in notu: doğru renkler annesinin hatırası. Arkasında bir oyuk var." },
       ],
       interaction: {
@@ -444,7 +444,7 @@ export const EP03 = {
           id: "d_sefdefter", title: "Şef'in Vardiya Defteri",
           meta: "SINIR-1 · İSTASYON ŞEFİ · H. OKUR",
           body: "AİLEYE KATILANLAR:\n\n· Aykut D. — sofrada 'ikna' edildi. iyi evlat.\n· Nevin A. — direndi. bahçeye verildi (K-3).\n· Selin ? — kaçtı. hâlâ arıyorum.\n· [senin no'n] — [ ] henüz\n\nNOT: Deniz aşağıda kendi ailesini kurdu.\nGurur duyuyorum. Sıra bunda. Sofrada\nyerse — evlat. Reddederse — malzeme.\n\nYÜZÜK hâlâ depoda. Sevgi'yi\ngeri getiremedim ama aileyi büyüttüm.\nO da isterdi. İsterdi, değil mi?" } },
-        { type: "note", id: "not_sefdefter", title: "Şef'in listesi", text: "Şef'in defteri: 'aileye katılanlar'. Aykut (sofrada), Nevin (K-3'e, 'bahçeye'), Selin (kaçmış, hâlâ aranıyor). Benim numaram en altta, kutu boş. Yersem 'evlat', reddedersem 'malzeme'. Nevin K-3'te — bir sonraki katta biri var." },
+        { type: "note", id: "not_sefdefter", title: "Şef'in listesi", text: "Harun'un defteri bir aile albümü gibi düzenlenmiş, sadece fotoğrafların yerinde infaz yöntemleri var. Aykut sofrada. Nevin bahçede. Selin kayıp. Benim numaram en altta, kutu boş. Burada insan iki şeye dönüşebiliyor: evlat ya da malzeme. İkisi de aynı masaya çıkıyor." },
       ],
       choices: [
         { id: "cik", text: "Şef dönmeden çık", next: "n_hol" },
@@ -503,7 +503,7 @@ export const EP03 = {
 
     n_olum_yatak: {
       death: true,
-      deathText: "Korkudan ciğerlerin patlıyor, nefesini tutamayıp hıçkırıyorsun! Harun'un o zımbalı dehşet yüzü yatağın altında belriyor. Dev el ayak bileğine yapışıp seni tek hamlede dışarı fırlatıyor! Duvara çarpıp bilincini kaybederken satırın göğüs kafesine inişini hissediyorsun. \"Yeni malzeme hazır!\"",
+      deathText: "Korkudan ciğerlerin patlıyor, nefesini tutamayıp hıçkırıyorsun! Harun'un o zımbalı dehşet yüzü yatağın altında beliriyor. Dev el ayak bileğine yapışıp seni tek hamlede dışarı fırlatıyor! Duvara çarpıp bilincini kaybederken satırın göğüs kafesine inişini hissediyorsun. \"Yeni malzeme hazır!\"",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
@@ -655,7 +655,7 @@ export const EP03 = {
         { type: "system", text: "AMBAR KAPAĞI: AÇIK — K-3'E İNİŞ" },
         { type: "narrate", text: "Anahtarı kilitte çılgınca çeviriyorsun, kapak büyük bir gıcırtıyla açılıyor. Aşağıdan keskin bir çürüme, ıslak toprak ve bitki kokusu dalgası yüzüne vuruyor. Kendini aşağı fırlatıp kapağı üstünden kapatıyor ve sürgülüyorsun! Tam o anda kapağın üzerine devasa darbeler inmeye başlıyor — GÜM! GÜM! Çelik bükülüyor ama sürgü dayanıyor. Sonra darbeler kesiliyor." },
         { type: "waitTap" },
-        { type: "ambient", text: "Kapağın hemen arkasından, o canavarın ağlamaklı, şizofrenik fesi yükseliyor: \"...Herkes beni terk ediyor. Sevgi gitti... Deniz aşağı indi... Sen de kaçtın. Ben hep bu sofrada tek başıma mı kalacağım?\" Sonra derin, tekinsiz bir sessizlik çöküyor." },
+        { type: "ambient", text: "Kapağın hemen arkasından, o canavarın ağlamaklı, şizofrenik sesi yükseliyor: \"...Herkes beni terk ediyor. Sevgi gitti... Deniz aşağı indi... Sen de kaçtın. Ben hep bu sofrada tek başıma mı kalacağım?\" Sonra derin, tekinsiz bir sessizlik çöküyor." },
         { type: "ambient", text: "Tabletin hoparlöründen Ece'nin hırıltılı sesi geliyor: «Aman Tanrım... O sesleri duydum. Başardın... K-3'e indin. Orası Dr. Nevin'in laboratuvar katı... Biyolog. O herif gibi delirmemiş olabilir... Dikkat et, orada garip şeyler nefes alıyor...»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "narrate", text: "Merdivenlerden aşağı, mutlak bir karanlığa doğru iniyorsun. Elindeki tabletin ışığı aşağıda kıpırdayan devasa, bitkisel ve devasa sarmaşıkları aydınlatıyor. Canlı bir bahçe burası... Ve karanlıkta bir şey çok ağır nefes alıyor. 'Bahçe' yeni kurbanını bekliyor." },
         { type: "system", text: "— BÖLÜM 3 SONU: EV —" },
