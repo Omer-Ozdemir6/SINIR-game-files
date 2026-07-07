@@ -102,6 +102,7 @@ export default function App() {
   // radio
   const [radioFreq, setRadioFreq] = useState(425.0);
   const [radioPhase, setRadioPhase] = useState("tune");
+  const [radioLock, setRadioLock] = useState(0);
   // lights
   const [lights, setLights] = useState([...LIGHTS_INIT]);
   const [lightsDone, setLightsDone] = useState(false);
@@ -540,7 +541,7 @@ export default function App() {
       const k = node.interaction.kind;
       if (k === "keypad") { setKpEntry(""); setKpMsg(null); setKpFails(0); }
       if (k === "panel") { setPanelMsg(null); }
-      if (k === "radio") { setRadioFreq(425.0); setRadioPhase("tune"); }
+      if (k === "radio") { setRadioFreq(425.0); setRadioPhase("tune"); setRadioLock(0); }
       if (k === "lights") { setLights([...LIGHTS_INIT]); setLightsDone(false); }
       if (k === "valve") { setValveDeg(0); setMechDone(false); setValveBusy(false); valveBusyRef.current = false; }
       if (k === "lever") { setLeverProg(0); setMechDone(false); leverHoldingRef.current = false; }
@@ -701,8 +702,22 @@ export default function App() {
 
   /* ---------------- RADYO ---------------- */
 
+  const finishRadioLock = () => {
+    if (!interaction || interaction.kind !== "radio") return;
+    setRadioPhase("cut");
+    setRadioLock(100);
+    glitchBurst(900);
+    const target = interaction.success;
+    later(() => {
+      setInteraction(null);
+      setRadioLock(0);
+      playNode(target);
+    }, 1600);
+  };
+
   const radioAdjust = (delta) => {
-    if (radioPhase !== "tune" || !interaction) return;
+    if ((radioPhase !== "tune" && radioPhase !== "lock") || !interaction) return;
+    if (radioLock >= 100) return;
     AudioSys.blipSfx(340);
     const f = Math.round(Math.max(410, Math.min(450, radioFreq + delta)) * 10) / 10;
     setRadioFreq(f);
@@ -713,20 +728,24 @@ export default function App() {
     if (Math.abs(f - 421.8) <= 0.05 && !flagsRef.current.frekansNefes) {
       setFlagsBoth({ frekansNefes: true, frekanslariDuydun: !!flagsRef.current.frekansCocuk });
     }
-    if (Math.abs(f - interaction.target) <= 0.05) {
+    const diff = Math.abs(f - interaction.target);
+    if (diff <= 0.25) {
       setRadioPhase("lock");
-      const target = interaction.success;
-      later(() => {
-        setRadioPhase("cut");
-        glitchBurst(900);
-        later(() => {
-          setInteraction(null);
-          playNode(target);
-        }, 1600);
-      }, 2200);
+      const gain = diff <= 0.05 ? 34 : diff <= 0.15 ? 22 : 12;
+      setRadioLock((p) => {
+        const next = Math.min(100, p + gain);
+        if (next >= 100) later(finishRadioLock, 280);
+        return next;
+      });
+    } else if (radioPhase === "lock") {
+      setRadioLock((p) => {
+        const next = Math.max(0, p - 24);
+        if (next <= 0) setRadioPhase("tune");
+        return next;
+      });
     }
   };
-  const radioSignal = Math.max(0, Math.round(100 - Math.abs(radioFreq - (interaction?.target || 432)) * 14));
+  const radioSignal = Math.max(0, Math.round(100 - Math.abs(radioFreq - (interaction?.target || 432)) * 22));
   const radioHint = (() => {
     if (!interaction || interaction.kind !== "radio") return "";
     const f = radioFreq;
@@ -1390,8 +1409,8 @@ export default function App() {
         <KeypadOverlay entry={kpEntry} msg={kpMsg} onKey={kpKey} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "radio" && (
-        <RadioOverlay freq={radioFreq} phase={radioPhase} signal={radioSignal}
-          hint={radioHint} glitchFx={glitchFx} onAdjust={radioAdjust} />
+        <RadioOverlay freq={radioFreq} target={interaction.target} phase={radioPhase} signal={radioSignal}
+          lock={radioLock} hint={radioHint} glitchFx={glitchFx} onAdjust={radioAdjust} />
       )}
       {interaction?.kind === "lights" && (
         <LightsOverlay lights={lights} done={lightsDone}
