@@ -382,11 +382,21 @@ export const EP04 = {
         { type: "narrate", text: "You do not dare to see that terrifying face of Nevin, and you return to that compost path smelling of sewage filth where Selin escaped. This is a narrow passage full of toxic gases, smelling foul. But Nevin's roots couldn't infiltrate this dead zone. In complete darkness, you advance by crawling." },
         { type: "narrate", text: "At the end of the passage, where human waste and chemicals accumulate, you find a rusty discharge pipe opening to K-2. Selin's footprints covered in mud are still fresh. However, the gas leaking from the pipe burns your lungs like a flame; if you don't hurry, you will suffocate here!" },
         { type: "flag", set: { selinRotasi: true } },
-        { type: "stat", stat: "akil", delta: -8, note: "SANITY -8 — Suffocating Gas Inhaled", noteKind: "alert" },
       ],
-      choices: [
-        { id: "in", text: "Descend to K-2 through the hidden discharge", next: "n_k3_son" },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-3 COMPOST DUCT",
+        enemy: "TOXIC GASES AND SLUDGE",
+        success: "n_k3_son",
+        fail: "n_olum_spor",
+        startDanger: 38,
+        phaseMs: 1250,
+        hints: {
+          patrol: "Gas leakage slowed down. Move forward through the pipe quickly!",
+          search: "The duct is shaking, acid is dripping. Hide in the wall cavity!",
+          near: "A heavy wave of toxic mist is coming! Hold your breath immediately!"
+        }
+      }
     },
 
     /* ================= END OF SECTION ================= */

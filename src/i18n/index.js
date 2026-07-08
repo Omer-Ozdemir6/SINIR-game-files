@@ -14,15 +14,18 @@ import { setStoryLang } from "../story/index.js";
 export const LANGS = [
   { code: "tr", label: "TÜRKÇE" },
   { code: "en", label: "ENGLISH" },
-  { code: "de", label: "DEUTSCH" }, // ALMANCA SEÇENEĞİ
 ];
 
 const KEY = "sinir1_lang";
 let current = "tr";
 
 try {
-  const saved = localStorage.getItem(KEY);
-  if (saved && UI[saved]) current = saved;
+  let saved = localStorage.getItem(KEY);
+  if (saved === "de") {
+    saved = "en";
+    try { localStorage.setItem(KEY, "en"); } catch (e) {}
+  }
+  if (saved && UI[saved] && saved !== "de") current = saved;
 } catch (e) {}
 
 // Oyun ilk açıldığında hafızadan okunan dili hikaye motoruna da bildiriyoruz
@@ -31,6 +34,7 @@ setStoryLang(current);
 export function getLang() { return current; }
 
 export function setLang(code) {
+  if (code === "de") code = "en";
   if (!UI[code]) return;
   current = code;
   try { localStorage.setItem(KEY, code); } catch (e) {}

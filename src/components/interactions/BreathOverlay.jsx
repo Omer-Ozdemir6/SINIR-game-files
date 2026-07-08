@@ -7,16 +7,14 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const failTo = interaction.fail;
   const successTo = interaction.success;
 
-  // Generate dynamic target key and template based on a hash of the node ID
-  const keysList = ["E", "Q", "F", "R"];
+  // Generate dynamic rhythm template based on a hash of the node ID
   const nodeHash = (successTo || "nx").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const targetKey = keysList[nodeHash % keysList.length];
   
   // 3 rhythm variations: 0 = Steady, 1 = Accelerating Panic, 2 = Double Thumps (Doublets)
   const rhythmType = nodeHash % 3;
 
   // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed
-  const scrollDuration = holdMs <= 7000 ? 1400 : holdMs <= 7800 ? 1700 : 2000;
+  const scrollDuration = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
 
   const [gameStarted, setGameStarted] = useState(() => {
     try {
@@ -43,24 +41,24 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
 
     if (rhythmType === 1) {
       // Template 1: Accelerating panic (notes get progressively faster)
-      let interval = 1600;
-      while (cur < holdMs - 800) {
+      let interval = 1200;
+      while (cur < holdMs - 600) {
         list.push({ id: list.length, time: cur, hit: false, missed: false });
         cur += interval;
-        interval = Math.max(950, interval - 180);
+        interval = Math.max(650, interval - 200);
       }
     } else if (rhythmType === 2) {
       // Template 2: Double thumps (lub-dub ... lub-dub)
-      while (cur < holdMs - 900) {
+      while (cur < holdMs - 600) {
         list.push({ id: list.length, time: cur, hit: false, missed: false });
-        list.push({ id: list.length + 1, time: cur + 300, hit: false, missed: false });
-        cur += 1800 + Math.random() * 300;
+        list.push({ id: list.length + 1, time: cur + 260, hit: false, missed: false });
+        cur += 1100 + Math.random() * 200;
       }
     } else {
       // Template 0: Steady rhythmic beats
-      while (cur < holdMs - 800) {
+      while (cur < holdMs - 600) {
         list.push({ id: list.length, time: cur, hit: false, missed: false });
-        cur += 1400 + Math.random() * 400;
+        cur += 800 + Math.random() * 250;
       }
     }
 
@@ -107,7 +105,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
       // Check for missed notes that scrolled past
       let adrenalineChanged = false;
       const updatedSpikes = spikesRef.current.map((s) => {
-        if (!s.hit && !s.missed && elapsed > s.time + 180) {
+        if (!s.hit && !s.missed && elapsed > s.time + 120) {
           s.missed = true;
           adrenalineRef.current = Math.min(100, adrenalineRef.current + 20);
           adrenalineChanged = true;
@@ -158,7 +156,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     if (!gameStartedRef.current) return;
 
     const elapsed = performance.now() - startTimeRef.current;
-    const windowMs = 180; // +/- 180ms hit window
+    const windowMs = 120; // +/- 120ms hit window
 
     // Find the closest unhit, not-yet-missed note
     let closestNote = null;
@@ -193,18 +191,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     }
   }, []);
 
-  // Keyboard controls bound to the dynamic target key
-  useEffect(() => {
-    if (!gameStarted) return;
-    const handleKeyDown = (e) => {
-      if (e.key.toLowerCase() === targetKey.toLowerCase() || (targetKey === "Space" && e.key === " ")) {
-        e.preventDefault();
-        registerHit();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [gameStarted, targetKey, registerHit]);
+
 
   // UI layout measurements
   const targetX = 15; // Target zone is located at 15% from left of the container
@@ -223,7 +210,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     return t("lang") === "tr" ? "Ritim: Düzgün Ritim" : rhythmType === 2 ? "Rhythm: Steady Beats" : "Rhythmus: Stetig";
   };
 
-  const descText = t("breath.desc").replace("[E]", `[${targetKey}]`);
+  const descText = t("breath.desc");
 
   if (!gameStarted) {
     return (
@@ -248,7 +235,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
                 <path d="M 0 30 L 12 30 L 16 45 L 20 5 L 24 55 L 28 30 L 40 30" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <div style={styles.previewKeycap}>{targetKey}</div>
+            <div style={{ ...styles.previewKeycap, borderRadius: "50%" }}>👆</div>
           </div>
 
           <button style={styles.startBtn} onClick={startMinigame}>
@@ -352,12 +339,17 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
         <div style={styles.inputArea}>
           <div style={{
             ...styles.keycap,
+            width: "auto",
+            padding: "8px 24px",
+            borderRadius: "20px",
+            fontSize: "12px",
+            letterSpacing: "0.12em",
             transform: flash ? "scale(0.92)" : "scale(1)",
             borderColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#566052",
             color: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#d7d0b8",
             boxShadow: flash === "hit" ? "0 0 15px rgba(127,174,134,0.3)" : "none",
           }}>
-            {targetKey}
+            👆 {t("lang") === "tr" ? "DOKUN" : "TAP"}
           </div>
           <div style={styles.inputTip}>
             {t("breath.target")}

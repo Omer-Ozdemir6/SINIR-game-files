@@ -1,5 +1,5 @@
 /* ============================================================
-   BORDER-1 — CHAPTER 5 (FINAL): "K-2 / THE ARTIFACT" (full version)
+   PERISHED — CHAPTER 5 (FINAL): "K-2 / THE ARTIFACT" (full version)
    No owner — The Artifact is not a found object, it is a SOURCE. An ancient 
    excavation carved out beneath the station. It "counts" at 432 Hz, linking 
    minds into a single "family" consciousness. The countdown is real: if it 
@@ -721,21 +721,45 @@ export const EP05 = {
 
     /* ===== ENDING 1: SURFACE (best) ===== */
     n_son_yuzey: {
-      ending: true,
       events: [
         { type: "narrate", text: "You completely lock the frequency. That maddening hum of the Artifact lowers like a dying furnace, rasps... And ends. For the first time, for eleven long months for the first time, this damn station sinks into COMPLETE silence. There are only your breathings." },
         { type: "waitTap" },
         { type: "ambient", text: "The sound of Ece crying with sobs comes from the sonar line through the radio: «It stopped... That son of a bitch went quiet. The workers on the upper floors are waking up... That redness in their eyes is going away. You did it... My God, you did it!»" },
         { type: "narrate", text: "Selin holds your hand tightly: «The escape pod is on the K-1 command floor! While the station is quiet, all electronic locks are open! RUN!» Together you climb upward, toward those pitch-black floors. In your hand is only that weak light of the tablet... Six floors. Five floors. Four floors." },
-        { type: "waitTap" },
-        { type: "narrate", text: "When you look back through the thick glass of the escape pod, BORDER-1 shrinks like a dead fish at the bottom of that dark sea. Selin is panting in the seat next to you, both crying and laughing. Ece's static voice comes from the radio: «See you on the surface, in the fresh air...» Above your head, hundreds of meters above, is a real sky, real stars. And inside your brain, no monster counts anymore." },
+      ],
+      interaction: {
+        kind: "chase",
+        title: "K-1 ESCAPE ROUTE — THE FINAL RUN",
+        enemy: "COLLAPSING STATION AND THE ARTIFACT",
+        success: "n_son_yuzey_basari",
+        fail: "n_olum_kacis",
+        startDanger: 45,
+        phaseMs: 1100,
+        hints: {
+          patrol: "The station is groaning, the ceiling is collapsing! Accelerate toward the pod!",
+          search: "Water is flooding in, and roots are blocking the way. Hide and brace yourself!",
+          near: "A massive mound of flesh rises in the darkness. Do not move, hold your breath!"
+        }
+      }
+    },
+
+    n_olum_kacis: {
+      death: true,
+      deathText: "Just as you reached the door of the escape pod, the ceiling collapsed with a massive rumble, and the Artifact's final extensions dragged you down to the bottom of the cold ocean.",
+      events: [{ type: "glitch", ms: 1000 }]
+    },
+
+    n_son_yuzey_basari: {
+      ending: true,
+      events: [
+        { type: "narrate", text: "When you look back through the thick glass of the escape pod, PERISHED shrinks like a dead fish at the bottom of that dark sea. Selin is panting in the seat next to you, both crying and laughing. Ece's static voice comes from the radio: «See you on the surface, in the fresh air...» Above your head, hundreds of meters above, is a real sky, real stars. And inside your brain, no monster counts anymore." },
         { type: "waitTap" },
         { type: "ambient", text: "Right as the pod is about to launch to the sea surface, something massive crashes onto the thick steel hull from the outside. Once. Then at regular intervals: Three hits. Just like in that torn diary of Baturay... But this sound does not come from WITHIN. It strikes from the OUTSIDE, from the very bottom of that dark ocean. You silenced the Artifact; but that massive thing that fed that flesh mass there for all these years, striking that hull, is still there... And now there is no one left to feed it. That thing is hungry." },
         { type: "system", text: "— ENDING: SURFACE —" },
         { type: "system", text: "The Artifact went quiet. You escaped together with Selin and Ece. You survived — and brought the truth to the surface." },
-        { type: "system", text: "But there is still something striking at the bottom of BORDER-1. And someone, reading the evidence you sent, will decide to descend down there." },
-        { type: "system", text: "BORDER-1 · THANK YOU" },
-      ],
+        { type: "system", text: "But there is still something striking at the bottom of PERISHED. And someone, reading the evidence you sent, will decide to descend down there." },
+        { type: "system", text: "PERISHED · THANK YOU" },
+      ]
     },
 
     /* ===== ENDING 2: SILENCE (sacrifice) ===== */
@@ -750,7 +774,7 @@ export const EP05 = {
         { type: "narrate", text: "Selin will go up to the surface alone. The station was saved. No one downstairs will know the name of that technician who choked that monster with their own life... But that night, everyone on the surface woke up from their sleep with a strange lightness in their chest. As if someone had carried that heavy curse in their place and became a sacrifice." },
         { type: "system", text: "— ENDING: SILENCE —" },
         { type: "system", text: "You destroyed the Artifact. By sacrificing yourself, you saved the station — maybe the world. Selin escaped and will tell the truth." },
-        { type: "system", text: "BORDER-1 · THANK YOU" },
+        { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
@@ -765,7 +789,7 @@ export const EP05 = {
         { type: "ambient", text: "«...Three... Two... Three... Two... Our sibling has arrived... Welcome...»" },
         { type: "system", text: "— ENDING: DEEP —" },
         { type: "system", text: "You joined the Artifact. The pain ended. You are now of the Family too — and you await the next 'child'." },
-        { type: "system", text: "BORDER-1 · THANK YOU" },
+        { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
@@ -780,7 +804,7 @@ export const EP05 = {
         { type: "ambient", text: "In the reflection of the fading screen light of your tablet, you see your own face: completely calm. Like Baturay. Like a true witness who has finished their duty. And that fleshy hole inside your brain whispers one last time: «...Zero.»" },
         { type: "system", text: "— ENDING: RECORD —" },
         { type: "system", text: "You didn't escape — you chose to document. You died, but Selin brought the evidence to the surface. The truth can no longer be hidden. Baturay would be proud." },
-        { type: "system", text: "BORDER-1 · THANK YOU" },
+        { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
@@ -795,7 +819,7 @@ export const EP05 = {
         { type: "ambient", text: "And at that moment, that sound stops. Because there is no foreign power left to count inside your brain anymore. Everyone — You, Selin next to you, the workers whose flesh is melting upstairs, and perhaps all that innocent surface at the end of the radio... You are now a single piece of flesh. A single massive hive. A single infinite, calm, completely emptied dead mind." },
         { type: "system", text: "— ENDING: ZERO —" },
         { type: "system", text: "You couldn't fully silence the Artifact and you couldn't find the escape path without Ece. The countdown reached zero. The Family now encompasses everyone. Perhaps the surface too." },
-        { type: "system", text: "BORDER-1 · THANK YOU" },
+        { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
   },

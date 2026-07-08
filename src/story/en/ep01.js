@@ -1,5 +1,5 @@
 /* ============================================================
-   BORDER-1 — EPISODE 1 v2: "K-6 / NIGHT SHIFT" (LABYRINTH WEAVE)
+   PERISHED — EPISODE 1 v2: "K-6 / NIGHT SHIFT" (LABYRINTH WEAVE)
    Design rules apply: target is told ROUTE IS NOT TOLD;
    floor is a mini map; dead ends, loops and fatal wrong
    way exist; direction info is IN DOCUMENTS; doors require
@@ -25,14 +25,14 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "music", track: "k6" },
-        { type: "system", text: "BORDER-1 MAINTENANCE TABLET v2.3 — REBOOTING…" },
+        { type: "system", text: "PERISHED MAINTENANCE TABLET v2.3 — REBOOTING…" },
         { type: "system", text: "TIME: 03:47 · DEPTH: 214M · EXTERNAL CONNECTION: NONE (3 H 12 MIN)" },
         { type: "pause", ms: 900 },
         { type: "system", text: "ASSIGNMENT: MAINTENANCE TECHNICIAN · RECORD NEW · MISSION: ROUTINE INSPECTION" },
-        { type: "narrate", text: "That email that arrived three days ago was like a blessing. 'BORDER-1 research station, urgent maintenance personnel wanted.' The salary was unbelievable, not a single interview was conducted. When the submarine's hatches closed on me, I knew there was no going back, but I didn't expect to encounter this pitch-black steel tomb. In the massive facility that has been running non-stop for eleven months, there is not a peep." },
+        { type: "narrate", text: "That email that arrived three days ago was like a blessing. 'PERISHED research station, urgent maintenance personnel wanted.' The salary was unbelievable, not a single interview was conducted. When the submarine's hatches closed on me, I knew there was no going back, but I didn't expect to encounter this pitch-black steel tomb. In the massive facility that has been running non-stop for eleven months, there is not a peep." },
         { type: "narrate", text: "What wakes you up is not an ear-piercing alarm. It's the sudden DYING of the generator. That humming in your ears cuts off like a knife, and the absolute, suffocating darkness of the K-6 floor collapses onto your chest like a nightmare. You feel your heart hammering against your rib cage." },
         { type: "narrate", text: "Your breath shortens as you straighten up from the bunk. Even that sickly red glow of the emergency lighting has gone out, everywhere is pitch black. In a panic, you reach out your hand and your fingers find the company maintenance tablet given to you. When you press the power button, the cracked screen suddenly glows; a raw, blue-white, ice-cold light hits your face. Right now, your only support, your only source of light in this pitch-black world is this screen. Left over from the previous technician; an undeleted name glows on the lock screen stained with fingerprints: 'B. Soylu'." },
-        { type: "note", id: "not_uyanis", title: "First night", text: "I've been assigned to BORDER-1 as a maintenance technician — the previous personnel 'left the duty'. My first night and the generator has already gone silent, no alarm, connection with the surface has been lost for three hours. No one welcomed me, no one woke me up. The tablet belonged to the previous technician: B. Soylu. Where is he?" },
+        { type: "note", id: "not_uyanis", title: "First night", text: "I've been assigned to PERISHED as a maintenance technician — the previous personnel 'left the duty'. My first night and the generator has already gone silent, no alarm, connection with the surface has been lost for three hours. No one welcomed me, no one woke me up. The tablet belonged to the previous technician: B. Soylu. Where is he?" },
         { type: "waitTap" },
         { type: "objective", text: "Investigate the K-6 power outage." },
         { type: "ambient", text: "From the corridor outside the dormitory, from very far away, a wet, heavy sound comes, as if a piece of meat is being dragged. It lasts for a few seconds, then leaves its place to a deadly silence." },
@@ -73,7 +73,7 @@ export const EP01 = {
         { type: "narrate", text: "The handover report for yesterday's shift hangs on the panel. The edge of the paper is wrinkled with a dried slimy liquid, as if a hand that does not look human gripped it.", if: { flag: "korIlk", equals: false } },
         { type: "document", open: true, if: { flag: "korIlk", equals: false }, doc: {
           id: "d_devir", title: "Shift Handover Report — Night 6",
-          meta: "BORDER-1 · K-6 MAINTENANCE · FORM 12-B · SHIFT SUPERVISOR: B. SOYLU",
+          meta: "PERISHED · K-6 MAINTENANCE · FORM 12-B · SHIFT SUPERVISOR: B. SOYLU",
           body: "HANDED OVER BY: Baturay Soylu (night)\nHANDED OVER TO: — (no signature)\n\nOPEN TASKS:\n· Lower platform evacuation pumps (A/B/C) faulty.\n  Manual initial start required.\n· PUMP C'S FUSE BURNED OUT AND REMOVED.\n  Spare fuses are in B-2 DEPOT.\n· Radio room access panel re-coded.\n  The code is SPLIT IN TWO for security. (see minutes 7)\n· Main line WILL NOT BE STARTED until all three pumps are turned on.\n\nWARNINGS:\n· Old personnel elevator OUT OF SERVICE. No cabin,\n  shaft empty. DO NOT USE the door.\n· Bilge level rising. If evacuation is not done\n  within 24 hours, K-6 will be submerged.\n\nFOOTNOTE (handwriting, different pen):\nDo not go down to the platform alone after 3 AM.\nDon't ask why. Go down and count: are we missing?" } },
         { type: "flag", set: { korIlk: true } },
         { type: "ambient", text: "On the left side, there is an ajar door leaking a sour decomposition and heavy chemical smell. Ahead, defying logic, the yellow, flickering light of the canteen blinks. The end of the corridor is pitch black like a bottomless pit." },
@@ -111,7 +111,7 @@ export const EP01 = {
         { type: "waitTap" },
         { type: "document", open: true, doc: {
           id: "d_revir", title: "Infirmary Record — Week 42",
-          meta: "BORDER-1 HEALTH UNIT · CONFIDENTIAL: INTERNAL",
+          meta: "PERISHED HEALTH UNIT · CONFIDENTIAL: INTERNAL",
           body: "COLLECTIVE SYMPTOM REPORT (last 14 days):\n\n· Tinnitus ............................. 19 personnel\n· Sleep disorder ....................... 16 personnel\n· Feeling that \"sounds come from walls\" . 11 personnel\n· COUNTING NUMBERS IN SLEEP ............. 9 personnel\n\nNote: All of those who count in their sleep, unaware\nof each other, count the SAME sequence. Records were\ncompared. No explanation found.\n\nRECOMMENDATION: Collective psychological evaluation +\nrequest for evacuation to surface. (DENIED — H. Tekin:\n'Shift order cannot be disrupted. The family knows\nits business.')\n\nLAST RECORD: B. Soylu refused treatment. 'Not sleeping\nis enough,' he said. He was given stimulants." } },
       ],
       choices: [
@@ -148,7 +148,7 @@ export const EP01 = {
         { type: "narrate", text: "Your eyes shift to the shift schedule on the wall. When you bring the screen of your tablet closer to look, your hair stands on end.", if: { flag: "kantinIlkGoruldu", equals: false } },
         { type: "document", open: true, if: { flag: "kantinIlkGoruldu", equals: false }, doc: {
           id: "d_cizelge", title: "Shift Schedule — ?? Week",
-          meta: "BORDER-1 PERSONNEL PLANNING · approval: H.T.",
+          meta: "PERISHED PERSONNEL PLANNING · approval: H.T.",
           body: "MONDAY\n  00-08: FAMILY    08-16: FAMILY    16-24: FAMILY\ TUESDAY\n  00-08: FAMILY    08-16: FAMILY    16-24: FAMILY\ WEDNESDAY\n  00-08: FAMILY    08-16: FAMILY    16-24: FAMILY\ THURSDAY\n  00-08: FAMILY    08-16: FAMILY    16-24: FAMILY\ FRIDAY\n  00-08: F A M I L Y 08-16: F A M I L Y 16-24: FAMILY\ SATURDAY\n  00-08: FAMILYFAMILY 08-16: FAMILYFAMILYFAMILY\ SUNDAY\n  all together all together all together all\n\n(bottom corner, pencil, tiny:)\na place is reserved for late personnel" } },
         { type: "flag", set: { kantinIlkGoruldu: true } },
         { type: "ambient", text: "Right next to that clean, empty plate at the head of the table, there is a small name card. When you hold the flickering light over it, you see your own duty number. Beyond the kitchen, in the shadow of rusty pipes, a service door darkens." },
@@ -627,7 +627,7 @@ export const EP01 = {
         { type: "narrate", text: "The heavy door opens with a hiss. The radio room... A wall full of smashed, dead devices with wires hanging out, and right in the middle stands the emergency radio console. A strange clicking coming from one of the drawers breaks the silence." },
         { type: "document", open: true, doc: {
           id: "d_talep", title: "Sample Transfer Request — DENIED",
-          meta: "BORDER-1 INTERNAL CORRESPONDENCE · FORM 4-A · ARCHIVE COPY",
+          meta: "PERISHED INTERNAL CORRESPONDENCE · FORM 4-A · ARCHIVE COPY",
           body: "REQUESTED BY: Dr. Nevin Aras (K-3 Biology)\nREQUEST: Taking an additional tissue sample from\n'FIND-1' in the K-2 archaeology storehouse and\nits transfer to the K-3 laboratory.\n\nREASON: ████████████████████████████████\n█████████ counting behavior ████████████\n██████████ my daughter's records ██████████\n████████████ answers back ████████\n\nDECISION: DENIED.\n'No one will touch the find. It belongs to the family.\nIs that understood, Nevin? THE FAMILY.'\n— H. Tekin, Station Chief" } },
         { type: "narrate", text: "You collapse onto the radio desk but the device is dead. You frantically dismantle its back cover: The five-lamp fuse circuit has been completely messed up, one is lit, four stand like blind eyes. Without fixing this circuit, you cannot send a single scream to the world." },
       ],

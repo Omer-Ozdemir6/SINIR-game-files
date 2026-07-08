@@ -724,13 +724,37 @@ export const EP05 = {
 
     /* ===== SON 1: YÜZEY (en iyi) ===== */
     n_son_yuzey: {
-      ending: true,
       events: [
         { type: "narrate", text: "Frekansı tamamen kilitliyorsun. Buluntu'nun uğultusu önce alçalıyor, sonra hırıldıyor, sonra bitiyor. İlk kez istasyon sessiz. Gerçek sessizlik bu değilmiş; bu, bir suç makinesinin nihayet kayıt dışı kalması. Sadece sizin nefes alışlarınız var. Yaşayan iki insanın çıkardığı küçük, düzensiz, kusurlu sesler. Hiçbir protokol bu sesi temizleyemiyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Sonar hattından Ece’nin hıçkırarak ağlama sesi geliyor: «Durdu... O piç kurusu sustu. Yukarı katlardaki işçiler uyanıyor... Gözlerindeki o kırmızılık gidiyor. Başardın... Tanrım, başardın!»" },
         { type: "narrate", text: "Selin elini sıkıca tutuyor: «Kaçış kapsülü K-1 komuta katında! İstasyon susmuşken tüm elektronik kilitler açık! KOŞ!» Birlikte yukarıya, o zifiri katlara doğru tırmanıyorsunuz. Elinde sadece o zayıf tabletin ışığı... Altı kat. Beş kat. Dört kat." },
-        { type: "waitTap" },
+      ],
+      interaction: {
+        kind: "chase",
+        title: "K-1 KAÇIŞ ROTASI — SON KOŞU",
+        enemy: "ÇÖKEN İSTASYON VE BULUNTU",
+        success: "n_son_yuzey_basari",
+        fail: "n_olum_kacis",
+        startDanger: 45,
+        phaseMs: 1100,
+        hints: {
+          patrol: "İstasyon gıcırdıyor, tavan çöküyor! Kapsüle doğru hızlan!",
+          search: "Etrafı su basıyor ve kökler yolu tıkıyor. Kendini koruyarak saklan!",
+          near: "Karanlıkta devasa bir et yığını yükseliyor. Kımıldama, nefesini tut!"
+        }
+      }
+    },
+
+    n_olum_kacis: {
+      death: true,
+      deathText: "Tam kaçış kapsülünün kapısına ulaşmışken, tavan büyük bir gürültüyle çöktü ve Buluntu'nun son uzantıları seni karanlığın dibine, o soğuk okyanusa çekti.",
+      events: [{ type: "glitch", ms: 1000 }]
+    },
+
+    n_son_yuzey_basari: {
+      ending: true,
+      events: [
         { type: "narrate", text: "Kaçış kapsülünün kalın camından arkaya baktığında, PERISHED o karanlık denizin dibinde ölü bir balık gibi küçülüyor. Selin yanındaki koltukta nefes nefese, hem ağlıyor hem gülüyor. Ece’nin parazitli sesi telsizden geliyor: «Yüzeyde görüşürüz, temiz havada...» Kafanın üstünde, yüzlerce metre yukarıda gerçek bir gökyüzü, gerçek yıldızlar var. Ve beyninin içinde artık hiçbir canavar saymıyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Tam kapsül deniz yüzeyine fırlayacakken, kalın çelik gövdeye dışarıdan devasa bir şey çarpıyor. Bir kez. Sonra düzenli aralıklarla: Üç vuruş. Baturay’ın o yırtık günlüğündeki gibi... Ama bu ses İÇERİDEN gelmiyor. DIŞARIDAN, o karanlık okyanusun en dibinden vuruyor. Buluntu’yu susturdun; ama o et kütlesini bunca yıl orada besleyen, o gövdeye vuran devasa şey hâlâ orada... Ve artık onu besleyecek kimse kalmadı. O şey aç." },
@@ -738,7 +762,7 @@ export const EP05 = {
         { type: "system", text: "Buluntu sustu. Selin ve Ece'yle birlikte kaçtın. Hayatta kaldın — ve gerçeği yüzeye çıkardın." },
         { type: "system", text: "Ama PERISHED'ın dibinde hâlâ vuran bir şey var. Ve birileri, senin gönderdiğin kanıtı okuyup oraya inmeye karar verecek." },
         { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
-      ],
+      ]
     },
 
     /* ===== SON 2: SESSİZLİK (fedakârlık) ===== */

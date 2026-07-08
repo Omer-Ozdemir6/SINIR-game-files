@@ -614,14 +614,22 @@ export const EP03 = {
     n_final_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Deliler gibi koşuyorsun! Adımlarının sesi evde yankılanıyor. Harun holün tam ortasında devasa cüssesiyle bitiyor, elindeki satırı havaya kaldırmış hırıldıyor: \"Gel evlat... Baban seni kucaklayacak!\" Önünde iki ölümcül seçenek var: ya yanından sıyrılacaksın ya da devrilmiş dolabın üzerinden fırlayacaksın." },
-        { type: "stat", stat: "sefFarkindalik", delta: 10 },
+        { type: "narrate", text: "Deliler gibi koşuyorsun! Adımlarının sesi evde yankılanıyor. Harun holün tam ortasında devasa cüssesiyle bitiyor, elindeki satırı havaya kaldırmış hırıldıyor: \"Gel evlat... Baban seni kucaklayacak!\"" },
       ],
-      timer: { seconds: 5 },
-      choices: [
-        { id: "siyril", text: "Duvara yapışıp yanından sıyrıl", next: "n_final_siyril" },
-        { id: "atla", text: "Devrik dolabın üstünden atla", next: "n_final_atla", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-4 KAÇIŞ HOLÜ",
+        enemy: "ŞEF HARUN",
+        success: "n_final_siyril",
+        fail: "n_olum_final",
+        startDanger: 38,
+        phaseMs: 1200,
+        hints: {
+          patrol: "Şef uzakta, satırı yere sürtüyor. Hemen depoya doğru koş!",
+          search: "Gözlerini sana dikmiş arıyor. Kırık rafların arkasına saklan!",
+          near: "Kokusunu duyuyorsun! Nefesini tut, yoksa seni bir nankör gibi kesecek!"
+        }
+      }
     },
 
     n_final_siyril: {

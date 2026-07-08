@@ -140,7 +140,7 @@ export const UI = {
     },
     breath: {
       title: "ADRENALİN PATLAMASI",
-      desc: "Tehlike yaklaşıyor! Sakin kalmalı ve kalp ritmini kontrol altında tutmalısın. Sağdan sola kayan ritim dalgaları hedef çizgisinin (yeşil kutu) tam ortasındayken [E] tuşuna bas (veya ekrana dokun). Iskalarsan veya yanlış zamanda basarsan adrenalin seviyen yükselir ve yakalanırsın!",
+      desc: "Tehlike yaklaşıyor! Sakin kalmalı ve kalp ritmini kontrol altında tutmalısın. Sağdan sola kayan ritim dalgaları hedef çizgisinin (yeşil kutu) tam ortasındayken ekrana dokun. Iskalarsan veya yanlış zamanda dokunursan adrenalin seviyen yükselir ve yakalanırsın!",
       startBtn: "OYUNU BAŞLAT",
       target: "HEDEF ZAMANI",
       adrenaline: "ADRENALİN",
@@ -319,7 +319,7 @@ export const UI = {
     },
     breath: {
       title: "ADRENALINE RUSH",
-      desc: "Danger is approaching! You must stay calm and keep your heart rate steady. Press [E] (or tap the screen) exactly when the heartbeat spikes align with the target zone (green box). Missing beats or pressing at the wrong time will raise your adrenaline and expose you!",
+      desc: "Danger is approaching! You must stay calm and keep your heart rate steady. Tap the screen exactly when the heartbeat spikes align with the target zone (green box). Missing beats or tapping at the wrong time will raise your adrenaline and expose you!",
       startBtn: "START GAME",
       target: "HIT WINDOW",
       adrenaline: "ADRENALINE",
@@ -497,7 +497,7 @@ de: {
     },
     breath: {
       title: "ADRENALINSCHUB",
-      desc: "Gefahr nähert sich! Du musst ruhig bleiben und deinen Herzschlag stabil halten. Drücke [E] (oder tippe auf den Bildschirm), wenn die Herzfrequenzspitzen genau mit dem Zielbereich (grüner Kasten) übereinstimmen. Fehlende Schläge oder falsches Timing erhöhen dein Adrenalin!",
+      desc: "Gefahr nähert sich! Du musst ruhig bleiben und deinen Herzschlag stabil halten. Tippe auf den Bildschirm, wenn die Herzfrequenzspitzen genau mit dem Zielbereich (grüner Kasten) übereinstimmen. Fehlende Schläge oder falsches Timing erhöhen dein Adrenalin!",
       startBtn: "SPIEL STARTEN",
       target: "TREFFERFENSTER",
       adrenaline: "ADRENALIN",

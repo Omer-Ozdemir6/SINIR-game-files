@@ -386,11 +386,21 @@ export const EP04 = {
         { type: "narrate", text: "Nevin'in o korkunç yüzünü görmeye cesaret edemiyorsun ve Selin'in kaçtığı o lağım pisliği kokan kompost yoluna geri dönüyorsun. Burası leş gibi kokan, daracık ve zehirli gazlarla dolu bir dehliz. Ama Nevin'in kökleri bu ölü bölgeye sızamamış. Tamamen karanlıkta, sürünerek ilerliyorsun." },
         { type: "narrate", text: "Dehlizin sonunda, insan pisliklerinin ve kimyasalların biriktiği yerde K-2'ye açılan paslı bir tahliye borusu buluyorsun. Selin'in çamura batmış ayak izleri hâlâ taze. Ancak borudan sızan gaz ciğerlerini bir alev gibi yakıyor; acele etmezsen burada boğulacaksın!" },
         { type: "flag", set: { selinRotasi: true } },
-        { type: "stat", stat: "akil", delta: -8, note: "AKIL SAĞLIĞI -8 — Boğucu Gaz Solundu", noteKind: "alert" },
       ],
-      choices: [
-        { id: "in", text: "Gizli tahliyeden K-2'ye in", next: "n_k3_son" },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-3 KOMPOST DEHLİZİ",
+        enemy: "ZEHİRLİ GAZLAR VE BALÇIK",
+        success: "n_k3_son",
+        fail: "n_olum_spor",
+        startDanger: 38,
+        phaseMs: 1250,
+        hints: {
+          patrol: "Gaz sızıntısı yavaşladı. Borularda hızla ilerle!",
+          search: "Dehliz sallanıyor, asit damlıyor. Duvarın oyuğuna saklan!",
+          near: "Yoğun zehirli sis dalgası geliyor! Hemen nefesini tut!"
+        }
+      }
     },
 
     /* ================= BÖLÜM SONU ================= */

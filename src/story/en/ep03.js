@@ -610,14 +610,22 @@ export const EP03 = {
     n_final_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You run like mad! The sound of your steps echoes through the house. Harun appears right in the middle of the hallway with his massive bulk, wheezing with the cleaver raised in the air: \"Come son... Your father will embrace you!\" You have two deadly options before you: either slip past him or leap over the overturned cabinet." },
-        { type: "flag", stat: "sefFarkindalik", delta: 10 },
+        { type: "narrate", text: "You run like mad! The sound of your steps echoes through the house. Harun appears right in the middle of the hallway with his massive bulk, wheezing with the cleaver raised in the air: \"Come son... Your father will embrace you!\"" },
       ],
-      timer: { seconds: 5 },
-      choices: [
-        { id: "siyril", text: "Stick to the wall and slip past him", next: "n_final_siyril" },
-        { id: "atla", text: "Leap over the overturned cabinet", next: "n_final_atla", default: true },
-      ],
+      interaction: {
+        kind: "chase",
+        title: "K-4 ESCAPE HALLWAY",
+        enemy: "CHEF HARUN",
+        success: "n_final_siyril",
+        fail: "n_olum_final",
+        startDanger: 38,
+        phaseMs: 1200,
+        hints: {
+          patrol: "The Chef is far away, scraping his cleaver. Run towards the storage immediately!",
+          search: "He is looking for you. Hide behind the broken shelves!",
+          near: "You can smell his breath! Hold your breath, or he'll chop you down!"
+        }
+      }
     },
 
     n_final_siyril: {
