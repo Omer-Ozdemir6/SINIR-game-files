@@ -7,10 +7,11 @@ Karadeniz'in dibinde 214 metre derinlikteki SINIR-1 araştırma
 istasyonunda geçen, mobil öncelikli metin tabanlı korku oyunu.
 Oyuncu, kaybolan bir teknisyenin yerine gelen yeni bakım
 personelidir. Altı kat aşağı iner (K-6→K-2), her katta farklı bir
-"aile" üyesiyle yüzleşir ve **5 farklı sona** ulaşabilir.
+"aile" üyesiyle yüzleşir ve **6 farklı sona** ulaşabilir.
 
-- 198 düğüm, 5 bölüm, 5 son
-- 17 ölümcül yol, 24 bulmaca/etkileşim
+- 244 düğüm, 5 bölüm, 6 son
+- 18 ölümcül yol, 32 bulmaca/etkileşim
+- 27 resmi doküman, 43 kişisel not
 - Kalıcı kayıt (checkpoint), karar-sonuç sistemi
 - Karanlık modu, pil yönetimi, yem/interkom, spor/nefes mekanikleri
 

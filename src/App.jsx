@@ -224,35 +224,19 @@ export default function App() {
 
   const readingDelayFor = (kind, text) => {
     const len = String(text || "").length;
-    if (kind === "system") return Math.min(1600, Math.max(650, len * 10));
-    if (kind === "alert") return Math.min(2200, Math.max(900, len * 14));
-    if (kind === "anons") return Math.min(4200, Math.max(1400, len * 20));
-    return Math.min(3600, Math.max(1100, len * 17));
+    if (kind === "system") return Math.min(1800, Math.max(750, len * 12));
+    if (kind === "alert") return Math.min(2600, Math.max(1000, len * 16));
+    if (kind === "anons") return Math.min(5200, Math.max(1700, len * 22));
+    return Math.min(4800, Math.max(1300, len * 19));
   };
 
   const typeLine = (kind, text, runId, speed = 26) =>
     new Promise((resolve) => {
-      setLines((ls) => [...ls, { kind, text: "" }]);
-      setTyping(true);
-      let i = 0;
-      const chunk = text.length > 360 ? 4 : text.length > 180 ? 3 : text.length > 90 ? 2 : 1;
-      const tick = () => {
-        if (runIdRef.current !== runId) { setTyping(false); return resolve(); }
-        if (skipRef.current) { i = text.length; skipRef.current = false; }
-        else i = Math.min(text.length, i + chunk);
-        const slice = text.slice(0, i);
-        setLines((ls) => {
-          const copy = ls.slice();
-          copy[copy.length - 1] = { ...copy[copy.length - 1], text: slice };
-          return copy;
-        });
-        if (i >= text.length) {
-          setTyping(false);
-          wait(readingDelayFor(kind, text), runId).then(resolve);
-        }
-        else later(tick, Math.max(10, Math.round(speed * speedMultRef.current * chunk)));
-      };
-      tick();
+      if (runIdRef.current !== runId) return resolve();
+      setTyping(false);
+      setLines((ls) => [...ls, { kind, text }]);
+      const delay = Math.round(readingDelayFor(kind, text) * speedMultRef.current);
+      wait(delay, runId).then(resolve);
     });
 
   const setBatteryBoth = (v) => { batteryRef.current = v; setBattery(v); };
@@ -263,6 +247,8 @@ export default function App() {
   };
   const flagOk = (cond) => {
     if (!cond) return true;
+    if (Array.isArray(cond.all)) return cond.all.every(flagOk);
+    if (Array.isArray(cond.any)) return cond.any.some(flagOk);
     const cur = flagsRef.current[cond.flag];
     let ok;
     if (cond.equals !== undefined) {
@@ -569,6 +555,10 @@ export default function App() {
       return;
     }
     if (node.interaction) {
+      if (node.interaction.doneFlag && flagsRef.current[node.interaction.doneFlag]) {
+        playNode(node.interaction.doneNext || node.interaction.success);
+        return;
+      }
       const k = node.interaction.kind;
       if (k === "keypad") { setKpEntry(""); setKpMsg(null); setKpFails(0); }
       if (k === "panel") { setPanelMsg(null); }
@@ -1356,7 +1346,7 @@ export default function App() {
 
   /* ================= OYUN ================= */
   return (
-    <div style={S.root} onPointerDown={handleSkipTap} onContextMenu={(e) => e.preventDefault()}>
+    <div style={S.root} onContextMenu={(e) => e.preventDefault()}>
       <div
         style={{
           ...S.gameLayer,
@@ -1378,6 +1368,7 @@ export default function App() {
           timeLeft={timeLeft} choicesVisible={choicesVisible} choices={visibleChoices}
           flags={flags} onChoice={handleChoice}
           ended={ended} tapWait={tapWait}
+          onSkipTap={handleSkipTap}
           onEndContinue={() => { setEndFade(true); setTimeout(() => { setEndFade(false); setShowCredits(true); }, 1400); }}
         />
       </div>

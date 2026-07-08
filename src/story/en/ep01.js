@@ -338,7 +338,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "You are in the pump A room. The giant valve stands as if completely locked by a thick layer of rust. The place where the pressure log should hang on the wall panel is completely empty, only hastily etched with white chalk onto the sheet metal: \"log removed to depot — B.S.\"" },
       ],
-      interaction: { kind: "valve", title: "PUMP A — TURN THE VALVE", turns: 9, success: "n_pompaA2", cancel: "n_platform" },
+      interaction: { kind: "valve", title: "PUMP A — TURN THE VALVE", turns: 9, success: "n_pompaA2", cancel: "n_platform", doneFlag: "pompaA", doneNext: "n_platform" },
     },
 
     n_pompaA2: {
@@ -385,7 +385,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "The switch lever is rusty and giant, its springs are tight... If you leave it halfway, it will spring back hard enough to break your fingers. You clench your teeth and hang on with all your weight. You break out in cold sweats in the dark." },
       ],
-      interaction: { kind: "lever", title: "PUMP B — LIFT THE SWITCH", holdMs: 1800, success: "n_pompaB2", cancel: "n_platform" },
+      interaction: { kind: "lever", title: "PUMP B — LIFT THE SWITCH", holdMs: 1800, success: "n_pompaB2", cancel: "n_platform", doneFlag: "pompaB", doneNext: "n_platform" },
     },
 
     n_pompaB2: {
@@ -422,12 +422,13 @@ export const EP01 = {
         { type: "narrate", text: "You reach the front of the pump C panel. Its slot is COMPLETELY EMPTY. The fuse is not in place, that empty hole stares at you like a pitch-black eye socket surrounded by burn marks. On the steel sheet right next to the panel, two numbers are brutally etched with a sharp object: \"47\". And below it, in a shaky handwriting: \"the other is with me\" is written.", if: { flag: "kod47", equals: false } },
         { type: "note", id: "not_kod47", title: "Code fragment: ··47", text: "Etched on the wall of panel C: 47. 'The other is with me' it says — this is Baturay's handwriting. So the code is: [first half][47]. I need to combine the two pieces.", if: { flag: "kod47", equals: false } },
         { type: "flag", set: { kod47: true } },
-        { type: "narrate", text: "This hungry eye socket wants a spare fuse but you have nothing in your hand. You try to remember the note in the handover report... Where were the spares?", if: { flag: "sigortaAlindi", equals: false } },
-        { type: "alert", text: "PUMP C: NO FUSE — SPARE REQUIRED", if: { flag: "sigortaAlindi", equals: false } },
-        { type: "narrate", text: "That heavy, glass-bodied large fuse you took from the depot gets soaked between your fingers. The line is shaking like crazy; the moment the needle comes to the green zone, you need to slam the fuse into the slot. If you miss, thousands of volts of electric current in this water-filled death pit will turn you into charcoal.", if: { flag: "sigortaAlindi", equals: true } },
+        { type: "narrate", text: "Pump C is already running. The panel is still wet and dangerous, but the fuse is locked into its slot; touching it again will only get you killed.", if: { flag: "pompaC", equals: true } },
+        { type: "narrate", text: "This hungry eye socket wants a spare fuse but you have nothing in your hand. You try to remember the note in the handover report... Where were the spares?", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
+        { type: "alert", text: "PUMP C: NO FUSE — SPARE REQUIRED", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
+        { type: "narrate", text: "That heavy, glass-bodied large fuse you took from the depot gets soaked between your fingers. The line is shaking like crazy; the moment the needle comes to the green zone, you need to slam the fuse into the slot. If you miss, thousands of volts of electric current in this water-filled death pit will turn you into charcoal.", if: { all: [{ flag: "sigortaAlindi", equals: true }, { flag: "pompaC", equals: false }] } },
       ],
       choices: [
-        { id: "tak", text: "Insert the fuse into the slot", next: "n_pompaC_int", if: { flag: "sigortaAlindi", equals: true } },
+        { id: "tak", text: "Insert the fuse into the slot", next: "n_pompaC_int", if: { all: [{ flag: "sigortaAlindi", equals: true }, { flag: "pompaC", equals: false }] } },
         { id: "geri", text: "Return from the water — to the platform", next: "n_platform" },
       ],
     },
@@ -436,7 +437,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "You hold your breath completely, watching the needle as you listen to that thumping sound of your heart in your ears. The black water rises around your knees, your chest. The darkness waits with you too." },
       ],
-      interaction: { kind: "fuse", title: "PUMP C — ALIGN THE FUSE", hits: 2, success: "n_pompaC2", cancel: "n_pompaC" },
+      interaction: { kind: "fuse", title: "PUMP C — ALIGN THE FUSE", hits: 2, success: "n_pompaC2", cancel: "n_pompaC", doneFlag: "pompaC", doneNext: "n_platform" },
     },
 
     n_pompaC2: {

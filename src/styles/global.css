@@ -60,6 +60,10 @@ img { -webkit-user-drag: none; user-drag: none; }
   }
   @keyframes s1-fadeinAnim { from { opacity: 0; } to { opacity: 1; } }
   @keyframes s1-fadeoutAnim { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes s1-linefade {
+    from { opacity: 0; transform: translateY(8px); filter: blur(1.5px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
   .s1-fadein { animation-name: s1-fadeinAnim; animation-duration: 1000ms; animation-timing-function: ease; animation-fill-mode: both; }
   .s1-fadeout { animation-name: s1-fadeoutAnim; animation-duration: 800ms; animation-timing-function: ease; animation-fill-mode: both; }
   .s1-fadeslow { animation-name: s1-fadeinAnim; animation-duration: 1800ms; animation-timing-function: ease; animation-fill-mode: both; }
@@ -98,7 +102,7 @@ img { -webkit-user-drag: none; user-drag: none; }
     100% { transform: translateX(0); filter: none; }
   }
   .s1-cursor { color: #7fa39f; animation-name: s1-blink; animation-duration: 0.9s; animation-iteration-count: infinite; }
-  .s1-line { animation-name: s1-fade; animation-duration: 0.4s; animation-timing-function: ease-out; }
+  .s1-line { animation-name: s1-linefade; animation-duration: 0.85s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); animation-fill-mode: both; }
   .s1-death { animation-name: s1-fade; animation-duration: 1.2s; animation-timing-function: ease-in; }
   .s1-critical { animation-name: s1-pulse; animation-duration: 1s; animation-iteration-count: infinite; }
   .s1-batblink { animation-name: s1-blink; animation-duration: 0.7s; animation-iteration-count: infinite; }

@@ -22,7 +22,7 @@ const StoryLine = memo(function StoryLine({ line, cursor, wordsObscured }) {
 export default function StoryStream({
   scrollRef, lines, typing, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
-  ended, onEndContinue, tapWait,
+  ended, onEndContinue, tapWait, onSkipTap,
 }) {
   const visibleLines = useMemo(() => {
     if (lines.length <= MAX_VISIBLE_LINES) return lines.map((line, i) => ({ line, key: i }));
@@ -32,7 +32,10 @@ export default function StoryStream({
   const lastLineKey = lines.length - 1;
 
   return (
-    <div ref={scrollRef} style={S.stream}>
+    <div ref={scrollRef} style={S.stream} onPointerDown={(e) => {
+      if (e.target.closest("button, .s1-btn, [role='button']")) return;
+      onSkipTap && onSkipTap();
+    }}>
       {lines.length > MAX_VISIBLE_LINES && (
         <div style={S.streamTrimNotice}>ONCEKI KAYITLAR ARSIVDE</div>
       )}

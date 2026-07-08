@@ -341,7 +341,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "Pompa A dairesindesın. Dev vana kalın bir pas tabakasıyla tamamen kilitlenmiş gibi duruyor. Duvar panosunda basınç günlüğünün asılı olması gereken yer bomboş, sadece sacın üzerine beyaz tebeşirle alelacele kazınmış: \"günlük depoya kaldırıldı — B.S.\"" },
       ],
-      interaction: { kind: "valve", title: "POMPA A — VANAYI ÇEVİR", turns: 9, success: "n_pompaA2", cancel: "n_platform" },
+      interaction: { kind: "valve", title: "POMPA A — VANAYI ÇEVİR", turns: 9, success: "n_pompaA2", cancel: "n_platform", doneFlag: "pompaA", doneNext: "n_platform" },
     },
 
     n_pompaA2: {
@@ -388,7 +388,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "Şalter kolu paslı ve devasa, yayları gergin... Eğer yarıda bırakırsan parmaklarını kıracak kadar sertçe geri fırlayacak. Dişlerini sıkıp tüm ağırlığınla asılıyorsun. Karanlıkta soğuk terler döküyorsun." },
       ],
-      interaction: { kind: "lever", title: "POMPA B — ŞALTERİ KALDIR", holdMs: 1800, success: "n_pompaB2", cancel: "n_platform" },
+      interaction: { kind: "lever", title: "POMPA B — ŞALTERİ KALDIR", holdMs: 1800, success: "n_pompaB2", cancel: "n_platform", doneFlag: "pompaB", doneNext: "n_platform" },
     },
 
     n_pompaB2: {
@@ -425,12 +425,13 @@ export const EP01 = {
         { type: "narrate", text: "Pompa C panosunun önüne ulaşıyorsun. Yuvası BOMBOŞ. Sigorta yerinde değil, o boş delik yanık izleriyle çevrelenmiş simsiyah bir göz çukuru gibi sana bakıyor. Panonun hemen yanındaki çelik sacın üzerine keskin bir cisimle vahşice kazınmış iki rakam var: \"47\". Altında ise titrek bir el yazısıyla: \"öbürü bende\" yazıyor.", if: { flag: "kod47", equals: false } },
         { type: "note", id: "not_kod47", title: "Kod parçası: ··47", text: "C panosunun duvarına kazınmış: 47. 'Öbürü bende' diyor — Baturay'ın el yazısı bu. Demek kod: [ilk yarı][47]. İki parçayı birleştirmem gerek.", if: { flag: "kod47", equals: false } },
         { type: "flag", set: { kod47: true } },
-        { type: "narrate", text: "Bu aç göz çukuru bir yedek sigorta istiyor ama senin elinde hiçbir şey yok. Devir raporundaki notu hatırlamaya çalışıyorsun... Yedekler neredeydi?", if: { flag: "sigortaAlindi", equals: false } },
-        { type: "alert", text: "POMPA C: SİGORTA YOK — YEDEK GEREKLİ", if: { flag: "sigortaAlindi", equals: false } },
-        { type: "narrate", text: "Depodan aldığın o ağır, cam gövdeli büyük sigorta parmaklarının arasında sırılsıklam oluyor. Hat çılgınlar gibi titriyor; ibre yeşil bölgeye geldiği an sigortayı yuvaya çakman gerek. Eğer ıskalarsan bu su dolu ölüm çukurunda binlerce voltluk elektrik akımı seni kömüre çevirecek.", if: { flag: "sigortaAlindi", equals: true } },
+        { type: "narrate", text: "Pompa C hattı artık çalışıyor. Pano hâlâ ıslak ve tehlikeli ama sigorta yuvaya kilitlenmiş; buraya tekrar dokunmanın sana kazandıracağı hiçbir şey yok.", if: { flag: "pompaC", equals: true } },
+        { type: "narrate", text: "Bu aç göz çukuru bir yedek sigorta istiyor ama senin elinde hiçbir şey yok. Devir raporundaki notu hatırlamaya çalışıyorsun... Yedekler neredeydi?", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
+        { type: "alert", text: "POMPA C: SİGORTA YOK — YEDEK GEREKLİ", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
+        { type: "narrate", text: "Depodan aldığın o ağır, cam gövdeli büyük sigorta parmaklarının arasında sırılsıklam oluyor. Hat çılgınlar gibi titriyor; ibre yeşil bölgeye geldiği an sigortayı yuvaya çakman gerek. Eğer ıskalarsan bu su dolu ölüm çukurunda binlerce voltluk elektrik akımı seni kömüre çevirecek.", if: { all: [{ flag: "sigortaAlindi", equals: true }, { flag: "pompaC", equals: false }] } },
       ],
       choices: [
-        { id: "tak", text: "Sigortayı yuvaya yerleştir", next: "n_pompaC_int", if: { flag: "sigortaAlindi", equals: true } },
+        { id: "tak", text: "Sigortayı yuvaya yerleştir", next: "n_pompaC_int", if: { all: [{ flag: "sigortaAlindi", equals: true }, { flag: "pompaC", equals: false }] } },
         { id: "geri", text: "Sudan geri dön — platforma", next: "n_platform" },
       ],
     },
@@ -439,7 +440,7 @@ export const EP01 = {
       events: [
         { type: "narrate", text: "Nefesini tamamen tutuyorsun, kalbinin kulaklarındaki o güm güm sesini dinleyerek ibreyi kolluyorsun. Kara su dizlerinin, göğsünün etrafında yükseliyor. Karanlık da seninle birlikte bekliyor." },
       ],
-      interaction: { kind: "fuse", title: "POMPA C — SİGORTAYI HİZALA", hits: 2, success: "n_pompaC2", cancel: "n_pompaC" },
+      interaction: { kind: "fuse", title: "POMPA C — SİGORTAYI HİZALA", hits: 2, success: "n_pompaC2", cancel: "n_pompaC", doneFlag: "pompaC", doneNext: "n_platform" },
     },
 
     n_pompaC2: {

@@ -296,14 +296,8 @@ export const AudioSys = {
   },
 
   burst(ms = 160) {
-    if (this.playSample("glitch")) return;
-    if (!this.inited || !this.enabled) return;
-    try {
-      this.n.burstG.gain.rampTo(0.11, 0.02);
-      setTimeout(() => {
-        try { this.n.burstG.gain.rampTo(0, 0.08); } catch (e) {}
-      }, ms);
-    } catch (e) {}
+    // Glitch is kept as a visual effect only; repeated static bursts were too fatiguing during play.
+    return;
   },
 
   blipSfx(freq = 90) {
