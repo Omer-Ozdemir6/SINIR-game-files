@@ -2,7 +2,7 @@ import { useState } from "react";
 import { t } from "../i18n";
 
 /* ============================================================
-   ANA MENÜ — SINIR-1 karanlık menü.
+   ANA MENÜ — PERISHED karanlık menü.
    Atmosferik arka plan (su altı tesisi), sol hizalı liste,
    üzerine gelinen/seçili öğe vurgulu (kutu + parlaklık).
    ============================================================ */
@@ -78,7 +78,7 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
           color: "#dfe6df",
           textShadow: "0 0 24px rgba(90,140,110,0.35), 0 2px 8px rgba(0,0,0,0.9)",
         }}>
-          SINIR<span style={{ color: afterEnding ? "#b9c9bd" : "#7a3a3a" }}>-</span>1
+          PERI<span style={{ color: afterEnding ? "#b9c9bd" : "#7a3a3a" }}>S</span>HED
         </div>
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace",

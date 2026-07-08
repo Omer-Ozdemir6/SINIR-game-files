@@ -1,13 +1,13 @@
 /* ============================================================
-   SECTOR-1 — CHAPTER 2: "K-5 / THE EXAM" (v4 — SINIR-1 DREAD & TABLET LIGHT MECHANIC)
+   SECTOR-1 — CHAPTER 2: "K-5 / THE EXAM" (v4 — PERISHED DREAD & TABLET LIGHT MECHANIC)
    Floor Owner: DENİZ OKUR — The engineer speaking through the system.
 
-   STRUCTURE & ATMOSPHERE (SINIR-1 psychological realism):
+   STRUCTURE & ATMOSPHERE (PERISHED psychological realism):
    · n_hub: branches into four directions; the player CHOOSES the order of the exams.
    · The player has NO NIGHT VISION or visor. Only a TABLET.
    · The tablet's screen light (or its flashlight) is the sole light source; when its battery dies, absolute darkness and death are inevitable.
    · The narrative tone is built on helplessness, heavy psychological tension, shortness of breath, bodily terror, and claustrophobic pressure.
-   · Code structure, flags, and interactions are preserved; texts, announcements, and descriptions now follow SINIR-1's own brutality and closed-station atmosphere.
+   · Code structure, flags, and interactions are preserved; texts, announcements, and descriptions now follow PERISHED's own brutality and closed-station atmosphere.
    ============================================================ */
 
 export const EP02 = {
@@ -138,7 +138,7 @@ export const EP02 = {
         { type: "flag", set: { s1SemaOkundu: true } },
         { type: "document", open: true, doc: {
           id: "d_havasema", title: "Pressure Protocol Under Terror",
-          meta: "SECTOR-1 · K-5 DEATH TALLIES · INSTRUCTION 3-C",
+          meta: "PERISHED · K-5 DEATH TALLIES · INSTRUCTION 3-C",
           body: "PRESSURE CHAMBER — AGONY HALTING SEQUENCE\n\nRULE: Anyone breaking this sequence will be torn apart inside.\n\n  1) EQUALIZATION (yellow) — stops the crushing pressure inside your head\n  2) PURGE        (red)   — flushes accumulated bloody gas into the bilge\n  3) MAIN SUPPLY  (green) — blows the lock open\n\nIF YOU MAKE A MISTAKE, YOUR BRAIN WILL OOZE FROM YOUR EARS.\n(Log, week 12: T. Demir — Left eardrum ruptured, went insane.)" } },
         { type: "note", id: "not_havasema", title: "The Sequence to Save My Ears", text: "YELLOW valve first (equalization), then RED (purge), and finally that massive GREEN wheel. One wrong move and my head explodes." },
       ],
@@ -286,7 +286,7 @@ export const EP02 = {
         { type: "battery", spares: 1 },
         { type: "document", open: true, doc: {
           id: "d_tunelharita", title: "K-5 Human Grinder Tunnel Schematic",
-          meta: "SECTOR-1 TECHNICAL DRAWING 5-H · DEATH ROUTE",
+          meta: "PERISHED TECHNICAL DRAWING 5-H · DEATH ROUTE",
           body: "CORRIDOR ENTRANCE\n   |\n   +- JUNCTION 1 -- LEFT  -> Salvation line\n   |               RIGHT -> Dead end (Old rotten filters)\n   |\n   +- JUNCTION 2 -- STRAIGHT -> Bottleneck (Risk of getting stuck)\n   |\n   +- JUNCTION 3 -- LEFT  -> EXIT DOOR\n                   RIGHT -> Blind pocket (Death trap)\n\nBLOODY HANDWRITTEN NOTE: Enter -> TURN LEFT -> GO STRAIGHT -> TURN LEFT AND RUN. Memorize it.\nTablet light won't be enough in the tunnel, if batteries die, this place becomes your grave. — T.D." } },
         { type: "note", id: "not_tunelharita", title: "The Route Engraved in My Mind", text: "The route is clear: LEFT → STRAIGHT → LEFT. The right branches are completely dead ends and death traps. It will be absolute darkness inside, I won't have time to open the map and look." },
       ],

@@ -66,7 +66,7 @@ const rad = (d) => (d * Math.PI) / 180;
    2B izdüşümü (gölgesi) FARKLI görünür.
    Doğru açı çiftinde gölge hedef silüete oturur → kilit.
 
-   Nesne: SINIR-1 evrenine ait deforme bir kalıntı. Doğru açıda
+   Nesne: PERISHED evrenine ait deforme bir kalıntı. Doğru açıda
    gölgesi BULUNTU'NUN İŞARETİ'ne (dairesel sonar + merkez göz +
    yayılan kollar) benzer.
    ------------------------------------------------------------ */

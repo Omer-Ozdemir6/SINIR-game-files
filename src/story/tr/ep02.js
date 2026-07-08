@@ -1,13 +1,13 @@
 /* ================= ===========================================
-   SINIR-1 — BÖLÜM 2: "K-5 / SINAV" (v4 — SERT PSİKOLOJİK GERİLİM & TABLET IŞIĞI)
+   PERISHED — BÖLÜM 2: "K-5 / SINAV" (v4 — SERT PSİKOLOJİK GERİLİM & TABLET IŞIĞI)
    Katın sahibi: DENİZ OKUR — sistemden konuşan mühendis.
 
-   YAPI & ATMOSFER (SINIR-1 psikolojik gerçekçilik):
+   YAPI & ATMOSFER (PERISHED psikolojik gerçekçilik):
    · n_hub: dört dala açılır; oyuncu sınavların sırasını SEÇER.
    · Oyuncunun elinde GECE GÖRÜŞÜ veya vizör yok. Sadece TABLET var.
    · Tabletin ekran ışığı (ya da feneri) tek ışık kaynağı; pili bittiğinde mutlak karanlık ve ölüm kaçınılmaz.
    · Anlatım dili çaresizlik, ağır psikolojik gerilim, bedensel korku ve klostrofobik baskı üzerine kuruldu.
-   · Kod yapısı, bayraklar, etkileşimler eksiksiz korundu; metinler SINIR-1'in kendi vahşeti ve kapalı istasyon atmosferine göre revize edildi.
+   · Kod yapısı, bayraklar, etkileşimler eksiksiz korundu; metinler PERISHED'ın kendi vahşeti ve kapalı istasyon atmosferine göre revize edildi.
    ============================================================ */
 
 export const EP02 = {
@@ -142,7 +142,7 @@ export const EP02 = {
         { type: "flag", set: { s1SemaOkundu: true } },
         { type: "document", open: true, doc: {
           id: "d_havasema", title: "Dehşet Altında Basınç Protokolü",
-          meta: "SINIR-1 · K-5 ÖLÜM HESAPLARI · TALİMAT 3-C",
+          meta: "PERISHED · K-5 ÖLÜM HESAPLARI · TALİMAT 3-C",
           body: "BASINÇ ODASI — ACİL MANUEL BOŞALTMA PROTOKOLÜ\n\nGİZLİLİK: KURUM İÇİ / TIBBİ OLAY KAYDI EKLİDİR\n\nUygulama sırası değiştirilmeyecektir:\n\n  1) DENGELEME  (sarı)   — kraniyal basınç artışını keser\n  2) TAHLİYE    (kırmızı)— kanlı gazı sintine hattına verir\n  3) ANA BESLEME(yeşil)  — kapı kilidini serbest bırakır\n\nVAKA 12-TD: Sıra ihlali sonrası sol kulak zarı yırtığı,\ngöz içi damar patlaması ve 43 saniyelik bilinç kaybı kaydedildi.\nPersonel canlı çıkarıldı; konuşma yetisi geri dönmedi.\n\nNot: Odadaki çığlık kayıtları eğitim materyali değildir.\nTekrar dinletilmesi yasaktır." } },
         { type: "note", id: "not_havasema", title: "Kulaklarımı Kurtaracak Sıra", text: "Önce SARI vana (denge), sonra KIRMIZI (tahliye), en son o devasa YEŞİL çark. Yanlış bir hareket yaparsam kafam patlayacak." },
       ],
@@ -290,7 +290,7 @@ export const EP02 = {
         { type: "battery", spares: 1 },
         { type: "document", open: true, doc: {
           id: "d_tunelharita", title: "K-5 İnsan Öğütücü Tünel Şeması",
-          meta: "SINIR-1 TEKNİK ÇİZİM 5-H · ÖLÜM ROTASI",
+          meta: "PERISHED TEKNİK ÇİZİM 5-H · ÖLÜM ROTASI",
           body: "KORIDOR GİRİŞİ\n   |\n   +- KAVŞAK 1 -- SOL -> Kurtuluş hattı\n   |              SAĞ -> Kör uç (Eski çürümüş filtreler)\n   |\n   +- KAVŞAK 2 -- DÜZ -> Dar boğaz (Sıkışma riski)\n   |\n   +- KAVŞAK 3 -- SOL -> ÇIKIŞ KAPISI\n                  SAĞ -> Kör cep (Ölüm tuzağı)\n\nKANLI EL NOTU: Giriş yap -> SOLA DÖN -> DÜZ GİT -> SOLA DÖN VE KAÇ. Ezberle.\nTünelde tablet ışığı yetmez, piller biterse burası mezarın olur. — T.D." } },
         { type: "note", id: "not_tunelharita", title: "Zihnime Kazıdığım Rota", text: "Rota net: SOL → DÜZ → SOL. Sağ kollar tamamen çıkmaz sokak ve ölüm tuzağı. İçeride mutlak karanlık olacak, haritayı açıp bakacak vaktim olmayacak." },
       ],

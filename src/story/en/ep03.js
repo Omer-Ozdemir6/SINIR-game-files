@@ -3,7 +3,7 @@
    Floor Owner: CHEF HARUN OKUR — station chef, the father of the "Family."
    (Deniz is his son: in EP02, he said "Say hello to my father.")
 
-   TONE: SINIR-1 family ritual + dinner table horror. The floor is organized like a HOUSE:
+   TONE: PERISHED family ritual + dinner table horror. The floor is organized like a HOUSE:
    dining hall, kitchen, children's room, chef's room, cold storage,
    intercom niche. Harun PATROLS the house; he hunts not by sound, but by habit
    — he knows where you should be and finds what is "out of place."
@@ -370,7 +370,7 @@ export const EP03 = {
     n_depo_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You are in front of the heavy steel door of the cold storage. The icy air leaking from the edges fogs up your tablet screen. The Chef strictly said 'do not enter' here. One of SINIR-1's off-record death rooms stands right before you." },
+        { type: "narrate", text: "You are in front of the heavy steel door of the cold storage. The icy air leaking from the edges fogs up your tablet screen. The Chef strictly said 'do not enter' here. One of PERISHED's off-record death rooms stands right before you." },
         { type: "alert", text: "SENSOR ALERT — THE CHEF IS INSIDE RIGHT NOW! Even your tablet's microphone detects the meat-chopping sounds coming from inside. You cannot enter!", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [

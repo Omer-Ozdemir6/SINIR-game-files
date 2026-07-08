@@ -97,17 +97,7 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
               boxShadow: targetGlow ? "0 0 10px rgba(127,174,134,0.75)" : "0 0 8px rgba(0,0,0,0.5)",
               transition: "left 160ms ease",
             }} />
-            <div style={{
-              position: "absolute",
-              left: `${targetMark}%`,
-              top: 0,
-              bottom: 0,
-              width: 22,
-              transform: "translateX(-50%)",
-              background: targetGlow ? "rgba(127,174,134,0.24)" : "rgba(60,80,60,0.12)",
-              borderLeft: "1px solid rgba(70,95,70,0.5)",
-              borderRight: "1px solid rgba(70,95,70,0.5)",
-            }} />
+
             <div style={{
               position: "absolute",
               left: 10,
@@ -124,32 +114,10 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
           </div>
         </div>
 
-        <div style={S.radioSignalRow}>
-          <span style={S.statLabel}>{t("radio.signal")}</span>
-          <div style={S.radioSignalTrack}>
-            <div style={{
-              ...S.radioSignalFill,
-              width: (phase === "cut" ? 0 : signal) + "%",
-              backgroundColor: signal > 85 ? "#7fae86" : signal > 50 ? "#c79a52" : "#5f7573",
-            }} />
-          </div>
-        </div>
-
-        <div style={S.radioSignalRow}>
-          <span style={S.statLabel}>{t("radio.locked")}</span>
-          <div style={S.radioSignalTrack}>
-            <div style={{
-              ...S.radioSignalFill,
-              width: (phase === "cut" ? 100 : lock) + "%",
-              backgroundColor: phase === "cut" ? "#c23b2e" : "#7fae86",
-            }} />
-          </div>
-        </div>
-
         <div style={{
           ...S.radioHint,
           minHeight: 34,
-          color: phase === "cut" ? "#c23b2e" : phase === "lock" ? "#9fc8a4" : "#8a9a97",
+          color: phase === "cut" ? "#c23b2e" : (phase === "lock" || phase === "transmit") ? "#9fc8a4" : "#8a9a97",
         }}>
           {hint}
         </div>
@@ -173,6 +141,7 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
 
         {phase === "lock" && <div style={S.radioLockText}>{t("radio.locked")}</div>}
         {phase === "cut" && <div style={{ ...S.radioLockText, color: "#c23b2e" }}>{t("radio.cut")}</div>}
+        {phase === "transmit" && <div style={{ ...S.radioLockText, color: "#7fae86" }}>{t("radio.transmit")}</div>}
       </div>
     </div>
   );

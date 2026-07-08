@@ -121,6 +121,7 @@ export default function App() {
   const [breath, setBreath] = useState(null); // {t, lung, holding, phase}
   // karanlık modu (pil %0 — oyun sürer)
   const [dark, setDark] = useState(null); // {left}
+  const [batteryFlicker, setBatteryFlicker] = useState(false);
 
   const runIdRef = useRef(0);
   const skipRef = useRef(false);
@@ -144,6 +145,7 @@ export default function App() {
   const speedMultRef = useRef(1);
   const glitchFxRef = useRef(true);
   const darkIntRef = useRef(null);
+  const darkSfxIntRef = useRef(null);
   const darkRef = useRef(false);
   const screenRef = useRef(null);
   const modeRef = useRef(mode);
@@ -164,7 +166,7 @@ export default function App() {
     setTimeLeft(null);
   };
   const clearIntervals = () => {
-    [darkIntRef, leverIntRef, fuseIntRef, breathIntRef].forEach((r) => {
+    [darkIntRef, darkSfxIntRef, leverIntRef, fuseIntRef, breathIntRef].forEach((r) => {
       if (r.current) { clearInterval(r.current); r.current = null; }
     });
   };
@@ -319,6 +321,7 @@ export default function App() {
 
   const stopDarkness = (silent) => {
     if (darkIntRef.current) { clearInterval(darkIntRef.current); darkIntRef.current = null; }
+    if (darkSfxIntRef.current) { clearInterval(darkSfxIntRef.current); darkSfxIntRef.current = null; }
     darkRef.current = false;
     setDark(null);
     if (!silent) AudioSys.heart(null);
@@ -330,8 +333,23 @@ export default function App() {
     setDark({ left: DARK_MS });
     AudioSys.heart(430);
     showToast("▼", t("eng.darkStart"), "#c23b2e");
+
+    // İlk kısa devre kıvılcımı ve ekran titremesi
+    AudioSys.playSample("glitch", 0.7);
+    setGlitching(true);
+    later(() => setGlitching(false), 500);
+
     let left = DARK_MS;
     let last = performance.now();
+
+    // 4.8 saniyede bir CSS animasyonuyla senkron şekilde kısa devre ve pırpır
+    darkSfxIntRef.current = setInterval(() => {
+      if (batteryRef.current > 0 || modeRef.current !== "game" || screenRef.current) return;
+      AudioSys.playSample("glitch", 0.75);
+      setGlitching(true);
+      later(() => setGlitching(false), 600);
+    }, 4800);
+
     darkIntRef.current = setInterval(() => {
       if (batteryRef.current > 0) { stopDarkness(); return; }
       if (modeRef.current !== "game" || screenRef.current) return;
@@ -568,6 +586,7 @@ export default function App() {
       if (k === "lever") { setLeverProg(0); setMechDone(false); leverHoldingRef.current = false; }
       if (k === "fuse") { setFuseHits(0); setFuseMsg(null); setMechDone(false); }
       if (k === "breath") { breathHoldingRef.current = false; setBreath({ t: 0, lung: 0, holding: false, phase: "wait" }); }
+      if (k === "chase") { AudioSys.music("chase"); }
       setInteraction({ ...node.interaction });
       return;
     }
@@ -593,7 +612,13 @@ export default function App() {
   };
 
   const swapBattery = () => {
-    if (sparesRef.current <= 0 || batteryRef.current >= 100 || death || dying) return;
+    if (death || dying) return;
+    if (batteryRef.current >= 100) {
+      AudioSys.blipSfx(300);
+      showToast("🔋", t("eng.batteryAlreadyFull"), "#b89a4a");
+      return;
+    }
+    if (sparesRef.current <= 0) return;
     setSparesBoth(sparesRef.current - 1);
     setBatteryBoth(100);
     AudioSys.pickup();
@@ -655,6 +680,9 @@ export default function App() {
   };
   const puzzleWin = () => {
     if (!interaction) return;
+    if (interaction.kind === "chase") {
+      AudioSys.fadeOutMusic(2800);
+    }
     const target = interaction.success;
     setInteraction(null);
     playNode(target);
@@ -732,9 +760,14 @@ export default function App() {
 
   const finishRadioLock = () => {
     if (!interaction || interaction.kind !== "radio") return;
-    setRadioPhase("cut");
+    const mode = interaction.mode || "cut";
+    setRadioPhase(mode);
     setRadioLock(100);
-    glitchBurst(900);
+    if (mode === "cut") {
+      glitchBurst(900);
+    } else {
+      AudioSys.blipSfx(880);
+    }
     const target = interaction.success;
     later(() => {
       setInteraction(null);
@@ -756,22 +789,6 @@ export default function App() {
     if (Math.abs(f - 421.8) <= 0.05 && !flagsRef.current.frekansNefes) {
       setFlagsBoth({ frekansNefes: true, frekanslariDuydun: !!flagsRef.current.frekansCocuk });
     }
-    const diff = Math.abs(f - interaction.target);
-    if (diff <= 0.25) {
-      setRadioPhase("lock");
-      const gain = diff <= 0.05 ? 34 : diff <= 0.15 ? 22 : 12;
-      setRadioLock((p) => {
-        const next = Math.min(100, p + gain);
-        if (next >= 100) later(finishRadioLock, 280);
-        return next;
-      });
-    } else if (radioPhase === "lock") {
-      setRadioLock((p) => {
-        const next = Math.max(0, p - 24);
-        if (next <= 0) setRadioPhase("tune");
-        return next;
-      });
-    }
   };
   const radioSignal = Math.max(0, Math.round(100 - Math.abs(radioFreq - (interaction?.target || 432)) * 22));
   const radioHint = (() => {
@@ -779,6 +796,7 @@ export default function App() {
     const f = radioFreq;
     if (radioPhase === "lock") return t("radio.hintLock");
     if (radioPhase === "cut") return t("radio.hintCut");
+    if (radioPhase === "transmit") return t("radio.hintTransmit");
     if (Math.abs(f - 437.4) < 0.4) return t("radio.hintChild");
     if (Math.abs(f - 421.8) < 0.4) return t("radio.hintBreath");
     if (Math.abs(f - interaction.target) < 0.8) return t("radio.hintNear");
@@ -899,118 +917,22 @@ export default function App() {
     }
   };
 
-  /* ---------------- NEFES TUTMA ---------------- */
+  /* ---------------- NEFES TUTMA (ADRENALİN KONTROLÜ) ---------------- */
 
-  const makeBreathPattern = (holdMs, config = {}) => {
-    if (config.releaseWindows?.length) {
-      return {
-        releaseWindows: config.releaseWindows,
-        spikes: config.spikes || [
-          [Math.round(holdMs * 0.24), Math.round(holdMs * 0.32)],
-          [Math.round(holdMs * 0.58), Math.round(holdMs * 0.66)],
-        ],
-      };
-    }
-
-    const templates = [
-      { windows: [[0.28, 0.4], [0.66, 0.78]], spikes: [[0.45, 0.55], [0.82, 0.9]] },
-      { windows: [[0.2, 0.3], [0.5, 0.6], [0.76, 0.86]], spikes: [[0.34, 0.44], [0.62, 0.72]] },
-      { windows: [[0.36, 0.5], [0.7, 0.8]], spikes: [[0.18, 0.28], [0.54, 0.64]] },
-      { windows: [[0.18, 0.29], [0.56, 0.7]], spikes: [[0.34, 0.46], [0.75, 0.88]] },
-      { windows: [[0.3, 0.38], [0.52, 0.61], [0.79, 0.88]], spikes: [[0.18, 0.27], [0.64, 0.75]] },
-    ];
-    const template = templates[Math.floor(Math.random() * templates.length)];
-    const jitter = (Math.random() * 0.05) - 0.025;
-    const toMs = ([a, b]) => [
-      Math.round(holdMs * Math.max(0.12, Math.min(0.9, a + jitter))),
-      Math.round(holdMs * Math.max(0.18, Math.min(0.94, b + jitter))),
-    ];
-    return {
-      releaseWindows: template.windows.map(toMs),
-      spikes: template.spikes.map(toMs),
-    };
+  const finishBreath = (target) => {
+    AudioSys.heart(null);
+    setInteraction(null);
+    setBreath(null);
+    playNode(target);
   };
 
   useEffect(() => {
     if (interaction?.kind !== "breath") {
-      if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
+      setBreath(null);
       return;
     }
-    const holdMs = interaction.holdMs || 7000;
-    const lungMs = interaction.lungMs || 9500;
-    const breathPattern = makeBreathPattern(holdMs, interaction);
-    const releaseWindows = breathPattern.releaseWindows;
-    const spikes = breathPattern.spikes;
-    const failTo = interaction.fail;
-    AudioSys.heart(520);
-    let t = 0, lung = 0, resolved = false, hasHeld = false;
-    let lastTick = performance.now();
-    const finish = (target) => {
-      if (resolved) return;
-      resolved = true;
-      clearInterval(breathIntRef.current);
-      breathIntRef.current = null;
-      AudioSys.heart(null);
-      setInteraction(null);
-      setBreath(null);
-      breathStateRef.current = null;
-      playNode(target);
-    };
-    let heartStage = 0;
-    breathIntRef.current = setInterval(() => {
-      const now = performance.now();
-      const dt = Math.min(180, Math.max(40, now - lastTick));
-      lastTick = now;
-      t += dt;
-      const holding = breathHoldingRef.current;
-      // ADRENALİN DALGALARI: iki pencerede ciğer 2 kat hızlı dolar
-      const releaseWindow = releaseWindows.find(([a, b]) => t >= a && t <= b);
-      const safeRelease = Boolean(releaseWindow);
-      const spike = spikes.some(([a, b]) => t >= a && t <= b);
-      if (holding) hasHeld = true;
-      const step = dt / 60;
-      if (holding) lung += (safeRelease ? 90 : spike ? 120 : 60) * step;
-      else if (safeRelease && lung > 0) lung = Math.max(0, lung - 150 * step);
-      const phase = t >= holdMs ? "release" : safeRelease ? "vent" : holding ? "hold" : "wait";
-      const nextBreath = { t, lung, holding, phase, spike, safeRelease, releaseWindows, spikes };
-      breathStateRef.current = nextBreath;
-      setBreath(nextBreath);
-      // ciğer doldukça kalp hızlanır
-      const stage = lung / lungMs > 0.62 ? 2 : lung / lungMs > 0.3 ? 1 : 0;
-      if (stage !== heartStage) {
-        heartStage = stage;
-        AudioSys.heart(stage === 2 ? 360 : stage === 1 ? 440 : 520);
-      }
-      // hiç basmadan 2 sn geçti → nefesin duyuldu
-      if (!holding && t >= holdMs && lung > 0) return finish(interaction.success);
-      if (!holding && t < holdMs && t > 2000 && !hasHeld) return finish(failTo);
-      if (!holding && !safeRelease && t < holdMs && hasHeld) return finish(failTo);
-      // ciğer patladı
-      if (lung >= lungMs) return finish(failTo);
-    }, 100);
-    return () => {
-      if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
-      AudioSys.heart(null);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setBreath({}); // BreathOverlay'i render etmek için
   }, [interaction]);
-
-  const breathDown = () => { breathHoldingRef.current = true; };
-  const breathUp = () => {
-    breathHoldingRef.current = false;
-    const currentBreath = breathStateRef.current || breath;
-    if (!currentBreath || !interaction || interaction.kind !== "breath") return;
-    const holdMs = interaction.holdMs || 7000;
-    if (currentBreath.lung === 0) return; // hic basilmamisti
-    if (currentBreath.t >= holdMs) {
-      if (breathIntRef.current) { clearInterval(breathIntRef.current); breathIntRef.current = null; }
-      AudioSys.heart(null);
-      setInteraction(null);
-      setBreath(null);
-      breathStateRef.current = null;
-      playNode(interaction.success);
-    }
-  };
 
   /* ---------------- akış kontrol: yeni oyun / devam / respawn ---------------- */
 
@@ -1148,7 +1070,7 @@ export default function App() {
       const nb = Math.max(0, batteryRef.current - 1);
       setBatteryBoth(nb);
       if (nb === 0) startDarkness();          // pil bitti → karanlık
-      else if (nb <= 30) Haptics.low();        // kritik uyarı titreşimi
+      else if (nb <= 25) Haptics.low();        // kritik uyarı titreşimi
     }, rate);
     return () => clearInterval(iv);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1159,7 +1081,7 @@ export default function App() {
       clearInterval(batteryWarnRef.current);
       batteryWarnRef.current = null;
     }
-    const active = mode === "game" && battery > 0 && battery < 20 && !death && !dying && !screen;
+    const active = mode === "game" && battery > 0 && battery <= 25 && !death && !dying && !screen;
     if (!active) return;
     AudioSys.batteryLowSfx();
     batteryWarnRef.current = setInterval(() => AudioSys.batteryLowSfx(), 1600);
@@ -1170,6 +1092,51 @@ export default function App() {
       }
     };
   }, [battery, mode, death, dying, screen]);
+
+  useEffect(() => {
+    if (battery > 0 && battery <= 25) {
+      const iv = setInterval(() => {
+        setBatteryFlicker(true);
+        setTimeout(() => setBatteryFlicker(false), 350);
+      }, 2800);
+      return () => {
+        clearInterval(iv);
+        setBatteryFlicker(false);
+      };
+    } else {
+      setBatteryFlicker(false);
+    }
+  }, [battery]);
+
+  // Radyo kilitleme otomatik artış/azalış döngüsü
+  useEffect(() => {
+    const active = interaction?.kind === "radio" && (radioPhase === "tune" || radioPhase === "lock");
+    if (!active) return;
+    const iv = setInterval(() => {
+      const diff = Math.abs(radioFreq - interaction.target);
+      const isExact = diff <= 0.05;
+      
+      if (isExact) {
+        setRadioPhase("lock");
+        setRadioLock((p) => {
+          const next = Math.min(100, p + 10); // 2 saniyede kilitlenir
+          if (next >= 100) {
+            clearInterval(iv);
+            later(finishRadioLock, 280);
+          }
+          return next;
+        });
+      } else {
+        setRadioLock((p) => {
+          if (p <= 0) return 0;
+          const next = Math.max(0, p - 15);
+          if (next <= 0) setRadioPhase("tune");
+          return next;
+        });
+      }
+    }, 200);
+    return () => clearInterval(iv);
+  }, [interaction, radioFreq, radioPhase]);
 
   /* ---------------- ses durumları ---------------- */
 
@@ -1188,21 +1155,33 @@ export default function App() {
   // arayüz müziği: mode'a göre menü / intro / credits parçaları
   useEffect(() => {
     // credits ekranı açıksa credits müziği (mode ne olursa olsun öncelikli)
-    if (showCredits || screen === "credits") { AudioSys.music("credits"); return; }
-    // arşiv açıkken sakin ambiyans müziği
-    if (mode === "game" && (screen === "menu" || screen === "notes" || screen === "docs")) {
-      AudioSys.music("credits"); return;   // sakin arşiv müziği (credits parçasıyla aynı sakin ton)
+    if (showCredits || screen === "credits") {
+      AudioSys.pauseGameMusic();
+      AudioSys.music("credits");
+      return;
     }
-    if (mode === "menu" || mode === "warning") { AudioSys.music("menu"); return; }
-    if (mode === "intro") { AudioSys.music("intro"); return; }
-    // boot/disclaimer/loading: sessiz. oyun içi müziği 'music' event'i yönetir.
+    if (mode === "menu" || mode === "warning") {
+      AudioSys.music("menu");
+      return;
+    }
+    if (mode === "intro") {
+      AudioSys.music("intro");
+      return;
+    }
+    // boot/disclaimer/loading: sessiz.
     if (mode === "boot" || mode === "disclaimer" || mode === "bootload" || mode === "resumeload") {
-      AudioSys.music(null); return;
+      AudioSys.music(null);
+      return;
     }
-    // oyun moduna dönünce (arşiv kapanınca) bölüm müziğini geri yükle
+    // arşiv (menu, notes, docs) veya ayarlar (pause) açıkken sakin ambiyans müziği
+    if (mode === "game" && (screen === "pause" || screen === "menu" || screen === "notes" || screen === "docs")) {
+      AudioSys.pauseGameMusic();
+      AudioSys.music("credits"); // Sakin arşiv/menü müziği
+      return;
+    }
+    // oyun moduna dönünce (menüler kapandığında) durdurulan oyun müziğini/ambiansını geri yükle
     if (mode === "game" && !screen) {
-      const cp = checkpointRef.current;
-      AudioSys.music(currentTrackRef.current || null);
+      AudioSys.resumeGameMusic();
       return;
     }
   }, [mode, showCredits, screen]);
@@ -1261,7 +1240,7 @@ export default function App() {
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 15;
   const choicesObscured = battery <= 5;
-  const flickering = battery > 0 && battery <= 12 && screen !== "blackout";
+  const flickering = (battery > 0 && battery <= 12 && screen !== "blackout") || batteryFlicker;
 
   const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
   // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ
@@ -1504,9 +1483,11 @@ export default function App() {
           onSuccess={puzzleWin} onFail={puzzleFail} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "breath" && breath && (
-        <BreathOverlay breath={breath}
-          holdMs={interaction.holdMs || 7000} lungMs={interaction.lungMs || 9500}
-          onDown={breathDown} onUp={breathUp} />
+        <BreathOverlay
+          interaction={interaction}
+          onSuccess={finishBreath}
+          onFail={finishBreath}
+        />
       )}
       {interaction?.kind === "chase" && (
         <ChaseOverlay key={currentNodeId} config={interaction}

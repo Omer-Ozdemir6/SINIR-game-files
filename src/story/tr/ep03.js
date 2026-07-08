@@ -1,9 +1,9 @@
 /* ============================================================
-   SINIR-1 — BÖLÜM 3: "K-4 / EV"  (tam sürüm)
+   PERISHED — BÖLÜM 3: "K-4 / EV"  (tam sürüm)
    Katın sahibi: ŞEF HARUN OKUR — istasyon şefi, "Aile"nin babası.
    (Deniz onun oğlu: EP02'de "Babama selam söyle" demişti.)
 
-   TON: SINIR-1 aile ritüeli + sofra dehşeti. Kat bir EV gibi düzenli:
+   TON: PERISHED aile ritüeli + sofra dehşeti. Kat bir EV gibi düzenli:
    sofra salonu, mutfak, çocuk odası, şefin odası, soğuk depo,
    interkom nişi. Harun evde DEVRİYE gezer; sesle değil, alışkanlıkla
    avlanır — nerede olman gerektiğini bilir, "yerinde olmayan"ı bulur.
@@ -192,7 +192,7 @@ export const EP03 = {
         { type: "narrate", text: "Holün duvarında, renkli camlardan yapılmış bir panel duruyor. Eski bir aile portresi bu. Ama camlar kırılmış, sanki üzerlerine kan sıçramış gibi yanlış, hastalıklı renklerle yamanmış. Yüzler birbirine karışmış birer kâbus tablosu gibi. Panelin hemen altında Deniz'in çocuksu ama titrek el yazısı kazınmış: 'Annem doğru renkleri bilir. Ben unuttum. Babam canavarlaştı.' Renkleri doğru desene getirirsen arkadaki gizli oyuk açılacak." },
         { type: "document", open: false, doc: {
           id: "d_aile_uyum", title: "Aile Uyum Gözlem Formu",
-          body: "SINIR-1 DAVRANIŞ GÖZLEM FORMU\nBİRİM: K-4 yerleşik aile simülasyonu\nGÖZLEMCİ: D. Okur\nDURUM: Aktif / temas halinde yaklaşılmamalı\n\nGözlenen ritüeller:\n- Sofra çağrısı duyulduğunda tüm bireyler oturur.\n- Yemek reddi, baba figüründe aşırı koruyucu şiddet doğurur.\n- Çocuk odası sesi, baba figüründe yönelim kaybı yaratır.\n- Anneye ait renk/desen uyaranları kilitli bölmelerde olumlu tepki üretir.\n\nKlinik yorum:\nAile davranışı sevgiye değil, tekrar edilen ceza ve ödül döngüsüne bağlıdır.\nBaba figürü kayıp eşin yerine yeni bireyleri koyarak yas tepkisini sürdürüyor.\nDışarıdan gelen kişi 'evlat' rolünü yeterince taklit ederse kısa süreli\nhayatta kalabilir.\n\nUyarı:\nBu bir tedavi vakası değildir. K-4 artık konut değil, ritüel alanıdır.\nHarun Tekin'e aile bireyi olmadığınızı belli etmeyin." } },
+          body: "PERISHED DAVRANIŞ GÖZLEM FORMU\nBİRİM: K-4 yerleşik aile simülasyonu\nGÖZLEMCİ: D. Okur\nDURUM: Aktif / temas halinde yaklaşılmamalı\n\nGözlenen ritüeller:\n- Sofra çağrısı duyulduğunda tüm bireyler oturur.\n- Yemek reddi, baba figüründe aşırı koruyucu şiddet doğurur.\n- Çocuk odası sesi, baba figüründe yönelim kaybı yaratır.\n- Anneye ait renk/desen uyaranları kilitli bölmelerde olumlu tepki üretir.\n\nKlinik yorum:\nAile davranışı sevgiye değil, tekrar edilen ceza ve ödül döngüsüne bağlıdır.\nBaba figürü kayıp eşin yerine yeni bireyleri koyarak yas tepkisini sürdürüyor.\nDışarıdan gelen kişi 'evlat' rolünü yeterince taklit ederse kısa süreli\nhayatta kalabilir.\n\nUyarı:\nBu bir tedavi vakası değildir. K-4 artık konut değil, ritüel alanıdır.\nHarun Tekin'e aile bireyi olmadığınızı belli etmeyin." } },
         { type: "note", id: "not_vitray", title: "Aile vitrayı", text: "Holdeki renkli cam aile portresi yanlış renklerle yamanmış. Doğru desene getirmem gerek — hücrelere dokununca renk değişiyor. Deniz'in notu: doğru renkler annesinin hatırası. Arkasında bir oyuk var." },
       ],
       interaction: {
@@ -374,7 +374,7 @@ export const EP03 = {
     n_depo_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Soğuk deponun ağır, çelik kapısının önündesin. Kenarlardan sızan buzlu hava tabletinin ekranını buğulandırıyor. Şef buraya kesinlikle 'girme' demişti. SINIR-1'in kayıt dışı, kapısı içeriden çizilmiş ölüm odalarından biri tam önünde duruyor." },
+        { type: "narrate", text: "Soğuk deponun ağır, çelik kapısının önündesin. Kenarlardan sızan buzlu hava tabletinin ekranını buğulandırıyor. Şef buraya kesinlikle 'girme' demişti. PERISHED'ın kayıt dışı, kapısı içeriden çizilmiş ölüm odalarından biri tam önünde duruyor." },
         { type: "alert", text: "SENSÖR ALARMI — ŞEF ŞU AN İÇERİDE! İçeriden gelen et parçalama seslerini tabletinin mikrofonu bile algılıyor. Giremezsin!", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [
@@ -445,7 +445,7 @@ export const EP03 = {
         { type: "flag", set: { mutfakArandi: true } },
         { type: "document", open: true, doc: {
           id: "d_sefdefter", title: "Şef'in Vardiya Defteri",
-          meta: "SINIR-1 · İSTASYON ŞEFİ · H. OKUR",
+          meta: "PERISHED · İSTASYON ŞEFİ · H. OKUR",
           body: "AİLEYE KATILANLAR:\n\n· Aykut D. — sofrada 'ikna' edildi. iyi evlat.\n· Nevin A. — direndi. bahçeye verildi (K-3).\n· Selin ? — kaçtı. hâlâ arıyorum.\n· [senin no'n] — [ ] henüz\n\nNOT: Deniz aşağıda kendi ailesini kurdu.\nGurur duyuyorum. Sıra bunda. Sofrada\nyerse — evlat. Reddederse — malzeme.\n\nYÜZÜK hâlâ depoda. Sevgi'yi\ngeri getiremedim ama aileyi büyüttüm.\nO da isterdi. İsterdi, değil mi?" } },
         { type: "note", id: "not_sefdefter", title: "Şef'in listesi", text: "Harun'un defteri bir aile albümü gibi düzenlenmiş, sadece fotoğrafların yerinde infaz yöntemleri var. Aykut sofrada. Nevin bahçede. Selin kayıp. Benim numaram en altta, kutu boş. Burada insan iki şeye dönüşebiliyor: evlat ya da malzeme. İkisi de aynı masaya çıkıyor." },
       ],

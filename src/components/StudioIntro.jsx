@@ -74,10 +74,10 @@ export default function StudioIntro({ onDone }) {
             textShadow: "0 0 12px rgba(210,245,210,0.42), 0 0 2px rgba(255,255,255,0.65)",
             filter: "blur(0.15px)",
           }}>
-            {["S", "I", "N", "I", "R", "-", "1"].map((ch, i) => (
+            {["P", "E", "R", "I", "S", "H", "E", "D"].map((ch, i) => (
               <span key={i} style={{
-                transform: i === 2 ? "translateY(-8px) scaleY(1.35)" : i === 5 ? "translateY(3px)" : "none",
-                opacity: i === 5 ? 0.55 : 1,
+                transform: i === 4 ? "translateY(-8px) scaleY(1.35)" : "none",
+                opacity: 1,
               }}>{ch}</span>
             ))}
           </div>

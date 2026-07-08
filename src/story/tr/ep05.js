@@ -1,5 +1,5 @@
 /* ============================================================
-   SINIR-1 — BÖLÜM 5 (FİNAL): "K-2 / BULUNTU"  (tam sürüm)
+   PERISHED — BÖLÜM 5 (FİNAL): "K-2 / BULUNTU"  (tam sürüm)
    Sahibi yok — Buluntu bir varlık değil, bir KAYNAK. İstasyonun
    altına oyulmuş kadim bir kazı. 432 Hz'te "sayarak" zihinleri
    tek bir "aile" bilincine bağlıyor. Geri sayım gerçek: sıfıra
@@ -41,7 +41,7 @@ export const EP05 = {
         { type: "narrate", text: "Boşluğun ortasında paslı iskeleler, birbirine dolanmış kalın siyah kablolar ve adeta tapan kör bir tarikat gibi dizilmiş çürüyen ekipmanlar var... Hepsi merkezdeki o dipsiz anomalinin etrafını sarmış. Onu göremiyorsun, çünkü tabletinin zayıf ışığı o zifiri karanlığı yırtmaya yetmiyor. Ama kusma hissiyle gelen o berbat titreşimi HİSSEDİYORSUN. Diş köklerin sızlıyor, kulak zarların patlayacak gibi parazit yapıyor ve zihninin içine kirli bir pas gibi bir sayı çakılıyor: Üç." },
         { type: "document", open: false, doc: {
           id: "d_k2_karantina", title: "K-2 Karantina Tutanağı — Kayıt Dışı",
-          body: "SINIR-1 / KAZI SAHASI K-2\nDURUM: Karantina süresiz uzatıldı.\nDAĞITIM: Şeflik, Sistem Denetimi, Biyoloji Birimi\n\nTespit edilen belirtiler:\n- Personel aynı rakamı farklı vardiyalarda eş zamanlı tekrar ediyor.\n- Ses kaydı alınan denekler, kendi seslerinden önce ölmüş personelin sesleriyle cevap veriyor.\n- Karanlıkta kalan personel kendisini 'ben' yerine 'biz' diye tanımlamaya başlıyor.\n- Buluntu çevresinde alınan biyolojik örnekler insan dokusuyla uyumlu değil, ancak insan dokusunu taklit etmeye çalışıyor.\n\nYÖNETİM KARARI:\nYüzeye bildirim yapılmayacak. Kazı durdurulmayacak. Personel kayıpları bakım\nkazası, basınç arızası veya vardiya terk tutanağı olarak sınıflandırılacak.\nYeni teknik personel, olayın doğal sistem arızası olarak raporlanması için\nalt katlara yönlendirilecek.\n\nEK NOT:\nAşağıdan gelen üç vuruş duyulursa cevap verilmemelidir. Cevap veren personel\nkısa süre içinde kapalı alanlara yönelmiş ve 'ev' kelimesini tekrar etmiştir." } },
+          body: "PERISHED / KAZI SAHASI K-2\nDURUM: Karantina süresiz uzatıldı.\nDAĞITIM: Şeflik, Sistem Denetimi, Biyoloji Birimi\n\nTespit edilen belirtiler:\n- Personel aynı rakamı farklı vardiyalarda eş zamanlı tekrar ediyor.\n- Ses kaydı alınan denekler, kendi seslerinden önce ölmüş personelin sesleriyle cevap veriyor.\n- Karanlıkta kalan personel kendisini 'ben' yerine 'biz' diye tanımlamaya başlıyor.\n- Buluntu çevresinde alınan biyolojik örnekler insan dokusuyla uyumlu değil, ancak insan dokusunu taklit etmeye çalışıyor.\n\nYÖNETİM KARARI:\nYüzeye bildirim yapılmayacak. Kazı durdurulmayacak. Personel kayıpları bakım\nkazası, basınç arızası veya vardiya terk tutanağı olarak sınıflandırılacak.\nYeni teknik personel, olayın doğal sistem arızası olarak raporlanması için\nalt katlara yönlendirilecek.\n\nEK NOT:\nAşağıdan gelen üç vuruş duyulursa cevap verilmemelidir. Cevap veren personel\nkısa süre içinde kapalı alanlara yönelmiş ve 'ev' kelimesini tekrar etmiştir." } },
         { type: "waitTap" },
         { type: "stat", stat: "akil", delta: -10, note: "AKIL -10 — Zihnine etli, ıslak bir şey dokundu", noteKind: "alert" },
         { type: "narrate", text: "«Kımıldama... Nefes bile alma...» Gölgelerin içinden çiğ, dehşet dolu bir fısıltı yükseliyor. Gerçek bir insan sesi. Toz fırtınasından çıkmış gibi hırpalanmış bir kazı tulumu içinde, elinde titreyen bir fener ve kan lekeli paslı bir levye tutan bir kadın beliriyor. Tabletinin ışığı yüzüne vurduğunda göz bebeklerinin korkudan büyüdüğünü görüyorsun. «Sen... senin bilincin hâlâ yerinde. Gözlerin etrafı görüyor... Tanrım, üç haftadır buradaki tek canlı insan sensin.» Selin.", if: { flag: "eceEleVerildi", equals: true } },
@@ -344,7 +344,7 @@ export const EP05 = {
         { type: "document", open: true, doc: {
           id: "d_tunel_gunluk", title: "Son Kazıcının Günlüğü", style: "type",
           meta: "— tünelin dibinde —",
-          body: "K-2 ARAŞTIRMA NOTU — KISMİ KAYIT\n\nİkimiz kaldık. Diğerleri 'aile' oldu. Kaynağı doğrulamak için aşağı\nindik. Artık net: Buluntu tekil bir parça değil; yalnızca yukarı uzanan\nbir uç. Ana gövde daha derinde, deniz tabanının altında kilometrelerce\nyayılıyor olabilir.\n\nSINIR-1 onu insanlarla besledi. Akış kesilirse açlık başlayacak.\nAç kalan yapı yüzeye doğru vuruyor: üç temas, düzenli aralık,\nher kayıtta aynı imza.\n\nBu not bulunursa üst yönetime gönderilmesin. Üst yönetim zaten biliyor." } },
+          body: "K-2 ARAŞTIRMA NOTU — KISMİ KAYIT\n\nİkimiz kaldık. Diğerleri 'aile' oldu. Kaynağı doğrulamak için aşağı\nindik. Artık net: Buluntu tekil bir parça değil; yalnızca yukarı uzanan\nbir uç. Ana gövde daha derinde, deniz tabanının altında kilometrelerce\nyayılıyor olabilir.\n\nPERISHED onu insanlarla besledi. Akış kesilirse açlık başlayacak.\nAç kalan yapı yüzeye doğru vuruyor: üç temas, düzenli aralık,\nher kayıtta aynı imza.\n\nBu not bulunursa üst yönetime gönderilmesin. Üst yönetim zaten biliyor." } },
         { type: "flag", set: { tunelSandik: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
@@ -475,7 +475,7 @@ export const EP05 = {
       events: [
         { type: "narrate", text: "Yarıktan dışarı adım atıyorsun ve nihayet onun önündesin. Bunca kat boyunca belgeler, sesler, cesetler ve aile masalları aynı merkeze işaret etti. Şimdi merkez ışığının altında. Kusmamak için kendini tutuyorsun; çünkü gördüğün şey bir canavar kadar basit olsaydı dayanması daha kolay olurdu." },
         { type: "waitTap" },
-        { type: "narrate", text: "Kayanın içine ur gibi gömülmüş devasa, ıslak, titreyen bir kütle. Ne bitki, ne hayvan, ne makine. Belki de SINIR-1'in bütün sınıflandırmaları bu yüzden başarısız oldu; yanlış dosya başlığı aradılar. Üzerindeki delikler göz de olabilir, ağız da, yalnızca nefes alan yaralar da. Titreşimi kemiklerini sızlatıyor. Sonra beyninin ortasında ölmüş annenin sesiyle konuşuyor: «Üç... Neden geç kaldın evladım... Üç... Hadi gel...» Kendi hatıralarını delil gibi sana karşı kullanıyor." },
+        { type: "narrate", text: "Kayanın içine ur gibi gömülmüş devasa, ıslak, titreyen bir kütle. Ne bitki, ne hayvan, ne makine. Belki de PERISHED'ın bütün sınıflandırmaları bu yüzden başarısız oldu; yanlış dosya başlığı aradılar. Üzerindeki delikler göz de olabilir, ağız da, yalnızca nefes alan yaralar da. Titreşimi kemiklerini sızlatıyor. Sonra beyninin ortasında ölmüş annenin sesiyle konuşuyor: «Üç... Neden geç kaldın evladım... Üç... Hadi gel...» Kendi hatıralarını delil gibi sana karşı kullanıyor." },
         { type: "stat", stat: "akil", delta: -12, note: "AKIL -12 — O yaratık ruhunu ameliyat ediyor", noteKind: "alert" },
         { type: "narrate", text: "Verici platformu o leş havuzunun tam karşı ucunda duruyor. Aranızda sadece o devasa kütle ve onun açılan delikleri var. Selin bağırıyor: «Sana yol açıyorum! Nevin’in o lanet kökleri hareket ediyor! Yukarıda ne yaptıysan, şimdi canını kurtarıyor!»", if: { flag: "nevinKurtarildi", equals: true } },
         { type: "narrate", text: "Verici platformu tam karşıda ama aranızda bomboş, korumasız bir ölüm alanı var. Selin çaresizce fısıldıyor: «Hiçbir siper yok! Sadece deli gibi koş ve o seni okurken ruhun için dua et! Nevin’i yukarıda kurtarabilseydik o kökler siper olurdu ama şimdi yalnızız!»", if: { flag: "nevinKurtarildi", equals: false } },
@@ -666,6 +666,7 @@ export const EP05 = {
         target: 433.6,
         success: "n_buluntu_yuz",
         cancel: "n_verici_frekans",
+        mode: "transmit",
       },
     },
 
@@ -730,13 +731,13 @@ export const EP05 = {
         { type: "ambient", text: "Sonar hattından Ece’nin hıçkırarak ağlama sesi geliyor: «Durdu... O piç kurusu sustu. Yukarı katlardaki işçiler uyanıyor... Gözlerindeki o kırmızılık gidiyor. Başardın... Tanrım, başardın!»" },
         { type: "narrate", text: "Selin elini sıkıca tutuyor: «Kaçış kapsülü K-1 komuta katında! İstasyon susmuşken tüm elektronik kilitler açık! KOŞ!» Birlikte yukarıya, o zifiri katlara doğru tırmanıyorsunuz. Elinde sadece o zayıf tabletin ışığı... Altı kat. Beş kat. Dört kat." },
         { type: "waitTap" },
-        { type: "narrate", text: "Kaçış kapsülünün kalın camından arkaya baktığında, SINIR-1 o karanlık denizin dibinde ölü bir balık gibi küçülüyor. Selin yanındaki koltukta nefes nefese, hem ağlıyor hem gülüyor. Ece’nin parazitli sesi telsizden geliyor: «Yüzeyde görüşürüz, temiz havada...» Kafanın üstünde, yüzlerce metre yukarıda gerçek bir gökyüzü, gerçek yıldızlar var. Ve beyninin içinde artık hiçbir canavar saymıyor." },
+        { type: "narrate", text: "Kaçış kapsülünün kalın camından arkaya baktığında, PERISHED o karanlık denizin dibinde ölü bir balık gibi küçülüyor. Selin yanındaki koltukta nefes nefese, hem ağlıyor hem gülüyor. Ece’nin parazitli sesi telsizden geliyor: «Yüzeyde görüşürüz, temiz havada...» Kafanın üstünde, yüzlerce metre yukarıda gerçek bir gökyüzü, gerçek yıldızlar var. Ve beyninin içinde artık hiçbir canavar saymıyor." },
         { type: "waitTap" },
         { type: "ambient", text: "Tam kapsül deniz yüzeyine fırlayacakken, kalın çelik gövdeye dışarıdan devasa bir şey çarpıyor. Bir kez. Sonra düzenli aralıklarla: Üç vuruş. Baturay’ın o yırtık günlüğündeki gibi... Ama bu ses İÇERİDEN gelmiyor. DIŞARIDAN, o karanlık okyanusun en dibinden vuruyor. Buluntu’yu susturdun; ama o et kütlesini bunca yıl orada besleyen, o gövdeye vuran devasa şey hâlâ orada... Ve artık onu besleyecek kimse kalmadı. O şey aç." },
         { type: "system", text: "— SON: YÜZEY —" },
         { type: "system", text: "Buluntu sustu. Selin ve Ece'yle birlikte kaçtın. Hayatta kaldın — ve gerçeği yüzeye çıkardın." },
-        { type: "system", text: "Ama SINIR-1'in dibinde hâlâ vuran bir şey var. Ve birileri, senin gönderdiğin kanıtı okuyup oraya inmeye karar verecek." },
-        { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
+        { type: "system", text: "Ama PERISHED'ın dibinde hâlâ vuran bir şey var. Ve birileri, senin gönderdiğin kanıtı okuyup oraya inmeye karar verecek." },
+        { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
       ],
     },
 
@@ -752,7 +753,7 @@ export const EP05 = {
         { type: "narrate", text: "Selin tek başına yüzeye çıkacak. İstasyon kurtuldu. Kimse aşağıda frekansı kendi bedeniyle kapatan teknisyenin adını bilmeyecek. Bu da kurumların sevdiği türden bir son: isimsiz fedakârlık, temiz rapor, eksik kayıt. Ama o gece yüzeydeki herkes göğsünde tuhaf bir hafiflikle uyandı. Birinin onların yerine o ağır sayıyı taşıyıp susturduğunu bilmeden." },
         { type: "system", text: "— SON: SESSİZLİK —" },
         { type: "system", text: "Buluntu'yu yok ettin. Kendini feda ederek istasyonu — belki dünyayı — kurtardın. Selin kaçtı ve gerçeği anlatacak." },
-        { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
+        { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
       ],
     },
 
@@ -767,7 +768,7 @@ export const EP05 = {
         { type: "ambient", text: "«...Üç... İki... Üç... İki... Kardeşimiz geldi... Hoş geldin...»" },
         { type: "system", text: "— SON: DERİN —" },
         { type: "system", text: "Buluntu'ya katıldın. Acı bitti. Sen de artık Aile'densin — ve bir sonraki 'evladı' bekliyorsun." },
-        { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
+        { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
       ],
     },
 
@@ -782,7 +783,7 @@ export const EP05 = {
         { type: "ambient", text: "Tabletinin sönen ekran ışığının yansımasında kendi yüzünü görüyorsun: Tamamen sakin. Baturay gibi. Görevini bitirmiş gerçek bir ihbarcı gibi. Bunu dinleyen kim varsa, adını kutsal bir şeye çevirme. Buna kahramanlık deme. Buna kurumun gömdüğü insanların son kaydı de. Ve beyninin içindeki o etsi delik son kez fısıldıyor: «...Sıfır.»" },
         { type: "system", text: "— SON: KAYIT —" },
         { type: "system", text: "Kaçmadın — belgelemeyi seçtin. Öldün, ama Selin kanıtı yüzeye çıkardı. Gerçek artık saklanamaz. Baturay gurur duyardı." },
-        { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
+        { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
       ],
     },
 
@@ -797,7 +798,7 @@ export const EP05 = {
         { type: "ambient", text: "Ve o an o ses duruyor. Çünkü artık beyninin içinde sayacak yabancı bir güç kalmamıştır. Herkes — Sen, yanındaki Selin, yukarıda etleri eriyen işçiler ve belki de telsizin ucundaki tüm o masum yüzey... Artık tek bir et parçasısınız. Tek bir devasa kovan. Tek bir sonsuz, sakin, içi tamamen boşaltılmış ölü bir zihin." },
         { type: "system", text: "— SON: SIFIR —" },
         { type: "system", text: "Buluntu'yu tam susturamadın ve Ece'siz kaçış yolunu bulamadın. Geri sayım sıfıra ulaştı. Aile artık herkesi kapsıyor. Belki yüzeyi de." },
-        { type: "system", text: "SINIR-1 · TEŞEKKÜRLER" },
+        { type: "system", text: "PERISHED · TEŞEKKÜRLER" },
       ],
     },
   },

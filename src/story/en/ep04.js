@@ -117,7 +117,7 @@ export const EP04 = {
     n_fide: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Seedling room: Hundreds of pots lined up side by side on shelves smelling of mold... And pale sprouts popping out of each one, resembling severed children's hands the color of human skin, are trembling. In the massive pot in the middle, a glowing BLUE spore sac swollen like a pus-filled boil pulses like a heartbeat. This is the forbidden living-tissue work SINIR-1 buried in K-3." },
+        { type: "narrate", text: "Seedling room: Hundreds of pots lined up side by side on shelves smelling of mold... And pale sprouts popping out of each one, resembling severed children's hands the color of human skin, are trembling. In the massive pot in the middle, a glowing BLUE spore sac swollen like a pus-filled boil pulses like a heartbeat. This is the forbidden living-tissue work PERISHED buried in K-3." },
         { type: "narrate", text: "A rusty, blood-stained voice recorder flashes its red light on one of the shelves. Nevin's human voice, trembling with fear before she went completely mad, echoes in the room:" },
         { type: "document", open: true, doc: {
           id: "d_nevin_kayit", title: "Dr. Nevin Aras — Secret Audio Recording", style: "hand",
@@ -299,7 +299,7 @@ export const EP04 = {
     n_kasa: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Nevin's seed vault: A steel SINIR-1 secure cabinet hidden behind thick roots. There are three biometric slots on it, but they don't want fingerprints, they want flesh-and-blood SAMPLES. If the vault opens, you can take the K-2 keycard inside. What is your status?" },
+        { type: "narrate", text: "Nevin's seed vault: A steel PERISHED secure cabinet hidden behind thick roots. There are three biometric slots on it, but they don't want fingerprints, they want flesh-and-blood SAMPLES. If the vault opens, you can take the K-2 keycard inside. What is your status?" },
         { type: "alert", text: "SYSTEM LOCKED — Materials missing! This steel door won't open without finding the blue spore, root extract, and blood.", if: { flag: "ornek3", equals: false } },
         { type: "narrate", text: "You used all three samples and made the serum. The rooted reader mechanism on the vault stretches towards the golden liquid in the syringe like a hungry leech. It will accept the serum like a key.", if: { flag: "serumHazir", equals: true } },
         { type: "narrate", text: "All three samples are in your pocket, but you haven't touched the chemistry table yet. You can sacrifice these raw materials directly to the vault and get the card, but then you will never have a serum to save Nevin. Decide.", if: { flag: "ornek3", equals: true, }, },

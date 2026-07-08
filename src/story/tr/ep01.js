@@ -1,5 +1,5 @@
 /* ============================================================
-   SINIR-1 — BÖLÜM 1 v2: "K-6 / GECE VARDİYASI" (LABİRENT DOKUMASI)
+   PERISHED — BÖLÜM 1 v2: "K-6 / GECE VARDİYASI" (LABİRENT DOKUMASI)
    Tasarım kuralları uygulanır: hedef söylenir YOL SÖYLENMEZ;
    kat bir mini haritadır; çıkmazlar, döngüler ve ölümcül yanlış
    yol vardır; yön bilgisi DÖKÜMANLARDADIR; kapılar geri dönüş
@@ -25,11 +25,11 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "music", track: "k6" },
-        { type: "system", text: "SINIR-1 BAKIM TABLETİ v2.3 — YENİDEN BAŞLATILIYOR…" },
+        { type: "system", text: "PERISHED BAKIM TABLETİ v2.3 — YENİDEN BAŞLATILIYOR…" },
         { type: "system", text: "SAAT: 03:47 · DERİNLİK: 214M · HARİCİ BAĞLANTI: YOK (3 SA 12 DK)" },
         { type: "pause", ms: 900 },
         { type: "system", text: "ATANMA: BAKIM TEKNİSYENİ · SİCİL YENİ · GÖREV: RUTİN DENETİM" },
-        { type: "narrate", text: "Üç gün önce gelen e-posta ilk bakışta lütuf gibiydi. 'SINIR-1 araştırma istasyonu, acil bakım personeli aranıyor.' Maaş akılalmazdı, mülakat yoktu, soru yoktu. Şimdi bunun bir iş ilanı değil, boşalan bir satıra yazılmış yeni isim olduğunu anlıyorsun. Denizaltının kapakları kapanınca yüzeyde kalan tek şey özgeçmişin oldu. Aşağıda seni bekleyen şey ise bir vardiya değil, düzgün dosyalanmış bir kayboluş." },
+        { type: "narrate", text: "Üç gün önce gelen e-posta ilk bakışta lütuf gibiydi. 'PERISHED araştırma istasyonu, acil bakım personeli aranıyor.' Maaş akılalmazdı, mülakat yoktu, soru yoktu. Şimdi bunun bir iş ilanı değil, boşalan bir satıra yazılmış yeni isim olduğunu anlıyorsun. Denizaltının kapakları kapanınca yüzeyde kalan tek şey özgeçmişin oldu. Aşağıda seni bekleyen şey ise bir vardiya değil, düzgün dosyalanmış bir kayboluş." },
         { type: "narrate", text: "İşe alım formunda 'kapalı alan toleransı' diye tek satırlık bir kutucuk vardı. O kutucuğu işaretlediğin an bu yer seni yasal olarak yutmuş. Kimliğin, imzan, acil durumda aranacak kişinin numarası... Hepsi yüzeyde kalmış. Burada aşağıda yalnızca görev numaran var ve görev numarası çığlık atamaz." },
         { type: "narrate", text: "Seni uyandıran şey kulakları tırmalayan bir alarm değil. Jeneratörün aniden ÖLMESİ. Kulaklarındaki o uğultu bıçak gibi kesiliyor ve K-6 katının mutlak, boğucu karanlığı göğsüne bir karabasan gibi çöküyor. Kalbinin göğüs kafesini zorladığını hissediyorsun." },
         { type: "narrate", text: "Ranzadan doğrulurken nefesin daralıyor. Acil durum aydınlatmasının o hastalıklı kırmızı pırıltısı bile sönmüş, her yer kör karanlık. Panikle elini uzatıyorsun ve parmakların sana verilen şirketin bakım tabletini buluyor. Güç tuşuna bastığında çatlak ekran aniden parlıyor; çiğ, mavi-beyaz, buz gibi bir ışık suratına çarpıyor. Şu an bu zifiri dünyadaki tek dayanağın, tek ışık kaynağın bu ekran. Önceki teknisyenden kalmış; parmak izleriyle lekelenmiş kilit ekranında silinmemiş bir isim parıldıyor: 'B. Soylu'." },
@@ -75,7 +75,7 @@ export const EP01 = {
         { type: "narrate", text: "Panoda dünkü vardiyanın devir raporu asılı. Başlık, tarih, görev listesi; insanlar ölürken bile form düzenini bozmayan bir yer burası. Kağıdın kenarı kurumuş, sümüksü bir sıvıyla buruşmuş. Biri bunu okumuş, anlamış, sonra yine de aşağı inmiş. Belki emir böyleydi. Belki burada emir, içgüdüden daha güçlü.", if: { flag: "korIlk", equals: false } },
         { type: "document", open: true, if: { flag: "korIlk", equals: false }, doc: {
           id: "d_devir", title: "Vardiya Devir Raporu — 6. Gece",
-          meta: "SINIR-1 · K-6 BAKIM · FORM 12-B · VARDİYA AMİRİ: B. SOYLU",
+          meta: "PERISHED · K-6 BAKIM · FORM 12-B · VARDİYA AMİRİ: B. SOYLU",
           body: "DEVREDEN: Baturay Soylu (gece)\nDEVRALAN: — (imza yok)\n\nAÇIK İŞLER:\n· Alt platform tahliye pompaları (A/B/C) arızalı.\n  Manuel ilk çalıştırma gerekiyor.\n· POMPA C'NİN SİGORTASI YANDI VE ÇIKARILDI.\n  Yedek sigortalar B-2 DEPOSUNDA.\n· Radyo odası erişim paneli yeniden kodlandı.\n  Kod, güvenlik gereği İKİYE BÖLÜNDÜ. (bkz. tutanak 7)\n· Ana hat, üç pompa da açılmadan BAŞLATILMAYACAK.\n\nUYARILAR:\n· Eski personel asansörü HİZMET DIŞI. Kabin yok,\n  şaft boş. Kapıyı KULLANMAYIN.\n· Sintine seviyesi yükseliyor. Tahliye 24 saat içinde\n  yapılmazsa K-6 su altında kalır.\n\nDİPNOT (el yazısı, different kalem):\nGece 3'ten sonra platforma tek başına inilmeyecek.\nSebep sorma. İn ve say: eksik miyiz?" } },
         { type: "flag", set: { korIlk: true } },
         { type: "ambient", text: "Sol tarafta, ekşimsi bir çürüme ve ağır kimyasal kokusu sızdıran aralık bir kapı var. İleride, mantığa meydan okurcasına kantinin sarı, titrek ışığı yanıp sönüyor. Koridorun ucu ise dipsiz bir kuyu gibi kapkara." },
@@ -114,7 +114,7 @@ export const EP01 = {
         { type: "waitTap" },
         { type: "document", open: true, doc: {
           id: "d_revir", title: "Revir Kaydı — Hafta 42",
-          meta: "SINIR-1 SAĞLIK BİRİMİ · GİZLİLİK: KURUM İÇİ",
+          meta: "PERISHED SAĞLIK BİRİMİ · GİZLİLİK: KURUM İÇİ",
           body: "NÖROİŞİTSEL TARAMA SONUÇLARI — ÖZET\nDÖNEM: Hafta 42 / Son 14 gün\n\nTest edilen personel: 23\nAnormal kulak çınlaması: 19\nUyku bölünmesi ve ani irkilme: 16\nDuvar içinden ses duyma beyanı: 11\nUykuda eş zamanlı sayı sayma: 9\n\nORTAK BULGU:\nUykuda sayı sayan dokuz personelin ses kayıtları karşılaştırıldı.\nDizinin başlangıcı, durakları ve nefes aralıkları aynıdır. Kayıtlar\nbirbirinden habersiz vardiyalarda alınmıştır.\n\nKLİNİK NOT:\nB. Soylu tedaviyi reddetti. 'Uyumamak yeterli' dedi. Kendisine düşük doz\nuyarıcı verildi. Nabız normale döndü; hasta çıkışta kendi gölgesine\nbakıp üç kez özür diledi.\n\nÖNERİ: Toplu tahliye ve yüzey psikiyatri sevki.\nKARAR: RED — H. Tekin / 'Vardiya düzeni bozulamaz.'" } },
       ],
       choices: [
@@ -131,7 +131,7 @@ export const EP01 = {
         { type: "document", open: true, doc: {
           id: "d_gunluk", title: "Baturay'ın Günlüğü", style: "hand",
           meta: "— gece vardiyası defteri —",
-          body: "3 Ekim\nKulaklarım bütün gün çınladı. Jeneratörün sesi\nsandım. Değilmiş. Jeneratörü kapattırdım, çınlama\ndurmadı. Ses makinede değil. Ses BENDE.\n\n9 Ekim\nMakinedeki ses; sanki kafamın içindeki sesin aynısı.\nGözümü kırpınca cızırtı görüyorum. Yağlı, karanlık\nbir şey iniyor göz kapaklarımın arkasından. Ama ses\nduvarların İÇİNDEN de geliyor. O sesi tanıyorum.\n\n14 Ekim\nVedat uykusunda sayı sayıyor. Altı. Beş. Dört.\nUyandırdım, hatırlamıyor. Bu gece revirde dokuz\nkişi saydık. HEPSİ AYNI YERDEN başlıyor.\n\n21 Ekim\nŞef 'aile toplantısı' yaptı. Kimse toplantıdan\nkonuşmuyor ama herkes gülümsüyor artık. Aynı\ngülümseme. Radyo odasının kodunu değiştirdim ve\nİKİYE BÖLÜNDÜ. Yarısı hep yanımda. Diğer yarısını\nsu basan tarafta, C panosunun oraya kazıdım.\nİkisi bir arada olmaz. Bana bir şey olursa:\nönce say. Sonra kaç.\n\n(son sayfa, bozuk el yazısı)\nBunu bulan kişi: adımı temize çıkarma. Beni kahraman\nsanma. Ben korktum, sustum, vardiyaya devam ettim.\nAma delirmedim. Bu tablet kanıt dolu. SINIR-1 insanları\nöldürmüyor sadece; ölmeden önce onları kullanışlı hale\ngetiriyor. Yüzeye çıkarsan herkese göster. Kimseye\n'kaza' deme. Bu bir karar." } },
+          body: "3 Ekim\nKulaklarım bütün gün çınladı. Jeneratörün sesi\nsandım. Değilmiş. Jeneratörü kapattırdım, çınlama\ndurmadı. Ses makinede değil. Ses BENDE.\n\n9 Ekim\nMakinedeki ses; sanki kafamın içindeki sesin aynısı.\nGözümü kırpınca cızırtı görüyorum. Yağlı, karanlık\nbir şey iniyor göz kapaklarımın arkasından. Ama ses\nduvarların İÇİNDEN de geliyor. O sesi tanıyorum.\n\n14 Ekim\nVedat uykusunda sayı sayıyor. Altı. Beş. Dört.\nUyandırdım, hatırlamıyor. Bu gece revirde dokuz\nkişi saydık. HEPSİ AYNI YERDEN başlıyor.\n\n21 Ekim\nŞef 'aile toplantısı' yaptı. Kimse toplantıdan\nkonuşmuyor ama herkes gülümsüyor artık. Aynı\ngülümseme. Radyo odasının kodunu değiştirdim ve\nİKİYE BÖLÜNDÜ. Yarısı hep yanımda. Diğer yarısını\nsu basan tarafta, C panosunun oraya kazıdım.\nİkisi bir arada olmaz. Bana bir şey olursa:\nönce say. Sonra kaç.\n\n(son sayfa, bozuk el yazısı)\nBunu bulan kişi: adımı temize çıkarma. Beni kahraman\nsanma. Ben korktum, sustum, vardiyaya devam ettim.\nAma delirmedim. Bu tablet kanıt dolu. PERISHED insanları\nöldürmüyor sadece; ölmeden önce onları kullanışlı hale\ngetiriyor. Yüzeye çıkarsan herkese göster. Kimseye\n'kaza' deme. Bu bir karar." } },
         { type: "battery", spares: 1 },
         { type: "narrate", text: "Defteri silkerken arasından kayan yedek pil avucuna düşüyor. Baturay'ın bu leş çukurunda bıraktığı son şey. Zihninde o lanetli cümle yankılanıyor: 'Önce say. Sonra kaç.'" },
       ],
@@ -151,7 +151,7 @@ export const EP01 = {
         { type: "narrate", text: "Gözlerin duvardaki vardiya çizelgesine kayıyor. Tabletinin ekranını yaklaştırıp baktığında tüylerin diken diken oluyor.", if: { flag: "kantinIlkGoruldu", equals: false } },
         { type: "document", open: true, if: { flag: "kantinIlkGoruldu", equals: false }, doc: {
           id: "d_cizelge", title: "Vardiya Çizelgesi — ?? Hafta",
-          meta: "SINIR-1 PERSONEL PLANLAMA · onay: H.T.",
+          meta: "PERISHED PERSONEL PLANLAMA · onay: H.T.",
           body: "PAZARTESİ\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nSALI\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nÇARŞAMBA\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nPERŞEMBE\n  00-08: AİLE      08-16: AİLE      16-24: AİLE\nCUMA\n  00-08: A İ L E   08-16: A İ L E   16-24: AİLE\nCUMARTESİ\n  00-08: AİLEAİLE  08-16: AİLEAİLEAİLE\nPAZAR\n  hep birlikte hep birlikte hep birlikte hep\n\n(alt köşe, kurşun kalem, minicik:)\ngeç kalan personel için yer ayrıldı" } },
         { type: "flag", set: { kantinIlkGoruldu: true } },
         { type: "ambient", text: "Masanın başındaki o temiz, boş tabağın hemen yanında küçük bir isim kartı var. Üzerine titreyen ışığı tuttuğunda kendi görev numaranı görüyorsun. Mutfağın gerisinde, paslı boruların gölgesinde bir servis kapısı kararıyor." },
@@ -614,7 +614,7 @@ export const EP01 = {
         { type: "narrate", text: "Duvarın üstündeki panoda eski yayın protokolü hâlâ asılı: 'Önce kayıt al, sonra yardım iste.' Harflerin altına birileri tırnaklarıyla ikinci bir cümle kazımış: 'Yardım gelmeyecekse en azından ölürken anlat.' Tabletini daha sıkı tutuyorsun. Bu küçük ekran artık fenerden çok mezar taşına benziyor." },
         { type: "document", open: true, doc: {
           id: "d_talep", title: "Numune Transfer Talebi — RED",
-          meta: "SINIR-1 İÇ YAZIŞMA · FORM 4-A · ARŞİV KOPYASI",
+          meta: "PERISHED İÇ YAZIŞMA · FORM 4-A · ARŞİV KOPYASI",
           body: "TALEP EDEN: Dr. Nevin Aras (K-3 Biyoloji)\nTALEP: K-2 arkeoloji ambarındaki 'BULUNTU-1'\nüzerinden ek doku örneği alınması ve K-3\nlaboratuvarına transferi.\n\nGEREKÇE: ████████████████████████████████\n█████████ sayma davranışı ████████████\n██████████ kızımın kayıtları ██████████\n████████████ cevap veriyor ████████\n\nKARAR: RED.\n'Buluntuya kimse dokunmayacak. O, ailenin.\nAnlaşıldı mı Nevin? AİLENİN.'\n— H. Tekin, İstasyon Şefi" } },
         { type: "narrate", text: "Telsiz masasına çöküyorsun ama cihaz ölü. Arka kapağını telaşla söküyorsun: Beş lambalık sigorta devresi tamamen karmakarışık edilmiş, biri yanıyor, dördü kör göz gibi duruyor. Bu devreyi düzeltmeden dünyaya tek bir çığlık bile gönderemezsin." },
       ],

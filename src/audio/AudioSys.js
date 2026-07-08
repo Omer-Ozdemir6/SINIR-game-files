@@ -20,6 +20,12 @@ function randomBetween(min, max) {
 }
 
 export const AudioSys = {
+  _bgAmbientTrack: "safe",
+  _activeGameTrack: "safe",
+  _isEpisodeTrack: false,
+  _episodeTimer: null,
+  _pausedGameTrack: null,
+  _pausedGameTime: 0,
   _pool: {},
   _musicEl: null,
   _musicTrack: null,
@@ -157,7 +163,23 @@ export const AudioSys = {
         this._pendingMusic = null;
         this._stopSampleMusic();
         this._stopSyntheticMusic();
+        this._activeGameTrack = null;
+        this._pausedGameTrack = null;
+        this._pausedGameTime = 0;
         return;
+      }
+
+      // Menü veya alet parçası mı kontrol et
+      const isMenuTrack = (track === "menu" || track === "credits" || track === "intro");
+      
+      if (!isMenuTrack) {
+        this._activeGameTrack = track;
+        this._isEpisodeTrack = (track !== this._bgAmbientTrack);
+        
+        if (this._episodeTimer) {
+          clearTimeout(this._episodeTimer);
+          this._episodeTimer = null;
+        }
       }
 
       const file = MUSIC_FILES[track];
@@ -166,11 +188,26 @@ export const AudioSys = {
         this._stopSyntheticMusic();
         if (this._musicTrack === track && this._musicEl) return;
         this._stopSampleMusic();
+
         const a = new Audio(file);
-        a.loop = true;
+        // Menü ve arka plan müzikleri loop, bölüm/etkinlik müzikleri tek sefer çalar
+        a.loop = isMenuTrack || (track === this._bgAmbientTrack);
         a.volume = 0.55;
         this._musicEl = a;
         this._musicTrack = track;
+
+        // Bölüm/etkinlik müzikleri bittiğinde arka plan müziğine dön
+        if (!isMenuTrack && this._isEpisodeTrack) {
+          a.addEventListener("ended", () => {
+            if (this._musicTrack === track) {
+              this.fadeOutMusic(2500);
+              setTimeout(() => {
+                this.music(this._bgAmbientTrack);
+              }, 2500);
+            }
+          });
+        }
+
         if (this.enabled) a.play().catch(() => {});
         return;
       }
@@ -182,6 +219,100 @@ export const AudioSys = {
         return;
       }
       this._startSyntheticMusic(track);
+
+      // Sentetik bölüm müzikleri de belirli bir süre sonra otomatik bitip arka plana dönmeli
+      if (!isMenuTrack && this._isEpisodeTrack) {
+        this._episodeTimer = setTimeout(() => {
+          if (this._musicTrack === track) {
+            this.fadeOutMusic(3000);
+            setTimeout(() => {
+              this.music(this._bgAmbientTrack);
+            }, 3000);
+          }
+        }, 30000); // 30 saniye boyunca çalsın ve bitsin
+      }
+    } catch (e) {}
+  },
+
+  fadeOutMusic(durationMs = 2500) {
+    try {
+      if (this._musicEl) {
+        const audioEl = this._musicEl;
+        const startVol = audioEl.volume;
+        const steps = 20;
+        const intervalMs = durationMs / steps;
+        let count = 0;
+        const timer = setInterval(() => {
+          count++;
+          if (audioEl) {
+            audioEl.volume = Math.max(0, startVol * (1 - count / steps));
+            if (count >= steps) {
+              clearInterval(timer);
+              audioEl.pause();
+              if (this._musicEl === audioEl) {
+                this._musicEl = null;
+                this._musicTrack = null;
+              }
+            }
+          } else {
+            clearInterval(timer);
+          }
+        }, intervalMs);
+      }
+      if (this.inited && !this._musicEl) {
+        try {
+          this.n.musicGain.gain.rampTo(0, durationMs / 1000);
+          this.n.musicNoiseGain.gain.rampTo(0, durationMs / 1000);
+        } catch (e) {}
+        setTimeout(() => {
+          this._stopSyntheticMusic();
+        }, durationMs);
+      }
+    } catch (e) {}
+  },
+
+  pauseGameMusic() {
+    try {
+      if (this._musicTrack && this._musicTrack !== "credits" && this._musicTrack !== "menu" && this._musicTrack !== "intro") {
+        this._pausedGameTrack = this._musicTrack;
+        if (this._musicEl) {
+          this._pausedGameTime = this._musicEl.currentTime;
+          this._musicEl.pause();
+          this._musicEl = null;
+        } else {
+          this._stopSyntheticMusic(false);
+        }
+        this._musicTrack = null;
+      }
+    } catch (e) {}
+  },
+
+  resumeGameMusic() {
+    try {
+      if (this._pausedGameTrack) {
+        const track = this._pausedGameTrack;
+        this._pausedGameTrack = null;
+        
+        const file = MUSIC_FILES[track];
+        if (file) {
+          this._stopSyntheticMusic();
+          const a = new Audio(file);
+          a.loop = (track === this._bgAmbientTrack);
+          a.volume = 0.55;
+          this._musicEl = a;
+          this._musicTrack = track;
+          if (this._pausedGameTime) {
+            a.currentTime = this._pausedGameTime;
+            this._pausedGameTime = 0;
+          }
+          if (this.enabled) a.play().catch(() => {});
+        } else {
+          this._stopSampleMusic();
+          this._startSyntheticMusic(track);
+        }
+      } else {
+        this.music(this._bgAmbientTrack);
+      }
     } catch (e) {}
   },
 

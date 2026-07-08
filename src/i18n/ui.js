@@ -1,4 +1,4 @@
-/* SINIR-1 — ARAYÜZ + MOTOR METİN SÖZLÜĞÜ
+/* PERISHED — ARAYÜZ + MOTOR METİN SÖZLÜĞÜ
    Yeni dil eklemek için bu dosyaya bir sözlük daha ekle (ör. "de")
    ve i18n/index.js'teki LANGS listesine yaz. Eksik anahtarlar
    otomatik olarak TR'ye düşer. */
@@ -17,18 +17,18 @@ export const UI = {
       puzzleTest: "· bulmaca testi ·",
     },
     warn: {
-      p1: "SINIR-1 yoğun gerilim, şiddet ve rahatsız edici temalar içerir. En iyi deneyim için karanlık bir ortamda ve kulaklıkla oynayın.",
-      p2: "SINIR-1 su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde sadece ekranı çatlamış, bataryası can çekişen bir bakım tableti var. O senin tek ışığın, tek kaydın ve bu zifiri karanlıktaki tek dostun. Hayatta kalabildiğin kadar kal.Ama asla unutma: Sen bir asker değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
+      p1: "PERISHED yoğun gerilim, şiddet ve rahatsız edici temalar içerir. En iyi deneyim için karanlık bir ortamda ve kulaklıkla oynayın.",
+      p2: "PERISHED su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde sadece ekranı çatlamış, bataryası can çekişen bir bakım tableti var. O senin tek ışığın, tek kaydın ve bu zifiri karanlıktaki tek dostun. Hayatta kalabildiğin kadar kal.Ama asla unutma: Sen bir asker değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
       cont: "Devam Et",
     },
     intro: { skip: "GEÇ ▸▸", later: "Birkaç gün sonra.", pressSend: "MESAJI GÖNDERMEK İÇİN 'MESAJI GÖNDER'E BAS" },
     sys: { loading: "YÜKLENİYOR" },
     howto: {
       title: "NASIL OYNANIR",
-      subtitle: "SINIR-1 · Hayatta Kalma Rehberi",
+      subtitle: "PERISHED · Hayatta Kalma Rehberi",
       close: "ANLADIM",
       sections: [
-        { title: "AMACIN", body: "SINIR-1 su altı istasyonunda mahsur kaldın. Altı kat aşağı inerek (K-6'dan K-2'ye) kaçış yolunu bulmalısın. Her katta seni avlayan bir 'aile' üyesi var. Savaşamazsın — sadece koşabilir, saklanabilir veya ölürsün." },
+        { title: "AMACIN", body: "PERISHED su altı istasyonunda mahsur kaldın. Altı kat aşağı inerek (K-6'dan K-2'ye) kaçış yolunu bulmalısın. Her katta seni avlayan bir 'aile' üyesi var. Savaşamazsın — sadece koşabilir, saklanabilir veya ölürsün." },
         { title: "SEÇİMLER", body: "Hikaye seçimlerle ilerler. Butonlara dokunarak nereye gideceğine, ne yapacağına karar verirsin. Bazı yollar çıkmaz, bazıları ölümcül, bazıları geri döner. Yanlış seçim seni öldürebilir — ama son kayıttan devam edersin." },
         { title: "GÜRÜLTÜ", body: "Gürültü görünmez bir tehlikedir. Bazı eylemler ses çıkarır; çok ses çıkarırsan avcı seni bulur ve pusu kurar. Sessiz hareket et; acele etmek öldürür." },
         { title: "PİL & KARANLIK", body: "Tabletinin pili var. Pil azaldıkça gösterge kırmızıya döner ve yanıp söner. Pil biterse KARANLIK moduna geçersin: ekran kararır, kenarlar kızarır. Yedek pilin varsa pil ikonuna dokunarak değiştir. Karanlıkta avcılar daha tehlikelidir." },
@@ -59,7 +59,7 @@ export const UI = {
     },
     credits: {
       tagline: "Karadeniz'in dibinde, ölümün çalışmadığı yerde.",
-      roll: "TASARIM & YÖNETİM\nSahip\n\n\nHİKAYE & SENARYO\nSahip\n\n\nOYUN TASARIMI\nSahip\n\n\nPROGRAMLAMA\nSahip\n\n\nSES & ATMOSFER\nSahip\n\n\n\nİLHAM\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nÖZEL TEŞEKKÜR\nBaturay Soylu'ya —\nmesajı gönderdiği için.\n\n\n\n\nSINIR-1'de kimse\ngerçekten ölmez.\n\nSadece Aile'ye katılır.\n\n\n\n\n— SON —\n\n\nsürüm 1.0",
+      roll: "TASARIM & YÖNETİM\nSahip\n\n\nHİKAYE & SENARYO\nSahip\n\n\nOYUN TASARIMI\nSahip\n\n\nPROGRAMLAMA\nSahip\n\n\nSES & ATMOSFER\nSahip\n\n\n\nİLHAM\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nÖZEL TEŞEKKÜR\nBaturay Soylu'ya —\nmesajı gönderdiği için.\n\n\n\n\nPERISHED'da kimse\ngerçekten ölmez.\n\nSadece Aile'ye katılır.\n\n\n\n\n— SON —\n\n\nsürüm 1.0",
       close: "Kapat",
     },
     archive: {
@@ -92,6 +92,7 @@ export const UI = {
       docAdded: "Döküman Eklendi",
       noteAdded: "Not Alındı",
       swapped: "Pil Değiştirildi · %100",
+      batteryAlreadyFull: "Batarya zaten tamamen dolu!",
       darkStart: "GÜÇ BİTTİ — PİL BUL",
       darkInstall: "PİL TAKILDI · %100",
       darkInstallLine: "Pili karanlıkta yuvasına çakıyorsun. Ekran nefes alır gibi geri geliyor.",
@@ -120,6 +121,8 @@ export const UI = {
       hintBreath: "…ıslak, ritmik bir nefes. Dinliyor.",
       hintLock: "Sinyal yakalandı. Frekansı merkezde tut, kilidi doldur.",
       hintCut: "— HAT KOPTU —",
+      transmit: "BAĞLANTI AKTİF · YAYINLANIYOR",
+      hintTransmit: "— SİNYAL GÖNDERİLİYOR —",
     },
     lights: {
       title: "DEVRE PANELİ — TÜM LAMBALARI YAK",
@@ -136,12 +139,13 @@ export const UI = {
       cancel: "Vazgeç",
     },
     breath: {
-      hold: "NEFESİNİ TUT", release: "UZAKLAŞIYOR — YAVAŞÇA BIRAK",
-      danger: "TEHLİKE", lung: "CİĞER",
-      start: "EKRANA BAS VE TUTMAYA BAŞLA — ÇABUK",
-      spike: "CİĞERLERİN YANIYOR — DAYAN, SES ÇIKARMA",
-      ph1: "Islak adımlar odada dolanıyor…", ph2: "Tam masanın yanında durdu.",
-      ph3: "Nefesi ensende. Eğiliyor.", ph4: "Doğruldu. Kapıya yöneliyor…",
+      title: "ADRENALİN PATLAMASI",
+      desc: "Tehlike yaklaşıyor! Sakin kalmalı ve kalp ritmini kontrol altında tutmalısın. Sağdan sola kayan ritim dalgaları hedef çizgisinin (yeşil kutu) tam ortasındayken [E] tuşuna bas (veya ekrana dokun). Iskalarsan veya yanlış zamanda basarsan adrenalin seviyen yükselir ve yakalanırsın!",
+      startBtn: "OYUNU BAŞLAT",
+      target: "HEDEF ZAMANI",
+      adrenaline: "ADRENALİN",
+      calm: "Sakin",
+      panic: "PANİK!",
     },
     puzzle: {
       shadowTitle: "KADİM KİLİT — GÖLGEYİ BUL",
@@ -192,18 +196,18 @@ export const UI = {
       puzzleTest: "· puzzle test ·",
     },
     warn: {
-      p1: "SINIR-1 contains intense tension, violence and disturbing themes. Please enjoy.",
-      p2: "You are the night-shift maintenance technician of the SINIR-1 undersea research facility. Contact with the surface was lost three hours ago, and something is terribly wrong down here. All you carry is a cracked maintenance tablet: your light, your log, your only friend. Survive as long as you can. Document everything. You are not a fighter; at this depth the only ways to stay alive are to run, to hide, or to die.",
+      p1: "PERISHED contains intense tension, violence and disturbing themes. Please enjoy.",
+      p2: "You are the night-shift maintenance technician of the PERISHED undersea research facility. Contact with the surface was lost three hours ago, and something is terribly wrong down here. All you carry is a cracked maintenance tablet: your light, your log, your only friend. Survive as long as you can. Document everything. You are not a fighter; at this depth the only ways to stay alive are to run, to hide, or to die.",
       cont: "Continue",
     },
     intro: { skip: "SKIP ▸▸", later: "A few days later.", pressSend: "PRESS 'SEND MESSAGE' TO DELIVER IT" },
     sys: { loading: "LOADING" },
     howto: {
       title: "HOW TO PLAY",
-      subtitle: "SINIR-1 · Survival Guide",
+      subtitle: "PERISHED · Survival Guide",
       close: "GOT IT",
       sections: [
-        { title: "YOUR GOAL", body: "You are trapped in the SINIR-1 underwater station. Descend six floors (K-6 to K-2) to find your escape. Each floor has a 'family' member hunting you. You cannot fight — only run, hide, or die." },
+        { title: "YOUR GOAL", body: "You are trapped in the PERISHED underwater station. Descend six floors (K-6 to K-2) to find your escape. Each floor has a 'family' member hunting you. You cannot fight — only run, hide, or die." },
         { title: "CHOICES", body: "The story unfolds through choices. Tap buttons to decide where to go and what to do. Some paths are dead ends, some lethal, some loop back. A wrong choice can kill you — but you resume from your last save." },
         { title: "NOISE", body: "A NOISE meter sits at the top. Some actions make sound and fill it. If noise crosses a threshold, the hunter finds you and sets an ambush. Move quietly; haste kills." },
         { title: "BATTERY & DARKNESS", body: "Your tablet has a battery. As it drains the meter turns red and blinks. If it dies you enter DARKNESS mode: the screen dims, edges redden. If you have a spare, tap the battery icon to swap. Hunters are deadlier in the dark." },
@@ -234,7 +238,7 @@ export const UI = {
     },
     credits: {
       tagline: "At the bottom of the Black Sea, where death doesn't work.",
-      roll: "DESIGN & DIRECTION\nSahip\n\n\nSTORY & SCRIPT\nSahip\n\n\nGAME DESIGN\nSahip\n\n\nPROGRAMMING\nSahip\n\n\nSOUND & ATMOSPHERE\nSahip\n\n\n\nINSPIRED BY\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nSPECIAL THANKS\nTo Baturay Soylu —\nfor sending the message.\n\n\n\n\nNobody truly dies\nin SINIR-1.\n\nThey just join the Family.\n\n\n\n\n— THE END —\n\n\nversion 1.0",
+      roll: "DESIGN & DIRECTION\nSahip\n\n\nSTORY & SCRIPT\nSahip\n\n\nGAME DESIGN\nSahip\n\n\nPROGRAMMING\nSahip\n\n\nSOUND & ATMOSPHERE\nSahip\n\n\n\nINSPIRED BY\nOutlast · Resident Evil 7\nIron Lung · Lifeline\n\n\n\nSPECIAL THANKS\nTo Baturay Soylu —\nfor sending the message.\n\n\n\n\nNobody truly dies\nin PERISHED.\n\nThey just join the Family.\n\n\n\n\n— THE END —\n\n\nversion 1.0",
       close: "Close",
     },
     archive: {
@@ -267,6 +271,7 @@ export const UI = {
       docAdded: "Document Added",
       noteAdded: "Note Taken",
       swapped: "Battery Replaced · 100%",
+      batteryAlreadyFull: "Battery is already fully charged!",
       darkStart: "POWER DEAD — FIND A BATTERY",
       darkInstall: "BATTERY INSTALLED · 100%",
       darkInstallLine: "You slam the battery into its slot in the dark. The screen comes back like a drawn breath.",
@@ -295,6 +300,8 @@ export const UI = {
       hintBreath: "…a wet, rhythmic breathing. It is listening.",
       hintLock: "Signal caught. Keep the frequency centered and fill the lock.",
       hintCut: "— LINE LOST —",
+      transmit: "CONNECTION LOCKED · TRANSMITTING",
+      hintTransmit: "— SIGNAL TRANSMITTING —",
     },
     lights: {
       title: "CIRCUIT PANEL — LIGHT EVERY LAMP",
@@ -311,12 +318,13 @@ export const UI = {
       cancel: "Step away",
     },
     breath: {
-      hold: "HOLD YOUR BREATH", release: "IT'S LEAVING — RELEASE SLOWLY",
-      danger: "DANGER", lung: "LUNGS",
-      start: "PRESS THE SCREEN AND HOLD — QUICKLY",
-      spike: "YOUR LUNGS ARE BURNING — ENDURE, MAKE NO SOUND",
-      ph1: "Wet footsteps wander the room…", ph2: "It stopped right beside the desk.",
-      ph3: "Its breath is on your neck. It leans in.", ph4: "It straightens up. Moving to the door…",
+      title: "ADRENALINE RUSH",
+      desc: "Danger is approaching! You must stay calm and keep your heart rate steady. Press [E] (or tap the screen) exactly when the heartbeat spikes align with the target zone (green box). Missing beats or pressing at the wrong time will raise your adrenaline and expose you!",
+      startBtn: "START GAME",
+      target: "HIT WINDOW",
+      adrenaline: "ADRENALINE",
+      calm: "Calm",
+      panic: "PANIC!",
     },
     puzzle: {
       shadowTitle: "ARTIFACT LOCK — ALIGN THE SHADOW",
@@ -441,6 +449,7 @@ de: {
       docAdded: "Dokument hinzugefügt",
       noteAdded: "Notiz hinzugefügt",
       swapped: "Batterie gewechselt · 100%",
+      batteryAlreadyFull: "Batterie ist bereits voll geladen!",
       darkStart: "STROM LEER — BATTERIE FINDEN",
       darkInstall: "BATTERIE EINGESETZT · 100%",
       darkInstallLine: "Du rammst die Batterie im Dunkeln in den Schacht. Der Bildschirm erwacht wie ein Atemzug wieder zum Leben.",
@@ -469,6 +478,8 @@ de: {
       hintBreath: "…ein feuchter, rhythmischer Atemzug. Es lauscht.",
       hintLock: "Signal erfasst. Halte die Frequenz zentriert und fülle die Sperre.",
       hintCut: "— VERBINDUNG ABGEBROCHEN —",
+      transmit: "VERBINDUNG GESPERRT · SENDET",
+      hintTransmit: "— SIGNAL WIRD GESENDET —",
     },
     lights: {
       title: "SCHALTTAFEL — ALLE LAMPEN EINSCHALTEN",
@@ -485,12 +496,13 @@ de: {
       cancel: "Abbrechen",
     },
     breath: {
-      hold: "ATEM ANHALTEN", release: "ES ENTFERNT SICH — LANGSAM AUSATMEN",
-      danger: "GEFAHR", lung: "LUNGE",
-      start: "BILDSCHIRM DRÜCKEN UND HALTEN — SCHNELL",
-      spike: "DEINE LUNGE BRENNT — HALTE DURCH, MACH KEINEN TON",
-      ph1: "Feuchte Schritte wandern im Raum umher…", ph2: "Es blieb direkt neben dem Tisch stehen.",
-      ph3: "Sein Atem in deinem Nacken. Es beugt sich vor.", ph4: "Es richtet sich auf. Geht zur Tür…",
+      title: "ADRENALINSCHUB",
+      desc: "Gefahr nähert sich! Du musst ruhig bleiben und deinen Herzschlag stabil halten. Drücke [E] (oder tippe auf den Bildschirm), wenn die Herzfrequenzspitzen genau mit dem Zielbereich (grüner Kasten) übereinstimmen. Fehlende Schläge oder falsches Timing erhöhen dein Adrenalin!",
+      startBtn: "SPIEL STARTEN",
+      target: "TREFFERFENSTER",
+      adrenaline: "ADRENALIN",
+      calm: "Ruhig",
+      panic: "PANIK!",
     },
     puzzle: {
       shadowTitle: "ANTIKES SCHLOSS — SCHATTEN FINDEN",

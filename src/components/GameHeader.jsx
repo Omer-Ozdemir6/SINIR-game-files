@@ -3,7 +3,7 @@ import { t } from "../i18n";
 
 /* Üst bar: çark menüsü, istasyon bilgisi, pil, arşiv */
 export default function GameHeader({ battery, bColor, spares, sparesMax, onGear, onBattery, onArchive }) {
-  const critical = battery > 0 && battery <= 30;
+  const critical = battery > 0 && battery <= 25;
   const segmentCount = 10;
   const segsOn = battery <= 0 ? 0 : Math.max(1, Math.ceil(battery / 10));
   return (

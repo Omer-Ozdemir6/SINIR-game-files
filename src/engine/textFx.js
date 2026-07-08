@@ -6,7 +6,7 @@
 import { DOC_LINES_PER_PAGE } from "./constants";
 
 export const batteryColorOf = (lvl) => {
-  if (lvl <= 30) return "#c23b2e";   // kritik: kırmızı
+  if (lvl <= 25) return "#c23b2e";   // kritik: kırmızı
   return "#e8e6dc";                  // dolu: beyaz
 };
 

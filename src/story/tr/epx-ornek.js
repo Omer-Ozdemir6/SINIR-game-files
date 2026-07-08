@@ -1,5 +1,5 @@
 /* ============================================================
-   SINIR-1 — ÖRNEK BÖLÜM: "VİTRAY KAPISI" (mekanik şablonu)
+   PERISHED — ÖRNEK BÖLÜM: "VİTRAY KAPISI" (mekanik şablonu)
    Amaç: bölüm sonundaki bulmaca, DÜNYADA dağılmış üç cam parçası
    bulunmadan çözülemez. Oyuncu hub'da dolaşmak, çıkmazlara girmek,
    dökümanları okumak ZORUNDA. Parçalar toplanınca (flag) bulmaca

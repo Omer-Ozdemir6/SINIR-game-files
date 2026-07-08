@@ -63,7 +63,7 @@ export default function Credits({ onClose }) {
             fontSize: "clamp(24px, 8vw, 38px)", fontWeight: 700,
             letterSpacing: "0.32em", paddingLeft: "0.32em",
             color: "#e8ecdf", textShadow: "0 0 18px rgba(160,220,180,0.35)",
-          }}>SINIR-1</div>
+          }}>PERISHED</div>
 
           {/* slogan */}
           <div style={{

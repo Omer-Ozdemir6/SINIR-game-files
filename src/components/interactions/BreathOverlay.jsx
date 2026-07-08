@@ -1,130 +1,620 @@
-import { styles as S } from "../../styles/theme";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { t } from "../../i18n";
+import { AudioSys } from "../../audio/AudioSys";
 
-export default function BreathOverlay({ breath, holdMs, lungMs, onDown, onUp }) {
-  const releaseWindows = breath.releaseWindows || [];
-  const spikes = breath.spikes || [];
-  const title = breath.phase === "release"
-    ? t("breath.release")
-    : breath.phase === "vent"
-      ? "KISA BIRAK"
-      : t("breath.hold");
+export default function BreathOverlay({ interaction, onSuccess, onFail }) {
+  const holdMs = interaction.holdMs || 7000;
+  const failTo = interaction.fail;
+  const successTo = interaction.success;
 
-  const rhythmTrack = (
-    <div style={{
-      position: "relative",
-      height: 12,
-      width: "100%",
-      border: "1px solid #263c38",
-      backgroundColor: "#050807",
-      boxShadow: "inset 0 0 12px rgba(0,0,0,0.75)",
-      overflow: "hidden",
-    }}>
-      {spikes.map(([a, b], i) => (
-        <div key={`spike-${i}`} style={{
-          position: "absolute",
-          left: Math.max(0, Math.min(100, (a / holdMs) * 100)) + "%",
-          width: Math.max(3, ((b - a) / holdMs) * 100) + "%",
-          top: 0,
-          bottom: 0,
-          backgroundColor: "rgba(150, 40, 34, 0.34)",
-          boxShadow: breath.spike ? "0 0 12px rgba(190,50,42,0.45)" : "none",
-        }} />
-      ))}
-      {releaseWindows.map(([a, b], i) => (
-        <div key={i} style={{
-          position: "absolute",
-          left: Math.max(0, Math.min(100, (a / holdMs) * 100)) + "%",
-          width: Math.max(3, ((b - a) / holdMs) * 100) + "%",
-          top: 0,
-          bottom: 0,
-          backgroundColor: breath.phase === "vent" ? "#9fbf8a" : "#5f7f62",
-          boxShadow: breath.phase === "vent" ? "0 0 14px rgba(150,210,130,0.55)" : "none",
-        }} />
-      ))}
-      <div style={{
-        position: "absolute",
-        left: Math.min(100, (breath.t / holdMs) * 100) + "%",
-        top: -4,
-        bottom: -4,
-        width: 2,
-        backgroundColor: "#e8e4d2",
-        boxShadow: "0 0 8px rgba(255,255,255,0.55)",
-      }} />
-    </div>
-  );
+  // Generate dynamic target key and template based on a hash of the node ID
+  const keysList = ["E", "Q", "F", "R"];
+  const nodeHash = (successTo || "nx").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const targetKey = keysList[nodeHash % keysList.length];
+  
+  // 3 rhythm variations: 0 = Steady, 1 = Accelerating Panic, 2 = Double Thumps (Doublets)
+  const rhythmType = nodeHash % 3;
 
-  const hint = breath.phase === "vent" && !breath.holding
-    ? "SESSIZCE BIRAK - CIGERINI TOPARLA"
-    : breath.phase === "vent" && breath.holding
-      ? "SIMDI KISA BIRAK"
-      : breath.spike && breath.holding
-        ? t("breath.spike")
-        : breath.holding ? "" : breath.phase === "wait" ? t("breath.start") : "";
+  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed
+  const scrollDuration = holdMs <= 7000 ? 1400 : holdMs <= 7800 ? 1700 : 2000;
+
+  const [gameStarted, setGameStarted] = useState(() => {
+    try {
+      return localStorage.getItem("sinir1_breath_tutorial_seen") === "1";
+    } catch (e) {
+      return false;
+    }
+  });
+  const [adrenaline, setAdrenaline] = useState(30); // Starts with minor stress
+  const [spikes, setSpikes] = useState([]);
+  const [flash, setFlash] = useState(null); // 'hit' or 'miss'
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const gameStartedRef = useRef(false);
+  const spikesRef = useRef([]);
+  const adrenalineRef = useRef(30);
+  const startTimeRef = useRef(0);
+  const animationFrameId = useRef(null);
+
+  // Generate heartbeat notes based on the chosen rhythm template
+  useEffect(() => {
+    const list = [];
+    let cur = 1500; // start note after 1.5s to let player react
+
+    if (rhythmType === 1) {
+      // Template 1: Accelerating panic (notes get progressively faster)
+      let interval = 1600;
+      while (cur < holdMs - 800) {
+        list.push({ id: list.length, time: cur, hit: false, missed: false });
+        cur += interval;
+        interval = Math.max(950, interval - 180);
+      }
+    } else if (rhythmType === 2) {
+      // Template 2: Double thumps (lub-dub ... lub-dub)
+      while (cur < holdMs - 900) {
+        list.push({ id: list.length, time: cur, hit: false, missed: false });
+        list.push({ id: list.length + 1, time: cur + 300, hit: false, missed: false });
+        cur += 1800 + Math.random() * 300;
+      }
+    } else {
+      // Template 0: Steady rhythmic beats
+      while (cur < holdMs - 800) {
+        list.push({ id: list.length, time: cur, hit: false, missed: false });
+        cur += 1400 + Math.random() * 400;
+      }
+    }
+
+    setSpikes(list);
+    spikesRef.current = list;
+  }, [holdMs, rhythmType]);
+
+  // Adjust heart sound loop according to adrenaline level
+  useEffect(() => {
+    if (!gameStarted) return;
+
+    const updateHeartRate = () => {
+      const adr = adrenalineRef.current;
+      if (adr >= 80) {
+        AudioSys.heart(280); // Fast heartbeat
+      } else if (adr >= 50) {
+        AudioSys.heart(380); // Moderate heartbeat
+      } else {
+        AudioSys.heart(520); // Normal heartbeat
+      }
+    };
+
+    updateHeartRate();
+    const iv = setInterval(updateHeartRate, 1000);
+    return () => {
+      clearInterval(iv);
+      AudioSys.heart(null);
+    };
+  }, [gameStarted]);
+
+  // Game loop using requestAnimationFrame
+  useEffect(() => {
+    if (!gameStarted) return;
+
+    startTimeRef.current = performance.now();
+    gameStartedRef.current = true;
+
+    const tick = () => {
+      if (!gameStartedRef.current) return;
+
+      const elapsed = performance.now() - startTimeRef.current;
+      setCurrentTime(elapsed);
+
+      // Check for missed notes that scrolled past
+      let adrenalineChanged = false;
+      const updatedSpikes = spikesRef.current.map((s) => {
+        if (!s.hit && !s.missed && elapsed > s.time + 180) {
+          s.missed = true;
+          adrenalineRef.current = Math.min(100, adrenalineRef.current + 20);
+          adrenalineChanged = true;
+          setFlash("miss");
+          AudioSys.blipSfx(180); // Low failure sound
+          setTimeout(() => setFlash(null), 250);
+        }
+        return s;
+      });
+
+      if (adrenalineChanged) {
+        setAdrenaline(adrenalineRef.current);
+        setSpikes([...updatedSpikes]);
+      }
+
+      // Check failure condition
+      if (adrenalineRef.current >= 100) {
+        gameStartedRef.current = false;
+        AudioSys.heart(null);
+        AudioSys.blipSfx(100); // Death sound
+        onFail(failTo);
+        return;
+      }
+
+      // Check success condition (scrolled past the end time)
+      if (elapsed >= holdMs + 1000) {
+        gameStartedRef.current = false;
+        AudioSys.heart(null);
+        onSuccess(successTo);
+        return;
+      }
+
+      animationFrameId.current = requestAnimationFrame(tick);
+    };
+
+    animationFrameId.current = requestAnimationFrame(tick);
+
+    return () => {
+      gameStartedRef.current = false;
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, [gameStarted, holdMs, failTo, successTo, onFail, onSuccess]);
+
+  // Attempt to hit the closest active note
+  const registerHit = useCallback(() => {
+    if (!gameStartedRef.current) return;
+
+    const elapsed = performance.now() - startTimeRef.current;
+    const windowMs = 180; // +/- 180ms hit window
+
+    // Find the closest unhit, not-yet-missed note
+    let closestNote = null;
+    let minDiff = Infinity;
+
+    spikesRef.current.forEach((s) => {
+      if (!s.hit && !s.missed) {
+        const diff = Math.abs(elapsed - s.time);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestNote = s;
+        }
+      }
+    });
+
+    if (closestNote && minDiff <= windowMs) {
+      // HIT Success
+      closestNote.hit = true;
+      adrenalineRef.current = Math.max(0, adrenalineRef.current - 15);
+      setAdrenaline(adrenalineRef.current);
+      setSpikes([...spikesRef.current]);
+      setFlash("hit");
+      AudioSys.blipSfx(560); // High positive blip
+      setTimeout(() => setFlash(null), 200);
+    } else {
+      // False/Empty Press is a MISS
+      adrenalineRef.current = Math.min(100, adrenalineRef.current + 15);
+      setAdrenaline(adrenalineRef.current);
+      setFlash("miss");
+      AudioSys.blipSfx(180);
+      setTimeout(() => setFlash(null), 200);
+    }
+  }, []);
+
+  // Keyboard controls bound to the dynamic target key
+  useEffect(() => {
+    if (!gameStarted) return;
+    const handleKeyDown = (e) => {
+      if (e.key.toLowerCase() === targetKey.toLowerCase() || (targetKey === "Space" && e.key === " ")) {
+        e.preventDefault();
+        registerHit();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [gameStarted, targetKey, registerHit]);
+
+  // UI layout measurements
+  const targetX = 15; // Target zone is located at 15% from left of the container
+
+  const startMinigame = () => {
+    AudioSys.blipSfx(520);
+    try {
+      localStorage.setItem("sinir1_breath_tutorial_seen", "1");
+    } catch (e) {}
+    setGameStarted(true);
+  };
+
+  const getRhythmName = () => {
+    if (rhythmType === 1) return t("lang") === "tr" ? "Ritim: Hızlanan Çarpıntı" : rhythmType === 2 ? "Rhythm: Accelerating panic" : "Rhythmus: Beschleunigt";
+    if (rhythmType === 2) return t("lang") === "tr" ? "Ritim: Çift Atışlar" : rhythmType === 2 ? "Rhythm: Double Thumps" : "Rhythmus: Doppelschläge";
+    return t("lang") === "tr" ? "Ritim: Düzgün Ritim" : rhythmType === 2 ? "Rhythm: Steady Beats" : "Rhythmus: Stetig";
+  };
+
+  const descText = t("breath.desc").replace("[E]", `[${targetKey}]`);
+
+  if (!gameStarted) {
+    return (
+      <div style={styles.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
+        <div style={styles.tutorialPanel}>
+          <div style={styles.tutorialTitle}>⚠️ {t("breath.title")}</div>
+          <div style={styles.tutorialDesc}>
+            {descText}
+          </div>
+
+          <div style={styles.rhythmIndicator}>
+            <span>{getRhythmName()}</span>
+            <span style={styles.speedLabel}>{holdMs <= 7000 ? "Zorluk: YÜKSEK" : "Zorluk: ORTA"}</span>
+          </div>
+
+          <div style={styles.tutorialPreviewBox}>
+            <div style={styles.previewTrack}>
+              <div style={styles.previewTargetZone}>
+                <div style={styles.previewTargetLine} />
+              </div>
+              <svg width="40" height="60" viewBox="0 0 40 60" style={styles.previewHeartbeat}>
+                <path d="M 0 30 L 12 30 L 16 45 L 20 5 L 24 55 L 28 30 L 40 30" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div style={styles.previewKeycap}>{targetKey}</div>
+          </div>
+
+          <button style={styles.startBtn} onClick={startMinigame}>
+            {t("breath.startBtn")}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        ...S.breathOverlay,
-        pointerEvents: "auto",
-        touchAction: "none",
-        userSelect: "none",
-        WebkitUserSelect: "none",
-      }}
-      onPointerDown={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onDown();
-      }}
-      onPointerUp={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onUp();
-      }}
-      onPointerCancel={(e) => {
-        e.stopPropagation();
-        onUp();
-      }}
-    >
-      <div style={S.breathTitle}>{title}</div>
-      <div style={S.breathPhaseText}>
-        {breath.t < 2500 ? t("breath.ph1")
-          : breath.t < 5000 ? t("breath.ph2")
-          : breath.t < 7000 ? t("breath.ph3")
-          : t("breath.ph4")}
-      </div>
-      <div style={S.breathBars}>
-        <div style={S.breathBarBlock}>
-          <span style={S.statLabel}>RITIM</span>
-          {rhythmTrack}
+    <div style={styles.overlayDim} onPointerDown={(e) => { e.stopPropagation(); registerHit(); }}>
+      <div style={styles.gamePanel} onClick={(e) => e.stopPropagation()}>
+        <div style={styles.gameHeader}>
+          <span style={styles.gameTitle}>{t("breath.title")}</span>
+          <span style={{
+            ...styles.gameStatus,
+            color: adrenaline > 70 ? "#c23b2e" : adrenaline > 40 ? "#c79a52" : "#9fc8a4",
+            textShadow: adrenaline > 70 ? "0 0 10px rgba(194,59,46,0.5)" : "none",
+          }}>
+            {adrenaline > 70 ? t("breath.panic") : t("breath.calm")}
+          </span>
         </div>
-        <div style={S.breathBarBlock}>
-          <span style={S.statLabel}>{t("breath.danger")}</span>
-          <div style={S.mechProgTrack}>
+
+        {/* Adrenaline Meter */}
+        <div style={styles.meterContainer}>
+          <div style={styles.meterLabelRow}>
+            <span style={styles.meterLabel}>{t("breath.adrenaline")}</span>
+            <span style={styles.meterValue}>{Math.round(adrenaline)}%</span>
+          </div>
+          <div style={styles.meterTrack}>
             <div style={{
-              ...S.mechProgFill,
-              width: Math.min(100, (breath.t / holdMs) * 100) + "%",
-              backgroundColor: "#7fae86",
+              ...styles.meterFill,
+              width: `${adrenaline}%`,
+              backgroundColor: adrenaline > 70 ? "#c23b2e" : adrenaline > 40 ? "#c79a52" : "#7fae86",
+              boxShadow: adrenaline > 70 ? "0 0 12px #c23b2e" : "none",
             }} />
           </div>
         </div>
-        <div style={S.breathBarBlock}>
-          <span style={S.statLabel}>{t("breath.lung")}</span>
-          <div style={S.mechProgTrack}>
+
+        {/* Scrolling Track */}
+        <div style={styles.trackContainer}>
+          {/* Target Zone */}
+          <div style={{
+            ...styles.targetZone,
+            borderColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#454a3f",
+            boxShadow: flash === "hit" ? "inset 0 0 18px rgba(127,174,134,0.5), 0 0 15px rgba(127,174,134,0.3)" 
+                     : flash === "miss" ? "inset 0 0 18px rgba(194,59,46,0.5), 0 0 15px rgba(194,59,46,0.3)" 
+                     : "none",
+            backgroundColor: flash === "hit" ? "rgba(127,174,134,0.08)" : flash === "miss" ? "rgba(194,59,46,0.08)" : "rgba(0,0,0,0.15)",
+          }}>
             <div style={{
-              ...S.mechProgFill,
-              width: Math.min(100, (breath.lung / lungMs) * 100) + "%",
-              backgroundColor: breath.safeRelease ? "#d0a64a" : "#c23b2e",
+              ...styles.targetLine,
+              backgroundColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#566052",
             }} />
           </div>
+
+          {/* Grid lines background */}
+          <div style={styles.trackGrid} />
+
+          {/* Scrolling Heartbeats */}
+          {spikes.map((s) => {
+            const elapsed = currentTime;
+            const x = targetX + ((s.time - elapsed) / scrollDuration) * (100 - targetX);
+
+            if (x < -10 || x > 110) return null;
+
+            return (
+              <div
+                key={s.id}
+                style={{
+                  position: "absolute",
+                  left: `${x}%`,
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  transition: "none",
+                  opacity: s.hit ? 0.35 : 1,
+                  filter: s.hit 
+                    ? "drop-shadow(0 0 2px rgba(127,174,134,0.4))"
+                    : s.missed 
+                      ? "drop-shadow(0 0 4px rgba(194,59,46,0.7))" 
+                      : "drop-shadow(0 0 6px rgba(255,255,255,0.7))",
+                }}
+              >
+                <svg width="42" height="64" viewBox="0 0 42 64" style={{ overflow: "visible" }}>
+                  <path
+                    d="M 0 32 L 12 32 L 16 48 L 21 8 L 26 56 L 30 32 L 42 32"
+                    fill="none"
+                    stroke={s.hit ? "#7fae86" : s.missed ? "#c23b2e" : "#ffffff"}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            );
+          })}
         </div>
-      </div>
-      <div style={{
-        ...S.breathHint,
-        color: breath.phase === "vent" ? "#d6c56f" : S.breathHint.color,
-      }}>
-        {hint}
+
+        {/* Input area prompt */}
+        <div style={styles.inputArea}>
+          <div style={{
+            ...styles.keycap,
+            transform: flash ? "scale(0.92)" : "scale(1)",
+            borderColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#566052",
+            color: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#d7d0b8",
+            boxShadow: flash === "hit" ? "0 0 15px rgba(127,174,134,0.3)" : "none",
+          }}>
+            {targetKey}
+          </div>
+          <div style={styles.inputTip}>
+            {t("breath.target")}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+const styles = {
+  overlayDim: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
+    zIndex: 9999,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
+  },
+  tutorialPanel: {
+    width: "min(92vw, 420px)",
+    backgroundColor: "#121413",
+    border: "2px solid #5a523b",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.9), inset 0 0 25px rgba(90,82,59,0.15)",
+    padding: "24px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    borderRadius: "4px",
+    color: "#d7d0b8",
+  },
+  tutorialTitle: {
+    fontSize: "20px",
+    fontFamily: "'Courier New', monospace",
+    fontWeight: "bold",
+    letterSpacing: "0.1em",
+    color: "#e8e4d2",
+    textAlign: "center",
+    borderBottom: "1px solid #4a4538",
+    paddingBottom: "12px",
+  },
+  tutorialDesc: {
+    fontSize: "14px",
+    fontFamily: "system-ui, sans-serif",
+    lineHeight: "1.6",
+    color: "#b0ab97",
+    textAlign: "justify",
+  },
+  rhythmIndicator: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: "12px",
+    fontFamily: "'Courier New', monospace",
+    color: "#c79a52",
+    borderBottom: "1px dashed #30372f",
+    paddingBottom: "6px",
+  },
+  speedLabel: {
+    color: "#8a9a97",
+  },
+  tutorialPreviewBox: {
+    backgroundColor: "#080909",
+    border: "1px solid #3c382b",
+    padding: "16px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "18px",
+    position: "relative",
+  },
+  previewTrack: {
+    width: "160px",
+    height: "50px",
+    border: "1px dashed #4a5148",
+    position: "relative",
+    overflow: "hidden",
+    backgroundColor: "#0f1110",
+  },
+  previewTargetZone: {
+    position: "absolute",
+    left: "15%",
+    top: 0,
+    bottom: 0,
+    width: "24px",
+    transform: "translateX(-50%)",
+    border: "1.5px solid rgba(127,174,134,0.6)",
+    backgroundColor: "rgba(127,174,134,0.12)",
+    display: "flex",
+    justifyContent: "center",
+  },
+  previewTargetLine: {
+    width: "1.5px",
+    backgroundColor: "#7fae86",
+    height: "100%",
+  },
+  previewHeartbeat: {
+    position: "absolute",
+    left: "42%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    opacity: 0.8,
+    filter: "drop-shadow(0 0 3px rgba(255,255,255,0.6))",
+  },
+  previewKeycap: {
+    width: "36px",
+    height: "36px",
+    border: "2px solid #e8e4d2",
+    borderRadius: "6px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "'Courier New', monospace",
+    fontWeight: "bold",
+    fontSize: "16px",
+    background: "linear-gradient(180deg, #2c2d27, #0d0e0d)",
+    color: "#e8e4d2",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.5)",
+  },
+  startBtn: {
+    padding: "14px",
+    backgroundColor: "#7fae86",
+    border: "none",
+    color: "#050706",
+    fontWeight: "bold",
+    fontSize: "14px",
+    letterSpacing: "0.15em",
+    fontFamily: "'Courier New', monospace",
+    cursor: "pointer",
+    boxShadow: "0 8px 20px rgba(127,174,134,0.3)",
+    transition: "background-color 0.2s",
+  },
+  gamePanel: {
+    width: "min(92vw, 440px)",
+    backgroundColor: "#0d0f0e",
+    border: "2px solid #30372f",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "18px",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.95)",
+  },
+  gameHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  gameTitle: {
+    fontFamily: "'Courier New', monospace",
+    fontSize: "13px",
+    fontWeight: "bold",
+    color: "#8a9a97",
+    letterSpacing: "0.08em",
+  },
+  gameStatus: {
+    fontFamily: "'Courier New', monospace",
+    fontSize: "13px",
+    fontWeight: "bold",
+    letterSpacing: "0.08em",
+  },
+  meterContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  },
+  meterLabelRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontFamily: "'Courier New', monospace",
+    fontSize: "11px",
+    color: "#8a9a97",
+  },
+  meterLabel: {
+    letterSpacing: "0.05em",
+  },
+  meterValue: {
+    fontWeight: "bold",
+  },
+  meterTrack: {
+    height: "10px",
+    backgroundColor: "#171d1b",
+    border: "1px solid #232c29",
+    borderRadius: "2px",
+    overflow: "hidden",
+  },
+  meterFill: {
+    height: "100%",
+    transition: "width 150ms ease, background-color 150ms ease",
+  },
+  trackContainer: {
+    position: "relative",
+    height: "90px",
+    border: "2px solid #232c29",
+    backgroundColor: "#050706",
+    overflow: "hidden",
+    boxShadow: "inset 0 0 25px rgba(0,0,0,0.9)",
+  },
+  trackGrid: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: "linear-gradient(rgba(35,44,41,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(35,44,41,0.2) 1px, transparent 1px)",
+    backgroundSize: "20px 20px",
+  },
+  targetZone: {
+    position: "absolute",
+    left: "15%",
+    top: 0,
+    bottom: 0,
+    width: "36px",
+    transform: "translateX(-50%)",
+    borderLeft: "2px solid",
+    borderRight: "2px solid",
+    zIndex: 10,
+    pointerEvents: "none",
+    display: "flex",
+    justifyContent: "center",
+    transition: "all 100ms ease",
+  },
+  targetLine: {
+    width: "2px",
+    height: "100%",
+    opacity: 0.8,
+  },
+  inputArea: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "8px",
+    marginTop: "8px",
+  },
+  keycap: {
+    width: "48px",
+    height: "48px",
+    border: "2px solid",
+    borderRadius: "8px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "'Courier New', monospace",
+    fontWeight: "bold",
+    fontSize: "20px",
+    background: "linear-gradient(180deg, #1b1c18, #050605)",
+    boxShadow: "0 6px 12px rgba(0,0,0,0.6)",
+    transition: "transform 100ms ease, border-color 100ms ease",
+  },
+  inputTip: {
+    fontFamily: "'Courier New', monospace",
+    fontSize: "11px",
+    color: "#6c7a77",
+    letterSpacing: "0.05em",
+  },
+};

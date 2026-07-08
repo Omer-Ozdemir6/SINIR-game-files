@@ -1,5 +1,5 @@
 /* ============================================================
-   SINIR-1 — BÖLÜM 4: "K-3 / BAHÇE"  (tam sürüm)
+   PERISHED — BÖLÜM 4: "K-3 / BAHÇE"  (tam sürüm)
    Katın sahibi: DR. NEVIN ARAS — biyolog, "bahçeye verilmiş".
    Buluntu'nun sporlarıyla bir bitki-varlığa dönüşmüş; ama içinde
    hâlâ bir insan kalıntısı var. Şef onu K-4'ten buraya sürmüştü.
@@ -118,7 +118,7 @@ export const EP04 = {
     n_fide: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Fide odasında yüzlerce saksı raflara dizilmiş. Etiketleri düzenli, toprakları nemli, prosedürleri tamam. İçlerinden çıkan solgun filizler çocuk ellerine benziyor; doğanın değil, arşivlenmiş suçun büyümesi bu. Ortadaki dev saksıda mavi spor kesesi irin dolu bir çıban gibi atıyor. SINIR-1 burada bitki yetiştirmemiş. Kanıtı köklendirmiş." },
+        { type: "narrate", text: "Fide odasında yüzlerce saksı raflara dizilmiş. Etiketleri düzenli, toprakları nemli, prosedürleri tamam. İçlerinden çıkan solgun filizler çocuk ellerine benziyor; doğanın değil, arşivlenmiş suçun büyümesi bu. Ortadaki dev saksıda mavi spor kesesi irin dolu bir çıban gibi atıyor. PERISHED burada bitki yetiştirmemiş. Kanıtı köklendirmiş." },
         { type: "document", open: false, doc: {
           id: "d_spor_test", title: "Biyolojik Uyum Testi — Mavi Spor",
           body: "BİRİM: K-3 Biyoloji / Kapalı Kök Ağı\nTEST: Spor kesesi temas protokolü\n\nGözlem 12-A: Spor bulutu solunduğunda deneklerde ilk 9 saniyede göz kanaması, 14 saniyede kontrolsüz kasılma, 31 saniyede deri altı filizlenme görüldü.\n\nGözlem 12-B: Nefesini tutan deneklerde spor yüzeyde kaldı. Panik anında alınan tek nefes bile köklenmeyi başlatmaya yetti.\n\nSONUÇ: Spor, akciğer dokusunu giriş kapısı olarak kullanıyor. Koruyucu maske yetersiz. Tek geçici yöntem: temas anında kontrollü nefes kesme ve aralıklı sessiz boşaltma.\n\nUYARI: Deneklerden biri ölmeden önce 'beni toprağa geri koymayın' cümlesini 46 kez tekrarladı." } },
@@ -303,7 +303,7 @@ export const EP04 = {
     n_kasa: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Nevin'in tohum kasası: Kalın köklerin arkasına gizlenmiş çelik bir SINIR-1 güvenlik kabini. Üzerinde biyometrik üç adet yuva var ama parmak izi değil, kanlı canlı ÖRNEK istiyorlar. Kasa açılırsa içindeki K-2 anahtar kartını alabilirsin. Durumun ne?" },
+        { type: "narrate", text: "Nevin'in tohum kasası: Kalın köklerin arkasına gizlenmiş çelik bir PERISHED güvenlik kabini. Üzerinde biyometrik üç adet yuva var ama parmak izi değil, kanlı canlı ÖRNEK istiyorlar. Kasa açılırsa içindeki K-2 anahtar kartını alabilirsin. Durumun ne?" },
         { type: "alert", text: "SİSTEM KİLİTLİ — Malzemeler eksik! Mavi spor, kök özütü ve kanı bulmadan bu çelik kapı açılmaz.", if: { flag: "ornek3", equals: false } },
         { type: "narrate", text: "Üç örneği de kullandın ve serumu yaptın. Kasanın üzerindeki köklü okuyucu mekanizma, şırıngadaki altın sıvıya doğru aç bir sülük gibi uzanıyor. Serumu bir anahtar gibi kabul edecek.", if: { flag: "serumHazir", equals: true } },
         { type: "narrate", text: "Üç örnek de cebinde ama henüz kimya masasına dokunmadın. Bu ham malzemeleri doğrudan kasaya kurban edip kartı alabilirsin ama o zaman Nevin'i kurtaracak bir serumun asla olmayacak. Karar ver.", if: { flag: "ornek3", equals: true, }, },
@@ -341,7 +341,7 @@ export const EP04 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Sera merkezine dönüyorsun. Nevin toprağa gömülmüş etten bir kütle gibi duruyor; ama gözlerini açtığında canavardan önce yorgun bir insan görüyorsun. Bu daha dayanılmaz. Çünkü onu öldürmek kolay olurdu. Onu anlamak zor. K-2 kapısı arkasında, yani çıkışın bir hastanın göğüs kafesinden geçiyor. SINIR-1 her kaçış yolunu birinin suçuna bağlamış." },
+        { type: "narrate", text: "Sera merkezine dönüyorsun. Nevin toprağa gömülmüş etten bir kütle gibi duruyor; ama gözlerini açtığında canavardan önce yorgun bir insan görüyorsun. Bu daha dayanılmaz. Çünkü onu öldürmek kolay olurdu. Onu anlamak zor. K-2 kapısı arkasında, yani çıkışın bir hastanın göğüs kafesinden geçiyor. PERISHED her kaçış yolunu birinin suçuna bağlamış." },
         { type: "narrate", text: "\"Serumu kokluyorum...\" diye inliyor, ağzından sümüksü sıvılar dökülerek. \"Selin'in kanı... Hâlâ taze, hâlâ sıcak.\" Etraftaki devasa kökler bir kırbaç gibi havaya kalkıyor, etrafını sarıyor ama henüz darbe indirmiyor. \"Karar ver, küçük böcek. Bu acıyı bitirecek misin, yoksa beni bu kabusa mahkum mu edeceksin?\"" },
         { type: "waitTap" },
       ],

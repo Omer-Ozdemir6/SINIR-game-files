@@ -1,10 +1,10 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { styles as S } from "../styles/theme";
 import { AudioSys } from "../audio/AudioSys";
 import { t } from "../i18n";
 
 /* ============================================================
-   AÇILIŞ SİNEMATİĞİ v2 — "İHBARCI" (SINIR-1 kayıt akışı)
+   AÇILIŞ SİNEMATİĞİ v2 — "İHBARCI" (PERISHED kayıt akışı)
    1) Mail YARISI YAZILMIŞ halde açılır — sadece SONUNUN yazılışını
       izleriz (Baturay'ın ihbar maili, bir gazeteciye).
    2) Bekleme → imleç SİL'e gider, basar → "TASLAK SİLİNSİN Mİ?"
@@ -16,7 +16,7 @@ import { t } from "../i18n";
    ============================================================ */
 
 const PREFILLED =
-"Beni tanımıyorsunuz. Hızlı yazmak zorundayım — ağı izliyor olabilirler.\n\nSINIR-1'de gece vardiya amiriyim. Karadeniz'de, hiçbir haritada olmayan bir araştırma istasyonu. Burada korkunç şeyler oluyor ve gördüklerimin yarısına kendim de inanmıyorum.\n\nMürettebat uykusunda sayı sayıyor. Hepsi. Aynı sayıları. İstasyon şefi buna 'aile düzeni' diyor. Revir kayıtları saklanıyor, denetim taleplerim";
+"Beni tanımıyorsunuz. Hızlı yazmak zorundayım — ağı izliyor olabilirler.\n\nPERISHED'da gece vardiya amiriyim. Karadeniz'de, hiçbir haritada olmayan bir araştırma istasyonu. Burada korkunç şeyler oluyor ve gördüklerimin yarısına kendim de inanmıyorum.\n\nMürettebat uykusunda sayı sayıyor. Hepsi. Aynı sayıları. İstasyon şefi buna 'aile düzeni' diyor. Revir kayıtları saklanıyor, denetim taleplerim";
 
 const TYPED_END =
 " cevapsız kalıyor.\n\nK-2 ambarında bir şey tutuyorlar. Kazıdan çıkan bir şey. Adına 'Buluntu' diyorlar ve ona dua eder gibi bakıyorlar.\n\nBu mail size ulaşırsa: buraya kimseyi tek başına göndermeyin. Ve gece üçten sonra telsiz bandını taramayın.\n\n— Baturay Soylu, gece vardiya amiri";
@@ -187,10 +187,10 @@ function SinirTitleCard({ leaving }) {
         textShadow: "0 0 18px rgba(220,248,220,0.68), 0 0 3px rgba(255,255,255,0.84)",
         filter: "blur(0.05px)",
       }}>
-        {["S", "I", "N", "I", "R", "-", "1"].map((ch, i) => (
+        {["P", "E", "R", "I", "S", "H", "E", "D"].map((ch, i) => (
           <span key={i} style={{
-            transform: i === 2 ? "translateY(-5px) scaleY(1.16)" : "none",
-            opacity: i === 5 ? 0.72 : 1,
+            transform: i === 4 ? "translateY(-5px) scaleY(1.16)" : "none",
+            opacity: 1,
           }}>{ch}</span>
         ))}
       </div>
@@ -426,7 +426,7 @@ export default function IntroCinematic({ onFinish }) {
             </div>
             <div style={W.field}>
               <span style={W.fieldLabel}>Konu</span>
-              <span style={W.fieldVal}>İHBAR / SINIR-1 Araştırma İstasyonu'nda Yasadışı Faaliyet</span>
+              <span style={W.fieldVal}>İHBAR / PERISHED Araştırma İstasyonu'nda Yasadışı Faaliyet</span>
             </div>
             <div style={W.page} ref={pageRef}>
               <div style={W.ink}>

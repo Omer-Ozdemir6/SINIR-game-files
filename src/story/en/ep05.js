@@ -663,6 +663,7 @@ export const EP05 = {
         target: 433.6,
         success: "n_buluntu_yuz",
         cancel: "n_verici_frekans",
+        mode: "transmit",
       },
     },
 
