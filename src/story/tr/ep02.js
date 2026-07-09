@@ -628,6 +628,13 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "ÇILGINLAR GİBİ KOŞUYORSUN! Kalbin kulaklarında patlıyor. Arkandaki o devasa adam feneri sallayarak geliyor; adımları ağır ama o kadar büyük ki aradaki mesafe imkansız bir hızla kapanıyor! Önünde iki vahşi seçenek var: Sağdaki servis merdiveninin çelik kapısı ya da zemindeki o paslı havalandırma menfezi!" },
       ],
+      choices: [
+        { id: "menfez", text: "Menfeze doğru hamle yap ve kapağını zorla", next: "n_harun2_chase" },
+        { id: "kapi", text: "Çelik kapıyı açmayı dene", next: "n_olum_harun2" },
+      ],
+    },
+
+    n_harun2_chase: {
       interaction: {
         kind: "chase",
         title: "K-5 KORİDORU",

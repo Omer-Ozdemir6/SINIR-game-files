@@ -42,7 +42,14 @@ export const AudioSys = {
   n: {},
 
   async init() {
-    if (this.inited) return;
+    if (this.inited) {
+      try {
+        if (Tone.context && Tone.context.state !== "running") {
+          await Tone.context.resume();
+        }
+      } catch (e) {}
+      return;
+    }
     try {
       await Tone.start();
 
@@ -553,13 +560,48 @@ export const AudioSys = {
   },
 
   batteryLowSfx() {
-    if (!this.inited || !this.enabled) return;
+    if (!this.enabled) return;
+    // 1. Önce soundMap'ten bir dosya tanımlanmışsa onu çalmayı dene
+    if (this.playSample("batteryLow")) return;
+
+    // 2. Tone.js aktif ve çalışıyorsa sentetik sesi kullan
+    if (this.inited && Tone.context && Tone.context.state === "running") {
+      try {
+        this.n.blip.triggerAttackRelease(520, "64n", undefined, 0.85);
+        setTimeout(() => {
+          try { this.n.blip.triggerAttackRelease(360, "64n", undefined, 0.72); } catch (e) {}
+        }, 115);
+        return;
+      } catch (e) {}
+    }
+
+    // 3. Fallback: Tarayıcının ham Web Audio API'si ile "dı-dıt" bip sesi oluştur
     try {
-      this.n.blip.triggerAttackRelease(520, "64n", undefined, 0.85);
-      setTimeout(() => {
-        try { this.n.blip.triggerAttackRelease(360, "64n", undefined, 0.72); } catch (e) {}
-      }, 115);
-    } catch (e) {}
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const tempCtx = new AudioCtx();
+        const playBeep = (freq, vol, delay) => {
+          const osc = tempCtx.createOscillator();
+          const gainNode = tempCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(tempCtx.destination);
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, tempCtx.currentTime + delay);
+          gainNode.gain.setValueAtTime(vol * 0.12, tempCtx.currentTime + delay);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, tempCtx.currentTime + delay + 0.08);
+          osc.start(tempCtx.currentTime + delay);
+          osc.stop(tempCtx.currentTime + delay + 0.08);
+        };
+        // Dı-dıt çift ses
+        playBeep(520, 0.85, 0);
+        playBeep(360, 0.72, 0.115);
+        setTimeout(() => {
+          try { tempCtx.close(); } catch (e) {}
+        }, 300);
+      }
+    } catch (err) {
+      console.warn("Fallback battery beep failed:", err);
+    }
   },
 
   objectiveSfx() {

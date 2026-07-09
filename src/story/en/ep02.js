@@ -628,6 +628,13 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "YOU SPRINT LIKE CRAZY! Your heart explodes in your ears. That massive man behind you pursues, swinging his flashlight; his strides are heavy but so immense that the distance closes with impossible speed! Two savage choices lie before you: the steel door of the service ladder to the right, or that rusted ventilation vent on the floor!" },
       ],
+      choices: [
+        { id: "menfez", text: "Lunge toward the vent and force its cover open", next: "n_harun2_chase" },
+        { id: "kapi", text: "Try to open the steel door", next: "n_olum_harun2" },
+      ],
+    },
+
+    n_harun2_chase: {
       interaction: {
         kind: "chase",
         title: "K-5 CORRIDOR",
@@ -709,7 +716,7 @@ export const EP02 = {
         { type: "system", text: "— THE ORDEAL CONCLUDED, THE TRUE HORROR BEGINS —" },
       ],
       choices: [
-        { id: "k4", text: "Climb with the hatch into the dim corridor of K-4", next: "n_k4_grid_giris" },
+        { id: "k4", text: "Climb with the hatch into the dim corridor of K-4", next: "n_k4_giris" },
       ],
     },
   },

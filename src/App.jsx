@@ -1082,12 +1082,14 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, death, dying, pendingBattery, interaction, screen, ended, dark, stats.gurultu]);
 
+  const isBatteryLow = battery > 0 && battery <= 25;
+
   useEffect(() => {
     if (batteryWarnRef.current) {
       clearInterval(batteryWarnRef.current);
       batteryWarnRef.current = null;
     }
-    const active = mode === "game" && battery > 0 && battery <= 25 && !death && !dying && !screen;
+    const active = mode === "game" && isBatteryLow && !death && !dying && !screen;
     if (!active) return;
     AudioSys.batteryLowSfx();
     batteryWarnRef.current = setInterval(() => AudioSys.batteryLowSfx(), 1600);
@@ -1097,7 +1099,7 @@ export default function App() {
         batteryWarnRef.current = null;
       }
     };
-  }, [battery, mode, death, dying, screen]);
+  }, [isBatteryLow, mode, death, dying, screen]);
 
   useEffect(() => {
     if (battery > 0 && battery <= 25) {

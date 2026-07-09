@@ -29,10 +29,13 @@ const CFG_SYMBOLS = {
 };
 
 const CFG_RINGS = {
+  clockwiseOnly: true,
+  variant: "vitray",
+  title: "VİTRAY TESTİ — CAMI HİZALA",
   rings: [
-    { color: "#4a6ac2", step: 30, offset: 150 },
-    { color: "#4aa26a", step: 45, offset: 225 },
-    { color: "#c24a3a", step: 40, offset: 120 },
+    { label: "İÇ", color: "#6aaa7a", step: 30, offset: 150 },
+    { label: "ORTA", color: "#c88a9a", step: 45, offset: 225 },
+    { label: "DIŞ", color: "#aa8ab8", step: 40, offset: 120 },
   ],
   // eksik parça örneği: bayrak alınmadan kilit açılmaz
   pieces: [
@@ -107,7 +110,7 @@ export default function PuzzleTest({ onBack, onDemo }) {
             Karo Kapısı
           </button>
           <button className="s1-btn s1-mm" style={S.mmBtn} onClick={() => setOpen("colorgrid")}>
-            Renk Panosu
+            Heksagon Lahit Bulmacası
           </button>
           {onDemo && (
             <button className="s1-btn s1-mm" style={S.mmBtn} onClick={onDemo}>

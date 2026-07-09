@@ -25,6 +25,7 @@ export const SFX_FILES = {
   boom: "",       // ölüm/darbe vuruşu
   glitch: "/audio/sfx/glitch.mp3",     // parazit patlaması
   heartbeat: "/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
+  batteryLow: "", // pil zayıf uyarısı (dı-dıt sesi)
 };
 
 export const MUSIC_FILES = {

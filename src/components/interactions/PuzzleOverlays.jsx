@@ -4,17 +4,17 @@ import { AudioSys } from "../../audio/AudioSys";
 import { t } from "../../i18n";
 
 /* ============================================================
-   SINIR-1 — BULMACA BİLEŞENLERİ v2
-   Hepsi kendi durumunu tutar; dış kancalar: onSuccess / onFail / onCancel.
-   Story kullanımı: interaction: { kind, ...config, success, cancel }
+   SINIR-1 â€” BULMACA BÄ°LEÅENLERÄ° v2
+   Hepsi kendi durumunu tutar; dÄ±ÅŸ kancalar: onSuccess / onFail / onCancel.
+   Story kullanÄ±mÄ±: interaction: { kind, ...config, success, cancel }
 
    KINDS:
-   · shadow    — iki parçalı gölgeyi duvar iziyle hizala
-   · wires     — kabloları doğru portlara bağla (devre yaması)
-   · symbols   — dökümandaki sembolleri doğru SIRAYLA bas (RE8 çan kilidi)
-   · rings     — renkli halkaları çevirip vitrayı bütünleştir (RE8 cam)
-   · tiles     — karoların yerini değiştirip deseni tamamla (karo kapısı)
-   · colorgrid — hücre renklerini döndürüp şemayı eşle (renk panosu)
+   Â· shadow    â€” iki parÃ§alÄ± gÃ¶lgeyi duvar iziyle hizala
+   Â· wires     â€” kablolarÄ± doÄŸru portlara baÄŸla (devre yamasÄ±)
+   Â· symbols   â€” dÃ¶kÃ¼mandaki sembolleri doÄŸru SIRAYLA bas (RE8 Ã§an kilidi)
+   Â· rings     â€” renkli halkalarÄ± Ã§evirip vitrayÄ± bÃ¼tÃ¼nleÅŸtir (RE8 cam)
+   Â· tiles     â€” karolarÄ±n yerini deÄŸiÅŸtirip deseni tamamla (karo kapÄ±sÄ±)
+   Â· colorgrid â€” hÃ¼cre renklerini dÃ¶ndÃ¼rÃ¼p ÅŸemayÄ± eÅŸle (renk panosu)
    ============================================================ */
 
 const mono = "'Courier New', ui-monospace, monospace";
@@ -48,10 +48,10 @@ const puzzleFace = {
 const near = (a, b, tol) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
 
 /* ============================================================
-   1) GÖLGE HİZALAMA v3 — nesne HER YÖNE döner.
-   Üç eksen: DÖNDÜR (Z), EĞ (X — dikey basıklık), YATIR (Y — yatay
-   basıklık). Sözde-3B: eğimler silüeti cos ile sıkıştırır; yanlış
-   eksende doğru görüntü İMKANSIZ olur. Yeşil ipucu YOK — göz kararı.
+   1) GÃ–LGE HÄ°ZALAMA v3 â€” nesne HER YÃ–NE dÃ¶ner.
+   ÃœÃ§ eksen: DÃ–NDÃœR (Z), EÄ (X â€” dikey basÄ±klÄ±k), YATIR (Y â€” yatay
+   basÄ±klÄ±k). SÃ¶zde-3B: eÄŸimler silÃ¼eti cos ile sÄ±kÄ±ÅŸtÄ±rÄ±r; yanlÄ±ÅŸ
+   eksende doÄŸru gÃ¶rÃ¼ntÃ¼ Ä°MKANSIZ olur. YeÅŸil ipucu YOK â€” gÃ¶z kararÄ±.
    config: { targetRot, targetTiltX, targetTiltY, step?15,
              startRot?, startTiltX?, startTiltY? }
    ============================================================ */
@@ -60,53 +60,56 @@ const TILT_MAX = 75;
 const rad = (d) => (d * Math.PI) / 180;
 
 /* ------------------------------------------------------------
-   3D GÖLGE NESNESİ — "kalıntı".
-   Nesne 3B çizgi segmentlerinden oluşur. Oyuncu iki eksende
-   döndürür (yaw = yatay, pitch = dikey). Her açıda nesnenin
-   2B izdüşümü (gölgesi) FARKLI görünür.
-   Doğru açı çiftinde gölge hedef silüete oturur → kilit.
+   3D GÃ–LGE NESNESÄ° â€” "kalÄ±ntÄ±".
+   Nesne 3B Ã§izgi segmentlerinden oluÅŸur. Oyuncu iki eksende
+   dÃ¶ndÃ¼rÃ¼r (yaw = yatay, pitch = dikey). Her aÃ§Ä±da nesnenin
+   2B izdÃ¼ÅŸÃ¼mÃ¼ (gÃ¶lgesi) FARKLI gÃ¶rÃ¼nÃ¼r.
+   DoÄŸru aÃ§Ä± Ã§iftinde gÃ¶lge hedef silÃ¼ete oturur â†’ kilit.
 
-   Nesne: PERISHED evrenine ait deforme bir kalıntı. Doğru açıda
-   gölgesi BULUNTU'NUN İŞARETİ'ne (dairesel sonar + merkez göz +
-   yayılan kollar) benzer.
+   Nesne: PERISHED evrenine ait deforme bir kalÄ±ntÄ±. DoÄŸru aÃ§Ä±da
+   gÃ¶lgesi BULUNTU'NUN Ä°ÅARETÄ°'ne (dairesel sonar + merkez gÃ¶z +
+   yayÄ±lan kollar) benzer.
    ------------------------------------------------------------ */
 
 // 3B nokta [x,y,z]; segment = [i,j] iki nokta indexi
-// Kalıntının düğüm noktaları (Buluntu işareti doğru açıda belirir)
+// KalÄ±ntÄ±nÄ±n dÃ¼ÄŸÃ¼m noktalarÄ± (Buluntu iÅŸareti doÄŸru aÃ§Ä±da belirir)
 const OBJ_NODES = [
-  [0, 0, 0],       // 0 merkez
-  [0, -58, 6],     // 1 üst kol
-  [50, -20, -8],   // 2 sağ üst
-  [58, 22, 8],     // 3 sağ alt
-  [22, 56, -6],    // 4 alt sağ
-  [-22, 58, 6],    // 5 alt sol
-  [-58, 20, -8],   // 6 sol alt
-  [-50, -22, 8],   // 7 sol üst
-  [0, 0, 46],      // 8 öne çıkıntı (göz sapı) — derinlik ekseni
-  [0, 0, -40],     // 9 arkaya çıkıntı
+  [0, -70, 10],    // 0: Haç üst ucu
+  [0, 70, -15],    // 1: Haç alt ucu
+  [-45, -15, -20],  // 2: Yatay sol uç
+  [45, -15, 20],   // 3: Yatay sağ uç
+  [-25, -15, -12], // 4: Çember sol orta (r=25)
+  [0, -40, 18],    // 5: Çember üst (r=25)
+  [25, -15, -18],  // 6: Çember sağ orta (r=25)
+  [0, 10, 12],     // 7: Çember alt (r=25)
+  [-18, -33, -15], // 8: Çember sol-üst
+  [18, -33, 15],   // 9: Çember sağ-üst
+  [18, 3, -15],    // 10: Çember sağ-alt
+  [-18, 3, 15],    // 11: Çember sol-alt
 ];
 const OBJ_EDGES = [
-  [0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7], // yayılan kollar
-  [1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,1], // dış halka
-  [0,8],[0,9],                                // derinlik çubukları
+  [0, 1],          // Dikey gövde çizgisi
+  [2, 3],          // Yatay kol çizgisi
+  [4, 8], [8, 5], [5, 9], [9, 6], [6, 10], [10, 7], [7, 11], [11, 4] // Hüzme dairesi (Halo çemberi)
 ];
 
-// nokta bulutunu yaw/pitch ile döndür ve 2B'ye izdüşür (ortografik)
+
+// nokta bulutunu yaw/pitch ile dÃ¶ndÃ¼r ve 2B'ye izdÃ¼ÅŸÃ¼r (ortografik)
 function project(nodes, yawDeg, pitchDeg) {
   const cy = Math.cos(rad(yawDeg)), sy = Math.sin(rad(yawDeg));
   const cx = Math.cos(rad(pitchDeg)), sx = Math.sin(rad(pitchDeg));
   return nodes.map(([x, y, z]) => {
-    // yaw: Y ekseni etrafında (x,z döner)
+    // yaw: Y ekseni etrafÄ±nda (x,z dÃ¶ner)
     let x1 = x * cy + z * sy;
     let z1 = -x * sy + z * cy;
-    // pitch: X ekseni etrafında (y,z döner)
+    // pitch: X ekseni etrafÄ±nda (y,z dÃ¶ner)
     let y1 = y * cx - z1 * sx;
-    // ortografik: (x1, y1) ekrana düşer
+    // ortografik: (x1, y1) ekrana dÃ¼ÅŸer
     return [x1, y1];
   });
 }
 
-// bir açı çiftindeki gölgeyi SVG path'e çevir (segmentleri kalın çizgi olarak)
+// bir aÃ§Ä± Ã§iftindeki gÃ¶lgeyi SVG path'e Ã§evir (segmentleri kalÄ±n Ã§izgi olarak)
 function shadowPath(pts2d) {
   return OBJ_EDGES.map(([a, b]) => {
     const [ax, ay] = pts2d[a], [bx, by] = pts2d[b];
@@ -116,7 +119,7 @@ function shadowPath(pts2d) {
 
 export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   const step = config.step || 10;
-  const tol = config.tol ?? 6;                        // derece toleransı
+  const tol = config.tol ?? 6;                        // derece toleransÄ±
   const targetYaw = config.targetYaw ?? 0;
   const targetPitch = config.targetPitch ?? 0;
   const [yaw, setYaw] = useState(config.startYaw ?? 130);
@@ -129,14 +132,14 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   const angNear = (a, b) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
   const check = (yw, pt) => angNear(yw, targetYaw) && angNear(pt, targetPitch);
 
-  // hedef gölge (sabit, hafif ipucu olarak arkada)
+  // hedef gÃ¶lge (sabit, hafif ipucu olarak arkada)
   const targetPts = project(OBJ_NODES, targetYaw, targetPitch);
   const targetD = shadowPath(targetPts);
-  // güncel gölge
+  // gÃ¼ncel gÃ¶lge
   const curPts = project(OBJ_NODES, yaw, pitch);
   const curD = shadowPath(curPts);
 
-  // ne kadar yakınız (0..1) → yaklaştıkça gölge parlar
+  // ne kadar yakÄ±nÄ±z (0..1) â†’ yaklaÅŸtÄ±kÃ§a gÃ¶lge parlar
   const dist = Math.min(1,
     (Math.abs(((yaw - targetYaw) % 360 + 540) % 360 - 180) +
      Math.abs(((pitch - targetPitch) % 360 + 540) % 360 - 180)) / 180);
@@ -318,7 +321,7 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
         <div style={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center", padding: "0 16px", margin: "6px 0 10px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
             <span style={{ fontFamily: mono, fontSize: 9, color: "#4c606b" }}>
-              HİZALAMA KİLİDİ (ALIGNMENT MATRIX):
+              HÄ°ZALAMA KÄ°LÄ°DÄ° (ALIGNMENT MATRIX):
             </span>
             <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
               <div style={{ width: 120, height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" }}>
@@ -336,16 +339,16 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
           </div>
           
           <div style={{ fontFamily: mono, fontSize: 10, color: "#5f7075", textAlign: "right" }}>
-            YAW: {Math.round(yaw)}° | PIT: {Math.round(pitch)}°
+            YAW: {Math.round(yaw)}Â° | PIT: {Math.round(pitch)}Â°
           </div>
         </div>
 
         {/* Buttons Row (Accessibility / Arrow Fallbacks) */}
         <div style={P.ctrlRow}>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", -1)}>⟲ {t("puzzle.rot")}</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", 1)}>{t("puzzle.rot")} ⟳</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", -1)}>▲ {t("puzzle.tilt")}</button>
-          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", 1)}>{t("puzzle.tilt")} ▼</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", -1)}>âŸ² {t("puzzle.rot")}</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", 1)}>{t("puzzle.rot")} âŸ³</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", -1)}>â–² {t("puzzle.tilt")}</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", 1)}>{t("puzzle.tilt")} â–¼</button>
         </div>
 
         <div style={{ minHeight: 20, display: "flex", alignItems: "center", justifyContent: "center", margin: "8px 0" }}>
@@ -363,8 +366,8 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   2) KABLO EŞLEŞTİRME (v2) — yanlış bağlantı artık KIRMIZI hat
-   olarak bir an çizilir, kıvılcım sayacı işler; dolu portlar
+   2) KABLO EÅLEÅTÄ°RME (v2) â€” yanlÄ±ÅŸ baÄŸlantÄ± artÄ±k KIRMIZI hat
+   olarak bir an Ã§izilir, kÄ±vÄ±lcÄ±m sayacÄ± iÅŸler; dolu portlar
    kablosunun rengiyle yanar.
    config: { cables:[{id,label,color}], ports:[{id,label}],
              pairs:{cableId: portId}, penalty? }
@@ -612,7 +615,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
                 <text x="229" y={yOf(i, ports.length) + 3} textAnchor="middle"
                   fontFamily={mono} fontSize={sparking ? "12" : "7.5"}
                   fill={sparking ? "#f0a060" : isExact ? "#ffffff" : "#637c8a"}>
-                  {sparking ? "⚡" : p.label}
+                  {sparking ? "âš¡" : p.label}
                 </text>
               </g>
             );
@@ -644,7 +647,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
           )}
 
           {errors > 0 && !done && (
-            <text x="10" y="192" fontFamily={mono} fontSize="8" fill="#c25844" fontWeight="bold">⚡ VOLTAGE WARNING ×{errors}</text>
+            <text x="10" y="192" fontFamily={mono} fontSize="8" fill="#c25844" fontWeight="bold">âš¡ VOLTAGE WARNING Ã—{errors}</text>
           )}
         </svg>
 
@@ -663,9 +666,9 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   3) SEMBOL KİLİDİ — RE8 çan paneli: 8 işaret çember dizilir,
-   dökümandaki semboller doğru SIRAYLA basılır. Yanlış = dizi
-   sıfırlanır + ceza.
+   3) SEMBOL KÄ°LÄ°DÄ° â€” RE8 Ã§an paneli: 8 iÅŸaret Ã§ember dizilir,
+   dÃ¶kÃ¼mandaki semboller doÄŸru SIRAYLA basÄ±lÄ±r. YanlÄ±ÅŸ = dizi
+   sÄ±fÄ±rlanÄ±r + ceza.
    config: { glyphs:["g1".."g8"] (dizilim), sequence:["g4","g1","g7"],
              penalty? }
    ============================================================ */
@@ -679,10 +682,10 @@ export const GLYPHS = {
   g6: "M8 28 C13 16 20 12 32 12 M10 28 C18 22 22 22 30 28 M20 12 V34",
   g7: "M11 11 H29 M14 16 H26 M17 21 H23 M14 26 H26 M11 31 H29",
   g8: "M20 8 V32 M12 16 C16 12 24 12 28 16 M12 24 C16 28 24 28",
-}; // ihtiyaç olursa yeni işaretler buraya eklenir
+}; // ihtiyaÃ§ olursa yeni iÅŸaretler buraya eklenir
 
 export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
-  const [progress, setProgress] = useState(0); // dizide kaç doğru basıldı
+  const [progress, setProgress] = useState(0); // dizide kaÃ§ doÄŸru basÄ±ldÄ±
   const [flash, setFlash] = useState(null);    // {id, ok}
   const [done, setDone] = useState(false);
   const glyphs = config.glyphs;
@@ -773,19 +776,21 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   4) VİTRAY v2 — RE4 kilise camı: halkalar CAM KIRIKLARI ve altın
-   figürün PARÇALARINI taşır. Çentik/işaret YOK — figür ancak üç
-   halka doğru açılara gelince BÜTÜNLEŞİR; oyuncu resme bakarak
-   çözer. Kırıklar dönerek görsel gürültü yaratır.
-   config: { rings:[{color, step, offset}] } — offset: başlangıcın
-   hedeften sapması (step'in katı olmalı ki çözülebilsin).
+   4) VÄ°TRAY v2 â€” RE4 kilise camÄ±: halkalar CAM KIRIKLARI ve altÄ±n
+   figÃ¼rÃ¼n PARÃ‡ALARINI taÅŸÄ±r. Ã‡entik/iÅŸaret YOK â€” figÃ¼r ancak Ã¼Ã§
+   halka doÄŸru aÃ§Ä±lara gelince BÃœTÃœNLEÅÄ°R; oyuncu resme bakarak
+   Ã§Ã¶zer. KÄ±rÄ±klar dÃ¶nerek gÃ¶rsel gÃ¼rÃ¼ltÃ¼ yaratÄ±r.
+   config: { rings:[{color, step, offset}] } â€” offset: baÅŸlangÄ±cÄ±n
+   hedeften sapmasÄ± (step'in katÄ± olmalÄ± ki Ã§Ã¶zÃ¼lebilsin).
    ============================================================ */
 
 const GLASS_SHARDS = [
-  // her halka için kırık cam parçaları: [iç yarıçap bandı] açılarla
-  ["#5a72b8", "#4a9a6a", "#b87a8a", "#8a9a5a", "#6a8ab8", "#b8a05a", "#7a5ab8", "#4a8a9a"],
-  ["#4a9a6a", "#b8a05a", "#5a72b8", "#8a5a7a", "#6ab88a", "#b87a5a", "#5a8ab8", "#9a5a5a", "#7aa06a"],
-  ["#b87a8a", "#5a8ab8", "#8a9a5a", "#4a9a8a", "#b8a05a", "#6a5ab8", "#9ab86a", "#b85a6a", "#5a9ab8", "#8a7a5a"],
+  // 1. Ä°Ã§ Halka: 8 ParÃ§a (YeÅŸil tonlarÄ± ve krem)
+  ["#8ec5a0", "#e8e4d4", "#72ad87", "#8ec5a0", "#e8e4d4", "#619675", "#8ec5a0", "#e8e4d4"],
+  // 2. Orta Halka: 10 ParÃ§a (Pembe tonlarÄ± ve krem)
+  ["#d4a0a8", "#e8e4d4", "#be868f", "#d4a0a8", "#e8e4d4", "#a96f78", "#d4a0a8", "#e8e4d4", "#be868f", "#d4a0a8"],
+  // 3. DÄ±ÅŸ Halka: 12 ParÃ§a (Lavanta/mor tonlarÄ± ve krem)
+  ["#c4a4c8", "#e8e4d4", "#aa84b0", "#c4a4c8", "#e8e4d4", "#926899", "#c4a4c8", "#e8e4d4", "#aa84b0", "#c4a4c8", "#926899", "#e8e4d4"],
 ];
 
 const wedge = (r0, r1, a0, a1) => {
@@ -793,65 +798,193 @@ const wedge = (r0, r1, a0, a1) => {
   return `M ${p(r0, a0)} A ${r0} ${r0} 0 0 1 ${p(r0, a1)} L ${p(r1, a1)} A ${r1} ${r1} 0 0 0 ${p(r1, a0)} Z`;
 };
 
-// altın figür — halkalara bölünmüş bir "anahtar/kılıç" mührü:
-// iç: gövde+kabza · orta: kollar+gövde devamı · dış: uç+tepe sivri
+// Altın mühür parçaları (Uçları birbirine değen ve ortada çember oluşturan Sacred Sun/Key Sigil)
 const FIGURE = [
-  ["M0 -34 A34 34 0 1 0 0.1 -34", "M0 -20 A20 20 0 1 0 0.1 -20", "M0 -8 V32", "M-10 22 H10"],
-  ["M0 -70 A70 70 0 1 0 0.1 -70", "M-66 0 H-38", "M38 0 H66", "M-48 -48 L-28 -28", "M48 -48 L28 -28", "M-48 48 L-28 28", "M48 48 L28 28"],
-  ["M0 -96 V-76", "M-96 0 H-74", "M74 0 H96", "M-18 -86 H18", "M-18 86 H18"],
+  // İç: Merkez çember + 4 yöne uzanan kollar (r=16'dan r=38'e)
+  [
+    "M -16 0 A 16 16 0 1 1 16 0 A 16 16 0 1 1 -16 0 Z", // Merkez çember (Ortada çıkan şekil)
+    "M 0 -16 V -38", // Üst kol
+    "M 0 16 V 38",   // Alt kol
+    "M -16 0 H -38", // Sol kol
+    "M 16 0 H 38",   // Sağ kol
+  ],
+  // Orta: 4 yöne uzanan devam çizgileri (r=42'den r=68'e) ve bağlayıcı çember (r=55)
+  [
+    "M -55 0 A 55 55 0 1 1 55 0 A 55 55 0 1 1 -55 0 Z", // Bağlayıcı çember
+    "M 0 -42 V -68", // Üst kol devamı
+    "M 0 42 V 68",   // Alt kol devamı
+    "M -42 0 H -68", // Sol kol devamı
+    "M 42 0 H 68",   // Sağ kol devamı
+  ],
+  // Dış: 4 yöne uzanan uç çizgileri (r=72'den r=96'e) ve ok uçları
+  [
+    "M 0 -72 V -96 M -12 -86 L 0 -96 L 12 -86", // Üst uç + ok
+    "M 0 72 V 96 M -12 86 L 0 96 L 12 86",     // Alt uç + ok
+    "M -72 0 H -96 M -86 -12 L -96 0 L -86 12", // Sol uç + ok
+    "M 72 0 H 96 M 86 -12 L 96 0 L 86 12",     // Sağ uç + ok
+  ],
 ];
 
+// Toz zerreleri iÃ§in rastgele koordinatlar
+const DUST_PARTICLES = Array.from({ length: 10 }).map((_, i) => ({
+  x: -80 + Math.random() * 160,
+  y: -80 + Math.random() * 160,
+  dx: -25 + Math.random() * 50,
+  delay: i * 0.45,
+  size: 1.2 + Math.random() * 2.2,
+  duration: 4.5 + Math.random() * 3.5,
+}));
+
 export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }) {
-  /* EKSİK PARÇA SİSTEMİ: config.pieces = [{flag, ring, shard, fig}]
-     Bayrağı henüz alınmamış her parça camda DELİK olarak görünür ve
-     figürün o segmenti çizilmez — halkalar hizalansa bile kilit
-     açılmaz; oyuncu parçaları DÜNYADA bulup (flag) geri gelmeli. */
   const rings = config.rings;
   const radii = [[16, 38], [42, 68], [72, 96]];
-  const [rots, setRots] = useState(rings.map((r) => r.offset)); // 0 = çözüm
+  const [rots, setRots] = useState(rings.map((r) => r.offset)); // 0 = Ã§Ã¶zÃ¼m
   const [done, setDone] = useState(false);
   const pieces = config.pieces || [];
   const missing = pieces.filter((p) => !flags[p.flag]);
+  
   const holeAt = (ring, shard) => missing.some((p) => p.ring === ring && p.shard === shard);
   const placedAt = (ring, shard) => pieces.some((p) => p.ring === ring && p.shard === shard && flags[p.flag]);
   const figHidden = (ring, k) => missing.some((p) => p.ring === ring && (p.fig ?? 0) === k);
-  const aligned = rots.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)));
-  const clockwiseOnly = config.clockwiseOnly || config.variant === "vitray";
 
-  const rotate = (i, dir) => {
+  // Hizalama hesaplamasÄ± (yakÄ±nlÄ±k toleransÄ±)
+  const normRot = (r) => ((r % 360) + 360) % 360;
+  const isAligned = rots.every((r, j) => {
+    const nr = normRot(r);
+    const diff = Math.min(nr, 360 - nr);
+    return diff <= Math.max(7, rings[j].step / 2 - 1);
+  });
+
+  // 0.0 (hizalanmamÄ±ÅŸ) ile 1.0 (tam hizalanmÄ±ÅŸ) arasÄ± yakÄ±nlÄ±k katsayÄ±sÄ±
+  const getProximity = () => {
+    const sumDiff = rots.reduce((sum, r) => {
+      const nr = normRot(r);
+      const diff = Math.min(nr, 360 - nr);
+      return sum + diff;
+    }, 0);
+    return Math.max(0, 1 - sumDiff / 180); // 180 derecede 0, tam hizada 1.0
+  };
+
+  const proximity = getProximity();
+
+  const rotate = (i) => {
     if (done) return;
     AudioSys.blipSfx(380 + i * 120);
     const next = rots.slice();
-    next[i] = next[i] + dir * rings[i].step;
+    // Sadece saat yÃ¶nÃ¼nde (clockwise-only) dÃ¶ndÃ¼rme
+    next[i] = (next[i] + rings[i].step) % 360;
     setRots(next);
-    const ok = next.every((r, j) => near(r, 0, Math.max(7, rings[j].step / 2 - 1)));
+
+    const ok = next.every((r, j) => {
+      const nr = normRot(r);
+      const diff = Math.min(nr, 360 - nr);
+      return diff <= Math.max(7, rings[j].step / 2 - 1);
+    });
+
     if (ok && missing.length === 0) {
       setDone(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1600);
+      setTimeout(onSuccess, 2200);
     } else if (ok && missing.length > 0) {
-      AudioSys.buzzSfx(); // hizada ama cam eksik — kilit direnir
+      AudioSys.buzzSfx(); // Cam eksikse kilit direnir
     }
   };
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={puzzlePanel} className="s1-panel">
-        <div style={S.keypadTitle}>{config.title || t("puzzle.ringsTitle")}</div>
-        <svg viewBox="-112 -112 224 224" style={{ width: "100%", maxWidth: 286 }}>
+      <style>{`
+        @keyframes dust-drift {
+          0% { transform: translate(0, 0); opacity: 0; }
+          12% { opacity: 0.38; }
+          85% { opacity: 0.38; }
+          100% { transform: translate(var(--dx), -115px); opacity: 0; }
+        }
+        @keyframes success-flash {
+          0% { opacity: 0; }
+          22% { opacity: 0.88; }
+          100% { opacity: 0; }
+        }
+        .rosette-btn {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          border: 3px solid var(--border-color);
+          background-color: var(--bg-color);
+          color: #1a1510;
+          cursor: pointer;
+          padding: 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.65), inset 0 2px 4px rgba(255,255,255,0.35);
+          transition: transform 120ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 150ms;
+        }
+        .rosette-btn:hover {
+          box-shadow: 0 0 15px var(--glow-color), inset 0 2px 4px rgba(255,255,255,0.45);
+        }
+        .rosette-btn:active {
+          transform: scale(0.92);
+        }
+      `}</style>
+      <div style={{
+        ...puzzlePanel,
+        backgroundColor: "#0d0906",
+        backgroundImage: [
+          "radial-gradient(ellipse at 50% 25%, rgba(85,60,40,0.22), rgba(0,0,0,0) 65%)",
+          "linear-gradient(180deg, rgba(22,17,13,0.7), rgba(4,3,2,0.99))",
+        ].join(", "),
+        border: "1px solid #2b1f15",
+        filter: done ? "brightness(1.15)" : "none",
+        transition: "filter 1.8s ease-in-out",
+      }} className="s1-panel">
+        <div style={{ ...S.keypadTitle, color: "#a58b6f", letterSpacing: "0.14em" }}>
+          {config.title || t("puzzle.ringsTitle")}
+        </div>
+
+        {/* === VÄ°TRAY SVG PANEL === */}
+        <svg viewBox="-112 -112 224 224" style={{
+          width: "100%", maxWidth: 286,
+          filter: proximity > 0.8 && !done ? "drop-shadow(0 0 6px rgba(255,217,125,0.4))" : "none",
+          transition: "filter 300ms",
+        }}>
           <defs>
             <radialGradient id="s1-glass-back" cx="47%" cy="44%" r="64%">
-              <stop offset="0%" stopColor="#f3efd9" stopOpacity="0.58" />
-              <stop offset="58%" stopColor="#5f7d64" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#050807" stopOpacity="0.96" />
+              <stop offset="0%" stopColor="#f3efd9" stopOpacity="0.48" />
+              <stop offset="60%" stopColor="#3d4f40" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#050807" stopOpacity="0.98" />
             </radialGradient>
           </defs>
-          <circle r="108" fill="#15110d" />
-          <circle r="103" fill="#3b3022" stroke="#6a5736" strokeWidth="5" />
-          <circle r="96" fill="url(#s1-glass-back)" stroke="#171c16" strokeWidth="3" />
+
+          {/* DÄ±ÅŸ ahÅŸap/taÅŸ plaket dairesi */}
+          <circle r="108" fill="#140f0b" />
+          <circle r="103" fill="#2d2218" stroke="#4f3e2d" strokeWidth="4.5" />
+
+          {/* 24 adet taÅŸ gravÃ¼r Ã§izgisi */}
+          {Array.from({ length: 24 }).map((_, i) => {
+            const angle = (i * 360) / 24;
+            return (
+              <line key={`eng-${i}`}
+                x1={103 * Math.sin(rad(angle))} y1={-103 * Math.cos(rad(angle))}
+                x2={108 * Math.sin(rad(angle))} y2={-108 * Math.cos(rad(angle))}
+                stroke="#1c140d" strokeWidth="2.5" />
+            );
+          })}
+
+          <circle r="96" fill="url(#s1-glass-back)" stroke="#0c0e0b" strokeWidth="2.8" />
+
+          {/* IÅŸÄ±k kÄ±rÄ±lÄ±m Ä±ÅŸÄ±nlarÄ± (HizalandÄ±kÃ§a parlar) */}
+          {Array.from({ length: 8 }).map((_, i) => {
+            const angle = (i * 360) / 8;
+            return (
+              <line key={`ray-${i}`}
+                x1="0" y1="0"
+                x2={120 * Math.sin(rad(angle))} y2={-120 * Math.cos(rad(angle))}
+                stroke="#ffd97d" strokeWidth="0.8" opacity={proximity * 0.22}
+                style={{ transition: "opacity 300ms" }} />
+            );
+          })}
+
+          {/* CAM HALKALAR & ALTIN FÄ°GÃœRLER */}
           {rings.map((r, i) => {
             const [r0, r1] = radii[i];
-            const shards = r.shards || GLASS_SHARDS[i % GLASS_SHARDS.length];
+            const shards = GLASS_SHARDS[i % GLASS_SHARDS.length];
             const n = shards.length;
             return (
               <g key={i} style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
@@ -860,68 +993,126 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
                   const placed = placedAt(i, k);
                   return (
                     <path key={k}
-                      d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 6)}
-                      fill={hole ? "#070908" : c}
-                      opacity={hole ? 0.95 : done ? 0.78 : 0.48}
-                      stroke={hole ? "#3a4438" : placed ? "#e8c95a" : "#1a1f1a"}
-                      strokeWidth={placed ? 2.4 : 1.8}
-                      strokeDasharray={hole ? "4 3" : "none"} />
+                      d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 5)}
+                      fill={hole ? "#040605" : c}
+                      opacity={hole ? 0.98 : done ? 0.8 : 0.44}
+                      stroke={hole ? "#242c23" : placed ? "#e8c95a" : "#131713"}
+                      strokeWidth={placed ? 2.5 : 1.8}
+                      strokeDasharray={hole ? "4 3" : "none"}
+                      style={{ transition: "fill 300ms, stroke 300ms, opacity 300ms" }}
+                    />
                   );
                 })}
-                {FIGURE[i].map((d, k) => figHidden(i, k) ? null : (
-                  <path key={"f" + k} d={d} fill="none"
-                    stroke={done ? "#e8c95a" : "#c8a94a"} strokeWidth="4"
-                    strokeLinecap="round"
-                    style={{ transition: "stroke 400ms", filter: done ? "drop-shadow(0 0 5px rgba(232,201,90,0.7))" : "none" }}
-                    opacity={done ? 1 : 0.9} />
-                ))}
+                {/* AltÄ±n MÃ¼hÃ¼r ParÃ§asÄ± */}
+                {FIGURE[i].map((d, k) => {
+                  if (figHidden(i, k)) return null;
+                  const isClosed = d.endsWith("Z") || d.endsWith("z");
+                  return (
+                    <path key={"f" + k}
+                      d={d}
+                      fill={isClosed ? "rgba(255,217,125,0.22)" : "none"}
+                      stroke={done ? "#e8c95a" : "#c8a94a"}
+                      strokeWidth={done ? 4.5 : 3.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        transition: "stroke 400ms, stroke-width 400ms",
+                        filter: done ? "drop-shadow(0 0 8px rgba(255,217,125,0.85))" : proximity > 0.75 ? "drop-shadow(0 0 4px rgba(255,217,125,0.45))" : "none",
+                      }}
+                      opacity={done ? 1 : 0.85 + proximity * 0.15}
+                    />
+                  );
+                })}
               </g>
             );
           })}
-          <circle r="38" fill="none" stroke="rgba(20,24,18,0.65)" strokeWidth="2" />
-          <circle r="68" fill="none" stroke="rgba(20,24,18,0.65)" strokeWidth="2" />
-          <circle r="96" fill="none" stroke="rgba(20,24,18,0.78)" strokeWidth="2" />
-          {done && <circle r="100" fill="#e8c95a" opacity="0.07" />}
-        </svg>
-        <div style={P.ctrlRow}>
-          {rings.map((r, i) => (
-            <span key={i} style={{ display: "flex", gap: 6, flexDirection: clockwiseOnly ? "column" : "row", alignItems: "center" }}>
-              {!clockwiseOnly && (
-                <button className="s1-btn s1-key"
-                  style={{
-                    ...S.keyBtn,
-                    width: 48, minWidth: 48, height: 42, borderRadius: "50%",
-                    borderColor: r.color,
-                    backgroundColor: r.color + "33",
-                    boxShadow: "inset 0 0 10px rgba(0,0,0,0.75)",
-                  }}
-                  onClick={() => rotate(i, -1)}>⟲</button>
-              )}
-              <button className="s1-btn s1-key"
-                style={{
-                  ...S.keyBtn,
-                  width: clockwiseOnly ? 76 : 48,
-                  minWidth: clockwiseOnly ? 76 : 48,
-                  height: clockwiseOnly ? 48 : 42,
-                  borderRadius: clockwiseOnly ? 6 : "50%",
-                  borderColor: r.color,
-                  backgroundColor: r.color + (clockwiseOnly ? "55" : "33"),
-                  color: "#efe9d2",
-                  boxShadow: `inset 0 0 10px rgba(0,0,0,0.75), 0 0 12px ${r.color}33`,
-                }}
-                onClick={() => rotate(i, 1)}>
-                {clockwiseOnly ? (r.label || "RENK") : "⟳"}
-              </button>
-            </span>
+
+          {/* BÃ¶lme/KurÅŸun Halka SÄ±nÄ±rlarÄ± */}
+          <circle r="38" fill="none" stroke="rgba(12,15,11,0.72)" strokeWidth="2" />
+          <circle r="68" fill="none" stroke="rgba(12,15,11,0.72)" strokeWidth="2" />
+          <circle r="96" fill="none" stroke="rgba(12,15,11,0.82)" strokeWidth="2.5" />
+
+          {/* Havada sÃ¼zÃ¼len toz zerreleri */}
+          {!done && DUST_PARTICLES.map((p, idx) => (
+            <circle
+              key={`dust-${idx}`}
+              cx={p.x}
+              cy={p.y}
+              r={p.size}
+              fill="#ffffff"
+              style={{
+                opacity: 0,
+                animation: `dust-drift ${p.duration}s infinite linear`,
+                animationDelay: `${p.delay}s`,
+                pointerEvents: "none",
+                "--dx": `${p.dx}px`,
+              }}
+            />
           ))}
+
+          {/* Ã‡Ã¶zÃ¼m AltÄ±n FlaÅŸ Overlay */}
+          {done && <circle r="100" fill="#ffd97d" style={{ animation: "success-flash 2.2s ease-out forwards" }} />}
+        </svg>
+
+        {/* === ROZET BUTONLAR (Ã‡iÃ§ek SVG desenli) === */}
+        <div style={{
+          display: "flex",
+          gap: 16,
+          justifyContent: "center",
+          marginTop: 12,
+          marginBottom: 6
+        }}>
+          {rings.map((r, i) => {
+            const styles = [
+              { border: "#5e9470", bg: "#8ec5a0", glow: "rgba(142,197,160,0.6)" }, // YeÅŸil (Ä°Ã‡)
+              { border: "#a8727a", bg: "#d4a0a8", glow: "rgba(212,160,168,0.6)" }, // Pembe (ORTA)
+              { border: "#98749a", bg: "#c4a4c8", glow: "rgba(196,164,200,0.6)" }, // Mor (DIÅ)
+            ][i];
+
+            return (
+              <button
+                key={i}
+                className="rosette-btn"
+                style={{
+                  "--border-color": styles.border,
+                  "--bg-color": styles.bg,
+                  "--glow-color": styles.glow,
+                }}
+                onClick={() => rotate(i)}
+                disabled={done}
+                title={r.label || "DÃ¶ndÃ¼r"}
+              >
+                {/* Rozet iÃ§i SVG Ã§iÃ§ek deseni */}
+                <svg viewBox="0 0 64 64" style={{ width: "100%", height: "100%", display: "block" }}>
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(26,21,16,0.3)" strokeWidth="1.5" />
+                  {/* 8 petal yapraÄŸÄ± deseni */}
+                  {Array.from({ length: 8 }).map((_, pIdx) => {
+                    const angle = pIdx * 45;
+                    return (
+                      <path
+                        key={pIdx}
+                        d="M 32 32 C 27 12, 37 12, 32 32"
+                        transform={`rotate(${angle} 32 32)`}
+                        fill="rgba(26,21,16,0.72)"
+                      />
+                    );
+                  })}
+                  {/* Merkez mÃ¼cevher noktasÄ± */}
+                  <circle cx="32" cy="32" r="5" fill="#ffffff" stroke="#1a1510" strokeWidth="1.5" />
+                </svg>
+              </button>
+            );
+          })}
         </div>
-        <div style={done ? P.msgOk : aligned && missing.length > 0 ? P.msgBad : P.hint}>
+
+        {/* Durum metni */}
+        <div style={done ? P.msgOk : isAligned && missing.length > 0 ? P.msgBad : P.hint}>
           {done ? t("puzzle.ringsDone")
-            : aligned && missing.length > 0 ? t("puzzle.ringsMissing", { n: missing.length })
+            : isAligned && missing.length > 0 ? t("puzzle.ringsMissing", { n: missing.length })
             : t("puzzle.ringsHint")}
         </div>
         {!done && (
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 4 }} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
@@ -929,21 +1120,37 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
 }
 
 /* ============================================================
-   5) KARO KAPISI — karışmış karoları ikişer ikişer değiştirerek
-   büyük deseni tamamla (dökümandaki bilgi doğru dizilimi anlatır).
-   config: { scramble:[2,0,1,...] (başlangıç permütasyonu, 9 eleman) }
-   Desen tek büyük SVG'dir; her karo kendi doğru penceresini gösterir.
+   5) KARO KAPISI â€” karÄ±ÅŸmÄ±ÅŸ karolarÄ± ikiÅŸer ikiÅŸer deÄŸiÅŸtirerek
+   bÃ¼yÃ¼k deseni tamamla (dÃ¶kÃ¼mandaki bilgi doÄŸru dizilimi anlatÄ±r).
+   config: { scramble:[2,0,1,...] (baÅŸlangÄ±Ã§ permÃ¼tasyonu, 9 eleman) }
+   Desen tek bÃ¼yÃ¼k SVG'dir; her karo kendi doÄŸru penceresini gÃ¶sterir.
    ============================================================ */
 
 const TILE_ART = [
-  "M60 10 A50 50 0 1 0 60.1 10",
-  "M60 22 A38 38 0 1 0 60.1 22",
-  "M60 12 V108 M26 60 H94",
-  "M36 34 L84 86 M84 34 L36 86",
-  "M22 28 H42 M78 28 H98 M22 92 H42 M78 92 H98",
-  "M45 60 C50 50 70 50 75 60 C70 70 50 70 45 60",
-  "M54 60 A6 6 0 1 0 66 60 A6 6 0 1 0 54 60",
-  "M30 112 C40 101 50 101 60 112 C70 101 80 101 90 112",
+  // Arka Plandaki Gotik Kemer (Crypt Arch)
+  { d: "M 15 110 V 50 A 45 45 0 0 1 105 50 V 110", stroke: "#5a4835", strokeWidth: 2.2, fill: "none" },
+  { d: "M 20 110 V 52 A 40 40 0 0 1 100 52 V 110", stroke: "#2e2217", strokeWidth: 1, fill: "none" },
+
+  // Sol ve Sağ Şeytani Yarasa Kanatları (Bat Wings extending across outer tiles)
+  { d: "M 38 48 C 10 30, 5 62, 35 72 C 24 62, 24 52, 38 48 Z", fill: "#241a12", stroke: "#120d09", strokeWidth: 1.5 },
+  { d: "M 82 48 C 110 30, 115 62, 85 72 C 96 62, 96 52, 82 48 Z", fill: "#241a12", stroke: "#120d09", strokeWidth: 1.5 },
+  
+  // Şeytani Boynuzlar (Left and right curved horns)
+  { d: "M 46 36 C 30 18, 18 38, 36 48 C 38 44, 32 28, 46 36 Z", fill: "#423224", stroke: "#1c140c", strokeWidth: 1.2 },
+  { d: "M 74 36 C 90 18, 102 38, 84 48 C 82 44, 88 28, 74 36 Z", fill: "#423224", stroke: "#1c140c", strokeWidth: 1.2 },
+
+  // Kuru Kafa Kemik Gövdesi (Skull core)
+  { d: "M 44 40 Q 60 22, 76 40 C 79 50, 73 66, 73 76 L 47 76 C 47 66, 41 50, 44 40 Z", fill: "#dcd6c8", stroke: "#3d3324", strokeWidth: 2 },
+  
+  // Çene ve Dişler
+  { d: "M 50 76 V 84 H 70 V 76 M 54 76 V 84 M 58 76 V 84 M 62 76 V 84 M 66 76 V 84", stroke: "#3d3324", strokeWidth: 1.5, fill: "none" },
+
+  // Burun deliği (Nasal cavity)
+  { d: "M 58 58 L 60 52 L 62 58 Z", fill: "#1c0d02", stroke: "#3d3324", strokeWidth: 0.8 },
+
+  // Ürkütücü Boş Göz Çukurları (Hollow creepy eyes - çözülünce kırmızı parlar)
+  { d: "M 48 48 Q 54 44, 58 48 Q 54 53, 48 48 Z", fill: "#1a0802", stroke: "#4a0a0a", strokeWidth: 1, glow: "#d0021b", isEye: true },
+  { d: "M 62 48 Q 66 44, 72 48 Q 66 53, 62 48 Z", fill: "#1a0802", stroke: "#4a0a0a", strokeWidth: 1, glow: "#d0021b", isEye: true },
 ];
 
 export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
@@ -951,6 +1158,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
   const [perm, setPerm] = useState(config.scramble || [8, 6, 7, 2, 5, 4, 3, 0, 1]);
   const [sel, setSel] = useState(null);
   const [done, setDone] = useState(false);
+  const [moves, setMoves] = useState(0);
 
   const tap = (pos) => {
     if (done) return;
@@ -959,50 +1167,110 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
       setSel(pos);
       return;
     }
-    if (sel === pos) { setSel(null); return; }
+    if (sel === pos) {
+      setSel(null);
+      return;
+    }
+    
     AudioSys.clank();
     const next = perm.slice();
     [next[sel], next[pos]] = [next[pos], next[sel]];
     setPerm(next);
     setSel(null);
+    setMoves((m) => m + 1);
+
     if (next.every((v, i) => v === i)) {
       setDone(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1300);
+      setTimeout(onSuccess, 1800);
     }
   };
 
+  const correctCount = perm.filter((v, i) => v === i).length;
+
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={puzzlePanel} className="s1-panel">
-        <div style={S.keypadTitle}>{config.title || t("puzzle.tilesTitle")}</div>
+      <style>{`
+        @keyframes eye-pulse {
+          0%, 100% { fill: #1a0802; filter: drop-shadow(0 0 1px rgba(208,2,27,0.3)); }
+          50% { fill: #d0021b; filter: drop-shadow(0 0 6px rgba(208,2,27,0.95)); }
+        }
+        @keyframes tile-solve-flash {
+          0% { filter: brightness(1) contrast(1); }
+          30% { filter: brightness(1.4) contrast(1.1) drop-shadow(0 0 12px rgba(200,169,74,0.7)); }
+          100% { filter: brightness(1.08) contrast(1.02); }
+        }
+      `}</style>
+      <div style={{
+        ...puzzlePanel,
+        backgroundColor: "#0d0a08",
+        backgroundImage: [
+          "radial-gradient(ellipse at 50% 25%, rgba(75,55,35,0.25), rgba(0,0,0,0) 65%)",
+          "linear-gradient(180deg, rgba(24,18,14,0.75), rgba(4,3,2,0.98))",
+        ].join(", "),
+        border: "1px solid #332418",
+        maxWidth: 320,
+        animation: done ? "tile-solve-flash 1.8s ease-out forwards" : "none",
+      }} className="s1-panel">
+        <div style={{ ...S.keypadTitle, color: "#9a836a", letterSpacing: "0.14em" }}>
+          {config.title || t("puzzle.tilesTitle")}
+        </div>
+
+        {/* Moves & Correct count tracker */}
+        <div style={{
+          fontFamily: mono, fontSize: 9, color: "#6a5c4e",
+          letterSpacing: "0.12em", textAlign: "center", marginBottom: 8,
+        }}>
+          HAMLE: {moves} &nbsp;|&nbsp; DOĞRU KONUM: {correctCount}/9
+        </div>
+
         <div style={{
           display: "grid", gridTemplateColumns: `repeat(${n}, 1fr)`, gap: 4,
           width: "100%", maxWidth: 240, padding: 8,
-          ...puzzleFace,
-          borderRadius: 3,
+          backgroundColor: "#16100c", border: "3px solid #281d15",
+          boxShadow: "inset 0 0 16px rgba(0,0,0,0.85)",
+          borderRadius: 4,
+          margin: "0 auto",
         }}>
           {perm.map((tile, pos) => {
             const tx = (tile % n) * 40, ty = Math.floor(tile / n) * 40;
             const right = tile === pos;
             return (
               <div key={pos} onClick={() => tap(pos)} style={{
-                aspectRatio: "1", cursor: "pointer",
-                clipPath: "polygon(8% 0, 88% 4%, 100% 24%, 92% 92%, 20% 100%, 0 78%, 4% 16%)",
-                backgroundColor: "#c9c3b3",
-                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7f9eb544" : "1px solid #4a3a28",
+                aspectRatio: "1", cursor: "pointer", borderRadius: 2,
+                backgroundColor: "#2c2117",
+                outline: sel === pos ? "2.5px solid #d4b850" : right && !done ? "1px solid rgba(212,184,80,0.3)" : "1px solid #140d08",
                 overflow: "hidden", transition: "outline 150ms, transform 150ms",
                 transform: sel === pos ? "translateY(-2px)" : "none",
-                boxShadow: "inset 0 0 12px rgba(0,0,0,0.35)",
-                opacity: done ? 1 : 0.96,
+                boxShadow: "inset 0 0 8px rgba(0,0,0,0.6)",
+                opacity: done ? 1 : 0.94,
               }}>
-                <svg viewBox={`${tx} ${ty} 40 40`} style={{ width: "100%", height: "100%", display: "block", background: "linear-gradient(135deg, #ded8c8, #a69b82)" }}>
-                  <rect x={tx} y={ty} width="40" height="40" fill="rgba(255,255,255,0.08)" />
-                  {TILE_ART.map((d, i) => (
-                    <path key={i} d={d} fill="none" stroke={done ? "#8f6f38" : "#6e5538"} strokeWidth="3" strokeLinecap="round" />
-                  ))}
-                  <path d={`M${tx} ${ty + 19} L${tx + 40} ${ty + 15} M${tx + 18} ${ty} L${tx + 22} ${ty + 40}`}
-                    stroke="rgba(80,64,45,0.32)" strokeWidth="1.2" />
+                <svg viewBox={`${tx} ${ty} 40 40`} style={{ width: "100%", height: "100%", display: "block", background: "radial-gradient(circle at center, #1b120c, #0c0805)" }}>
+                  {/* Gravür arkaplan taş doku çizgileri */}
+                  <rect x={tx} y={ty} width="40" height="40" fill="none" stroke="#0e0804" strokeWidth="0.8" opacity="0.35" />
+                  
+                  {/* Master gothic eye paths */}
+                  {TILE_ART.map((item, i) => {
+                    const strokeColor = done && item.glow ? item.glow : item.stroke;
+                    return (
+                      <path
+                        key={i}
+                        d={item.d}
+                        fill={item.fill || "none"}
+                        stroke={strokeColor}
+                        strokeWidth={item.strokeWidth}
+                        strokeLinecap="round"
+                        style={{
+                          transition: "stroke 600ms, filter 600ms",
+                          filter: done && item.glow ? `drop-shadow(0 0 4px ${item.glow})` : "none",
+                          animation: item.isEye && done ? "eye-pulse 2s infinite ease-in-out" : "none",
+                        }}
+                      />
+                    );
+                  })}
+                  
+                  {/* Birleşme kılavuz kurşun çizgisi */}
+                  <rect x={tx} y={ty} width="40" height="40" fill="none" stroke="#0c0704" strokeWidth="1.2" opacity="0.8" />
                 </svg>
               </div>
             );
@@ -1012,7 +1280,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
           {done ? t("puzzle.tilesDone") : sel !== null ? t("puzzle.tilesSwap") : t("puzzle.tilesHint")}
         </div>
         {!done && (
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 4 }} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
@@ -1020,107 +1288,340 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   6) RENK PANOSU — hücrelere dokun: renk döner; dökümandaki
-   şemayı birebir kur (RE8 kale jeneratörü).
-   config: { palette:["#.."], target:[0,1,2,...9 indeks],
-             start?:[...], showTarget?:bool (test için) }
+   6) HEKSAGON LAHÄ°T BULMACASI â€”
+   Kozmik GÃ¼neÅŸ ve Ay gÃ¶rseline sahip 7 heksagonal taÅŸtan oluÅŸan lahit.
+   Oyuncu dÄ±ÅŸ karolara dokunarak baÄŸlÄ± olduÄŸu 3'lÃ¼ grubu seÃ§er ve yandÄ±rÄ±r.
+   AynÄ± karoya tekrar dokunulduÄŸunda bu 3'lÃ¼ grup saat yÃ¶nÃ¼nde 120 derece dÃ¶ner.
    ============================================================ */
 
-export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
-  const palette = config.palette;
-  const [cells, setCells] = useState(config.start || config.target.map(() => 0));
-  const [done, setDone] = useState(false);
+const SLOTS = [
+  { x: 150, y: 150 },      // 0: Merkez
+  { x: 150, y: 66.86 },    // 1: Ãœst
+  { x: 222, y: 108.43 },   // 2: Ãœst-SaÄŸ
+  { x: 222, y: 191.57 },   // 3: Alt-SaÄŸ
+  { x: 150, y: 233.14 },   // 4: Alt
+  { x: 78, y: 191.57 },    // 5: Alt-Sol
+  { x: 78, y: 108.43 },    // 6: Ãœst-Sol
+];
 
-  const tap = (i) => {
+const GROUPS = [
+  null,
+  { slots: [1, 2, 0], knob: { x: 174, y: 108.43 } }, // 1: Ãœst (Ãœst, Ãœst-SaÄŸ, Merkez)
+  { slots: [2, 3, 0], knob: { x: 198, y: 150 } },    // 2: Ãœst-SaÄŸ (Ãœst-SaÄŸ, Alt-SaÄŸ, Merkez)
+  { slots: [3, 4, 0], knob: { x: 174, y: 191.57 } }, // 3: Alt-SaÄŸ (Alt-SaÄŸ, Alt, Merkez)
+  { slots: [4, 5, 0], knob: { x: 126, y: 191.57 } }, // 4: Alt (Alt, Alt-Sol, Merkez)
+  { slots: [5, 6, 0], knob: { x: 102, y: 150 } },    // 5: Alt-Sol (Alt-Sol, Ãœst-Sol, Merkez)
+  { slots: [6, 1, 0], knob: { x: 126, y: 108.43 } }, // 6: Ãœst-Sol (Ãœst-Sol, Ãœst, Merkez)
+];
+
+const MASTER_ART = [
+  // Medalyon dış çerçevesi (altın metalik çember)
+  { type: "circle", cx: 150, cy: 150, r: 128, fill: "none", stroke: "#8a6f4e", strokeWidth: 5 },
+  { type: "circle", cx: 150, cy: 150, r: 122, fill: "none", stroke: "#0f172a", strokeWidth: 1.5 },
+  // Derin gotik zemin arka planı (Karanlık orman yeşili/siyah)
+  { type: "circle", cx: 150, cy: 150, r: 120, fill: "#0c0d0a", stroke: "none" },
+
+  // Kesikli radyal kılavuz çizgileri (Hafifçe görünür, gold tonlarında)
+  { type: "path", d: "M 150 150 L 150 67", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+  { type: "path", d: "M 150 150 L 222 108.43", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+  { type: "path", d: "M 150 150 L 222 191.57", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+  { type: "path", d: "M 150 150 L 150 233.14", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+  { type: "path", d: "M 150 150 L 78 191.57", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+  { type: "path", d: "M 150 150 L 78 108.43", stroke: "#3d3224", strokeWidth: 1.2, strokeDasharray: "3 3" },
+
+  // --- DİKENLİ TAÇ (Continuous thorny circle at radius 82, connecting all outer parts) ---
+  { type: "path", d: "M 150 68 A 82 82 0 1 1 149.9 68", stroke: "#4f6345", strokeWidth: 3, fill: "none" },
+  
+  // Altın Dikenler (Çözüldüğünde parıldar)
+  { type: "path", d: "M 150 68 L 150 54 L 154 66 Z", fill: "#ab8532", glow: "#ffd97d" },
+  { type: "path", d: "M 222 108.43 L 238 98 L 227 106 Z", fill: "#ab8532", glow: "#ffd97d" },
+  { type: "path", d: "M 222 191.57 L 238 202 L 227 194 Z", fill: "#ab8532", glow: "#ffd97d" },
+  { type: "path", d: "M 150 233.14 L 150 247 L 146 235 Z", fill: "#ab8532", glow: "#ffd97d" },
+  { type: "path", d: "M 78 191.57 L 62 202 L 73 194 Z", fill: "#ab8532", glow: "#ffd97d" },
+  { type: "path", d: "M 78 108.43 L 62 98 L 73 106 Z", fill: "#ab8532", glow: "#ffd97d" },
+
+  // Gothic Leaves (Dış parçalara bağlı yeşil yaprak detayları)
+  { type: "path", d: "M 150 68 Q 138 52, 150 42 Q 162 52, 150 68 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+  { type: "path", d: "M 222 108.43 Q 236 122, 246 112 Q 232 102, 222 108.43 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+  { type: "path", d: "M 222 191.57 Q 236 178, 246 188 Q 232 198, 222 191.57 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+  { type: "path", d: "M 150 233.14 Q 162 249, 150 259 Q 138 249, 150 233.14 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+  { type: "path", d: "M 78 191.57 Q 64 178, 54 188 Q 68 198, 78 191.57 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+  { type: "path", d: "M 78 108.43 Q 64 122, 54 112 Q 68 102, 78 108.43 Z", fill: "#354f2c", stroke: "#20301a", strokeWidth: 1 },
+
+  // --- MERKEZ (Slot 0): Kan Kırmızı Gül ---
+  { type: "circle", cx: 150, cy: 150, r: 16, fill: "#73101b", stroke: "#3d0810", strokeWidth: 1.5, glow: "#b22435" },
+  { type: "path", d: "M 136 144 C 142 126, 158 126, 164 144 Q 150 152, 136 144 Z", fill: "#9e1625" },
+  { type: "path", d: "M 132 152 C 124 162, 142 174, 150 162 Q 138 154, 132 152 Z", fill: "#9e1625" },
+  { type: "path", d: "M 160 148 C 168 158, 150 170, 148 160 Q 156 152, 160 148 Z", fill: "#800c19" },
+  { type: "path", d: "M 142 138 Q 150 130, 158 138", stroke: "#b22435", strokeWidth: 2, fill: "none" },
+];
+
+
+export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
+  // Scramble hexagons by performing random group rotations around random outer slots (1-6)
+  const scrambleHexagons = () => {
+    let list = Array.from({ length: 7 }, (_, i) => ({
+      id: i,
+      slotIdx: i,
+      rot: 0,
+    }));
+    // 12 random group rotations
+    for (let step = 0; step < 12; step++) {
+      const activeSlot = Math.floor(Math.random() * 6) + 1; // 1 to 6
+      const group = GROUPS[activeSlot];
+      const knob = group.knob;
+
+      const sorted = group.slots.map((slotIdx) => {
+        const s = SLOTS[slotIdx];
+        const angle = Math.atan2(s.y - knob.y, s.x - knob.x);
+        return { slotIdx, angle };
+      }).sort((a, b) => a.angle - b.angle);
+
+      const hex0 = list.find((h) => h.slotIdx === sorted[0].slotIdx);
+      const hex1 = list.find((h) => h.slotIdx === sorted[1].slotIdx);
+      const hex2 = list.find((h) => h.slotIdx === sorted[2].slotIdx);
+
+      list = list.map((h) => {
+        if (h.id === hex0.id) return { ...h, slotIdx: sorted[1].slotIdx };
+        if (h.id === hex1.id) return { ...h, slotIdx: sorted[2].slotIdx };
+        if (h.id === hex2.id) return { ...h, slotIdx: sorted[0].slotIdx };
+        return h;
+      });
+    }
+    // Verify it is not solved initially, if it is, rotate group 1 once
+    if (list.every((h) => h.slotIdx === h.id)) {
+      const group = GROUPS[1];
+      const hex0 = list.find((h) => h.slotIdx === group.slots[0]);
+      const hex1 = list.find((h) => h.slotIdx === group.slots[1]);
+      const hex2 = list.find((h) => h.slotIdx === group.slots[2]);
+      list = list.map((h) => {
+        if (h.id === hex0.id) return { ...h, slotIdx: group.slots[1] };
+        if (h.id === hex1.id) return { ...h, slotIdx: group.slots[2] };
+        if (h.id === hex2.id) return { ...h, slotIdx: group.slots[0] };
+        return h;
+      });
+    }
+    return list;
+  };
+
+  const [hexagons, setHexagons] = useState(() => scrambleHexagons());
+  const [selectedGroup, setSelectedGroup] = useState(null); // slotIdx of the outer hexagon that selects the group (1-6)
+  const [done, setDone] = useState(false);
+  const [moves, setMoves] = useState(0);
+
+  const tapHexagon = (hexId) => {
     if (done) return;
-    AudioSys.blipSfx(440 + (cells[i] % palette.length) * 60);
-    const next = cells.slice();
-    next[i] = (next[i] + 1) % palette.length;
-    setCells(next);
-    if (next.every((v, j) => v === config.target[j])) {
-      setDone(true);
-      AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 1200);
+    const hex = hexagons.find((h) => h.id === hexId);
+    const slotIdx = hex.slotIdx;
+
+    if (slotIdx === 0) {
+      // Tapping the center hexagon rotates the currently selected outer group if one is active
+      if (selectedGroup !== null) {
+        rotateGroup(selectedGroup);
+      }
+      return;
+    }
+
+    // Tapping any outer hexagon (slots 1-6)
+    if (selectedGroup === slotIdx) {
+      // Tap again to rotate
+      rotateGroup(slotIdx);
+    } else {
+      // Select the group corresponding to this outer slot
+      AudioSys.blipSfx(420);
+      setSelectedGroup(slotIdx);
     }
   };
 
-  const grid = (vals, size, clickable) => (
-    <div style={{
-      display: "grid", gridTemplateColumns: `repeat(${config.cols || 3}, 1fr)`, gap: 3,
-      width: size, padding: 5,
-      backgroundColor: "#080908",
-      backgroundImage: "radial-gradient(ellipse at 50% 35%, rgba(230,220,170,0.14), rgba(0,0,0,0) 70%)",
-      border: "4px solid #2d2418",
-      boxShadow: "inset 0 0 18px rgba(0,0,0,0.85)",
-      borderRadius: 4,
-    }}>
-      {vals.map((v, i) => (
-        <div key={i} onClick={clickable ? () => tap(i) : undefined} style={{
-          aspectRatio: "1",
-          clipPath: i % 2 === 0
-            ? "polygon(8% 0, 100% 10%, 92% 100%, 0 88%)"
-            : "polygon(0 12%, 88% 0, 100% 92%, 10% 100%)",
-          cursor: clickable ? "pointer" : "default",
-          backgroundColor: palette[v],
-          border: "2px solid rgba(0,0,0,0.68)",
-          boxShadow: "inset 0 0 10px rgba(255,255,255,0.16), inset 0 0 18px rgba(0,0,0,0.42)",
-          transition: "background-color 200ms, filter 200ms",
-          filter: done ? "brightness(1.18)" : "brightness(0.92)",
-        }}>
-          <div style={{
-            width: "100%", height: "100%",
-            background: "linear-gradient(135deg, rgba(255,255,255,0.2), transparent 45%, rgba(0,0,0,0.22))",
-            position: "relative",
-          }}>
-            <svg viewBox="0 0 40 40" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.48 }}>
-              <path
-                d={[
-                  "M20 6 A14 14 0 1 0 20.1 6 M20 12 V34",
-                  "M8 21 H32 M20 8 V32 M13 13 L27 27",
-                  "M9 29 C15 18 25 18 31 29 M20 10 V35",
-                  "M11 12 H29 M14 20 H26 M11 28 H29",
-                ][v % 4]}
-                fill="none"
-                stroke="rgba(0,0,0,0.55)"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M4 7 L36 5 M7 36 L35 31"
-                fill="none"
-                stroke="rgba(255,255,255,0.22)"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  const rotateGroup = (activeSlot) => {
+    const group = GROUPS[activeSlot];
+    const knob = group.knob;
+
+    // Sort slots clockwise based on center relative to knob
+    const sorted = group.slots.map((sIdx) => {
+      const s = SLOTS[sIdx];
+      const angle = Math.atan2(s.y - knob.y, s.x - knob.x);
+      return { slotIdx: sIdx, angle };
+    }).sort((a, b) => a.angle - b.angle);
+
+    const hex0 = hexagons.find((h) => h.slotIdx === sorted[0].slotIdx);
+    const hex1 = hexagons.find((h) => h.slotIdx === sorted[1].slotIdx);
+    const hex2 = hexagons.find((h) => h.slotIdx === sorted[2].slotIdx);
+
+    AudioSys.clank();
+
+    const next = hexagons.map((h) => {
+      if (h.id === hex0.id) return { ...h, slotIdx: sorted[1].slotIdx };
+      if (h.id === hex1.id) return { ...h, slotIdx: sorted[2].slotIdx };
+      if (h.id === hex2.id) return { ...h, slotIdx: sorted[0].slotIdx };
+      return h;
+    });
+
+    setHexagons(next);
+    setMoves((m) => m + 1);
+
+    // Check solution
+    if (next.every((h) => h.slotIdx === h.id && h.rot === 0)) {
+      setDone(true);
+      AudioSys.blipSfx(980);
+      setTimeout(onSuccess, 1800);
+    }
+  };
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={puzzlePanel} className="s1-panel">
-        <div style={S.keypadTitle}>{config.title || t("puzzle.colorTitle")}</div>
-        {config.showTarget && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-            <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: "#5f7075" }}>
-              {t("puzzle.colorTarget")}
-            </span>
-            {grid(config.target, 90, false)}
-          </div>
-        )}
-        {grid(cells, 190, true)}
+      <style>{`
+        @keyframes hex-selected-pulse {
+          0%, 100% { stroke: #d4b850; stroke-width: 2.5; filter: drop-shadow(0 0 3px rgba(212,184,80,0.5)); }
+          50% { stroke: #ffffff; stroke-width: 3.5; filter: drop-shadow(0 0 10px rgba(212,184,80,0.95)); }
+        }
+        @keyframes hex-solve-flash {
+          0% { opacity: 0; }
+          25% { opacity: 0.45; }
+          100% { opacity: 0.08; }
+        }
+        @keyframes hex-solve-glow {
+          0% { filter: brightness(1); }
+          40% { filter: brightness(1.4); }
+          100% { filter: brightness(1.15); }
+        }
+      `}</style>
+      <div style={{
+        ...puzzlePanel,
+        backgroundColor: "#0d0a08",
+        backgroundImage: [
+          "radial-gradient(ellipse at 50% 25%, rgba(95,65,40,0.3), rgba(0,0,0,0) 65%)",
+          "linear-gradient(180deg, rgba(30,22,16,0.65), rgba(4,3,2,0.98))",
+        ].join(", "),
+        border: "1px solid #332418",
+        maxWidth: 350,
+      }} className="s1-panel">
+        <div style={{ ...S.keypadTitle, color: "#a0886a", letterSpacing: "0.14em" }}>
+          {config.title || t("puzzle.colorTitle")}
+        </div>
+
+        {/* Moves & Correct count tracker */}
+        <div style={{
+          fontFamily: mono, fontSize: 9, color: "#6a5c4e",
+          letterSpacing: "0.12em", textAlign: "center", marginBottom: 6,
+        }}>
+          HAMLE: {moves} &nbsp;|&nbsp; HÄ°ZALI: {hexagons.filter(h => h.slotIdx === h.id).length}/7
+        </div>
+
+        {/* === HEXAGON PANEL === */}
+        <svg viewBox="0 0 300 300" style={{
+          width: "100%", maxWidth: 300,
+          animation: done ? "hex-solve-glow 1.8s ease-out forwards" : "none",
+        }}>
+          <defs>
+            {/* Hexagon Clip Path */}
+            <clipPath id="hex-clip">
+              <polygon points="0,-48 41.57,-24 41.57,24 0,48 -41.57,24 -41.57,-24" />
+            </clipPath>
+          </defs>
+
+          {/* Wooden board background plaque */}
+          <circle cx="150" cy="150" r="136" fill="#18100a" stroke="#080402" strokeWidth="5" />
+          <circle cx="150" cy="150" r="130" fill="#1b120c" stroke="#2a1e16" strokeWidth="2" opacity="0.6" />
+          {/* Wood texture detail lines */}
+          {Array.from({ length: 16 }).map((_, i) => (
+            <line key={`wt-${i}`}
+              x1={30 + i * 16} y1="20"
+              x2={30 + i * 16 + (i % 2 === 0 ? 5 : -5)} y2="280"
+              stroke="#0f0906" strokeWidth="1.2" opacity="0.45" />
+          ))}
+
+          {/* === HEXAGONS === */}
+          {hexagons.map((hex) => {
+            const slot = SLOTS[hex.slotIdx];
+            const origSlot = SLOTS[hex.id];
+            
+            // Check if this hexagon belongs to the currently active selected group
+            const isInActiveGroup = selectedGroup !== null && GROUPS[selectedGroup].slots.includes(hex.slotIdx);
+
+            return (
+              <g
+                key={hex.id}
+                transform={`translate(${slot.x}, ${slot.y})`}
+                onClick={() => tapHexagon(hex.id)}
+                cursor={done ? "default" : "pointer"}
+                style={{
+                  transition: "transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+                }}
+              >
+                <g style={{ transition: "transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+                  {/* Hexagon body with clipping path */}
+                  <g clipPath="url(#hex-clip)">
+                    {/* Stone tile background */}
+                    <polygon points="0,-48 41.57,-24 41.57,24 0,48 -41.57,24 -41.57,-24" fill="#322a22" stroke="#1f1814" strokeWidth="2" />
+                    {/* Master Artwork slice */}
+                    <g transform={`translate(${-origSlot.x}, ${-origSlot.y})`}>
+                      {/* Render master artwork paths inside the hexagon */}
+                      {MASTER_ART.map((item, idx) => {
+                        if (item.type === "circle") {
+                          return (
+                            <circle
+                              key={idx} cx={item.cx} cy={item.cy} r={item.r}
+                              fill={item.fill} stroke={done && item.glow ? item.glow : item.stroke}
+                              strokeWidth={item.strokeWidth} opacity={item.opacity}
+                              style={{
+                                transition: "stroke 500ms, filter 500ms",
+                                filter: done && item.glow ? `drop-shadow(0 0 5px ${item.glow})` : "none",
+                              }}
+                            />
+                          );
+                        }
+                        if (item.type === "path") {
+                          return (
+                            <path
+                              key={idx} d={item.d} fill={item.fill || "none"}
+                              stroke={done && item.glow ? item.glow : item.stroke}
+                              strokeWidth={item.strokeWidth} opacity={item.opacity}
+                              strokeLinecap={item.strokeLinecap}
+                              style={{
+                                transition: "stroke 500ms, filter 500ms",
+                                filter: done && item.glow ? `drop-shadow(0 0 5px ${item.glow})` : "none",
+                              }}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                    </g>
+                  </g>
+                  {/* Decorative internal golden/stone relief rim */}
+                  <polygon points="0,-46 39.8,-23 39.8,23 0,46 -39.8,23 -39.8,-23" fill="none" stroke="#4a3e35" strokeWidth="1.5" opacity="0.5" />
+                  
+                  {/* Hexagon Border */}
+                  <polygon 
+                    points="0,-48 41.57,-24 41.57,24 0,48 -41.57,24 -41.57,-24" 
+                    fill="none" 
+                    stroke={isInActiveGroup ? "#d4b850" : "#15100c"} 
+                    strokeWidth={isInActiveGroup ? 3 : 1}
+                    style={{
+                      animation: isInActiveGroup && !done ? "hex-selected-pulse 1.5s ease-in-out infinite" : "none",
+                    }}
+                  />
+                </g>
+              </g>
+            );
+          })}
+
+          {/* Done flash overlay */}
+          {done && <circle cx="150" cy="150" r="130" fill="#d4b850" style={{ animation: "hex-solve-flash 2.2s ease-out forwards" }} />}
+        </svg>
+
+        {/* Status Hint */}
         <div style={done ? P.msgOk : P.hint}>
           {done ? t("puzzle.colorDone") : t("puzzle.colorHint")}
         </div>
         {!done && (
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 4 }} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
   );
 }
 
-/* MixOverlay (kimyasal karışım) — değişmeden korunur */
+/* MixOverlay (kimyasal karÄ±ÅŸÄ±m) â€” deÄŸiÅŸmeden korunur */
 export { MixOverlay } from "./MixOverlay";

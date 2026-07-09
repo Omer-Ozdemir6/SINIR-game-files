@@ -73,7 +73,7 @@ export default function Credits({ onClose }) {
           }}
         >
           {/* RED DOORS logosu (kayan bloğun tepesinde) */}
-          <img src="/reddoors-logo.png" alt="RED DOORS"
+          <img src="/red-doors-studio-logo.jpeg" alt="RED DOORS"
             style={{ width: "min(38vw, 170px)", height: "auto", marginBottom: 22 }} draggable={false} />
 
           {/* oyun ismi */}

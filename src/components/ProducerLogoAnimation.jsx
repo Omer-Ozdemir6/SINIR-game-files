@@ -56,7 +56,7 @@ function injectStyles() {
 }
 
 export default function ProducerLogoAnimation({ 
-  src = "/red-door-logo.jpg", 
+  src = "/red-doors-studio-logo.jpeg", 
   alt = "", 
   onComplete 
 }) {

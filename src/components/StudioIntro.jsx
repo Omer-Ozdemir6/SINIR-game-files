@@ -137,7 +137,7 @@ export default function StudioIntro({ onDone }) {
         }}
       >
         <img
-          src="/reddoors-logo.png"
+          src="/red-doors-studio-logo.jpeg"
           alt="RED DOORS"
           style={{ width: "100%", height: "auto", display: "block" }}
           draggable={false}

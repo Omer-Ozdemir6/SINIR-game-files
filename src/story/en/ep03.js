@@ -201,9 +201,9 @@ export const EP03 = {
         clockwiseOnly: true,
         title: "FAMILY STAINED GLASS — ALIGN THE GLASS",
         rings: [
-          { label: "BLUE", color: "#2f6fa8", step: 30, offset: 210, shards: ["#1d3f68", "#2f6fa8", "#73a8c8", "#244d7d", "#366f9f", "#98c7d8", "#1b3558", "#508db8"] },
-          { label: "GREEN", color: "#4f9a67", step: 24, offset: 168, shards: ["#244f36", "#4f9a67", "#82bd76", "#315f3e", "#6aa874", "#b2c985", "#1f452f", "#5f8f58", "#7ebd91"] },
-          { label: "RED", color: "#b43c36", step: 40, offset: 280, shards: ["#5c1d1b", "#b43c36", "#d07a5e", "#762620", "#9d332e", "#c45d4a", "#4a1716", "#d29670", "#8e2e29", "#be5042"] },
+          { label: "INNER", color: "#6aaa7a", step: 30, offset: 210, shards: ["#8ec5a0", "#e8e4d4", "#c4a4c8", "#d4a0a8", "#a8d4b8", "#c8b8d8", "#d8c8b4", "#b4d8c4"] },
+          { label: "MID", color: "#c88a9a", step: 24, offset: 168, shards: ["#d4a0a8", "#a8d4b8", "#c4a4c8", "#e8e4d4", "#8ec5a0", "#d8b8c4", "#b4c8d8", "#c8d4a8", "#d4b4c8"] },
+          { label: "OUTER", color: "#aa8ab8", step: 40, offset: 280, shards: ["#c4a4c8", "#8ec5a0", "#e8e4d4", "#d4a0a8", "#b4d8c4", "#d8c8b4", "#a8b8d4", "#c8a8b4", "#8ec5a0", "#d4b8d4"] },
         ],
         success: "n_vitray_cozuldu",
         cancel: "n_hol",
@@ -609,6 +609,7 @@ export const EP03 = {
       ],
       choices: [
         { id: "kos", text: "Sprint across the hallway, reach the cold storage", next: "n_final_kos" },
+        { id: "atla", text: "Try to leap over the broken cabinet as a shortcut", next: "n_final_atla" },
       ],
     },
 
