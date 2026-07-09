@@ -5,6 +5,7 @@ const MUSIC_PROFILES = {
   menu: { drone: 42, bass: "E1", notes: ["E2", "F2", "D2", "E1"], interval: 5200, gain: 0.07, noise: 0.012 },
   intro: { drone: 38, bass: "D1", notes: ["D2", "A1", "C2"], interval: 4300, gain: 0.06, noise: 0.018 },
   credits: { drone: 49, bass: "G1", notes: ["G2", "A2", "D2"], interval: 6200, gain: 0.045, noise: 0.006 },
+  archive: { drone: 56, bass: "B1", notes: ["B2", "E2", "F#2"], interval: 6800, gain: 0.04, noise: 0.005 },
   k6: { drone: 36, bass: "C1", notes: ["C2", "Db2", "G1", "C1"], interval: 3600, gain: 0.085, noise: 0.024 },
   k5: { drone: 33, bass: "B0", notes: ["B1", "F1", "C2"], interval: 3900, gain: 0.08, noise: 0.02 },
   k2: { drone: 31, bass: "A0", notes: ["A1", "Bb1", "E1", "A0"], interval: 3200, gain: 0.095, noise: 0.026 },
@@ -170,7 +171,7 @@ export const AudioSys = {
       }
 
       // Menü veya alet parçası mı kontrol et
-      const isMenuTrack = (track === "menu" || track === "credits" || track === "intro");
+      const isMenuTrack = (track === "menu" || track === "credits" || track === "intro" || track === "archive");
       
       if (!isMenuTrack) {
         this._activeGameTrack = track;
@@ -273,7 +274,7 @@ export const AudioSys = {
 
   pauseGameMusic() {
     try {
-      if (this._musicTrack && this._musicTrack !== "credits" && this._musicTrack !== "menu" && this._musicTrack !== "intro") {
+      if (this._musicTrack && this._musicTrack !== "credits" && this._musicTrack !== "menu" && this._musicTrack !== "intro" && this._musicTrack !== "archive") {
         this._pausedGameTrack = this._musicTrack;
         if (this._musicEl) {
           this._pausedGameTime = this._musicEl.currentTime;
@@ -554,9 +555,9 @@ export const AudioSys = {
   batteryLowSfx() {
     if (!this.inited || !this.enabled) return;
     try {
-      this.n.blip.triggerAttackRelease(520, "64n", undefined, 0.22);
+      this.n.blip.triggerAttackRelease(520, "64n", undefined, 0.85);
       setTimeout(() => {
-        try { this.n.blip.triggerAttackRelease(360, "64n", undefined, 0.18); } catch (e) {}
+        try { this.n.blip.triggerAttackRelease(360, "64n", undefined, 0.72); } catch (e) {}
       }, 115);
     } catch (e) {}
   },

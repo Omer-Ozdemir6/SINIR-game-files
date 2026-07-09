@@ -1,90 +1,91 @@
 /* ============================================================
-   LEVEL-1 — CHAPTER 3: "L-4 / HOME" (full version)
-   Floor Owner: CHEF HARUN OKUR — station chef, the father of the "Family."
+   PERISHED — EPISODE 3: "K-4 / HOME" (Full Version)
+   Floor master: CHIEF HARUN OKUR — station chief, father of the "Family."
    (Deniz is his son: in EP02, he said "Say hello to my father.")
 
-   TONE: PERISHED family ritual + dinner table horror. The floor is organized like a HOUSE:
-   dining hall, kitchen, children's room, chef's room, cold storage,
-   intercom niche. Harun PATROLS the house; he hunts not by sound, but by habit
-   — he knows where you should be and finds what is "out of place."
+   TONE: PERISHED family ritual + dining table horror. The floor is arranged like a HOME:
+   dining hall, kitchen, child's room, chief's quarters, cold storage,
+   and the intercom niche. Harun PATROLS the house; he hunts not by sound, 
+   but by habit — he knows where you should be and finds what is "out of place."
 
    MAIN MECHANIC — BAIT / INTERCOM:
-   · From the intercom niche, you direct the sound to another room → Harun
-     goes to that room → you move into the vacated space. If you choose the wrong room
-     (if Harun is already there), you give yourself away.
+   · You redirect sound to another room from the intercom niche → Harun 
+     marches to that room → you slip into the vacated space. If you select 
+     the wrong room (where Harun already is), you expose yourself.
 
-   PART-LOCK: The locked chest in the chef's room requires three FAMILY HEIRLOOMS
-   (photo, ring, baby tooth) — scattered across three rooms. Once all three are collected
-   and the chest is opened, the 'hatch key' is revealed; the descent to L-3 opens with it.
+   PIECE-LOCK: The locked chest in the Chief's room demands three FAMILY HEIRLOOMS
+   (a photograph, a ring, a baby tooth) — scattered across three rooms. Once all 
+   three are collected and the chest opens, it yields the 'vault key'; the descent to K-3 unlocks with it.
 
-   MANDATORY DINNER TABLE SCENE: Harun makes you sit down for a "family dinner."
-   What you do (eat / refuse / escape) carries consequences.
+   MANDATORY DINING SCENE: Harun forces you to sit at the "family dinner."
+   Whatever actions you choose (eat / refuse / escape) trigger direct consequences.
 
-   CARRIED STATE (from EP01-02):
-   · eceEleVerildi → Ece helps / does not help through the intercom
-   · sefFarkindalik → Harun's initial aggressiveness
-   · denizSoruldu → Deniz leaking into L-4 announcements
+   CARRIED STATUS (From EP01-02):
+   · eceEleVerildi → Ece assists/does not assist over the intercom
+   · sefFarkindalik → Harun's baseline aggressiveness
+   · denizSoruldu → Deniz intercepting the K-4 PA announcements
    ============================================================ */
 
 export const EP03 = {
   nodes: {
 
-    /* ================= INTRODUCTION — THE THRESHOLD OF THE HOUSE ================= */
+    /* ================= ENTRY — THE HOME'S THRESHOLD ================= */
 
     n_k4_giris: {
       checkpoint: true,
       cost: 1,
       events: [
         { type: "music", track: "k4" },
-        { type: "system", text: "FLOOR: L-4 — PERSONNEL LIVING AREA · MESS HALL · CABINS" },
-        { type: "narrate", text: "You climb up through the vent cover into a house. But this is not a home; it's a slaughterhouse built in the middle of a mental asylum. Rustling floral wallpapers are pasted over the steel walls, and thick carpets are laid on the floor. The only thing in your hand is a dim tablet, its raw and pixelated light illuminating your face. The light of the tablet is not enough to rip through the pitch blackness; it is too weak to expose the smell of rust and sewage coming from behind the wallpapers, the rot bloated from humidity." },
-        { type: "narrate", text: "Ahead, in the absolute darkness of the corridor, stretches a long dining table. Twelve chairs. And at the head of the table, sitting motionless with his back turned to you, is that massive, hunched torso. He taps his fork against a rusty, empty plate: click. Click. Click. This metallic sound echoing in the darkness whispers that you will be the next victim." },
+        { type: "system", text: "FLOOR: K-4 — PERSONNEL LIVING QUARTERS · MESS HALL · CABINS" },
+        { type: "narrate", text: "You climb out of the shaft hatch straight into a home[cite: 7]. The word home should have been a comforting word to your brain; not here[cite: 7]. Floral wallpaper is glued over steel walls, carpets are rolled across the deck, and crude imitations of family photographs are hung in the corners[cite: 7]. Someone didn't understand the concept of a hearth, but they memorized its recipe[cite: 7]. The faint glow of your tablet exposes the rust, sewage, and decay festering beneath the wallpaper[cite: 7]. The decor is thin; the lie is thick[cite: 7]." },
+        { type: "narrate", text: "This home wasn't emulated; it was memorized[cite: 7]. Someone learned the shape of being a family from photographs, dining hours, and child room dimensions, pounding them all inside the steel in the wrong sequence[cite: 7]. There is no affection here; there is only the procedure of affection[cite: 7]. Sit, eat, smile, obey[cite: 7]. Fail to do so, and become a part of the menu[cite: 7]." },
+        { type: "narrate", text: "Further ahead, stretching into the absolute darkness of the corridor, lies a long dining table[cite: 7]. Twelve chairs[cite: 7]. And at the head of the table sits that massive, hunchbacked torso, motionless, with his back turned to you[cite: 7]. He strikes his fork against an empty, rusted plate: tap[cite: 7]. Tap[cite: 7]. Tap[cite: 7]. This metallic sound echoing in the dark whispers that you will be the next casualty[cite: 7]." },
         { type: "waitTap" },
-        { type: "ambient", text: "Ece's trembling whisper from the tablet's speaker is cut by static noise: «So you made it up there... L-4. The floor of that monster. Whatever you do, don't shine your light directly at him... Cough twice if you can hear me — I've patched the line into the L-4 intercoms.»", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "ambient", text: "The glowing glass screen of the tablet is silent in your pocket. Ece might have connected the line, but she is not speaking to you. You are completely alone. There is only the charge of your tablet and the darkness.", if: { flag: "eceEleVerildi", equals: true } },
-        { type: "objective", text: "Find a way out of K-4." },
-        { type: "note", id: "not_ev", title: "L-4: Home", text: "The floor has been turned into a house — wallpaper, carpet, chandelier. Someone is sitting at the head of the table, tapping a fork against an empty plate. Deniz had said 'say hello to my father.' This must be Chef Harun. The father of the family." },
+        { type: "ambient", text: "Ece's trembling whisper from the tablet's speaker is fractured by static noise: «So you made it up there... K-4[cite: 7]. That monster's floor[cite: 7]. Whatever you do, do not aim your light directly at him... cough twice if you can hear me — I patched the line into the K-4 intercoms[cite: 7].»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "ambient", text: "The glowing glass screen of the tablet is silent in your pocket[cite: 7]. Ece might have patched the line, but she is not speaking to you[cite: 7]. You are completely alone[cite: 7]. There is only your tablet's charge and the darkness[cite: 7].", if: { flag: "eceEleVerildi", equals: true } },
+        { type: "objective", text: "Find an escape vector from K-4." },
+        { type: "note", id: "not_ev", title: "K-4: Home", text: "The floor has been converted into a home — wallpaper, carpet, chandelier[cite: 7]. Someone sits at the head of the table, striking a fork against an empty plate[cite: 7]. Deniz had said 'say hello to my father.'[cite: 7] This must be Chief Harun[cite: 7]. The father of the family[cite: 7]." },
       ],
       choices: [
         { id: "yaklas", text: "Quietly approach the table", next: "n_sofra_ilk" },
-        { id: "geri", text: "Try to go back through the vent cover", next: "n_baca_kilit" },
+        { id: "geri", text: "Try to retreat through the shaft hatch", next: "n_baca_kilit" },
       ],
     },
 
     n_baca_kilit: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You turn back and push the hatch like crazy — but it's locked from the outside with heavy bolts! L-5 won't take you back; you are trapped. From below, out of those deep shafts, Deniz's speaker crackles as if insane: 「I told you... Up there is not mine. My father cuts down everything that is out of place.」 In the spiral of terror, there is only one direction: forward." },
+        { type: "narrate", text: "You spin around and frantically shove the hatch — but it has been locked from the outside with heavy deadbolts[cite: 7]! K-5 won't take you back; you are trapped[cite: 7]. From below, out of those deep abysses, Deniz's loudspeaker crackles like crazy: 「I told you... up there isn't mine[cite: 7]. My father cuts down everything that is out of place[cite: 7].」 In this spiral of dread, there is only one direction: forward[cite: 7]." },
       ],
       choices: [
         { id: "yaklas", text: "Approach the table", next: "n_sofra_ilk" },
       ],
     },
 
-    /* ================= MANDATORY DINNER TABLE SCENE ================= */
+    /* ================= MANDATORY DINING SCENE ================= */
 
     n_sofra_ilk: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You extend the weak screen light of your tablet forward with trembling hands to see ahead. As you approach the table, that massive body grows even larger in the darkness, its shadow casting on the wall like a demon. Then, before you can even take a breath, the sounds of the fork cut off like a knife. That muffled, guttural, savage fatherly voice shakes the room:" },
-        { type: "narrate", text: "\"You're late.\" He doesn't turn around. \"In a family, dinner is eaten together. Sit down. Your plate is ready.\" In front of the chair, indeed, sits a rusty plate — covered, with a heavy, nauseating meat steam rising from it." },
+        { type: "narrate", text: "With trembling hands, you extend the weak screen light of your tablet forward just to see ahead[cite: 7]. As you draw closer to the table, that massive torso looms even larger in the dark, casting a demonic shadow across the wall[cite: 7]. Then, before you can even catch your breath, the fork sounds cut off like a knife[cite: 7]. That muffled, guttural, savage fatherly voice booms through the room[cite: 7]:" },
+        { type: "narrate", text: "\"You are late[cite: 7].\" He doesn't turn around[cite: 7]. \"In a family, dinner is eaten together[cite: 7]. Sit[cite: 7]. Your plate is ready[cite: 7].\" A plate indeed rests before the chair[cite: 7]. It is covered, steaming with a heavy scent of meat[cite: 7]. He couldn't have prepared this before you arrived[cite: 7]. But here, time itself feels structured around the family table[cite: 7]. Being late in this house is a pre-written script[cite: 7]." },
         { type: "waitTap" },
-        { type: "alert", text: "There is no escape — the only exit from the corridor is behind this psychopath. You need to sit down." },
+        { type: "alert", text: "There is no escape — the only exit from the corridor is behind this psychopath[cite: 7]. You have to sit[cite: 7]." },
       ],
       choices: [
-        { id: "otur", text: "Sit on the chair", next: "n_sofra_otur" },
-        { id: "kac", text: "Turn around and run into the corridor", next: "n_sofra_kac" },
+        { id: "otur", text: "Sit in the chair", next: "n_sofra_otur" },
+        { id: "kac", text: "Turn around and flee into the corridor", next: "n_sofra_kac" },
       ],
     },
 
     n_sofra_kac: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You turn around and run like mad into the darkness — at that moment, the dim light on the ceiling pops. Pitch black. Only that sickly blue light emitted by your tablet remains. Just then, a massive, calloused hand smelling of meat clamps down on your neck from behind and lifts you into the air with immense strength, slamming you onto the chair! Your bones creak. That calm voice, yet on the brink of madness, finishes right by your ear: \"No escaping the family dinner table, son. Try that again, and I'll cut off your legs.\"" },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Your eyes witnessed terror in the darkness, your heart is at a standstill!", noteKind: "alert" },
+        { type: "narrate", text: "You spin around and sprint into the darkness like mad — that exact moment, the feeble lamp on the ceiling shatters[cite: 7]. Pitch black[cite: 7]. Only the sickly blue light emitted by your tablet remains[cite: 7]. Right then, a massive, calloused hand smelling of meat clamps around your neck from behind, lifting you with immense force and hurling you onto the chair[cite: 7]! Your bones groan[cite: 7]. That calm yet borderline insane voice finishes right at your ear: \"One does not flee the family table, son[cite: 7]. Try that again, and I'll sever your legs[cite: 7].\"" },
+        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Your eyes witnessed pure terror in the dark, your heart is on the verge of stopping!", noteKind: "alert" },
         { type: "stat", stat: "sefFarkindalik", delta: 10 },
-        { type: "narrate", text: "The dim chandelier flickers back on. You sit trembling in the chair. The plate stands right in front of you. He is at the head of the table, as if he never left his spot, but his heavy breathing fills the room." },
+        { type: "narrate", text: "The feeble chandelier flickers back on[cite: 7]. You sit trembling in the chair[cite: 7]. The plate rests right in front of you[cite: 7]. He remains at the head of the table, as if he never even moved, but his heavy breathing fills the room[cite: 7]." },
       ],
       choices: [
         { id: "devam", text: "Look at the plate", next: "n_sofra_tabak" },
@@ -94,8 +95,8 @@ export const EP03 = {
     n_sofra_otur: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You sit helplessly on the cold chair. The freezing cold of the steel seeps through your trousers into your flesh, just like that helplessness that seeped into the bones of the others. The giant at the head of the table turns slowly toward you for the first time... but the upper part of his face is in darkness; only the line of his crooked jaw and a crazy eyeball, wetly glistening in the light of your tablet, are visible." },
-        { type: "narrate", text: "\"Good. See how easy that was?\" He drives the rusty fork into the table. \"Now eat. Your mother prepared it for you. We've been looking for fresh ingredients for days.\"" },
+        { type: "narrate", text: "You sit helplessly in the cold chair[cite: 7]. The freezing chill of the steel seeps through your trousers into your flesh, and from your flesh into your marrow[cite: 7]. The giant at the head of the table slowly turns toward you for the first time... but the upper half of his face is shrouded in dark; only the line of his warped jaw and a crazed eyeball, gleaming wetly under your tablet's light, are visible[cite: 7]." },
+        { type: "narrate", text: "\"Good boy[cite: 7]. See how easy it was[cite: 7].\" He drives the rusted fork into the wood of the table[cite: 7]. \"Now, eat[cite: 7]. Your mother prepared it for you[cite: 7]. We've been searching for fresh ingredients for days[cite: 7].\"" },
       ],
       choices: [
         { id: "devam", text: "Look at the plate", next: "n_sofra_tabak" },
@@ -105,91 +106,94 @@ export const EP03 = {
     n_sofra_tabak: {
       cost: 1,
       events: [
-        { type: "narrate", text: "With fingers trembling from fear, you lift the lid of the plate. Inside... are steaming, seasoned chunks of meat resembling human limbs. The smell is terrifyingly good, and it brings you to the brink of vomiting because you are hungry! Right at the edge of the plate, glistening among the bloody grease, is a small personnel dog tag: 'AYKUT D., technician'." },
-        { type: "note", id: "not_kunye", title: "Dog tag on the plate", text: "There was a personnel dog tag next to the plate — 'AYKUT D., technician'. Next to the meat. I won't think about it. I can't think about it." },
+        { type: "narrate", text: "With fingers trembling from terror, you lift the lid[cite: 7]. The contents inside behave like food at first: steam, spices, grease[cite: 7]. Then your eyes discern the shapes, and the brain struggles to separate the taste from the smell[cite: 7]. Chunks of meat resembling human extremities[cite: 7]. Worse yet, it smells good[cite: 7]. Your hunger defects sides for a split second[cite: 7]. A small personnel tag gleams amidst the bloody grease at the edge of the plate: 'AYKUT D., technician.'[cite: 7]" },
+        { type: "note", id: "not_kunye", title: "The Identification Tag on the Plate", text: "Next to the plate sat a personnel ID tag reading 'AYKUT D.'[cite: 7] Not inside the meat, beside it[cite: 7]. This is worse[cite: 7]. Harun knew exactly who he was[cite: 7]. He preserved his name, cooked his body[cite: 7]. I am writing this down because in a few minutes my brain might decide this wasn't real[cite: 7]. It was real[cite: 7]. The taste is still in my mouth[cite: 7]." },
         { type: "waitTap" },
-        { type: "narrate", text: "\"Eat,\" he says, his voice turning into a deep growl this time. \"Refusing... upsets your mother. And believe me, if she gets upset, I will paint this table with your blood.\" You lift the fork. The moment your sanity hangs by a thread." },
+        { type: "narrate", text: "\"Eat,\" he says, his voice dropping into a deep growl this time[cite: 7]. \"Refusing... would break your mother's heart[cite: 7]. And believe me, if she gets upset, I will paint this table with your blood[cite: 7].\" You lift the fork[cite: 7]. Your stomach, your memories, and the last remaining fragment of you trying to stay human convulse simultaneously[cite: 7]." },
       ],
       choices: [
-        { id: "ye", text: "Take a bite — to survive", next: "n_sofra_ye" },
-        { id: "sakla", text: "Pretend to eat, hide the bite", next: "n_sofra_sakla" },
-        { id: "reddet", text: "Put down the fork — \"I won't eat this.\"", next: "n_sofra_reddet" },
+        { id: "ye", text: "Take a bite — just to survive", next: "n_sofra_ye" },
+        { id: "sakla", text: "Pretend to eat, conceal the bite", next: "n_sofra_sakla" },
+        { id: "reddet", text: "Drop the fork — \"I won't eat this.\"", next: "n_sofra_reddet" },
       ],
     },
 
     n_sofra_ye: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You close your eyes tightly and put that raw, human meat into your mouth. You chew. The tissues crushing between your teeth turn your stomach inside out; you squeeze your throat to avoid vomiting. You swallow. The Chef's perverted face in the shadow relaxes, his lips curling upward: \"There... There is my beautiful child. You are part of our family now.\"" },
+        { type: "narrate", text: "Squeezing your eyes tight, you force that raw, human flesh into your mouth[cite: 7]. You chew[cite: 7]. The tissues mashing between your teeth turn your stomach inside out; you clutch your throat to keep from throwing up[cite: 7]. You swallow[cite: 7]. The Chief's twisted face relaxes in the shadows, his lips curling upward: \"There... There is my beautiful child[cite: 7]. Now you are a part of our family[cite: 7].\"" },
         { type: "flag", set: { sofraYedi: true } },
-        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — You chewed the flesh of a human. The threshold of no return has been crossed!", noteKind: "alert" },
-        { type: "stat", stat: "sefFarkindalik", delta: -15, note: "The Chef has begun to trust you", noteKind: "system" },
-        { type: "narrate", text: "\"Your stomach is full. Now, chores.\" He stands up — standing almost like a massive boulder. \"I'll prepare the new ingredients in the kitchen. You clean up around here. But don't you dare enter my room upstairs. And that cold storage... if you enter it, I will hang you on those hooks alive.\" He walks toward the kitchen with heavy, dragging steps." },
+        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — You chewed human flesh. An irreversible threshold has been crossed!", noteKind: "alert" },
+        { type: "stat", stat: "sefFarkindalik", delta: -15, note: "The Chief is beginning to trust you", noteKind: "system" },
+        { type: "narrate", text: "\"Your belly is full[cite: 7]. Now for the household chores[cite: 7].\" He stands up — looming like a colossal mass[cite: 7]. \"I will prepare the new ingredients in the kitchen[cite: 7]. You clean up around here[cite: 7]. But whatever you do, do not enter my room on the upper deck[cite: 7]. And that cold storage... if you step inside, I will hang you from those hooks alive[cite: 7].\" He marches to the kitchen with heavy, dragging strides[cite: 7]." },
       ],
       choices: [
-        { id: "devam", text: "Get up from the table", next: "n_hol" },
+        { id: "devam", text: "Stand up from the table", next: "n_hol" },
       ],
     },
 
     n_sofra_sakla: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You bring the piece of meat to your mouth, closing your lips and letting the disgusting fluid flow from your fingers as you squeeze the bite into your palm, and from there into your pocket. Moving your jaw with large motions, you fake a swallow. The Chef watches you under the light of your tablet with his wet and crazy eye... Your heart beats as if it's going to tear through your ribcage." },
-        { type: "narrate", text: "Then he slowly nods his head. \"...Good boy. I like children who listen.\" Your trick worked, but the warm blood leaking from your pocket stains your jacket. \"Your stomach is full. Tend to the chores. Don't enter my room, don't enter the cold storage.\" He goes to the kitchen with heavy steps." },
+        { type: "narrate", text: "You bring the meat chunk to your mouth, closing your lips and letting the vile fluid slick down your fingers as you jam the bite into your palm, and from there, into your pocket[cite: 7]. You mimic the act of swallowing by moving your jaw in exaggerated motions[cite: 7]. The Chief watches you under his wet, crazed eye through your tablet's light... Your heart pounds as if ready to rip out of your chest[cite: 7]." },
+        { type: "narrate", text: "Then, he nods slowly[cite: 7]. \"...Good boy[cite: 7]. I love children who listen[cite: 7].\" Your trick worked, but warm blood seeping from your pocket stains your jacket[cite: 7]. \"Your belly is full[cite: 7]. Tend to the household chores[cite: 7]. Don't enter my room, don't enter the cold storage[cite: 7].\" He heads to the kitchen with heavy steps[cite: 7]." },
         { type: "flag", set: { sofraSakladi: true } },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
-        { id: "devam", text: "Get up from the table", next: "n_hol" },
+        { id: "devam", text: "Leave the table", next: "n_hol" },
       ],
     },
 
     n_sofra_reddet: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You fling the fork onto the plate. The clinking of the metal echoes in that ominous room. \"I won't eat this,\" you say, your voice trembling. A deadly silence falls. The Chef leaps up, and the dim light of your tablet hits his face... You wish you hadn't looked. The right half of his face is completely flayed; in its place, a bruised piece of flesh from another victim has been stitched and attached with rusty staples!" },
-        { type: "stat", stat: "akil", delta: -18, note: "SANITY -18 — That stapled, rotting face will haunt your dreams!", noteKind: "alert" },
-        { type: "stat", stat: "sefFarkindalik", delta: 20, note: "The CHEF is offended by you — he is watching you now", noteKind: "alert" },
+        { type: "narrate", text: "You hurl the fork onto the plate[cite: 7]. The clink of the metal echoes through that ominous room[cite: 7]. \"I won't eat this,\" you say, your voice cracking[cite: 7]. A deathly silence falls[cite: 7]. The Chief bolts up, and the dim light of your tablet strikes his face... You wish you hadn't looked[cite: 7]. The right half of his face is entirely flayed; in its place, a bruised chunk of flesh harvested from another victim has been stitched and stapled with rusted wires[cite: 7]!" },
+        { type: "stat", stat: "akil", delta: -18, note: "SANITY -18 — That stapled, rotting face will haunt your nightmares!", noteKind: "alert" },
+        { type: "stat", stat: "sefFarkindalik", delta: 20, note: "You broke the CHIEF's heart — he is tracking you now", noteKind: "alert" },
         { type: "flag", set: { sofraReddetti: true } },
-        { type: "narrate", text: "\"You insulted your mother's food!\" he roars, but his voice suddenly drops to a whisper — this sudden transition is the height of madness. \"In this house, ungrateful people are flayed. But I'm in no hurry... You're here all night, right in the palm of my hand.\" He turns back to the kitchen with heavy steps. \"Clean up. Don't enter my room. Don't enter the cold storage. And get it into your head... that you can never escape from me.\"" },
+        { type: "narrate", text: "\"You insulted your mother's cooking!\" he roars, but his voice suddenly drops to a whisper — this abrupt transition is the pinnacle of madness[cite: 7]. \"In this house, ungrateful wretches get skinned alive[cite: 7]. But I'm in no rush... You are here all night, right in the palm of my hand[cite: 7].\" He turns back to the kitchen with heavy steps[cite: 7]. \"Clean up[cite: 7]. Don't enter my room[cite: 7]. Don't enter the cold storage[cite: 7]. And hammer this into your head... you can never escape from me[cite: 7].\"" },
       ],
       choices: [
-        { id: "devam", text: "Get up from the table", next: "n_hol" },
+        { id: "devam", text: "Leave the table", next: "n_hol" },
       ],
     },
 
-    /* ================= MAIN: HOME HALLWAY (HUB) ================= */
+    /* ================= CENTRAL: THE HOME HALLWAY (HUB) ================= */
 
     n_hol: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You are in the hallway of the house. The dim light of the tablet in your hand hits the framed 'family photos' hanging on the wall. The faces of the people in the photos have been scraped off with a knife, and crooked, massive smiles have been drawn over all of them with blood-red ink. A maniacal piece of handiwork.", if: { flag: "holIlk", equals: false } },
+        { type: "narrate", text: "You are in the home's hallway[cite: 7]. The tablet light hits the framed 'family photographs.'[cite: 7] The faces have been scraped away with a knife; massive smiles have been drawn in their place with blood-red ink[cite: 7]. This isn't vandalism executed in rage; it's a correction made with patience[cite: 7]. Harun didn't erase the faces, he erased the disobedient expressions[cite: 7]. He left behind only mouths fitting for the family[cite: 7].", if: { flag: "holIlk", equals: false } },
         { type: "flag", set: { holIlk: true } },
         { type: "status", items: [
-          { label: "PHOTO", flag: "yadigar1" },
+          { label: "PHOTOGRAPH", flag: "yadigar1" },
           { label: "RING", flag: "yadigar2" },
           { label: "BABY TOOTH", flag: "yadigar3" },
         ] },
-        { type: "ambient", text: "Sounds of a cleaver and bone-crushing noises come from the kitchen — the Chef is chopping something up there. The weak glow on your tablet screen illuminates five dark doors ahead of you: kitchen, children's room, chef's room upstairs, cold storage, and that narrow intercom niche." },
+        { type: "ambient", text: "The sounds of a cleaver hacking and bones snapping emerge from the kitchen — the Chief is butchering something in there[cite: 7]. The feeble glint on your tablet screen illuminates five dark doors ahead: the kitchen, the child's room, the chief's upper deck quarters, the cold storage, and that narrow intercom niche[cite: 7]." },
       ],
       choices: [
-        { id: "cocuk", text: "Enter the room where cartoon sounds are coming from", next: "n_cocuk", if: { flag: "cocukBitti", equals: false } },
+        { id: "cocuk", text: "Enter the room where cartoon audio originates", next: "n_cocuk", if: { flag: "cocukBitti", equals: false } },
         { id: "interkom", text: "Go to the intercom niche on the wall", next: "n_interkom" },
-        { id: "sef", text: "Go upstairs to the locked room", next: "n_sef_kapi" },
-        { id: "depo", text: "Approach the heavy door leaking cold air", next: "n_depo_kapi" },
-        { id: "mutfak", text: "Glance into the kitchen (The Chef is there)", next: "n_mutfak" },
+        { id: "sef", text: "Ascend to the upper deck, to the locked room", next: "n_sef_kapi" },
+        { id: "depo", text: "Approach the heavy door leaking freezing air", next: "n_depo_kapi" },
+        { id: "mutfak", text: "Peer into the kitchen (The Chief is inside)", next: "n_mutfak" },
         { id: "vitray", text: "Examine the stained glass panel above the sofa", next: "n_vitray_panel", if: { flag: "vitrayCozuldu", equals: false } },
-        { id: "sandik", text: "Try to open the chest in the chef's room", next: "n_sef_sandik", if: { flag: "sefOdaAcik", equals: true } },
+        { id: "sandik", text: "Try to crack the chest in the Chief's room", next: "n_sef_sandik", if: { flag: "sefOdaAcik", equals: true } },
       ],
     },
 
-    /* NEW: family stained glass — colorgrid puzzle (color pattern) */
+    /* FAMILY STAINED GLASS — RINGS PUZZLE */
     n_vitray_panel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "On the wall of the hallway stands a panel made of stained glass. This is an old family portrait. But the glasses are broken, patched with wrong, sickly colors as if blood had splattered onto them. The faces are like a nightmare painting mixed together. Just below the panel, Deniz's childish but shaky handwriting is carved: 'My mother knows the right colors. I forgot. My father turned into a monster.' If you bring the colors to the correct pattern, the secret recess behind will open." },
-        { type: "note", id: "not_vitray", title: "Family stained glass", text: "The stained glass family portrait in the hallway is patched with the wrong colors. I need to bring it to the correct pattern — touching the cells changes the color. Deniz's note: the correct colors are his mother's memory. There is a recess behind it." },
+        { type: "narrate", text: "A panel crafted from stained glass fragments stands on the hallway wall[cite: 7]. It's an old family portrait[cite: 7]. But the glass chunks have been shattered, patched with wrong, sickly colors as if blood splattered across them[cite: 7]. The faces are like a nightmare painting mashed together[cite: 7]. Directly beneath the panel, Deniz's childish yet trembling handwriting is etched: 'My mother knows the correct colors[cite: 7]. I forgot[cite: 7]. My father turned into a monster.'[cite: 7] If you align the glass into the correct pattern, the hidden compartment behind will release[cite: 7]." },
+        { type: "document", open: false, doc: {
+          id: "d_aile_uyum", title: "Family Harmony Observation Form",
+          body: "PERISHED BEHAVIORAL OBSERVATION FORM\nUNIT: K-4 residential family simulation\nOBSERVER: D. Okur\nSTATUS: Active / do not approach while in contact\n\nObserved rituals:\n- When the table call is sounded, all individuals take their seats.\n- Food rejection generates extreme protective violence in the father figure.\n- Child room audio creates a loss of orientation in the father figure.\n- Color/pattern stimuli belonging to the mother produce positive reactions in locked compartments.\n\nClinical commentary:\nFamily behavior is tethered not to affection, but to a recurring cycle of punishment and reward.\nThe father figure sustains his grief response by placing new individuals in stead of the missing spouse.\nAn outsider can survive short-term if they emulate the 'child' role adequately.\n\nWarning:\nThis is not a treatment case. K-4 is no longer a residence, it is a ritual space.\nDo not let Harun Tekin realize you are not a family member." } },
+        { type: "note", id: "not_vitray", title: "The Family Stained Glass", text: "The colored glass family portrait in the hallway is patched with wrong colors[cite: 7]. I need to bring it to the correct pattern — touching the cells shifts the color[cite: 7]. Deniz's note: the correct colors are his mother's memory[cite: 7]. There is a compartment behind it[cite: 7]." },
       ],
       interaction: {
         kind: "rings",
@@ -210,13 +214,13 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "system", text: "STAINED GLASS: COMPLETED" },
-        { type: "narrate", text: "When the last piece clicks into place, the panel swings backward with a click. The raw light of your tablet strikes the dusty recess behind. Inside, there is a life-saving spare battery and an old, wrinkled piece of paper. You quickly read the note." },
+        { type: "narrate", text: "The moment the final chunk seats home, the panel swings backward with a click[cite: 7]. The raw light of your tablet strikes the dusty hollow behind[cite: 7]. Inside rests a life-saving spare battery and an old, wrinkled scrap of paper[cite: 7]. You scan the note rapidly[cite: 7]." },
         { type: "flag", set: { vitrayCozuldu: true } },
         { type: "battery", spares: 1 },
         { type: "document", open: true, doc: {
           id: "d_anne", title: "Mother's Note", style: "hand",
-          meta: "— in the recess behind the stained glass —",
-          body: "My Deniz,\n\nHis father has changed. Ever since they found that\nthing below. Now, when he says 'family', he means\nsomething completely different. He wants to include you too.\n\nI made this panel for you — if you remember the\nright colors, I will know you are still my son.\nEscape. Go upstairs. Don't wait for me.\n\n— Your Mother" } },
+          meta: "— within the hollow behind the stained glass —",
+          body: "My Deniz,\n\nHis father has changed. Ever since they found that thing\ndown below. Now, when he says 'family,' he means\nsomething completely different. He wants to include you too.\n\nI made this panel for you — if you remember the correct\ncolors, I'll know you are still my son. Run. Climb upstairs.\nDon't wait for me.\n\n— Your Mother" } },
         { type: "stat", stat: "akil", delta: 4 },
       ],
       choices: [
@@ -229,18 +233,18 @@ export const EP03 = {
     n_interkom: {
       cost: 1,
       events: [
-        { type: "narrate", text: "An old, rusty intercom panel embedded in the wall. The speakers in every room of the house are connected to this damned mechanism. If you send a sound wave to a room from here, that maniac Chef will direct his steps there. This is your only card to manipulate him.", if: { flag: "interkomIlk", equals: false } },
+        { type: "narrate", text: "A rusted, old intercom panel embedded into the wall[cite: 7]. The speakers in every room of the house are linked to this damned mechanism[cite: 7]. If you beam a sound wave into a specific room from here, that maniac Chief will direct his strides there[cite: 7]. This is your only card to manipulate him[cite: 7].", if: { flag: "interkomIlk", equals: false } },
         { type: "flag", set: { interkomIlk: true } },
         { type: "document", open: true, if: { flag: "interkomIlk", equals: false }, doc: {
-          id: "d_interkom", title: "Intercom Usage Note (handwritten)", style: "hand",
-          meta: "— pinned inside the niche, written in a hurry —",
-          body: "LISTEN, whoever finds this:\nFather follows the sound. Give sound to a room,\nhe goes there. While he goes, move to the OTHER room.\n\nBUT: don't give sound to the room he is already in —\nhe will hear you, and understand where it came from.\nHe is in the kitchen. Send the sound ELSEWHERE.\n\nThree heirlooms are needed for the door:\n- photo: in the child's room\n- ring: in cold storage (careful)\n- tooth: in his pocket. put him to sleep.\n         — the previous 'child'" } },
-        { type: "note", id: "not_interkom", title: "Bait system", text: "Intercom: send sound to a room, the Chef goes there, I move to the vacated room. BUT if I send sound to the room the Chef is already in, he will notice me. Three heirlooms: photo (children's room), ring (cold storage), tooth (Chef's pocket — I need to put him to sleep)." },
+          id: "d_interkom", title: "Intercom Usage Note (Handwritten)", style: "hand",
+          meta: "— pinned inside the niche, drafted in a rush —",
+          body: "LISTEN, whoever finds this:\nFather follows the sound. Project audio to a room,\nhe goes there. While he moves, cross to the OTHER room.\n\nBUT: do not project audio to the room he is already in —\nhe will hear you and understand where it originated.\nHe is in the kitchen. Dispatch the sound ELSEWHERE.\n\nThree heirlooms are required for the door:\n- photograph: inside the child room\n- ring: inside the cold storage (caution)\n- tooth: inside his pocket. put him to sleep.\n         — the previous 'child'" } },
+        { type: "note", id: "not_interkom", title: "The Bait System", text: "Intercom: dispatch audio to a room, the Chief heads there, I cross to the vacated room[cite: 7]. BUT if I send audio to the room the Chief is already occupying, he will detect me[cite: 7]. Three heirlooms: photograph (child room), ring (cold storage), tooth (in the Chief's pocket — I need to put him to sleep)[cite: 7]." },
       ],
       choices: [
-        { id: "cocuga", text: "Send sound to the children's room (bait)", next: "n_yem_cocuk" },
-        { id: "depoya", text: "Send sound to cold storage (bait)", next: "n_yem_depo" },
-        { id: "salona", text: "Send sound to the dining hall (bait)", next: "n_yem_salon" },
+        { id: "cocuga", text: "Dispatch audio to the child's room (Bait)", next: "n_yem_cocuk" },
+        { id: "depoya", text: "Dispatch audio to the cold storage (Bait)", next: "n_yem_depo" },
+        { id: "salona", text: "Dispatch audio to the dining hall (Bait)", next: "n_yem_salon" },
         { id: "geri", text: "Exit the niche, return to the hallway", next: "n_hol" },
       ],
     },
@@ -248,22 +252,22 @@ export const EP03 = {
     n_yem_cocuk: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You press the children's room button and tap the microphone hard. The cleaver sounds in the kitchen stop instantly like a knife. Heavy, clumsy but deadly steps strike the hallway. A guttural voice rises from the corridor: \"...Who's there? My baby? Deniz? Did you hide in the closet again?\" He goes there." },
+        { type: "narrate", text: "You depress the child's room button and strike the microphone sharply[cite: 7]. The cleaver sounds in the kitchen cut off like a knife instantly[cite: 7]. Heavy, clumsy yet lethal strides pound the hallway floor[cite: 7]. A guttural voice ascends from the corridor: \"...Who is in there? My baby? Deniz? Did you hide in the locker again?\"[cite: 7] He is moving there[cite: 7]." },
         { type: "flag", set: { yemCocuk: true, sefNerede: "cocuk" } },
-        { type: "system", text: "CHEF: WENT TO THE CHILDREN'S ROOM — it is no longer EMPTY, he is there" },
-        { type: "ambient", text: "Now the kitchen and cold storage are emptied. But it would be madness to go take that photo in the children's room; because that monster is there right now, sniffing the darkness." },
+        { type: "system", text: "CHIEF: PROCEEDED TO THE CHILD'S ROOM — it is no longer EMPTY, he is there[cite: 7]" },
+        { type: "ambient", text: "Now the kitchen and the cold storage have cleared out[cite: 7]. But to pull that photograph from the child's room would require absolute madness; because that monster is currently in there, sniffing the darkness[cite: 7]." },
       ],
       choices: [
-        { id: "hol", text: "Return to the hallway and use the vacated space", next: "n_hol" },
+        { id: "hol", text: "Return to the hallway and utilize the vacated space", next: "n_hol" },
       ],
     },
 
     n_yem_depo: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You press the cold storage button. You simulate a crackling scream sound from the speaker. A grunt breaks out from the kitchen: \"Who the hell is tampering with the storage door again!\" Heavy steps head toward the cold storage, the rusty keys on his belt jingling." },
+        { type: "narrate", text: "You depress the cold storage button[cite: 7]. You simulate a crackling scream audio through the microphone[cite: 7]. A grunt rips from the kitchen: \"Who is tampering with the storage door again!\"[cite: 7] Heavy strides redirect to the cold storage, rusted keys jangling on his belt[cite: 7]." },
         { type: "flag", set: { yemDepo: true, sefNerede: "depo" } },
-        { type: "system", text: "CHEF: WENT TO COLD STORAGE — kitchen and upstairs are now empty" },
+        { type: "system", text: "CHIEF: PROCEEDED TO THE COLD STORAGE — the kitchen and upper deck are now vacant[cite: 7]" },
       ],
       choices: [
         { id: "hol", text: "Return to the hallway", next: "n_hol" },
@@ -273,28 +277,28 @@ export const EP03 = {
     n_yem_salon: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You press the dining hall button and send the creak of an empty plate. \"...Did you come back for dinner, son? Good... I'm coming, I'll refresh the meat,\" he says, heading toward the hall." },
+        { type: "narrate", text: "You depress the dining hall button and transmit an empty plate scraping sound[cite: 7]. \"...Did you return to dinner, son? Good... I'm coming, I'll freshen up the meat,\" he says, redirecting to the hall[cite: 7]." },
         { type: "flag", set: { yemSalon: true, sefNerede: "salon" } },
-        { type: "system", text: "CHEF: WENT TO THE DINING HALL — kitchen, storage, and upstairs are empty" },
+        { type: "system", text: "CHIEF: PROCEEDED TO THE DINING HALL — the kitchen, storage, and upper deck are vacant[cite: 7]" },
       ],
       choices: [
         { id: "hol", text: "Return to the hallway", next: "n_hol" },
       ],
     },
 
-    /* ================= CHILDREN'S ROOM — heirloom 1 (photo) ================= */
+    /* ================= CHILD'S ROOM — HEIRLOOM 1 (PHOTOGRAPH) ================= */
 
     n_cocuk: {
       cost: 1,
       events: [
-        { type: "narrate", text: "From the children's room, a crackling cartoon music coming from a broken television rises — the same terrifying three-second melody spins in an endless loop. There are height lines on the wall next to the bunk bed, but this is not a child's development... The names of different victims are carved from bottom to top, and the note 'Child' has been brutally dropped next to all of them.", if: { flag: "sefNerede", equals: "cocuk" } },
-        { type: "alert", text: "MOMENT OF TERROR BY A HAIR'S BREADTH — THE CHEF IS HERE! If the light of your tablet hits the wall, you're dead! GET OUT IMMEDIATELY!", if: { flag: "sefNerede", equals: "cocuk" } },
-        { type: "narrate", text: "The cartoon melody spreads into the room from the broken tape. On the nightstand, there is a frame with cracked glass, covered in dried blood stains. You aim the dim glow of your tablet at the frame.", if: { flag: "sefNerede", equals: "cocuk", negate: true } },
+        { type: "narrate", text: "A fractured cartoon melody drifts from the child's room; a three-second snippet of joy locked in an infinite loop, it is no longer joy, it is torture[cite: 7]. Growth notches are carved next to the bunk bed[cite: 7]. At first glance, you mistake it for the log of a growing child[cite: 7]. Then you discern the names: different individuals, different dates, the exact same note[cite: 7]. 'Son.'[cite: 7] This room didn't raise a child[cite: 7]. It measured the human beings meant to replace him[cite: 7].", if: { flag: "sefNerede", equals: "cocuk" } },
+        { type: "alert", text: "DEATH BY A HAIR'S BREADTH — THE CHIEF IS HERE! If your tablet's light hits the wall, you are dead! EXIT IMMEDIATELY!", if: { flag: "sefNerede", equals: "cocuk" } },
+        { type: "narrate", text: "The cartoon melody leaks into the room from a corrupted tape[cite: 7]. A frame with its glass shattered and coated in dried blood stains rests atop the nightstand[cite: 7]. You aim the dim glow of your tablet toward the frame[cite: 7].", if: { flag: "sefNerede", equals: "cocuk", negate: true } },
       ],
       choices: [
-        { id: "kac_c", text: "Get out immediately — he is here", next: "n_cocuk_yakalandi", if: { flag: "sefNerede", equals: "cocuk" } },
-        { id: "fotograf", text: "Take the photo with the cracked frame", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
-        { id: "arastir", text: "Look under the bunk bed", next: "n_cocuk_ranza", if: { flag: "cocukRanza", equals: false } },
+        { id: "kac_c", text: "Exit immediately — he is here", next: "n_cocuk_yakalandi", if: { flag: "sefNerede", equals: "cocuk" } },
+        { id: "fotograf", text: "Take the cracked-frame photograph", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
+        { id: "arastir", text: "Inspect beneath the bunk bed", next: "n_cocuk_ranza", if: { flag: "cocukRanza", equals: false } },
         { id: "cik", text: "Exit the room", next: "n_hol" },
       ],
     },
@@ -302,36 +306,36 @@ export const EP03 = {
     n_cocuk_yakalandi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You dash toward the door, but that massive shadow has already blocked the threshold! There is no flashlight or light source; the blue screen of your tablet illuminates his stapled, sweaty, and bloody face. He fixes his crazy eyes on you: \"So you came to your room, naughty boy... Children should wait quietly in their rooms at night!\" He locks the heavy steel door behind him!" },
+        { type: "narrate", text: "You dash toward the door but that massive shadow has already blocked the threshold[cite: 7]! There are no flashlights or light sources, the blue screen of your tablet illuminates his stapled, sweaty, and bloody face[cite: 7]. He fixes his crazed eyes on you: \"So you came to your room, naughty child... Children should wait quietly and well-behaved in their rooms at night!\"[cite: 7] He locks the heavy steel door behind him[cite: 7]!" },
         { type: "stat", stat: "akil", delta: -10 },
       ],
       choices: [
-        { id: "sakla", text: "Squeeze under the bunk bed, hold your breath", next: "n_cocuk_nefes" },
+        { id: "sakla", text: "Squeeze beneath the bunk bed, hold your breath", next: "n_cocuk_nefes" },
       ],
     },
 
     n_cocuk_nefes: {
       events: [
-        { type: "narrate", text: "Pressing your tablet screen against your chest to completely smother the light, you slide into the filth and dried blood under the bunk bed. Massive boots enter the room. His heavy, wheezing breath is right above you. He steps on a plastic toy on the floor — crunch! He stops... He slowly bends down toward the floor, the heavy smell of meat filling your nose." },
+        { type: "narrate", text: "Pressing your tablet screen against your chest to completely stifle the light, you slide into the filth and dried blood beneath the bunk bed[cite: 7]. His colossal boots enter the room[cite: 7]. His heavy, rasping breath is directly above you[cite: 7]. He steps onto a plastic toy on the floor — crunch[cite: 7]! He stops... Slowly, he bends down toward the floor, the heavy odor of meat filling your nostrils[cite: 7]." },
       ],
       interaction: { kind: "breath", holdMs: 7000, lungMs: 9500, success: "n_cocuk_kurtul", fail: "n_olum_cocuk" },
     },
 
     n_olum_cocuk: {
       death: true,
-      deathText: "Your breath bursts under the bunk bed; you gasp with a sob! At that moment, a massive, hairy hand darts out from the darkness, grabs you by the hair, and flings you out, pulling you away! Your head slams against the iron of the bunk bed. \"I found you, little mouse. Hide and seek is over!\" The cleaver rises into the air, and everything goes black accompanied by the cartoon music.",
+      deathText: "Your breath explodes beneath the bunk, you give out a sobbing gasp[cite: 7]! That exact moment, a colossal, hairy hand lunges out from within the dark, clamping into your hair and violently dragging you out[cite: 7]! Your head strikes the iron structure of the bunk[cite: 7]. \"I found you, little rat[cite: 7]. Hide and seek is over!\"[cite: 7] The cleaver ascends, everything going black alongside the cartoon music[cite: 7].",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_cocuk_kurtul: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The boots finally head toward the door and exit the room. \"...Whatever, we'll play later,\" he whispers from the corridor. You crawl out from under the bunk bed that smells of urine and sweat. Your heart is practically beating in your ears, your tablet screen soaked with your sweat." },
+        { type: "narrate", text: "The boots finally turn toward the door and exit the room[cite: 7]. \"...Whatever, we'll play later,\" he whispers from the corridor[cite: 7]. You crawl out from beneath the bunk that reeks of urine and sweat[cite: 7]. Your heart is practically beating in your ears, your tablet screen soaked with your sweat[cite: 7]." },
         { type: "flag", set: { sefNerede: "", cocukBitti: true } },
         { type: "stat", stat: "akil", delta: -5 },
       ],
       choices: [
-        { id: "fotograf", text: "Take the photo", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
+        { id: "fotograf", text: "Take the photograph", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
         { id: "cik", text: "Exit the room", next: "n_hol" },
       ],
     },
@@ -339,9 +343,9 @@ export const EP03 = {
     n_cocuk_foto: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You rip the photo out of the cracked frame. In the photo, a young Harun, who hasn't yet gone mad and turned into a monster, stands next to a clean-faced woman and a little child. You turn it over and read it under the tablet light: 'Harun, Sevgi, little Deniz — 2009.' So this nightmare was a real family once..." },
+        { type: "narrate", text: "You strip the photograph from the cracked frame[cite: 7]. A young Harun, a clean-faced woman, a small child[cite: 7]. Scrawled across the back: 'Harun, Sevgi, little Deniz — 2009.'[cite: 7] The most terrifying aspect of the photograph isn't being bloody; it's being normal[cite: 7]. This nightmare wasn't forged from a madman's fantasy[cite: 7]. It was born from three people who once genuinely smiled, slowly converting into procedures, rituals, and flesh[cite: 7]." },
         { type: "flag", set: { yadigar1: true } },
-        { type: "note", id: "not_yadigar1", title: "Heirloom 1/3: Photo", text: "Family photo: Harun, his wife Sevgi, and little DENIZ — 2009. Deniz is indeed Harun's son. This family was real once. This is one of the three heirlooms for the chest." },
+        { type: "note", id: "not_yadigar1", title: "Heirloom 1/3: Photograph", text: "Family photograph: Harun, his wife Sevgi, and little DENİZ — 2009[cite: 7]. Deniz really is Harun's son[cite: 7]. This family was once real[cite: 7]. This is one of the three heirlooms needed for the chest[cite: 7]." },
       ],
       choices: [
         { id: "cik", text: "Exit the room", next: "n_hol" },
@@ -352,30 +356,30 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "flag", set: { cocukRanza: true } },
-        { type: "narrate", text: "Among the dust and filth under the bunk bed, you find an old, stained child's diary. The writings are childish on the first pages, but toward the end, they turn completely schizophrenic." },
+        { type: "narrate", text: "Amidst the dust and filth beneath the bunk bed, you locate an old, stained child's journal[cite: 7]. The entries are childish in the first pages, turning completely schizophrenic toward the end[cite: 7]." },
         { type: "document", open: true, doc: {
-          id: "d_cocukgunluk", title: "A Child's Diary", style: "hand",
-          meta: "— under the bunk bed —",
-          body: "my father brought a new brother today. his name is aykut.\nmy mother was very happy. we are crowded now.\n\nmy brother aykut tried to run away. my father got sad.\nnow my brother is always at the table, but he never talks.\n\nfather says the family never shrinks, it always grows.\nnewcomers take the place of those who left old.\nwhen I grow up, I am going to be a father too.\nhe says go down to the lower floor and start your own family.\n\n(last line, in a different, mature handwriting:)\nI went down. I started it. my name is now Deniz. — L-5" } },
-        { type: "note", id: "not_cocukgunluk", title: "Deniz's childhood", text: "The diary in the bunk bed belongs to Deniz. Harun 'raised' him here, then Deniz went down and established 'his own family' in L-5. This is how the family multiplies: every child goes down a floor when they grow up and becomes a new father. A sick dynasty." },
+          id: "d_cocukgunluk", title: "A Child's Journal", style: "hand",
+          meta: "— beneath the bunk bed —",
+          body: "father brought a new brother today. his name is aykut.\nmother was very happy. we are crowded now.\n\nmy brother aykut tried to run away. father was upset.\nnow my brother is always at the table, though he never speaks.\n\nfather says a family never shrinks, it always grows.\nnew arrivals take the place of those who departed before.\nwhen I grow up, I'm going to be a father too.\nfather says go down to the lower deck and establish your own family.\n\n(final line, a different, mature handwriting:)\nI went down. I established it. My name is now Deniz. — K-5" } },
+        { type: "note", id: "not_cocukgunluk", title: "Deniz's Childhood", text: "The journal under the bunk belongs to Deniz[cite: 7]. Harun 'raised' him here, then Deniz descended below to establish 'his own family' on K-5[cite: 7]. This is how the family propagates: every child descends a floor when they grow up to become a new father[cite: 7]. A sick dynasty[cite: 7]." },
       ],
       choices: [
-        { id: "fotograf", text: "Take the photo", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
+        { id: "fotograf", text: "Take the photograph", next: "n_cocuk_foto", if: { flag: "yadigar1", equals: false } },
         { id: "cik", text: "Exit the room", next: "n_hol" },
       ],
     },
 
-    /* ================= COLD STORAGE — heirloom 2 (ring) + death ================= */
+    /* ================= COLD STORAGE — HEIRLOOM 2 (RING) + DEATH ================= */
 
     n_depo_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You are in front of the heavy steel door of the cold storage. The icy air leaking from the edges fogs up your tablet screen. The Chef strictly said 'do not enter' here. One of PERISHED's off-record death rooms stands right before you." },
-        { type: "alert", text: "SENSOR ALERT — THE CHEF IS INSIDE RIGHT NOW! Even your tablet's microphone detects the meat-chopping sounds coming from inside. You cannot enter!", if: { flag: "sefNerede", equals: "depo" } },
+        { type: "narrate", text: "You stand before the heavy, steel door of the cold storage[cite: 7]. The freezing air seeping from the edges fogs your tablet screen[cite: 7]. The Chief strictly said 'do not enter' here[cite: 7]. One of PERISHED's unregistered death chambers, its door scratched from the inside, stands right before you[cite: 7]." },
+        { type: "alert", text: "SENSOR ALARM — THE CHIEF IS CURRENTLY INSIDE! Even your tablet's microphone detects the meat-hacking sounds originating from within[cite: 7]. You cannot enter!", if: { flag: "sefNerede", equals: "depo" } },
       ],
       choices: [
-        { id: "gir", text: "Crack the door open, go inside", next: "n_k4_depo", if: { flag: "sefNerede", equals: "depo", negate: true } },
-        { id: "bekle", text: "Wait until the Chef leaves (return to the hallway)", next: "n_hol", if: { flag: "sefNerede", equals: "depo" } },
+        { id: "gir", text: "Crack the door open, step inside", next: "n_k4_depo", if: { flag: "sefNerede", equals: "depo", negate: true } },
+        { id: "bekle", text: "Wait until the Chief exits (return to hallway)", next: "n_hol", if: { flag: "sefNerede", equals: "depo" } },
       ],
     },
 
@@ -383,22 +387,22 @@ export const EP03 = {
       checkpoint: true,
       cost: 2,
       events: [
-        { type: "narrate", text: "You crack the door open and slip inside. The inside of the storage is freezing. Your breath turns into a dense cloud of vapor in the air; your fingers are too numb to hold the tablet. When you raise your head, the dim light of the tablet illuminates human torsos hanging from meat hooks on the ceiling... Flayed, frozen corpses. You have to avert your eyes or you will vomit." },
-        { type: "narrate", text: "On the back wall, there is another evacuation hatch covered with a thick layer of ice. But first, you must find that wedding ring." },
+        { type: "narrate", text: "You crack the door and slide inside[cite: 7]. The interior of the storage is freezing[cite: 7]. Your breath converts into a dense cloud of vapor in the air, your fingers turning too numb to grip the tablet[cite: 7]. Looking up, the feeble light of your tablet illuminates human torsos suspended from the meat hooks on the ceiling... flayed, frozen corpses[cite: 7]. You have to avert your eyes or you will vomit[cite: 7]." },
+        { type: "narrate", text: "A drainage hatch packed under a thick layer of ice rests on the back wall[cite: 7]. But first, you must locate that wedding ring[cite: 7]." },
       ],
       choices: [
-        { id: "yuzuk", text: "Search the frozen boxes (ring)", next: "n_depo_yuzuk", if: { flag: "yadigar2", equals: false } },
+        { id: "yuzuk", text: "Search the frozen boxes (wedding ring)", next: "n_depo_yuzuk", if: { flag: "yadigar2", equals: false } },
         { id: "kapak", text: "Examine the icy hatch on the back wall", next: "n_depo_kapak" },
-        { id: "cik", text: "You're too cold — exit", next: "n_hol" },
+        { id: "cik", text: "It's too cold — exit", next: "n_hol" },
       ],
     },
 
     n_depo_yuzuk: {
       cost: 2,
       events: [
-        { type: "narrate", text: "You dig through the frozen boxes and frozen piles of meat with your bare hands. Your fingertips freeze, crack, and bleed. Finally, you find a rusty tin can. Inside is a bloody wedding ring, a clump of shed hair, and a note: 'Sevgi's. I lost her, but the family must grow... Everyone must take her place.' The root of this madness is hidden in this ring." },
+        { type: "narrate", text: "You scrape through frozen boxes, frozen piles of meat with your bare hands[cite: 7]. Your fingertips freeze, crack, and bleed[cite: 7]. Finally, you locate a rusted tin box[cite: 7]. Inside is a bloody wedding ring, a tuft of shed hair, and a note: 'Belonged to Sevgi[cite: 7]. I lost her but the family must grow... Everyone must take her place[cite: 7].' The origin of this madness lies sealed within this ring[cite: 7]." },
         { type: "flag", set: { yadigar2: true } },
-        { type: "note", id: "not_yadigar2", title: "Heirloom 2/3: Ring", text: "Sevgi's wedding ring, in a tin can in the cold storage. Harun's wife is dead; all this 'family' madness is an attempt to fill her absence. The ring is the second heirloom for the chest." },
+        { type: "note", id: "not_yadigar2", title: "Heirloom 2/3: Wedding Ring", text: "Sevgi's wedding ring, inside a tin box in the cold storage[cite: 7]. Harun's wife is dead; all this 'family' lunacy is an attempt to fill her void[cite: 7]. The ring is the second heirloom for the chest[cite: 7]." },
       ],
       choices: [
         { id: "kapak", text: "Go to the hatch on the back wall", next: "n_depo_kapak" },
@@ -409,58 +413,58 @@ export const EP03 = {
     n_depo_kapak: {
       cost: 2,
       events: [
-        { type: "narrate", text: "You scrape off the ice on the hatch with the edge of your tablet. A frozen text emerges from underneath: 'L-3 EVACUATION — ONLY WITH HATCH KEY'. You can escape down through here, but the key is locked in the chest in that psychopath's room. You must hurry, you are about to freeze." },
-        { type: "note", id: "not_depokapak", title: "L-3 evacuation", text: "Behind the cold storage, there is an evacuation hatch descending to L-3 — but the 'hatch key' is required. The key is in the locked chest in the Chef's room. The chest wants three heirlooms. The escape route is clear: open the chest, take the key, descend from here." },
-        { type: "objective", text: "Find the three family heirlooms." },
+        { type: "narrate", text: "You scrape away the ice on the hatch with the edge of your tablet[cite: 7]. A frozen text emerges from beneath: 'K-3 EVACUATION — ONLY WITH VAULT KEY'.[cite: 7] You can escape down through here, but the key is locked inside the chest in that psychopath's room[cite: 7]. You must hurry, you are on the verge of freezing[cite: 7]." },
+        { type: "note", id: "not_depokapak", title: "The K-3 Evacuation", text: "An evacuation hatch descending to K-3 rests behind the cold storage — but the 'vault key' is required[cite: 7]. The key is inside the locked chest in the Chief's room[cite: 7]. The chest demands three heirlooms[cite: 7]. The escape vector is clear: crack the chest, take the key, descend through here[cite: 7]." },
+        { type: "objective", text: "Locate the three family heirlooms." },
       ],
       choices: [
         { id: "cik", text: "Exit the storage before freezing", next: "n_hol" },
       ],
     },
 
-    /* ================= KITCHEN — The Chef's place (danger) ================= */
+    /* ================= KITCHEN — The Chief's Place (Danger) ================= */
 
     n_mutfak: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You look through the crack of the kitchen door. The Chef is there! His back is turned, slamming something onto the counter with a massive cleaver: WHACK! WHACK! WHACK! Blood splattering from the counter paints the wallpaper. A savage rhythm.", if: { flag: "sefNerede", equals: "", negate: true } },
-        { type: "narrate", text: "The kitchen is currently empty; the Chef is in the children's room. A massive cauldron is boiling on the stove, human hair bursting out of it. A massive meat cleaver is missing from the knife rack on the wall...", if: { flag: "sefNerede", equals: "cocuk" } },
-        { type: "narrate", text: "The kitchen is empty; the Chef is in the storage. You have a chance to examine the foul smells leaking from the drawers under the light of your tablet.", if: { flag: "sefNerede", equals: "depo" } },
-        { type: "narrate", text: "The kitchen is empty; the Chef is in the dining hall. Be quick or he will trap you here.", if: { flag: "sefNerede", equals: "salon" } },
+        { type: "narrate", text: "You peer through the crack of the kitchen door[cite: 7]. The Chief is in there[cite: 7]! His back turned, he slams a giant cleaver onto the counter: SLAM! SLAM! SLAM![cite: 7] Blood splashing from the counter paints the wallpaper[cite: 7]. A savage rhythm[cite: 7].", if: { flag: "sefNerede", equals: "", negate: true } },
+        { type: "narrate", text: "The kitchen is currently vacant, the Chief is in the child's room[cite: 7]. A giant cauldron boils on the stove, human hair erupting from within[cite: 7]. A massive meat cleaver is missing from the knife rack on the wall...[cite: 7]", if: { flag: "sefNerede", equals: "cocuk" } },
+        { type: "narrate", text: "The kitchen is empty, the Chief is in the storage[cite: 7]. You have a chance to examine the foul-smelling drawers under your tablet's light[cite: 7].", if: { flag: "sefNerede", equals: "depo" } },
+        { type: "narrate", text: "The kitchen is empty, the Chief is in the dining hall[cite: 7]. Make it quick or he will corner you in here[cite: 7].", if: { flag: "sefNerede", equals: "salon" } },
       ],
       choices: [
-        { id: "cabuk", text: "Quickly search the empty kitchen", next: "n_mutfak_ara", if: { flag: "sefNerede", equals: "", negate: true } },
-        { id: "geri", text: "The Chef is there — silently back away", next: "n_hol", if: { flag: "sefNerede", equals: "" } },
+        { id: "cabuk", text: "Rapidly search the vacant kitchen", next: "n_mutfak_ara", if: { flag: "sefNerede", equals: "", negate: true } },
+        { id: "geri", text: "The Chief is in there — quietly withdraw", next: "n_hol", if: { flag: "sefNerede", equals: "" } },
       ],
     },
 
     n_mutfak_ara: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You dive into the empty kitchen, rummaging through the drawers like crazy. You find the shift log covered in grease and blood stains. This is the Chef's victim list. When you open the last page, the dim blue light of your tablet shines over your own duty number... The checkbox next to it is still empty. He is waiting to cut you up and throw you into this cauldron." },
+        { type: "narrate", text: "You dive into the vacant kitchen and rummage through the drawers[cite: 7]. Odors of oil, blood, and burned flesh[cite: 7]. You locate a shift logbook; its layout is still administrative, its contents a slaughterhouse[cite: 7]. Harun wrote human beings down as if keeping an execution registry[cite: 7]. Your assignment number is on the final page[cite: 7]. The box next to it is empty[cite: 7]. Death waits here like an uncompleted task[cite: 7]." },
         { type: "flag", set: { mutfakArandi: true } },
         { type: "document", open: true, doc: {
-          id: "d_sefdefter", title: "Chef's Shift Log",
-          meta: "LIMIT-1 · STATION CHEF · H. OKUR",
-          body: "JOINED THE FAMILY:\n\n· Aykut D. — 'convinced' at the table. good son.\n· Nevin A. — resisted. assigned to the garden (L-3).\n· Selin ? — escaped. still searching.\n· [your no] — [ ] not yet\n\nNOTE: Deniz established his own family below.\nI am proud. This one is next. If they eat\nat the table — child. If they refuse — ingredient.\n\nTHE RING is still in storage. I couldn't bring\nSevgi back but I grew the family.\nShe would want it too. She would, right?" } },
-        { type: "note", id: "not_sefdefter", title: "Chef's list", text: "Chef's log: 'those who joined the family'. Aykut (at the table), Nevin (to L-3, 'the garden'), Selin (escaped, still wanted). My number is at the very bottom, the box is empty. If I eat, 'child', if I refuse, 'ingredient'. Nevin is in L-3 — there is someone on the next floor." },
+          id: "d_sefdefter", title: "The Chief's Shift Logbook",
+          meta: "PERISHED · STATION CHIEF · H. OKUR",
+          body: "JOINED THE FAMILY:\n\n· Aykut D. — 'persuaded' at the table. good son.\n· Nevin A. — resisted. transferred to the garden (K-3).\n· Selin ? — fled. still hunting her.\n· [your number] — [ ] not yet\n\nNOTE: Deniz established his own family below.\nI am proud. This one is next in line. If they eat\nat the table — child. If they refuse — ingredients.\n\nTHE WIRE WEDDING RING is still in storage. I couldn't\nbring Sevgi back, but I expanded the family.\nShe would have wanted it too. She would, wouldn't she?" } },
+        { type: "note", id: "not_sefdefter", title: "The Chief's List", text: "Harun's logbook is arranged like a family album, only execution methods occupy the photo slots[cite: 7]. Aykut is at the table[cite: 7]. Nevin is in the garden[cite: 7]. Selin is missing[cite: 7]. My number is at the very bottom, its box empty[cite: 7]. A human can convert into two things here: a child or ingredients[cite: 7]. Both end up on the exact same table[cite: 7]." },
       ],
       choices: [
-        { id: "cik", text: "Exit before the Chef returns", next: "n_hol" },
+        { id: "cik", text: "Exit before the Chief returns", next: "n_hol" },
       ],
     },
 
-    /* ================= CHEF'S ROOM — chest (part lock) ================= */
+    /* ================= THE CHIEF'S QUARTERS — THE CHEST (PIECE LOCK) ================= */
 
     n_sef_kapi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You climb up the creaking wooden stairs to the upstairs floor, to the maniac's room. Rather than a room, this is a twisted shrine adorned with the bones of victims. There are coverings made of human skin on the walls. Opposite stands a locked chest, and above it, an ominous thing protected inside a glass bell jar." },
+        { type: "narrate", text: "You climb the creaking wooden stairs to the madman's room[cite: 7]. Rather than a room, this place is a twisted shrine decorated with the bones of victims[cite: 7]. Covers crafted from human skin line the walls[cite: 7]. A locked chest stands ahead, and atop it, an ominous object is preserved beneath a glass cloche[cite: 7]." },
         { type: "flag", set: { sefOdaAcik: true } },
       ],
       choices: [
         { id: "sandik", text: "Approach the chest", next: "n_sef_sandik" },
-        { id: "fanus", text: "Look at what's under the bell jar", next: "n_sef_fanus", if: { flag: "fanusBakildi", equals: false } },
+        { id: "fanus", text: "Inspect what is beneath the cloche", next: "n_sef_fanus", if: { flag: "fanusBakildi", equals: false } },
         { id: "cik", text: "Exit the room", next: "n_hol" },
       ],
     },
@@ -469,11 +473,11 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "flag", set: { fanusBakildi: true } },
-        { type: "narrate", text: "You bring the screen glow of your tablet close to the glass bell jar. Inside is a dried, bloody baby tooth and a strand of hair. On the label underneath: 'Deniz's first tooth. A piece of him will always stay with me,' it reads. This is the third heirloom! But the wires beneath the jar are connected to a mechanism on the wall. The moment you touch it, mechanical alarms inside the house will burst!" },
-        { type: "note", id: "not_fanus", title: "Heirloom 3/3: Baby tooth", text: "The third heirloom: Deniz's baby tooth, in a glass bell jar in the Chef's room. The jar is alarmed — if touched, the Chef will know. The 'put him to sleep' note: I need to incapacitate the Chef before taking the jar. Or I take the risk of grabbing it and running." },
+        { type: "narrate", text: "You bring your tablet's screen glare close to the glass cloche[cite: 7]. Inside rests a dried, bloody baby tooth and a strand of hair[cite: 7]. The label beneath reads: 'Deniz's first tooth[cite: 7]. A piece of him will always stay with me,'[cite: 7] This is the third heirloom[cite: 7]! But the wiring beneath the cloche links to a rig on the wall[cite: 7]. The moment you touch it, the mechanical alarms inside the house will detonate[cite: 7]!" },
+        { type: "note", id: "not_fanus", title: "Heirloom 3/3: Baby Tooth", text: "Third heirloom: Deniz's baby tooth, inside a glass cloche in the Chief's room[cite: 7]. The cloche is alarmed — touching it alerts Harun[cite: 7]. The 'put him to sleep' note: I need to neutralize the Chief before taking the tooth[cite: 7]. Or I gamble on snatching it and running[cite: 7]." },
       ],
       choices: [
-        { id: "al", text: "Break the jar, grab the tooth (The Chef will come)", next: "n_fanus_al" },
+        { id: "al", text: "Smash the cloche, snatch the tooth (The Chief will come)", next: "n_fanus_al" },
         { id: "birak", text: "Don't touch it for now, back away", next: "n_sef_kapi" },
       ],
     },
@@ -481,55 +485,55 @@ export const EP03 = {
     n_fanus_al: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You smash the glass bell jar! Sharp pieces of shrapnel cut your hand, blood smearing onto the tablet. At that moment, the monster's ear-piercing, crazed roar rises from the speakers in every corner of the house: \"YOU TOUCHED MY SACRED THING! I WILL TEAR YOU TO PIECES!\" Very fast, thundering running footsteps coming up the stairs... You grab the tooth and bolt!" },
+        { type: "narrate", text: "You strike and shatter the glass cloche[cite: 7]! Sharp shards slash your hand, blood smudging onto the tablet[cite: 7]. That exact moment, the ear-tearing, crazed roar of the monster erupts from the loudspeakers in every corner of the house: \"YOU TOUCHED MY SACRED SANCTUM! I WILL TEAR YOU TO PIECES!\"[cite: 7] Fast, thumping footsteps come rushing up the stairs...[cite: 7] You snatch the tooth and bolt[cite: 7]!" },
         { type: "flag", set: { yadigar3: true, sefKizgin: true, sefNerede: "sef_odasi" } },
-        { type: "stat", stat: "sefFarkindalik", delta: 25, note: "THE CHEF HAS GONE MAD — RUNNING HERE!", noteKind: "alert" },
-        { type: "alert", text: "⚠ THE MONSTER IS ON THE STAIRS — NO PLACE TO HIDE, RUN OR DIE!" },
+        { type: "stat", stat: "sefFarkindalik", delta: 25, note: "THE CHIEF WENT INSANE — HE IS SPRINTING HERE!", noteKind: "alert" },
+        { type: "alert", text: "⚠ THE MONSTER IS ON THE STAIRS — THERE IS NO PLACE TO HIDE, SPRINT OR DIE!" },
       ],
       timer: { seconds: 5 },
       choices: [
-        { id: "yatak", text: "Dive under the bed", next: "n_fanus_yatak" },
-        { id: "kos", text: "Run down the stairs, slip past him, dash into the hallway", next: "n_fanus_kos", default: true },
+        { id: "yatak", text: "Dive beneath the bed", next: "n_fanus_yatak" },
+        { id: "kos", text: "Sprint down the stairs, bypass him, dash to the hallway", next: "n_fanus_kos", default: true },
       ],
     },
 
     n_fanus_yatak: {
       events: [
-        { type: "narrate", text: "You fling yourself under the bed that smells like a carcass. Squeezing your tablet screen into your clothes, you remain in pitch darkness. The door opens as if being broken down! The massive boots entering shake the floor. He swings his cleaver left and right, smashing the wooden furniture. Panting with drool flowing from his mouth: \"I can smell you... You ate my mother's meat, you smell like us! Come out!\" Right in front of you, he bends down toward the floor!" },
+        { type: "narrate", text: "You hurl yourself beneath the bed that reeks of rot[cite: 7]. You tuck your tablet screen into your clothes, staying in absolute dark[cite: 7]. The door flies open as if shattered[cite: 7]! Colossal boots enter, shaking the floor[cite: 7]. He hacks left and right with his cleaver, splintering wooden furniture[cite: 7]. He pants, salivating out of his mouth: \"I can smell your scent... you ate my wife's flesh, you smell like us! Come out!\"[cite: 7] He bends down toward the floor right in front of you[cite: 7]!" },
       ],
       interaction: { kind: "breath", holdMs: 7500, lungMs: 9500, success: "n_fanus_kurtul", fail: "n_olum_yatak" },
     },
 
     n_olum_yatak: {
       death: true,
-      deathText: "Your lungs burst from fear; you can't hold your breath and gasp with a sob! Harun's stapled face of horror appears under the bed. The giant hand grabs your ankle and flings you out in a single move! As you crash against the wall and lose consciousness, you feel the cleaver descending upon your chest. \"New ingredient ready!\"",
+      deathText: "Your lungs explode beneath the bed, you give out a choking gasp[cite: 7]! Harun's stapled face of dread manifests beneath the frame[cite: 7]. A giant hand grabs your ankle and drags you out in a single motion[cite: 7]! As you strike the wall and lose consciousness, you feel the cleaver burying into your rib cage[cite: 7]. \"New ingredients ready!\"[cite: 7]",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_fanus_kurtul: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The boots pause, growling as they bolt out of the room, toward the corridor. He thinks you escaped! You crawl out from under the bed, your clothes covered in the blood of victims. Grabbing your tablet, you silently slip down into the hallway. The tooth is in your pocket; all three heirlooms are ready." },
+        { type: "narrate", text: "The boots halt, snarling as they bolt out of the room into the corridor[cite: 7]. He thinks you fled[cite: 7]! You crawl out from beneath the bed, your clothes caked in the blood of previous victims[cite: 7]. Gripping your tablet, you quietly slide down to the hallway[cite: 7]. The tooth is in your pocket, all three heirlooms are ready[cite: 7]." },
         { type: "flag", set: { sefNerede: "" } },
         { type: "stat", stat: "akil", delta: -8 },
       ],
       choices: [
         { id: "sandik", text: "Return to open the chest", next: "n_sef_sandik" },
-        { id: "hol", text: "Go down to the hallway", next: "n_hol" },
+        { id: "hol", text: "Descend to the hallway", next: "n_hol" },
       ],
     },
 
     n_fanus_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You dash down the stairs like crazy! Halfway down the stairs, you come face to face with the Chef, the hot drool from his disgusting stitched face splattering onto yours! He swings the cleaver, tearing your jacket, but with an agile move, you slip under his arms and roll into the hallway. Your heart is about to pierce your chest, the tablet slips from your hands and slams against the iron handrails! With the sound of cracking glass, a large fracture line spreads across the left corner of the screen..." },
+        { type: "narrate", text: "You sprint down the stairs like crazy[cite: 7]! You crash face-to-face into the Chief halfway down, the warm saliva of his disgusting stitched face splashing onto you[cite: 7]! He swings the cleaver, tearing your jacket, but you slip beneath his arms with a agile move and tumble into the hallway[cite: 7]. Your heart is ready to pierce your chest, the tablet slipping from your hand and slamming against the iron banister[cite: 7]! Alongside the sound of cracking glass, a massive fracture line stretches across the left corner of the screen...[cite: 7]" },
         { type: "glitch", ms: 900 },
         { type: "flag", set: { sefNerede: "sef_odasi", tabletKirik: true } },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — You felt the breath of death on your face!", noteKind: "alert" },
+        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — You felt the breath of death against your face!", noteKind: "alert" },
         { type: "stat", stat: "gurultu", delta: 15 },
       ],
       choices: [
-        { id: "sandik", text: "Go open the chest (The Chef is still searching upstairs)", next: "n_sef_sandik" },
+        { id: "sandik", text: "Go to open the chest (The Chief is still searching upstairs)", next: "n_sef_sandik" },
       ],
     },
 
@@ -537,13 +541,13 @@ export const EP03 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You are in front of the chest. There are three slots and rusty mechanical rings on it. You need to place the pieces and complete the crest of this sick family. How many pieces do you have?" },
-        { type: "alert", text: "CLOSED AND LOCKED — There are missing pieces! This chest will not open without finding the photo, wedding ring, and baby tooth!", if: { flag: "yadigar3", equals: false } },
-        { type: "narrate", text: "All three bloody heirlooms are in your hand. You place the photo, the wedding ring, and the tooth into the slots. The chest's mechanism becomes ready to turn, groaning with rusty gears.", if: { flag: "yadigar3", equals: true } },
+        { type: "narrate", text: "You stand before the chest[cite: 7]. Three slots and rusted mechanical rings sit upon it[cite: 7]. You need to place the fragments and complete this morbid family's crest[cite: 7]. How many pieces do you hold[cite: 7]?" },
+        { type: "alert", text: "CLOSED AND LOCKED — Missing pieces! Without locating the photograph, wedding ring, and baby tooth, this chest will not open!", if: { flag: "yadigar3", equals: false } },
+        { type: "narrate", text: "All three bloody heirlooms are in your hands[cite: 7]. You slot the photograph, wedding ring, and tooth into the receptors[cite: 7]. The mechanism of the chest stands ready to rotate, groaning with rusted gears[cite: 7].", if: { flag: "yadigar3", equals: true } },
       ],
       choices: [
-        { id: "coz", text: "Turn the glass panel — complete the crest", next: "n_sandik_puzzle", if: { flag: "yadigar3", equals: true } },
-        { id: "ara", text: "Return to look for missing heirlooms", next: "n_hol", if: { flag: "yadigar3", equals: false } },
+        { id: "coz", text: "Rotate the glass panel — complete the crest", next: "n_sandik_puzzle", if: { flag: "yadigar3", equals: true } },
+        { id: "ara", text: "Return to search for the missing heirlooms", next: "n_hol", if: { flag: "yadigar3", equals: false } },
         { id: "cik", text: "Leave the chest, return to the hallway", next: "n_hol", if: { flag: "yadigar3", equals: true } },
       ],
     },
@@ -551,11 +555,11 @@ export const EP03 = {
     n_sandik_puzzle: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The heirlooms have released the locks. Now, turn the rusty steel rings with your fingers to piece together the rotting seal of this cannibalistic dynasty." },
+        { type: "narrate", text: "The heirlooms released the locks[cite: 7]. Now use your fingers to turn the rusted steel rings, assembling the decayed mahr of this cannibal dynasty[cite: 7]." },
       ],
       interaction: {
         kind: "rings",
-        title: "OKUR CHEST — COMPLETE THE FAMILY CREST",
+        title: "OKUR CHEST — ASSEMBLE THE FAMILY CREST",
         rings: [
           { color: "#8a6a3a", step: 30, offset: 120 },
           { color: "#6a3a3a", step: 45, offset: 225 },
@@ -576,16 +580,16 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "system", text: "OKUR CHEST: OPENED" },
-        { type: "narrate", text: "The chest opens like a heavy coffin lid. The smell of decay emitting from inside hits your face. At the very top lie a rusty, heavy HATCH KEY and spare batteries. You quickly toss them into your pocket. At the very bottom, there is a letter written in blood." },
+        { type: "narrate", text: "The chest pops open like a heavy coffin lid[cite: 7]. Rather than an odor of decay, a concealed family history hits your face[cite: 7]. The vault key and batteries rest right at the top; even the escape tools are buried beneath heirlooms here[cite: 7]. At the very bottom lies a letter written in blood[cite: 7]. Harun's madness didn't begin with a scream[cite: 7]. First he wrote a letter, then he gathered human beings[cite: 7]." },
         { type: "battery", spares: 2 },
         { type: "flag", set: { ambarAnahtari: true } },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
-          id: "d_sefmektup", title: "Chef's Letter (unsent)", style: "hand",
+          id: "d_sefmektup", title: "The Chief's Letter (unsent)", style: "hand",
           meta: "— folded at the bottom of the chest —",
-          body: "To Sevgi,\n\nWhen I lost you, the station died with me too.\nBut I found it — below, the Foundling in L-2.\nIt gives us back the family. It keeps everyone\ntogether. When they hear its voice, everyone stops,\ncounts, belongs.\n\nI raised Deniz. He went down too, established his\nown family. And I continue to raise. Even without you,\nthe family grows.\n\nIf one day you go down to the Foundling — thank it.\nIt brought us back together again.\n\n— H." } },
-        { type: "note", id: "not_sefmektup", title: "The Foundling — L-2", text: "The Chef's letter connects everything: the 'Foundling' in L-2 is the source of all this. When they hear its voice, everyone 'stops, counts, belongs' — those counting in their sleep, lullaby, 432 Hz. The family is built around it. The hatch key is in my hand; I can descend from the cold storage to L-3." },
-        { type: "objective", text: "Descend to K-3 through cold storage." },
+          body: "To Sevgi,\n\nWhen I lost you, the station died with me.\nBut I found it — below, the Artifact at K-2.\nIt gives us back the family. It holds everyone\ntogether. When they hear its voice, everyone stops,\ncounts, and belongs.\n\nI raised Deniz. He went down below too, established\nhis own family. I continue to expand it.\nEven without you, the family grows.\n\nIf you ever descend to the Artifact — thank it.\nIt brought us back together.\n\n— H." } },
+        { type: "note", id: "not_sefmektup", title: "The Artifact — K-2", text: "The Chief's letter connects everything: the 'Artifact' at K-2 is the source of all this[cite: 7]. When they hear its voice, everyone 'stops, counts, and belongs' — those counting in their sleep, the lullaby, 432 Hz[cite: 7]. The family is built around it[cite: 7]. The vault key is in my hand; I can descend to K-3 from the cold storage[cite: 7]." },
+        { type: "objective", text: "Descend to K-3 from the cold storage." },
       ],
       choices: [
         { id: "depo", text: "Head to the cold storage", next: "n_final_yol" },
@@ -598,33 +602,33 @@ export const EP03 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The moment you descend into the hallway, the whole house is flooded with a red hellish light! The speakers crackle and explode, and that savage lament showing that Harun has completely gone mad shakes the house: \"YOU TOOK MY KEY! YOU STOLE HIS MOTHER'S RING! I WON'T LET YOU LIVE!\" Now the baits are over, he will hunt you down by your scent!" },
-        { type: "alert", text: "⚠ YOU DID NOT EAT THAT MEAT! HE CAUGHT YOUR SCENT AND WENT MAD WITH RAGE — RUN TOWARD THE STORAGE!", if: { flag: "sofraReddetti", equals: true } },
-        { type: "narrate", text: "The cold storage is at the very end of the corridor. While the light of the tablet in your hand shakes from the impact, you see that the only obstacle before you is that massive cannibal.", if: { flag: "sofraReddetti", equals: false } },
-        { type: "narrate", text: "That bite in your stomach is heavy as a stone, the monster laments: \"You smell like us but you are a thief!\" There is no choice but to escape. Run to the storage!", if: { flag: "sofraYedi", equals: true } },
+        { type: "narrate", text: "The moment you step down into the hallway, the entire house floods with a crimson hell light[cite: 7]! The loudspeakers explode with static, and Harun's savage wail, proving his complete descent into madness, rattles the home: \"YOU TOOK MY KEY! YOU STOLE HIS MOTHER'S RING! I WILL NOT LET YOU LIVE!\"[cite: 7] The baits are spent now, he will hunt you by your scent[cite: 7]!" },
+        { type: "alert", text: "⚠ YOU DID NOT EAT THAT MEAT! HE CAUGHT YOUR SCENT AND WENT WILD WITH RAGE — SPRINT TOWARD THE STORAGE!", if: { flag: "sofraReddetti", equals: true } },
+        { type: "narrate", text: "The cold storage is at the very end of the corridor[cite: 7]. As the light of your tablet shakes from the tremors, you see that the single obstacle ahead is that colossal cannibal[cite: 7].", if: { flag: "sofraReddetti", equals: false } },
+        { type: "narrate", text: "That bite in your stomach is heavy as stone, the monster howling: \"You smell of us but you are a thief!\"[cite: 7] There is no choice but to run[cite: 7]. Sprint to the storage[cite: 7]!", if: { flag: "sofraYedi", equals: true } },
       ],
       choices: [
-        { id: "kos", text: "Run through the hallway, reach the cold storage", next: "n_final_kos" },
+        { id: "kos", text: "Sprint across the hallway, reach the cold storage", next: "n_final_kos" },
       ],
     },
 
     n_final_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You run like mad! The sound of your steps echoes through the house. Harun appears right in the middle of the hallway with his massive bulk, wheezing with the cleaver raised in the air: \"Come son... Your father will embrace you!\"" },
+        { type: "narrate", text: "YOU SPRINT LIKE MAD[cite: 7]! The sound of your strides echoes through the house[cite: 7]. Harun manifests right in the middle of the hallway with his colossal frame, his cleaver hoisted into the air as he rasps: \"Come son... your father will embrace you!\"[cite: 7]" },
       ],
       interaction: {
         kind: "chase",
         title: "K-4 ESCAPE HALLWAY",
-        enemy: "CHEF HARUN",
+        enemy: "CHIEF HARUN",
         success: "n_final_siyril",
         fail: "n_olum_final",
         startDanger: 38,
         phaseMs: 1200,
         hints: {
-          patrol: "The Chef is far away, scraping his cleaver. Run towards the storage immediately!",
-          search: "He is looking for you. Hide behind the broken shelves!",
-          near: "You can smell his breath! Hold your breath, or he'll chop you down!"
+          patrol: "The Chief is far off, scraping his cleaver against the deck. Sprint to the storage immediately![cite: 7]",
+          search: "He fixed his eyes on you, searching. Hide behind the broken shelves![cite: 7]",
+          near: "You can smell his scent! Hold your breath, or he will butcher you like an ungrateful wretch![cite: 7]"
         }
       }
     },
@@ -632,45 +636,45 @@ export const EP03 = {
     n_final_siyril: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Crashing against the wall, you slip under the arm where the monster swings his cleaver! The cleaver smashes the wall, wooden dust burning your face. You reach the door of the cold storage and frantically stick the key into that foggy, frozen lock." },
+        { type: "narrate", text: "Slamming against the wall, you slip right beneath the arm wielding the cleaver[cite: 7]! The cleaver splinters the structure of the wall, wood dust stinging your face[cite: 7]. Reaching the cold storage door, you frantically jam the key into that fogged, frozen lock like crazy[cite: 7]." },
       ],
       choices: [
-        { id: "in", text: "Turn the key, descend from the storage to L-3", next: "n_k4_son" },
+        { id: "in", text: "Turn the key, descend from storage to K-3", next: "n_k4_son" },
       ],
     },
 
     n_final_atla: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You leap onto the cabinet, but the floor is so slippery with the blood of victims that your foot slips! You faceplant onto the ground, the tablet flying out of your hand and falling far away. Just then, a massive hand grabs your ankle and begins dragging you along the floor!", if: { flag: "sofraYedi", equals: false } },
-        { type: "narrate", text: "You quickly leap over the cabinet. Just as the Chef is about to bring down the cleaver, he sniffs — that smell of human meat on you paralyzes his instincts for a moment! That split-second pause saves your life; you get to the other side of the cabinet and dart into the storage.", if: { flag: "sofraYedi", equals: true } },
+        { type: "narrate", text: "You leap atop the locker but the deck is so slick with the blood of victims that your foot slips[cite: 7]! You crash flat onto the floor, the tablet flying out of your grip and sliding away[cite: 7]. Right then, a colossal hand snatches your ankle and begins dragging you across the deck[cite: 7]!", if: { flag: "sofraYedi", equals: false } },
+        { type: "narrate", text: "You leap rapidly over the locker[cite: 7]. Just as the Chief is about to bring down the cleaver, he sniffs the air — that scent of human flesh on you paralyzes his instincts for a split second[cite: 7]! That millisecond pause saves your life; you cross to the other side of the locker and bolt into the storage[cite: 7].", if: { flag: "sofraYedi", equals: true } },
       ],
       choices: [
         { id: "in", text: "Reach the storage door, turn the key", next: "n_k4_son", if: { flag: "sofraYedi", equals: true } },
-        { id: "tut", text: "You're caught — try to break free", next: "n_olum_final", if: { flag: "sofraYedi", equals: false } },
+        { id: "tut", text: "You've been caught — try to break free", next: "n_olum_final", if: { flag: "sofraYedi", equals: false } },
       ],
     },
 
     n_olum_final: {
       death: true,
-      deathText: "Your ankle is crushed inside his calloused palm. \"I caught you, ungrateful child!\" Ignoring your screams, he drags you to that bloody table... You are thrown onto the table on your back. As the cleaver rises into the air, the last thing you see is the sickly blue light hitting the ceiling from your tablet's inverted screen in the corner. \"Our home will always grow...\"",
+      deathText: "Your ankle is crushed inside his calloused palm[cite: 7]. \"I caught you, ungrateful child!\"[cite: 7] Ignoring your screams, he drags you across the deck back to that bloody table...[cite: 7] You are hurled face-up onto the wood[cite: 7]. As the cleaver ascends, the final thing you see is the sickly blue light hitting the ceiling from your tablet's inverted screen in the corner[cite: 7]. \"Our home will always grow...\"[cite: 7]",
       events: [{ type: "glitch", ms: 1000 }],
     },
 
     n_k4_son: {
       cost: 1,
       events: [
-        { type: "system", text: "HATCH COVER: OPENED — DESCENT TO L-3" },
-        { type: "narrate", text: "You turn the key frantically in the lock, the cover opening with a massive creak. A wave of sharp decay, wet soil, and plant smell hits your face from below. You throw yourself down, close the cover over you, and bolt it! Right at that moment, massive blows begin to descend upon the cover — THUD! THUD! The steel bends, but the bolt holds. Then the blows stop." },
+        { type: "system", text: "VAULT HATCH: OPENED — DESCENT TO K-3" },
+        { type: "narrate", text: "You turn the key frantically in the lock, the hatch breaking open with a massive groan[cite: 7]. From below, a wave of sharp decay, wet soil, and botanical scent hits your face[cite: 7]. You hurl yourself down, pulling the hatch shut above you and sliding the deadbolt[cite: 7]! That exact moment, colossal impacts begin striking the hatch — BOOM[cite: 7]! BOOM[cite: 7]! The steel warps but the bolt holds[cite: 7]. Then the blows cease[cite: 7]." },
         { type: "waitTap" },
-        { type: "ambient", text: "Right from behind the cover, that monster's tearful, schizophrenic voice rises: \"...Everyone abandons me. Sevgi left... Deniz went down... You escaped too. Am I always going to stay at this table all by myself?\" Then a deep, uncanny silence falls." },
-        { type: "ambient", text: "Ece's wheezing voice comes from the tablet's speaker: «Oh my God... I heard those sounds. You made it... You descended to L-3. That's Dr. Nevin's laboratory floor... The biologist. She might not be mad like that guy... Watch out, strange things are breathing down there...»", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "narrate", text: "You descend the stairs into absolute darkness. The light of the tablet in your hand illuminates massive, botanical, creeping vines moving below. This is a living garden... And something is breathing heavily in the darkness. 'The Garden' awaits its new victim." },
-        { type: "system", text: "— END OF CHAPTER 3: HOME —" },
-        { type: "system", text: "L-3: 'GARDEN' — Dr. Nevin's floor — coming soon" },
+        { type: "ambient", text: "Right behind the hatch, that monster's tearful, schizophrenic voice ascends: \"...Everyone abandons me[cite: 7]. Sevgi left... Deniz went below... and you fled too[cite: 7]. Am I always to remain all alone at this table?\"[cite: 7] Then a deep, ominous silence falls[cite: 7]." },
+        { type: "ambient", text: "Ece's rasping voice comes from the tablet's speaker: «My god... I heard those sounds[cite: 7]. You made it... you descended to K-3[cite: 7]. That's Dr[cite: 7]. Nevin's laboratory floor... biologist[cite: 7]. She might not have gone mad like that guy... Watch out, strange things are breathing down there...»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "narrate", text: "You descend the rungs down into absolute darkness[cite: 7]. Your tablet light catches twitching botanical masses below; not vines, but like waiting veins[cite: 7]. K-4 tried to draft you into the family[cite: 7]. The place below will draft you into the soil[cite: 7]. This station converts a human into a different word on every floor: personnel, child, specimen[cite: 7]. Now, you are going to learn the next word[cite: 7]." },
+        { type: "system", text: "— END OF EPISODE 3: HOME —[cite: 7]" },
+        { type: "system", text: "K-3: 'THE GARDEN' — Dr. Nevin's Floor — Coming Soon" },
       ],
       choices: [
-        { id: "k3", text: "Descend to L-3", next: "n_k3_giris" },
+        { id: "k3", text: "Descend into K-3", next: "n_k3_giris" },
       ],
     },
 

@@ -14,7 +14,7 @@ export default function KeypadOverlay({ title, entry, msg, onKey, onCancel }) {
       <div style={S.keypadPanel} className={"s1-panel" + (isBad ? " s1-keypad-error" : "")}>
         <div style={S.keypadTopRail}>
           <span style={S.keypadScrew} />
-          <span style={{ ...S.keypadStatusLamp, backgroundColor: isOk ? "#80d895" : isBad ? "#c23b2e" : "#d0a441" }} />
+          <span style={{ ...S.keypadStatusLamp, backgroundColor: isOk ? "#80bcd8" : isBad ? "#c23b2e" : "#d0a441" }} />
           <span style={S.keypadScrew} />
         </div>
 
@@ -26,8 +26,8 @@ export default function KeypadOverlay({ title, entry, msg, onKey, onCancel }) {
             </div>
             <div style={{
               ...S.keypadBadge,
-              color: isOk ? "#96dca0" : isBad ? "#d96a58" : "#bca76d",
-              borderColor: isOk ? "#34643f" : isBad ? "#633026" : "#4d4428",
+              color: isOk ? "#96c2dc" : isBad ? "#d96a58" : "#bca76d",
+              borderColor: isOk ? "#345264" : isBad ? "#633026" : "#4d4428",
             }}>
               {isOk ? "OPEN" : isBad ? "DENY" : "LOCK"}
             </div>
@@ -41,12 +41,12 @@ export default function KeypadOverlay({ title, entry, msg, onKey, onCancel }) {
                 return (
                   <span key={i} style={{
                     ...S.keypadDigitCell,
-                    borderColor: active ? "#2f8071" : "rgba(50,90,82,0.45)",
-                    boxShadow: active ? "0 0 16px rgba(90,220,190,0.18), inset 0 0 12px rgba(90,220,190,0.08)" : "none",
+                    borderColor: active ? "#2f6e80" : "rgba(50,82,90,0.45)",
+                    boxShadow: active ? "0 0 16px rgba(90,195,220,0.18), inset 0 0 12px rgba(90,195,220,0.08)" : "none",
                   }}>
                     <span style={{
                       ...S.keypadDigit,
-                      color: active ? "#9ff0d6" : "rgba(100,145,132,0.55)",
+                      color: active ? "#9fd6f0" : "rgba(100,132,145,0.55)",
                     }}>
                       {entry[i] || "-"}
                     </span>
@@ -58,7 +58,7 @@ export default function KeypadOverlay({ title, entry, msg, onKey, onCancel }) {
               {[0, 1, 2, 3].map((i) => (
                 <span key={i} style={{
                   ...S.keypadProgressSeg,
-                  backgroundColor: i < filled ? (isBad ? "#9f2b23" : "#4cb88f") : "rgba(74,96,88,0.28)",
+                  backgroundColor: i < filled ? (isBad ? "#9f2b23" : "#4ca7b8") : "rgba(74,88,96,0.28)",
                 }} />
               ))}
             </div>
@@ -69,7 +69,7 @@ export default function KeypadOverlay({ title, entry, msg, onKey, onCancel }) {
           </div>
 
           {msg && (
-            <div style={{ ...S.keypadMsg, color: msg.ok ? "#8bd492" : "#d85b49" }}>{msg.text}</div>
+            <div style={{ ...S.keypadMsg, color: msg.ok ? "#8bc4d4" : "#d85b49" }}>{msg.text}</div>
           )}
 
           <div style={S.keypadBodyGrid}>

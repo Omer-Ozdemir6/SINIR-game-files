@@ -1,35 +1,35 @@
 /* ============================================================
-   PERISHED — CHAPTER 5 (FINAL): "K-2 / THE ARTIFACT" (full version)
-   No owner — The Artifact is not a found object, it is a SOURCE. An ancient 
-   excavation carved out beneath the station. It "counts" at 432 Hz, linking 
-   minds into a single "family" consciousness. The countdown is real: if it 
-   reaches zero, everyone on the station — perhaps the surface — becomes one consciousness.
+   PERISHED — EPISODE 5 (FINAL): "K-2 / THE ARTIFACT" (Full Version)
+   No master — the Artifact is not an entity, it is a SOURCE[cite: 9]. An ancient excavation
+   carved beneath the station[cite: 9]. By "counting" at 432 Hz, it tethers minds into a single
+   "family" consciousness[cite: 9]. The countdown is real: if it reaches zero, everyone in the 
+   station — perhaps the surface — becomes one collective consciousness[cite: 9].
 
-   LAST HUMAN ALLY: Selin. She has a plan to silence the Artifact but 
-   cannot do it alone. Ece (if not betrayed) provides sonar support.
+   FINAL HUMAN ALLY: Selin[cite: 9]. She has a plan to silence the Artifact but cannot execute it 
+   alone[cite: 9]. Ece provides sonar assistance (if she wasn't betrayed)[cite: 9].
 
-   CONSEQUENCES OF CARRIED DECISIONS (all gathered here):
-   · eceEleVerildi    → No frequency support from Ece → final gets harder
-   · nevinKurtarildi  → Nevin's roots clear a path at the last second
-   · sofraYedi        → The Artifact considers you "family" (infiltration / risk)
-   · denizSoruldu     → Deniz unexpectedly opens the line
-   · frekanslariDuydun→ You partially decode the Artifact's language (easier)
+   CARRIED DECISION OUTCOMES (All converge here):
+   · eceEleVerildi    → No frequency assistance from Ece → final becomes harder[cite: 9]
+   · nevinKurtarildi  → Nevin's roots carve out a path at the final moment[cite: 9]
+   · sofraYedi        → The Artifact considers you part of the "family" (infiltration / risk)[cite: 9]
+   · denizSoruldu     → Deniz intercepts the transmission line unexpectedly[cite: 9]
+   · frekanslariDuydun→ You partially decipher the Artifact's language (ease of play)[cite: 9]
 
    FINAL PUZZLE: Reversing the Artifact's counting frequency —
-   symbol sequence (its language) + radio frequency (overthrowing 432).
+   symbol sequence (its language) + radio frequency (overthrowing 432 Hz)[cite: 9].
 
    FIVE ENDINGS:
-   · SURFACE   — silence + escape (best): Selin + Ece + correct choices
-   · SILENCE   — destroy but sacrifice yourself
-   · DEEP      — join the Artifact (dark)
-   · RECORD    — document and die (witness ending)
-   · ZERO      — failing to stop the countdown (bad ending / not hidden)
+   · SURFACE   — silence + escape (best): Selin + Ece + correct choices[cite: 9]
+   · SILENCE   — destroy but sacrifice yourself[cite: 9]
+   · DEEP      — join the Artifact (dark)[cite: 9]
+   · RECORD    — document and die (whistleblower ending)[cite: 9]
+   · ZERO      — failing to halt the countdown (bad ending / not hidden)[cite: 9]
    ============================================================ */
 
 export const EP05 = {
   nodes: {
 
-    /* ================= INTRODUCTION — THE EXCAVATION ================= */
+    /* ================= ENTRY — THE EXCAVATION ================= */
 
     n_k2_giris: {
       checkpoint: true,
@@ -37,14 +37,17 @@ export const EP05 = {
       events: [
         { type: "music", track: "k2" },
         { type: "system", text: "FLOOR: K-2 — ARCHAEOLOGY · EXCAVATION SITE · [UNREGISTERED]" },
-        { type: "narrate", text: "As the last metal step you step on breaks and echoes behind you, your feet press against a wet, cold, and foreign ROCK. This is K-2. It is not a part of the station; they hid this damn madness beneath that raw steel structure. The only thing in your hand is the screen of the tablet, illuminating your face with a sharp, sickly whiteness. The beam of light hits thousands-of-years-old stains on the wall... No, not stains. Notches carved into stone as if branded into skin. A decreasing, exhausting countdown. The darkness lunges over you as if to swallow the light of your tablet." },
-        { type: "narrate", text: "In the middle of the void are rusty scaffoldings, intertwined thick black cables, and decaying equipment arranged like a blind cult worshipping... They all encircle that bottomless anomaly at the center. You cannot see it, because the weak light of your tablet is not enough to rip through that pitch blackness. But you FEEL that awful vibration that comes with a sensation of vomiting. The roots of your teeth ache, your eardrums make static noise as if they are about to burst, and a number slams into your mind like dirty rust: Three." },
+        { type: "narrate", text: "The final metal rung snaps and clangs behind you, and your feet step onto wet, cold, alien rock[cite: 9]. K-2 is not part of the station; the station is a hatch sealed over it[cite: 9]. The tablet light catches marks on the wall[cite: 9]. No, not stains[cite: 9]. Notches carved into the stone as if etched into skin[cite: 9]. A recording system thousands of years old[cite: 9]. Not human writing, yet still like a ledger: something diminishing, exhausting, counting[cite: 9]." },
+        { type: "narrate", text: "In the center of the void are rusted scaffoldings, tangled thick black cables, and decaying equipment arranged like a blindly worshipping cult... All of them surround that bottomless anomaly in the center[cite: 9]. You cannot see it, because the weak light of your tablet isn't enough to rip through that pitch darkness[cite: 9]. But you CAN FEEL that wretched vibration coming with a wave of nausea[cite: 9]. The roots of your teeth ache, your eardrums emit static as if ready to burst, and a number is pounded into your mind like a dirty rust nail: Three[cite: 9]." },
+        { type: "document", open: false, doc: {
+          id: "d_k2_karantina", title: "K-2 Quarantine Protocol — Unregistered",
+          body: "PERISHED / EXCAVATION SITE K-2\nSTATUS: Quarantine extended indefinitely.\nDISTRIBUTION: Chief's Office, Systems Oversight, Biology Unit\n\nDetected symptoms:\n- Personnel repeat the same digit simultaneously across entirely different shifts.\n- Audio logs recorded from subjects respond with the voices of deceased staff before their own voices occur.\n- Personnel left in darkness begin to define themselves as 'we' instead of 'I.'\n- Biological samples gathered around the Artifact are incompatible with human tissue, yet mimic human tissue morphology.\n\nMANAGEMENT DECISION:\nNo reporting shall be made to the surface. Excavation shall not be halted. Personnel losses will be classified as maintenance accidents, barometric failures, or shift desertion protocols.\nNew technical staff shall be routed to the lower decks to ensure the incident is reported as a natural systems malfunction.\n\nADDITIONAL NOTE:\nIf three impacts are heard from below, no response shall be given. Staff who responded trudge into confined spaces shortly after and repeat the word 'home.'" } },
         { type: "waitTap" },
-        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — Something fleshy and wet touched your mind", noteKind: "alert" },
-        { type: "narrate", text: "«Don't move... Don't even breathe...» A raw, terror-filled whisper rises from the shadows. A real human voice. A woman emerges dressed in a battered excavation jumpsuit as if she just came out of a dust storm, holding a flickering flashlight and a blood-stained, rusty crowbar. When the light of your tablet hits her face, you see her pupils dilated with fear. «You... your consciousness is still intact. Your eyes can see the surroundings... My God, you are the only living human here for three weeks.» Selin.", if: { flag: "eceEleVerildi", equals: true } },
-        { type: "narrate", text: "«Don't move... Don't make a sound...» A wet hand darting out from a rock crevice almost makes you drop your tablet. A woman, panting inside an excavation jumpsuit. «A scream came from the dead frequency on the sonar line... Ece. She told me about you. She trusts you. I am Selin. And if you want to get out of here alive, the two of us need to kill that thing.» ", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — Something fleshy and wet brushed against your mind", noteKind: "alert" },
+        { type: "narrate", text: "«Don't move... Don't even breathe...» A raw, terror-packed whisper ascends from within the shadows[cite: 9]. A real human voice[cite: 9]. Emerging from a crevice, battered as if spit from a dust storm in an excavation jumpsuit, appears a woman holding a trembling flashlight and a blood-stained rusted crowbar[cite: 9]. When the light of your tablet strikes her face, you see her pupils dilated from terror[cite: 9]. «Your... your consciousness is still intact[cite: 9]. Your eyes can see the surroundings... My God, you are the only living human here for three weeks[cite: 9].» Selin[cite: 9].", if: { flag: "eceEleVerildi", equals: true } },
+        { type: "narrate", text: "«Don't move... Whatever you do, don't make a sound...» A wet hand lunging from the rock crevice nearly causes you to drop your tablet[cite: 9]. A woman, panting inside an excavation jumpsuit[cite: 9]. «A scream came through the dead frequency on the sonar line... Ece[cite: 9]. She told me about you[cite: 9]. She trusts you[cite: 9]. I am Selin[cite: 9]. And if you want to make it out of here alive, the two of us need to butcher that thing[cite: 9].»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "objective", text: "Listen to Selin's plan." },
-        { type: "note", id: "not_k2", title: "K-2: The Artifact", text: "The station was built on top of this excavation. Every carving on the walls shows a countdown. In the center is the Artifact — I can't see it yet, but the number 'three' dropped into my mind. Selin is here, alive, untransformed." },
+        { type: "note", id: "not_k2", title: "K-2: The Artifact", text: "The station was constructed atop this excavation[cite: 9]. No, not on top; it was built around it to hide it[cite: 9]. Every carving on the walls is a countdown[cite: 9]. The Artifact is in the center[cite: 9]. I can't see it yet, but there is a nail labeled 'three' in my mind[cite: 9]. Selin is alive[cite: 9]. I am writing down this data because seeing a living human here demands documentation more than sanity[cite: 9]." },
       ],
       choices: [
         { id: "selin", text: "Approach Selin", next: "n_selin_plan" },
@@ -55,34 +58,34 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Selin pulls you sharply behind a rock outcrop. As she leans her back against the stone, her breathing is raspy, her hands are torn down to the cuticles, but there is a survival madness in her eyes. «Listen to me, our time is measured in seconds. That number echoing inside your head... Three... It's not a hallucination. The Artifact is vomiting, counting down, and when that number hits zero...» A dry sob escapes her throat. «Didn't you read the logs left from Nevin's decaying corpse? Everyone will become a single mass of flesh. A single hive mind. Including everyone on the surface.»" },
-        { type: "narrate", text: "«The Artifact is a living frequency emitting 432 hertz per second. The only way to KILL it is to shove its own vomit back down its throat: we will read its vile language backward. I decoded those malicious symbols on the walls. But reaching the transmitter panel alone is suicide. You will lock that damn radio onto the frequency, and I will vomit those symbols onto the panel.»" },
+        { type: "narrate", text: "Selin pulls you behind the rock ledge[cite: 9]. Her hands are mangled, her breath raspy, but there is still a human in her eyes capable of making a decision[cite: 9]. «The three inside your head isn't an hallucination,» she says[cite: 9]. «The Artifact is counting down[cite: 9].» She speaks like a witness, not a scientist, while stating this[cite: 9]. No one diagnoses anymore[cite: 9]. Everyone is merely trying to record what they witness[cite: 9]. When it hits zero, everyone will turn into a single mass of flesh, a single hive mind[cite: 9]. The surface included[cite: 9]." },
+        { type: "narrate", text: "«The Artifact is a living frequency emitting a 432 hertz wave[cite: 9]. The ONLY way to BUTCHER it is to choke its own vomit back down its throat: we will read its foul language in reverse[cite: 9]. I deciphered those ominous symbols on the walls[cite: 9]. But reaching the transmitter panel alone is suicide[cite: 9]. You will lock that damned radio into the frequency, and I will vomit those symbols into the panel[cite: 9].»" },
         { type: "waitTap" },
-        { type: "narrate", text: "«But there is a crucial, awful detail. To reach the transmitter, you have to pass right in front of that thing, through the very heart of that blinding darkness. It will see you. It will read you down to the filthiest corner of your soul... Tell me, what the hell did you do on the upper floors? Did you sit at those madmen's table? If you ate from their vomit-smelling meat, the Artifact will count you as its own blood. This could be a damn advantage... Or a trap where you will be completely swallowed.» She stares at you.", if: { flag: "sofraYedi", equals: true } },
-        { type: "narrate", text: "«Good news: at least your soul is not yet steeped in filth. You haven't touched their putrid food, your skin still smells human. But this also means the Artifact will perceive you as a wild tumor, a foreign threat that must be destroyed the moment it sees you. Hold your breath while passing in front of it.»", if: { flag: "sofraYedi", equals: false } },
+        { type: "narrate", text: "«But there is a crucial, horrific detail[cite: 9]. To reach the transmitter, you are forced to pass directly in front of that thing, through the heart of that blinding darkness[cite: 9]. It will see you[cite: 9]. It will read you down to the foulest corner of your soul... Tell me, what absolute garbage did you partake in on the upper decks[cite: 9]? Did you sit at that madmen's table[cite: 9]? If you ate from that meat reeking of vomit, the Artifact considers you of its own blood[cite: 9]. This could be a damned advantage... or a trap where you get completely consumed[cite: 9].» She stares at you[cite: 9].", if: { flag: "sofraYedi", equals: true } },
+        { type: "narrate", text: "«The good news: at least your soul isn't drenched in filth yet[cite: 9]. You haven't touched their rancid meals, your skin still smells of a human[cite: 9]. But that also means the moment the Artifact sees you, it will perceive you as a savage tumor, an alien threat that must be destroyed[cite: 9]. Hold your breath as you pass in front of it[cite: 9].»", if: { flag: "sofraYedi", equals: false } },
       ],
       choices: [
-        { id: "ilerle", text: "Start exploring the excavation site", next: "n_kazi_hub" },
-        { id: "sor", text: "Ask \"How long until zero?\"", next: "n_selin_sifir" },
+        { id: "ilerle", text: "Commence exploring the excavation site", next: "n_kazi_hub" },
+        { id: "sor", text: "Ask, \"How much is left until zero?\"", next: "n_selin_sifir" },
       ],
     },
 
-    /* ================= EXCAVATION SITE — EXPLORATION HUB ================= */
+    /* ================= EXCAVATION SITE — OVERSIGHT HUB ================= */
     n_kazi_hub: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Selin digs her fingers into your shoulder and pushes you toward the darkness: «I will stay here and alert the console. You enter this foul-smelling labyrinth — any scrap left behind by those who died could be useful to us. But never forget: every step you take, every friction sound you make will awaken the Artifact even more. And the more you LOOK around with that damn light of your tablet, the deeper that thing will violate your mind.»" },
-        { type: "narrate", text: "The site ahead of you is a total graveyard: overturned scaffoldings, abandoned tents where worms run wild, pitch-black tunnels... There are four torn paths before you: the corpse-smelling camp area, the gallery covered in carvings, the bottomless borehole, and right in the middle... That ancient, terrifying door opening to that creature. The voice inside your head keeps counting in place, pounding like a pulse: Three... Still three. But it grows like a tumor inside your brain." },
-        { type: "objective", text: "Search the excavation site." },
+        { type: "narrate", text: "Selin digs her fingers into your shoulder, shoving you toward the darkness: «I will stay here and prime the console[cite: 9]. You enter this foul-smelling labyrinth — every piece of scrap those who died left behind could be useful to us[cite: 9]. But never forget: every step you take, every scraping sound you generate will awaken the Artifact further[cite: 9]. And the more you LOOK around with that damned light of your tablet, the deeper it will violate your mind[cite: 9].»" },
+        { type: "narrate", text: "The excavation site before you is scattered like a graveyard: overturned scaffoldings, abandoned tents, pitch-black tunnels[cite: 9]. But graveyards make room for the dead; this place kept the dead on duty[cite: 9]. The campsite, the gallery coated in carvings, the borehole, and the ancient gate in the center[cite: 9]. They all say the same thing: Discovery wasn't executed here, contact was established[cite: 9]. The digit in your head is still three, but it's no longer a voice; it demands space like a growing tumor[cite: 9]." },
+        { type: "objective", text: "Investigate the excavation site." },
       ],
       choices: [
-        { id: "kamp", text: "Go to the excavation team's camp area", next: "n_kamp", if: { flag: "kampGoruldu", equals: false } },
+        { id: "kamp", text: "Go to the excavation crew's campsite", next: "n_kamp", if: { flag: "kampGoruldu", equals: false } },
         { id: "galeri", text: "Enter the carved gallery", next: "n_galeri", if: { flag: "galeriGoruldu", equals: false } },
         { id: "sondaj", text: "Approach the borehole", next: "n_sondaj", if: { flag: "sondajGoruldu", equals: false } },
-        { id: "sonar", text: "Enter the sonar array room", next: "n_sonar_oda", if: { flag: "sonarGoruldu", equals: false } },
-        { id: "kapi", text: "Advance to the ancient door (Artifact)", next: "n_kadim_kapi" },
-        { id: "dinlen", text: "Stop and compose yourself in the shadow of a tent", next: "n_kazi_dinlen", ifStat: { stat: "gurultu", gte: 35 } },
+        { id: "sonar", text: "Enter the sonar array chamber", next: "n_sonar_oda", if: { flag: "sonarGoruldu", equals: false } },
+        { id: "kapi", text: "Advance to the ancient gate (The Artifact)", next: "n_kadim_kapi" },
+        { id: "dinlen", text: "Halt inside a tent's shadow to gather yourself", next: "n_kazi_dinlen", ifStat: { stat: "gurultu", gte: 35 } },
       ],
     },
 
@@ -90,34 +93,34 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The moment you step into the sonar room, the smell of burnt plastic and rotted flesh hits your nose. The monitors on the walls are cracked, oscilloscopes are vomiting static like crazy. Only a single screen is working, drawing a deadly, perfect waveform on the green screen: 432 hertz. Steady. Hypnotic. The pulse of a living monster. An old tape recorder sits in the middle of the desk, a note scrawled over it in dried blood: 'DO NOT LISTEN. DO NOT PLAY. ABSOLUTELY NOT.'" },
+        { type: "narrate", text: "The moment you step into the sonar room, odors of burned plastic and decayed meat hit your nostrils[cite: 9]. The monitors on the walls are cracked, oscilloscopes vomiting static like crazy[cite: 9]. Only a single screen operates, drafting a fatal, flawless wave shape across its green interface: 432 hertz[cite: 9]. Fixed[cite: 9]. Hypnotic[cite: 9]. The pulse of a live monster[cite: 9]. An old tape deck rests in the center of the desk, a note scrawled across it in dried blood: 'DO NOT LISTEN. DO NOT PLAY. NEVER.'[cite: 9]" },
         { type: "waitTap" },
       ],
       choices: [
-        { id: "calistir", text: "Play the tape (risky)", next: "n_sonar_teyp" },
-        { id: "cik", text: "Do not touch, leave the room", next: "n_sonar_cik" },
+        { id: "calistir", text: "Play the tape deck (hazardous)", next: "n_sonar_teyp" },
+        { id: "cik", text: "Do not touch, exit the room", next: "n_sonar_cik" },
       ],
     },
 
     n_sonar_teyp: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Your finger trembles as it presses the rusty button of the tape recorder. First, an ear-piercing static, then the sobs and cries of the excavation team right before they went mad are heard... Then those voices melt one by one and turn into a single foul chorus, counting altogether. And at the very end of the tape, you hear the thing that makes your hair stand on end: Your own voice. Your future scream, which has not yet left your mouth. The Artifact is already eating away at your time. You are listening to your own death scream." },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Your future scream was slammed into your mind", noteKind: "alert" },
+        { type: "narrate", text: "Your finger presses the rusted button of the deck, trembling[cite: 9]. First an ear-tearing hiss, then the sobs and weeping of the excavation crew right before they went mad emerge... Then those voices melt one by one, converting into a single foul choir, counting together[cite: 9]. And at the very end of the tape, you hear that thing that makes your skin crawl: Your own voice[cite: 9]. Your future scream, not yet escaped from your mouth[cite: 9]. The Artifact is already eroding your time[cite: 9]. You are listening to your own death rattle[cite: 9]." },
+        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Your future scream has been nailed into your mind", noteKind: "alert" },
         { type: "flag", set: { sonarGoruldu: true, sonarTeyp: true } },
       ],
       choices: [
-        { id: "cik", text: "Leave the room", next: "n_kazi_hub" },
+        { id: "cik", text: "Exit the room", next: "n_kazi_hub" },
       ],
     },
 
     n_sonar_cik: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You don't touch the tape — that terror-filled warning of those who died chills you to the bone. Holding the raw light of the tablet in your hand to the screen, you engrave every curve of that 432 hertz waveform into your memory, into the back of your brain. You must know this frequency while hitting that monster with its own weapon. As you leave the room, the darkness behind you greets you with a whisper as if." },
+        { type: "narrate", text: "You don't touch the deck — the terror-packed warning of those who died shudders inside you[cite: 9]. Holding the raw light of your tablet against the screen, you engrave every bend of that 432 hertz wave shape into your memory, into the back of your brain[cite: 9]. You must know this frequency when striking that monster with its own weapon[cite: 9]. As you exit the room, the dark behind you seems to usher you out with a whisper[cite: 9]." },
         { type: "flag", set: { sonarGoruldu: true, sonarBildi: true } },
         { type: "stat", stat: "akil", delta: 3 },
-        { type: "note", id: "not_sonar", title: "Sonar array", text: "I saw the voice of the Artifact in the excavation team's sonar room: 432 hertz, steady. I didn't touch the tape. Recognizing this frequency will help me at the transmitter." },
+        { type: "note", id: "not_sonar", title: "Sonar Array", text: "I witnessed the sound of the Artifact inside the crew's sonar room: 432 hertz, fixed[cite: 9]. I didn't touch the deck[cite: 9]. Recognizing this frequency will serve me at the transmitter[cite: 9]." },
       ],
       choices: [
         { id: "cik", text: "Return to the excavation site", next: "n_kazi_hub" },
@@ -127,8 +130,9 @@ export const EP05 = {
     n_kazi_dinlen: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You slip into the pitch blackness of a torn, moldy-smelling tent. Pressing the screen of your tablet against your chest, you turn off its light; everything is black, you can't see an inch ahead. Closing your mouth, you hold your breath, waiting and listening to the sounds of things scratching the rock outside. The buzzing inside your brain slowly retreats, the pounding of your heart that smashes your ribcage eases. It hasn't noticed you for now." },
-        { type: "stat", stat: "gurultu", delta: -25, note: "You held your breath in the dark — NOISE decreased", noteKind: "system" },
+        { type: "narrate", text: "You slide into the pitch darkness of a torn, mold-scented tent[cite: 9]. You press your tablet screen against your chest to douse its light; the surroundings are black, you can't see your hand in front of your face[cite: 9]. Sealing your mouth, you hold your breath, waiting while listening to the sounds of things scratching the rock outside[cite: 9]. The hum inside your brain slowly withdraws, the rib-shattering thumping of your heart eases[cite: 9]. For now, it hasn't detected you[cite: 9]." },
+        { type: "stat", stat: "gurultu", delta: -25, note: "You held your breath in the pitch black — NOISE reduced", noteKind: "system" },
+        { type: "stat", stat: "akil", delta: 5 },
       ],
       choices: [
         { id: "geri", text: "Return to the excavation site", next: "n_kazi_hub" },
@@ -139,17 +143,17 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The camp area is a complete scene of brutality: overturned bloody chairs, maps spread across the table like dried pus... People didn't leave this place in a panic, it's as if they were hypnotized and walked neatly to their deaths. On the wall, that madness written in blood by a person tearing their own fingertips can be read: 'DO NOT STOP COUNTING. IF YOU COUNT, IT HEARS YOU FROM WITHIN.'" },
+        { type: "narrate", text: "The campsite is a complete scene of brutality: overturned bloody chairs, maps spread across the desk like dried purulence... These people didn't leave this place in panic; they marched to their deaths orderly as if hypnotized[cite: 9]. Scratched onto the wall by a human shredding their own fingertips, this madness reads: 'DO NOT STOP COUNTING. IF YOU COUNT, IT HEARS YOU FROM WITHIN.'[cite: 9]" },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
-          id: "d_kazi_gunluk", title: "Excavation Chief's Diary", style: "type",
-          meta: "— Dr. R. Vardar, drilling team —",
-          body: "Day 14. When we first uncovered the Artifact, it was in one piece.\nNow, is it growing, or are we shrinking?\nI don't know. Three from the team are counting in their sleep.\n\nDay 19. The number is in everyone's head. 'Seven', they say,\nall in one voice. I don't hear it, yet. Earplugs\ndon't work; the sound doesn't come from the outside, it comes\nfrom within.\n\nDay 21. Half of them are gone. They went down, to the Artifact.\nSmiling. I am the last one left. To whoever finds\this diary: do not count. Whatever happens, do not\nrepeat that number in your mind. The moment you count, it finds you." } },
-        { type: "stat", stat: "akil", delta: -8, note: "SANITY -8 — Words grow like a tumor in your mind", noteKind: "alert" },
+          id: "d_kazi_gunluk", title: "Excavation Chief's Journal", style: "type",
+          meta: "— Dr. R. Vardar, drilling crew —",
+          body: "DRILLING CREW INCIDENT REPORT — DR. R. VARDAR\nEXCAVATION DAY 14: The Artifact was a single piece when first extracted. Today, new tissues clinging to peripheral cables were observed. Growth velocity could not be calculated; the technician executing measurements began counting digits in his sleep.\n\nEXCAVATION DAY 19: Staff report the exact same digit: seven. Earplugs, sedation, and isolation are ineffective. The sound doesn't originate from the external environment. The subject states they hear it from within their own skull.\n\nEXCAVATION DAY 21: Half the crew descended below. No command was issued. All of them were smiling. Camera logs show their mouths moving simultaneously.\nInstruction to personnel locating this report: Do not repeat the digit. Not even in your mind." } },
+        { type: "stat", stat: "akil", delta: -8, note: "SANITY -8 — Words are growing like an ur inside your mind", noteKind: "alert" },
         { type: "flag", set: { kampGoruldu: true } },
       ],
       choices: [
-        { id: "ara", text: "Search the camp (resource)", next: "n_kamp_ara" },
+        { id: "ara", text: "Search the camp (resources)", next: "n_kamp_ara" },
         { id: "geri", text: "Return to the excavation site", next: "n_kazi_hub" },
       ],
     },
@@ -157,7 +161,7 @@ export const EP05 = {
     n_kamp_ara: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Directing the raw screen light of your tablet into an overturned equipment crate, you rummage through the filth with your bare hands. Broken drill bits cut your fingers, foul juices leaking from empty tin cans smear onto your hands. But at the very bottom, wrapped in a clotted blood rag, you find two spare batteries and a crushed earplug. The earplugs won't cut that internal voice, but at least they can drown out those maddening screams outside a little bit. You immediately pocket the batteries." },
+        { type: "narrate", text: "Directing the raw screen light of your tablet at an overturned equipment chest, you rummage through the grime with your bare hands[cite: 9]. Broken drill bits slice your fingers, foul liquids leaking from empty ration cans smudge your hands[cite: 9]. But at the very bottom, wrapped in a coagulated blood rag, you locate two spare batteries and a crushed earplug[cite: 9]. The earplugs won't cut off that inner voice, but they can at least muffle those maddening screams outside a bit[cite: 9]. You pocket the batteries immediately[cite: 9]." },
         { type: "battery", spares: 2 },
         { type: "flag", set: { kampArandi: true } },
       ],
@@ -170,28 +174,28 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The place they call the gallery is a narrow death tunnel from whose ceiling wet things drip like leeches. The walls are completely covered with the kind of carvings that drive a person insane: a massive fleshy mass falling from the sky, people touching it and within seconds their faces melting and turning into smooth pieces of flesh... The faces of the figures in the last carving are completely erased, with only black holes in their place. That hollow at your eye level moves under the light of your tablet as if, it is watching you!" },
+        { type: "narrate", text: "The place they call the gallery is a tight death tunnel with wet things dripping from its ceiling like leeches[cite: 9]. The walls are entirely covered in carvings that drive a human mad: a massive fleshy mass falling from the sky, humans touching it and having their faces melt and turn into smooth pieces of flesh within seconds... The faces of the figures in the final carving are completely erased, black holes in their place[cite: 7, 9]. That hollow at eye level seems to quiver under your tablet light, watching you[cite: 9]!" },
         { type: "waitTap" },
-        { type: "narrate", text: "As you look at the carvings, a intense ringing starts in your ears, you feel nauseous. The stone breathes as if it were a living skin, the notches on it trembling and decreasing. That damn voice inside your mind strikes like a hammer: Three... Three... That whisper of Selin explodes in your brain: The more you look, the faster that thing will corrupt your soul!" },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Malicious carvings were engraved into the folds of your brain", noteKind: "alert" },
+        { type: "narrate", text: "As you stare at the carvings, a dense ringing begins in your ears, your stomach turning[cite: 9]. The stone breathes as if it were a living skin, the notches on it trembling and diminishing[cite: 9]. That cursed voice inside your brain strikes like a sledgehammer: Three... Three... Selin’s whisper detonates in your brain: The more you look, the faster it will drench your soul in filth[cite: 9]!" },
+        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — The ominous carvings are engraved into the folds of your brain", noteKind: "alert" },
         { type: "flag", set: { galeriGoruldu: true } },
       ],
       choices: [
-        { id: "oku", text: "Examine the last carving closely (risky)", next: "n_galeri_oyma" },
-        { id: "cik", text: "Avert your eyes, leave the gallery", next: "n_kazi_hub" },
+        { id: "oku", text: "Examine the final carving closely (hazardous)", next: "n_galeri_oyma" },
+        { id: "cik", text: "Avert your eyes, exit the gallery", next: "n_kazi_hub" },
       ],
     },
 
     n_galeri_oyma: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Darkening your eyes, you rub your trembling hand against that disgusting carving. The stone is not ice-cold; on the contrary, it is hot, moist, and alive like the skin of a patient burning with fever. As the carvings shift under your fingers, lightning flashes in your brain: This damn thing is a language! This is the password for the panel that will vomit that creature's frequency! You found that missing symbol Selin was looking for. But an awful void forms inside your head... For a second, you cannot remember your mother's face, or even your own name. Knowledge ripped a piece out of your soul." },
+        { type: "narrate", text: "Steeling your nerves, you slide your trembling hand over that foul carving[cite: 9]. The stone isn't ice cold; on the contrary, it's warm, humid, and alive like the skin of a patient burning with fever[cite: 9]. As the carvings shift beneath your fingers, lightning bolts strike inside your brain: This damned thing is a language[cite: 9]! This is the passcode of the panel that will vomit that creature's frequency[cite: 9]! You found that missing symbol Selin was searching for[cite: 9]. But a horrific void forms in the center of your head... For a second, you can't recall your mother's face, or even your own name[cite: 9]. The knowledge ripped a fragment from your soul[cite: 9]." },
         { type: "flag", set: { galeriSembol: true } },
-        { type: "stat", stat: "akil", delta: -8, note: "SANITY -8 — Ancient language erased a part of your memory", noteKind: "alert" },
-        { type: "note", id: "not_galeri", title: "Gallery carving", text: "The last carving in the gallery contains a sequence fragment from the language of the Artifact. It might be useful at the transmitter — I should tell Selin. But looking at the carvings strains my mind." },
+        { type: "stat", stat: "akil", delta: -8, note: "SANITY -8 — The ancient language erased a portion of your memory", noteKind: "alert" },
+        { type: "note", id: "not_galeri", title: "Gallery Carving", text: "The final carving in the gallery contains an alignment piece from the Artifact's language[cite: 9]. It might serve me at the transmitter — I should tell Selin[cite: 9]. But staring at the carvings strains my sanity[cite: 9]." },
       ],
       choices: [
-        { id: "geri", text: "Leave the gallery", next: "n_kazi_hub" },
+        { id: "cik", text: "Exit the gallery", next: "n_kazi_hub" },
       ],
     },
 
@@ -199,13 +203,13 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You are at the edge of the borehole. A hellish, black, and deep rip opened in the ground whose end you cannot see no matter how much you shine the light of your tablet. The excavation team must have ripped that curse out from the bottom of this well. Right next to it, a dying generator rasps — its engine shakes like crazy, the noise it makes is the kind that deafens ears but it feeds the last few lamps illuminating the surroundings. If you turn it off, you will gain a pitch-black silence; but at that moment the whole world around you will turn black, only the light of the small tablet in your hand will remain." },
+        { type: "narrate", text: "You stand at the edge of the borehole[cite: 9]. A black, deep rift opened into the deck; no matter how much you aim your tablet light, you can't see its end, a hellish void[cite: 9]. The excavation crew must have ripped that curse out from the bottom of this pit[cite: 9]. Right beside it, a dying generator is rasping — its engine shaking like crazy, the noise it emits is loud enough to deafen your ears, but it feeds the final few lamps illuminating the area[cite: 9]. If you shut it down, you will gain a pitch silence; but that moment, the entire world around you will go black, leaving only the tiny light of your tablet[cite: 9]." },
         { type: "waitTap" },
         { type: "flag", set: { sondajGoruldu: true } },
       ],
       choices: [
-        { id: "kapat", text: "Turn off the noisy generator (silence but darkness)", next: "n_sondaj_kapat" },
-        { id: "bak", text: "Look down the well (risky)", next: "n_sondaj_bak" },
+        { id: "kapat", text: "Shut down the noisy generator (silence but darkness)", next: "n_sondaj_kapat" },
+        { id: "bak", text: "Look into the bottom of the pit (hazardous)", next: "n_sondaj_bak" },
         { id: "geri", text: "Return to the excavation site", next: "n_kazi_hub" },
       ],
     },
@@ -213,8 +217,8 @@ export const EP05 = {
     n_sondaj_kapat: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Darkening your eyes, you pull down the oily, rusty switch of the generator. That deafening engine rasp cuts like a knife... And along with it, the pale yellow lamps hanging from above burst and go out. Everywhere is pitch black. Only the screen of the tablet in your hand illuminates your face like a corpse. But in this terrifying silence, for the first time, you hear that the voice inside your brain has gone quiet. Even that disgusting hum of the Artifact has retreated. Silence is currently your only refuge." },
-        { type: "stat", stat: "gurultu", delta: -20, note: "The generator went quiet — NOISE decreased, darkness fell", noteKind: "system" },
+        { type: "narrate", text: "Steeling your nerves, you pull down the greasy, rusted breaker switch of the generator[cite: 9]. That deafening engine rasp cuts off like a knife... and along with it, the soluk yellow lamps hanging from above burst and extinguish[cite: 9]. Everything is pitch black[cite: 9]. Only your tablet screen illuminates your face like a corpse[cite: 9]. But in this horrific silence, for the first time, you hear the voice inside your brain cease[cite: 9]. Even that foul hum of the Artifact withdrew[cite: 9]. Silence is your sole haven right now[cite: 9]." },
+        { type: "stat", stat: "gurultu", delta: -20, note: "The generator silenced — NOISE reduced, darkness collapsed", noteKind: "system" },
         { type: "stat", stat: "akil", delta: 5 },
         { type: "flag", set: { jeneratorKapali: true } },
       ],
@@ -226,25 +230,25 @@ export const EP05 = {
     n_sondaj_bak: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Kneeling down, you lean down from that foul-smelling wet edge of the well. A blind darkness... But seconds later, at the very bottom of that darkness, you see pale red fibers glistening like dirty blood flowing through veins. The roots of the Artifact, its fleshy extensions are spread thousands of meters below. And the moment you look into that sewer, you feel millions of invisible eyes looking at YOU from that bottomless darkness. The number inside your head suddenly turns into a scream — get back, leap back immediately so you don't vomit right away!" },
-        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — The darkness peeped into your soul", noteKind: "alert" },
-        { type: "stat", stat: "gurultu", delta: 15, note: "You leaped back in terror — NOISE increased", noteKind: "alert" },
+        { type: "narrate", text: "Sinking to your knees, you lean down over that foul-smelling, wet edge of the pit[cite: 9]. A blind darkness... But seconds later, at the absolute bottom of that darkness, you see soluk red fibers gleaming like dirty blood running through veins[cite: 9]. The roots, fleshy extensions of the Artifact have spread thousands of meters below[cite: 9]. And the moment you look into that abyss, you feel millions of invisible eyes staring at YOU from that bottomless dark[cite: 9]. The digit inside your head turns into a scream instantly — retreat, bolt back immediately before vomiting[cite: 9]!" },
+        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — The dark peeked into your soul", noteKind: "alert" },
+        { type: "stat", stat: "gurultu", delta: 15, note: "You bolted back in terror — NOISE increased", noteKind: "alert" },
         { type: "flag", set: { buluntuyaBakti: true } },
       ],
       choices: [
-        { id: "geri", text: "Step away from the well", next: "n_kazi_hub" },
+        { id: "geri", text: "Withdraw from the pit", next: "n_kazi_hub" },
       ],
     },
 
-    /* ANCIENT DOOR — shadow (relic) puzzle: 3D turning */
+    /* ANCIENT GATE — SHADOW (REMNANT) PUZZLE: 3D ROTATION */
     n_kadim_kapi: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The path leading to the very heart of the excavation is blocked by a massive stone door. There is a single hollow on it: a wide, deformed sign of an eye and fleshy arms erupting from that eye. Selin whispers behind you with a trembling voice: «The excavation team pounded the wall with sledgehammers for weeks to open this place but they couldn't even scratch it. The only way to open the lock is to place the thing on this pedestal in front of the projector at the right angle...»" },
-        { type: "narrate", text: "You approach the pedestal. The thing standing right in front of the projector lamp... My God, it is a disgusting, deformed tumor piece where metal and human bone are fused together; a relic torn from the flesh of the Artifact. As you touch and turn it, its shadow falling on the massive stone wall behind shifts shapes — while it looks like a messy pile of intestines at one angle, at another angle... The shadow comes alive. You must fit the shadow perfectly over that open eye symbol on the wall." },
+        { type: "narrate", text: "The path leading to the exact heart of the excavation is blocked by a massive stone gate[cite: 9]. It bears a single carving: a deformed, wide eye sign and fleshy arms erupting from that eye[cite: 9]. Selin whispers behind you with a trembling voice: «The excavation crew pounded this wall with sledgehammers for weeks to open it, but they couldn't even scratch it... The only way to open the lock is to place the object on this pedestal before the projector at the correct angle...»[cite: 9]" },
+        { type: "narrate", text: "You approach the pedestal[cite: 9]. The thing standing directly before the projector lamp... My God, a deformed, mutated remnant piece where metal and human bone have fused together; a fragment torn from the flesh of the Artifact[cite: 9]. As you touch and rotate it, its shadow falling across the massive stone wall behind shifts shape — At one angle, it looks like a jumbled mess of intestines, while at another... The shadow comes alive[cite: 9]. You must align the shadow perfectly over that open eye symbol on the wall[cite: 9]." },
         { type: "waitTap" },
-        { type: "note", id: "not_kadim", title: "Ancient door", text: "The door leading to the center of the excavation is locked with a shadow puzzle. I need to turn and tilt the relic on the pedestal to fit its shadow onto the mark on the door (circular eye + radiating arms). The shadow falls differently at every angle." },
+        { type: "note", id: "not_kadim", title: "Ancient Gate", text: "The door to the center of the excavation is locked by a shadow puzzle[cite: 9]. I must rotate and tilt the remnant on the pedestal to overlay its shadow onto the sign on the gate (circular eye + extending arms)[cite: 9]. The shadow falls differently at every angle[cite: 9]." },
       ],
       interaction: {
         kind: "shadow",
@@ -260,209 +264,209 @@ export const EP05 = {
     n_kadim_acildi: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The moment the shadow fits perfectly onto that disgusting fleshy eye on the wall, a shrill, living scream rises from the bone piece on the pedestal — and that massive stone door, with a groan similar to the sound of breaking bones, slides aside millimeter by millimeter to open. The air erupting afterward hits your face like the coldness of a graveyard." },
+        { type: "narrate", text: "The instant the shadow aligns perfectly over that foul fleshy eye on the wall, a shrill, live scream ascends from the bone fragment on the pedestal — and that massive stone gate, with a groan resembling the sound of bone snapping, slides aside millimeter by millisecond to open[cite: 9]. The air blasting out hits your face like the chill of a graveyard[cite: 9]." },
         { type: "flag", set: { kadimAcildi: true } },
         { type: "waitTap" },
-        { type: "ambient", text: "Selin holds her breath while looking at the shadow on the wall, left in terror. «Those big professors went mad in front of this door for months... You... How did you do this in seconds?» You cannot answer, because while turning that bone your fingers moved not with your will, but by the command of that thing leaking into your brain. The Artifact is calling you inside." },
+        { type: "ambient", text: "Selin holds her breath while staring at the shadow on the wall, completely horrified[cite: 9]. «Those big professors lost their minds before this gate for months... You... How did you execute this within seconds?»[cite: 9] You cannot answer, because while your fingers rotated that bone, they moved not by your own volition, but by the command of that thing infiltrating your brain[cite: 9]. The Artifact is calling you inside[cite: 9]." },
       ],
       choices: [
-        { id: "sigina", text: "Enter the dark sanctuary", next: "n_siginak" },
+        { id: "sigina", text: "Enter the dark shelter", next: "n_siginak" },
       ],
     },
 
-    /* ================= SANCTUARY — TRACES OF THREE VICTIMS ================= */
+    /* ================= VAULT CONSOLE — TRACES OF THE THREE VlCTIMS ================= */
     n_siginak: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The sanctuary behind the door is the final threshold of that foul-smelling hell. Along the walls are hollows large enough to fit a human; these are the graves of those who went down to the excavation and never saw the sky again. The Artifact swallowed their minds but their remaining putrid bodies are lined up here like altars. Fresh blood and pus are still leaking from three hollows. You recognize those jumpsuits, those belongings. They are here." },
+        { type: "narrate", text: "The vault behind the gate is the final threshold of that foul-smelling hell[cite: 9]. Hollows large enough to fit a human stretch along the walls; these are the graves of those who descended into the excavation and never witnessed the sky again[cite: 9]. The Artifact devoured their minds, but their remaining putrid bodies are arranged here like separate altars[cite: 9]. Fresh blood and purulence still seep from three hollows[cite: 9]. You recognize those overalls, those belongings[cite: 9]. They are here[cite: 9]." },
         { type: "waitTap" },
-        { type: "objective", text: "Cross the shelter." },
+        { type: "objective", text: "Pass through the vault." },
       ],
       choices: [
         { id: "baturay", text: "Examine the familiar jumpsuit in the first hollow", next: "n_siginak_baturay", if: { flag: "izBaturay", equals: false } },
         { id: "deniz", text: "Examine the small figure in the second hollow", next: "n_siginak_deniz", if: { flag: "izDeniz", equals: false } },
-        { id: "nevin", text: "Examine the rooted relic in the third hollow", next: "n_siginak_nevin", if: { flag: "izNevin", equals: false } },
-        { id: "tunel", text: "Look at the narrow tunnel descending from the sanctuary", next: "n_tunel_giris", if: { flag: "tunelGoruldu", equals: false } },
-        { id: "an", text: "Look at all three traces together, pause for a moment", next: "n_siginak_an", if: { flag: "izBaturay", equals: true } },
-        { id: "gec", text: "Pass through the sanctuary, walk to the final threshold", next: "n_son_hazirlik" },
+        { id: "nevin", text: "Examine the rooted remnant in the third hollow", next: "n_siginak_nevin", if: { flag: "izNevin", equals: false } },
+        { id: "tunel", text: "Inspect the tight tunnel descending from the vault", next: "n_tunel_giris", if: { flag: "tunelGoruldu", equals: false } },
+        { id: "an", text: "Look at the three traces together, pause for a moment", next: "n_siginak_an", if: { flag: "izBaturay", equals: true } },
+        { id: "gec", text: "Pass the vault, walk to the final threshold", next: "n_son_hazirlik" },
       ],
     },
 
     n_siginak_an: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You direct the light of your tablet onto those three graves at once: Baturay, Deniz, Nevin. A technician, a small child, a botanist... The Artifact used their bodies like puppets and trapped their souls inside that damn hive. Each is counting their own hellish number. But you will not be the fourth victim. There is only one mercy left to be shown to these poor souls: silencing that damn frequency forever." },
+        { type: "narrate", text: "You aim your tablet light at those three graves simultaneously: Baturay, Deniz, Nevin[cite: 9]. A technician, a small child, a biologist... The Artifact used their bodies like puppets and trapped their souls inside that damned hive[cite: 9]. Each counts their own hellish number[cite: 9]. But you won't be the fourth victim[cite: 9]. Only a single mercy remains for these poor souls: To silence that damned frequency forever[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "That intense wave of fear in the middle of your chest replaces itself with a wild rage. You grit your teeth. For them... And for the last people upstairs who still remember their own names, you will silence that monster.", ifStat: { stat: "akil", gte: 30 } },
-        { type: "stat", stat: "akil", delta: 6, note: "SANITY +6 — Fear turned into a wild purpose", noteKind: "system" },
+        { type: "narrate", text: "The dense wave of fear in the center of your chest yields to a savage rage[cite: 9]. You grit your teeth[cite: 9]. For them... And for the final people upstairs who still remember their own names, you will silence that monster[cite: 9].", ifStat: { stat: "akil", gte: 30 } },
+        { type: "stat", stat: "akil", delta: 6, note: "SANITY +6 — Fear converted into a savage purpose", noteKind: "system" },
       ],
       choices: [
-        { id: "gec", text: "Pass through the sanctuary, walk to the final threshold", next: "n_son_hazirlik" },
+        { id: "gec", text: "Pass the vault, walk to the final threshold", next: "n_son_hazirlik" },
       ],
     },
 
-    /* ================= DESCENT TUNNELS (optional depth) ================= */
+    /* ================= DESCENT TUNNELS (OPTIONAL DEPTH) ================= */
     n_tunel_giris: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Right in the corner of the sanctuary, there is a narrow, sticky tunnel spiraling downward. This was not excavated by human hands; it's like an organic throat opened by those fleshy, wet roots of the Artifact melting the rock with acid. A hot, moist air that vomits humanity and a low intestinal rumble that makes you nauseous rise from inside. Entering there is complete madness. But something seems to mutter your name from inside that darkness." },
+        { type: "narrate", text: "Right in the corner of the vault, there is a tight, sticky tunnel spiraling downward[cite: 9]. This wasn't dug by human hands; it's like an organic throat opened by the Artifact's wet, fleshy roots dissolving the rock with acid[cite: 9]. A warm, humid air that vomits humanity and a low bowel growl that turns your stomach ascend from within[cite: 9]. Entering there is pure madness[cite: 9]. But something inside that darkness seems to murmur your name[cite: 9]." },
         { type: "waitTap" },
         { type: "flag", set: { tunelGoruldu: true } },
-        { type: "narrate", text: "Selin catches your garment from behind and tugs it, her eyes wide open: «Don't enter there! Two guards who went down there melted among those flesh fibers before they could even scream... But the choice is yours. Whatever is at the bottom of that hole is alive, I feel it.»" },
+        { type: "narrate", text: "Selin snatches your garment from behind, pulling it: «Don't go down there! Two security guards who descended there dissolved among those flesh fibers before they could even scream... But the choice is yours[cite: 9]. Whatever is at the bottom of that hole is alive, I feel it[cite: 9].»" },
       ],
       choices: [
-        { id: "in", text: "Descend into the tunnel (risky — deep exploration)", next: "n_tunel_derin" },
-        { id: "vazgec", text: "Give up, return to the sanctuary", next: "n_siginak" },
+        { id: "in", text: "Descend into the tunnel (hazardous — deep exploration)", next: "n_tunel_derin" },
+        { id: "vazgec", text: "Abandon, return to the vault", next: "n_siginak" },
       ],
     },
 
     n_tunel_derin: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You crawl down through the narrow tunnel, those wet, fleshy walls around rubbing against your shoulders, your hair. The walls are pounding thud-thud like a pulse; at every centimeter you take, that code inside your brain screams. At the very bottom, in the middle of a completely clotted black liquid, are the shredded belongings left from the last members of the excavation team... And a terrifying choice standing before you." },
-        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — You are at the bottom of the living flesh tunnel", noteKind: "alert" },
-        { type: "stat", stat: "gurultu", delta: 10, note: "The creature's intestinal rumble surrounded you — NOISE increased", noteKind: "alert" },
+        { type: "narrate", text: "You crawl down the tight tunnel, those wet, fleshy walls brushing against your shoulders, your hair[cite: 9]. The walls throb like a pulse; at every centimeter you gain, that passcode inside your brain screams[cite: 9]. At the very bottom, in the middle of a completely coagulated black liquid, are mangled items remaining from the final members of the excavation crew... And a terrifying choice confronting you[cite: 9]." },
+        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — You are at the bottom of the live flesh tunnel", noteKind: "alert" },
+        { type: "stat", stat: "gurultu", delta: 10, note: "The creature's bowel growl enveloped you — NOISE increased", noteKind: "alert" },
         { type: "waitTap" },
       ],
       choices: [
-        { id: "sandik", text: "Open the crate left by the excavation team", next: "n_tunel_sandik" },
-        { id: "fisilti", text: "Listen to the whisper inside the hum (completely risky)", next: "n_tunel_fisilti" },
-        { id: "cik", text: "You went too deep — climb back up", next: "n_siginak" },
+        { id: "sandik", text: "Open the chest left by the excavation crew", next: "n_tunel_sandik" },
+        { id: "fisilti", text: "Listen to the whisper within the hum (compl. hazardous)", next: "n_tunel_fisilti" },
+        { id: "cik", text: "You descended too deep — climb back up", next: "n_siginak" },
       ],
     },
 
     n_tunel_sandik: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Directing the light of your tablet onto the muddy case, you break its latches open. Inside lies a blood-stained diary, three spare batteries, and a primitive headphone setup made by the excavators to cut out that maddening sound. The last page of the diary is violently torn but that sentence scratched with a fingernail can be read at the bottom part: 'Reversing the frequency won't kill that bastard, it will only put it to sleep... Until another victim comes along one day and wakes it up again.'" },
+        { type: "narrate", text: "You aim your tablet light at the muddy chest and open it by breaking its latches[cite: 9]. Inside stands a blood-smeared journal, three spare batteries, and a primitive headphone rig crafted by excavators to cut out that maddening voice[cite: 9]. The final leaf of the journal has been violently torn out, but that sentence scratched with a fingernail at the bottom remains legible: 'Reversing the frequency won't kill that bastard, it will only put it to sleep... Until another victim comes along down the line one day and awakens it again.'[cite: 9]" },
         { type: "battery", spares: 3 },
         { type: "document", open: true, doc: {
-          id: "d_tunel_gunluk", title: "Last Excavator's Diary", style: "type",
+          id: "d_tunel_gunluk", title: "Last Excavator's Journal", style: "type",
           meta: "— at the bottom of the tunnel —",
-          body: "The two of us are left. The others became 'family'. We went\ndown to see the source. Now I understand:\nthe Artifact is not alone. This is only one tip. Its body\nis deeper, beneath the sea, for kilometers.\n\nThe station 'feeds' it — with humans. If you silence it,\nhunger remains. And a hungry thing, sooner or later, reaches\nout. It starts hitting toward the surface. Three times.\nAlways three times." } },
+          body: "K-2 RESEARCH NOTE — PARTIAL ENTRY\n\nThe two of us remain. The others became 'family.' We descended below to verify the source.\nIt is clear now: The Artifact is not a solitary component; it is merely a node reaching upward.\nThe main body spreads for miles beneath the ocean floor.\n\nPERISHED fed it with humans. If the flow is cut, starvation will commence.\nThe starving structure strikes toward the surface: three contacts, regular interval, identical signature across every log.\n\nThis note shall not be forwarded to upper management if found. Upper management already knows." } },
         { type: "flag", set: { tunelSandik: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
       choices: [
-        { id: "cik", text: "Leave the crate, climb back up", next: "n_siginak" },
+        { id: "cik", text: "Leave the chest, climb upward", next: "n_siginak" },
       ],
     },
 
     n_tunel_fisilti: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Closing your eyes, you press your ear against the hum coming from that wet wall. And that whisper suddenly becomes clear... The vomitous chorus of thousands of dead people shouts your name in one voice! Baturay, Deniz, Nevin, all the crew torn apart upstairs... «Join us... Loneliness is so cold... Count with us... Three... Three... Three...» Your will turns into dust, your knees buckle; at that moment you just want to hug the wall and melt away inside that flesh." },
-        { type: "stat", stat: "akil", delta: -20, note: "SANITY -20 — The chorus of the dead grabbed your soul", noteKind: "alert" },
+        { type: "narrate", text: "Squeezing your eyes shut, you lean your ear against the hum emanating from that wet wall[cite: 9]. And that whisper suddenly goes crystal clear... The putrid choir of thousands of dead humans bellows your name from a single mouth[cite: 9]! Baturay, Deniz, Nevin, all the crew torn apart upstairs... «Join us... Isolation is so cold... Count with us... Three... Three... Three...»[cite: 9] Your volition turns to dust, your knees buckle; at that moment, you just want to embrace the wall and melt away inside that flesh[cite: 9]." },
+        { type: "stat", stat: "akil", delta: -20, note: "SANITY -20 — The choir of the dead captured your soul", noteKind: "alert" },
         { type: "waitTap" },
-        { type: "narrate", text: "Right as you are about to lose consciousness, you hear your own trembling voice at the very bottom of that foul chorus. 'No!' Passing the primitive headphone frantically over your ears, you rip that bond apart and climb upward by digging your nails into the rock. You know you won't be able to get out of there next time." },
+        { type: "narrate", text: "Just as you are losing consciousness, you catch your own trembling voice at the absolute bottom of that foul choir[cite: 9]. 'No!'[cite: 9] You frantically jam the primitive headphones over your ears, ripping that bond apart, and climb upward by digging your fingernails into the rock[cite: 9]. You know you won't make it out of there a second time[cite: 9]." },
         { type: "flag", set: { tunelFisilti: true } },
       ],
       choices: [
-        { id: "cik", text: "Compose yourself, climb back up", next: "n_siginak" },
+        { id: "cik", text: "Gather yourself, climb upward", next: "n_siginak" },
       ],
     },
 
     n_siginak_baturay: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You hold the light of your tablet over the jumpsuit in the first hollow. The plastic tag on its chest is stuck in mud: B. SOYLU. Baturay. The first victim who dragged you into this hell, who sent that witness email. You had found his body completely mangled in the K-6 infirmary... But it turns out that damn echo of his soul has always been among the flesh here. Between his clenched, decayed fingers, there is a bloody piece of paper he holds tightly." },
+        { type: "narrate", text: "You hold your tablet light over the jumpsuit in the first hollow[cite: 9]. The plastic tag on his chest is caked in mud: B. SOYLU[cite: 9]. Baturay[cite: 9]. The first victim who dragged you into this hell, who sent that whistleblower email[cite: 9]. You had located his completely mangled corpse in the K-6 infirmary... But it turns out the damned echo of his soul was always here among the flesh[cite: 9]. There is a bloody scrap of paper he holds tightly between his clenched, decayed fingers[cite: 9]." },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
-          id: "d_baturay_son", title: "Baturay's Last Note", style: "hand",
-          meta: "— in the sanctuary, in his hand —",
-          body: "You are the one reading me, I know. The one coming after me.\nThey brought you here because I refused.\n\nIt will say 'three' to you too. Do not count. I counted once,\njust once, because I was curious. That much\nwas enough. Now I am both there and here.\n\nI sent the mail but I was late. Don't you be late.\nThere is a journalist upstairs, Ergin. Reach him.\nLet the world know. — B." } },
+          id: "d_baturay_son", title: "Baturay's Final Note", style: "hand",
+          meta: "— inside the vault, in his hand —",
+          body: "PERSONAL STATEMENT — B. SOYLU\n\nThe person reading this must be the maintenance staff arriving after me. They brought you here because I rejected the assignment.\n\nIt will say 'three' to you too. Do not count. I counted once; I was merely curious.\nThat much sufficed. Since that day, a part of my voice remains below, while a part still lingers in this room.\n\nI dispatched the whistleblower email but I was late. Don't you be late. There is a journalist named Ergin on the surface. Reach him. Let the world know.\n\n— Baturay Soylu" } },
         { type: "flag", set: { izBaturay: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
       choices: [
-        { id: "geri", text: "Return to the sanctuary", next: "n_siginak" },
+        { id: "geri", text: "Return to the vault", next: "n_siginak" },
       ],
     },
 
     n_siginak_deniz: {
       cost: 1,
       events: [
-        { type: "narrate", text: "When you direct the light of your tablet onto that tiny body in the second hollow, your heart squeezes. A small child size. Next to it stands a walkie-talkie with leaked batteries and that disgusting family picture he drew on the wall with his own blood: A mother, a father, and in their middle a child with no face, hand in hand... Deniz. That toddler who cried to you through the radio static on floor K-5. Scratched with a stone nail right below the picture: 'I became a good boy. now we are all together.'" },
+        { type: "narrate", text: "Your heart constricts when you aim your tablet light at that tiny body in the second hollow[cite: 9]. A small child's dimensions[cite: 9]. Beside him lies a walkie-talkie with its batteries leaked and that disgusting family drawing he sketched on the wall with his own blood: A mother, a father, and a faceless child between them, holding hands...[cite: 9] Deniz[cite: 9]. That toddler who wept to you through the radio static on the K-5 floor[cite: 9]. Scratched into the stone with a rock nail below the drawing: 'I became a good boy. we are all together now.'[cite: 9]" },
         { type: "waitTap" },
-        { type: "narrate", text: "He had asked Deniz that crucial question upstairs: 'Did you join too?' Here is the answer, standing written in blood in this stone grave. But if he opened those doors for you upstairs, it means a piece of that tiny soul is still fluttering in the stomach of that monster.", if: { flag: "denizSoruldu", equals: true } },
+        { type: "narrate", text: "You had asked Deniz that crucial question upstairs: 'Did you join too?'[cite: 9] Here is his answer, written in blood inside this stone grave[cite: 9]. But if he opened those gates for you upstairs, it means a fragment of that tiny soul is still squirming inside the stomach of that monster[cite: 9].", if: { flag: "denizSoruldu", equals: true } },
         { type: "flag", set: { izDeniz: true } },
         { type: "stat", stat: "akil", delta: -8 },
       ],
       choices: [
-        { id: "geri", text: "Return to the sanctuary", next: "n_siginak" },
+        { id: "geri", text: "Return to the vault", next: "n_siginak" },
       ],
     },
 
     n_siginak_nevin: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The third hollow is completely covered with mold, black leeches, and veiny vines: the decaying body of Dr. Nevin Aras. Botanist. That maddened gardener of floor K-3. Those fleshy roots are still alive, breathing with a slight tremble along with the hairs on them. If you showed her mercy and saved her on the upper floors, these roots will shield you against that monster. If you couldn't save her... Just a foul-smelling pit." },
+        { type: "narrate", text: "The third hollow is entirely coated in mold, black leeches, and veiny vines: the decaying body of Dr. Nevin Aras[cite: 9]. The biologist[cite: 9]. That maddened gardener of the K-3 floor[cite: 9]. Those fleshy roots are still alive, breathing subtly along with the hairs coating them[cite: 9]. If you showed her mercy and saved her on the upper floors, these roots will act as a shield for you before that monster[cite: 9]. If you couldn't save her... nothing but a foul-smelling pit[cite: 9]." },
         { type: "waitTap" },
-        { type: "ambient", text: "A wet vine wraps around your wrist — but it doesn't squeeze your flesh, on the contrary, it pushes you upward with tenderness, as if showing the direction, toward those dark stairs. That maddened raspy voice of Nevin echoes in your brain: «The root is patient, my child... The earth swallows every filth. I waited for you here. Now I will be armor to your flesh, you pass through that door...»", if: { flag: "nevinKurtarildi", equals: true } },
+        { type: "ambient", text: "A wet vine wraps around your ankle — but it doesn't tighten around your flesh, on the contrary, it subtly shoves you upward as if indicating a direction[cite: 9]. Nevin’s maddened, rasping voice echoes inside your brain: «The root is patient, my child... The soil swallows every piece of filth[cite: 8, 9]. I waited for you here[cite: 9]. Now I become armor for your flesh, you pass through that gate...»", if: { flag: "nevinKurtarildi", equals: true } },
         { type: "flag", set: { izNevin: true } },
         { type: "stat", stat: "akil", delta: -6 },
       ],
       choices: [
-        { id: "geri", text: "Return to the sanctuary", next: "n_siginak" },
+        { id: "geri", text: "Return to the vault", next: "n_siginak" },
       ],
     },
 
     n_selin_sifir: {
       cost: 1,
       events: [
-        { type: "narrate", text: "«I don't know...» says Selin, gritting her teeth with that wild despair in her eyes. «When I first descended into this sewer, it was roaring 'Seven' inside my brain. Now 'Three'... I don't know if days are left, or seconds — That monster's perception of time doesn't flow like ours. But after three, two will come, then that damn one... And when zero strikes...» She stops and looks into the darkness. «Hurry up, or your head will explode.»" },
-        { type: "narrate", text: "Yet you had listened to those secret dead frequencies upstairs — You know the rhythm of that voice. You realize that terrifying truth Selin doesn't know: The number is not fixed. It is getting faster, time is narrowing down!", if: { flag: "frekanslariDuydun", equals: true } },
+        { type: "narrate", text: "«I don't know...» Selin says, gritting her teeth with that savage helplessness in her eyes[cite: 9]. «When I first descended into this sewer, it bellowed 'Seven' inside my brain[cite: 9]. Now it's 'Three'... I don't know if days are left, or seconds — That monster's perception of time doesn't flow like ours[cite: 9]. But after three will come two, then that damned one... And when zero strikes...»[cite: 9] She stops and stares into the dark[cite: 9]. «Hurry up, or your head will explode[cite: 9].»" },
+        { type: "narrate", text: "Yet you had listened to those hidden dead broadcasts upstairs... Your ear recognizes the rhythm of that voice[cite: 9]. You realize that horrific truth Selin is unaware of: The digit is not fixed[cite: 9]. It is accelerating, the duration narrowing!", if: { flag: "frekanslariDuydun", equals: true } },
       ],
       choices: [
-        { id: "nasil", text: "Ask \"How did you come here?\"", next: "n_selin_gecmis" },
-        { id: "ilerle", text: "Start exploring the excavation site", next: "n_kazi_hub" },
+        { id: "nasil", text: "Ask, \"How did you get here?\"", next: "n_selin_gecmis" },
+        { id: "ilerle", text: "Return to explore the excavation site", next: "n_kazi_hub" },
       ],
     },
 
     n_selin_gecmis: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Selin leans her back against the wet rock and closes her eyes. «I was the sonar technician of the excavation team. Supposedly safe on the surface, in that fresh air... But when no sound came from the team below except radio static, they said 'Go down and have a look'. It was eleven months ago.» She lets out a wild, crazy laugh. «When I went down, everyone had stripped completely naked, hugging that mass of flesh and smiling... I was born deaf. My left ear doesn't hear anything. Maybe that's why that foul voice of the monster couldn't completely rot my brain. I hear it halfway. I remained half a human.»" },
+        { type: "narrate", text: "Selin presses her back against the wet rock and closes her eyes[cite: 9]. «I was the sonar technician of the excavation crew[cite: 9]. Supposedly safe up on the surface, fresh air... But when no sound except radio static emerged from the crew below, they said 'Go down and take a look.'[cite: 9] It was eleven months ago[cite: 9].» She lets loose a wild, crazy laugh[cite: 9]. «When I descended, everyone had stripped stark naked, embracing that mass of flesh and smiling... I was born deaf[cite: 9]. My left ear hears absolutely nothing[cite: 9]. Perhaps that's why that monster's foul voice couldn't completely rot my brain[cite: 9]. I hear it halfway[cite: 9]. I remained a half-human[cite: 9].»" },
         { type: "waitTap" },
-        { type: "narrate", text: "«That's why I need you. I can fill that panel but I cannot lock the radio onto that frequency — you need to hear that sound clearly, doing what I couldn't do with that deaf ear of mine. Two half men make one single weapon. Isn't it funny? The Artifact united everyone to make them a mass of flesh; it also united us as a single bullet against it.»" },
-        { type: "stat", stat: "akil", delta: 5, note: "SANITY +5 — There is a living soul to lean your back on in the dark", noteKind: "system" },
-        { type: "note", id: "not_selin", title: "Selin", text: "Selin is the sonar technician of the excavation team. Since she was born deaf in one ear, the voice of the Artifact didn't completely affect her — she can resist halfway. She will read the sequence, I will adjust the frequency. We complete each other." },
+        { type: "narrate", text: "«That's why I am dependent on you[cite: 9]. I can fill that panel but I can't lock the radio into that frequency — you need to hear that voice clearly, doing what I couldn't execute with my deaf ear[cite: 9]. Two half-humans make a single weapon[cite: 9]. Isn't that funny[cite: 9]? The Artifact united everyone to make them a mass of flesh, to form a hive; it united us against it as a single bullet[cite: 9].»" },
+        { type: "stat", stat: "akil", delta: 5, note: "SANITY +5 — There is a living entity you can lean your back against in the dark", noteKind: "system" },
+        { type: "note", id: "not_selin", title: "Selin", text: "Selin is the sonar technician of the excavation crew[cite: 9]. Since she was born deaf in one ear, the Artifact's voice didn't fully affect her — she can resist halfway[cite: 9]. She will read the sequence, I will dial the frequency[cite: 9]. We complete one another[cite: 9]." },
       ],
       choices: [
-        { id: "ilerle", text: "Start exploring the excavation site", next: "n_kazi_hub" },
+        { id: "ilerle", text: "Return to explore the excavation site", next: "n_kazi_hub" },
       ],
     },
 
-    /* ================= PASSAGE — IN FRONT OF THE ARTIFACT ================= */
+    /* ================= PASSAGE — BEFORE THE ARTIFACT ================= */
 
-    /* FINAL PREPARATION — point of no return */
+    /* FINAL PREPARATION — Point of No Return */
     n_son_hazirlik: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You stand at that final crevice at the exit of the sanctuary. Its front opens completely to the lair of that creature. Selin puts her hand on your shoulder, her fingers trembling: «The moment you take a single step from this threshold, there is no turning back. The moment we stand in front of that monster, it will lay our souls onto the operating table. Are you ready? Check your tablet, your batteries, the last crumbs left of your mind... If you make a mistake there, I can't save you.»" },
+        { type: "narrate", text: "You stand at that final crevice at the exit of the vault[cite: 9]. The front opens entirely into the lair of that creature[cite: 9]. Selin places her hand on your shoulder, her fingers trembling: «The moment you take a single step across this threshold, there is no turning back[cite: 9]. The moment we stand before that monster, it will lay our souls on an operating table[cite: 9]. Are you ready[cite: 9]? Check your tablet, your batteries, the final remnants remaining of your wits... I can't rescue you if you make an error out there[cite: 9].»" },
         { type: "waitTap" },
-        { type: "narrate", text: "Those earplugs you found from the camp area are in your pocket... They won't completely cut that internal sewer sound but they can give your brain a second to breathe at the moment you are about to go completely mad.", if: { flag: "kampArandi", equals: true } },
-        { type: "narrate", text: "That chorus of those disgusting dead people you heard at the bottom of that tunnel is still making static in your ears. Now you know where that sound will hit from — you have already memorized how to defend yourself against it.", if: { flag: "tunelFisilti", equals: true } },
-        { type: "objective", text: "Step in front of the Artifact." },
+        { type: "narrate", text: "Those earplugs you retrieved from the campsite are in your pocket... They won't completely cut off that inner sewer voice, but they can grant your brain a second of breath right when you are about to go mad[cite: 9].", if: { flag: "kampArandi", equals: true } },
+        { type: "narrate", text: "That putrid choir of the dead you heard at the bottom of that tunnel still generates static inside your ears[cite: 9]. Now you know where that voice will strike from — you've already memorized how to defend yourself against it[cite: 9].", if: { flag: "tunelFisilti", equals: true } },
+        { type: "objective", text: "Step out before the Artifact." },
       ],
       choices: [
-        { id: "hazir", text: "I am ready — Step in front of the Artifact", next: "n_k2_gecit" },
-        { id: "bekle", text: "Stop for a moment, compose yourself (decrease noise)", next: "n_son_nefes" },
+        { id: "hazir", text: "I am ready — step out before the Artifact", next: "n_k2_gecit" },
+        { id: "bekle", text: "Pause for a moment, gather yourself (reduce noise)", next: "n_son_nefes" },
       ],
     },
 
     n_son_nefes: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You close your eyes tightly. Pressing your tablet against your chest, you take a deep breath in the pitch blackness. One. Two. You listen not to that foreign number in your brain, but only to your own heartbeat tearing your chest. Slowly, that dirty hum retreats from your brain. You are ready." },
-        { type: "stat", stat: "gurultu", delta: -20, note: "You took a breath in the dark — NOISE decreased", noteKind: "system" },
+        { type: "narrate", text: "You close your eyes tightly[cite: 9]. Pressing your tablet against your chest, you draw a deep breath in the pitch black[cite: 9]. One[cite: 9]. Two[cite: 9]. You listen not to that alien digit inside your brain, but solely to your own heart pounding tearing your chest[cite: 9]. Slowly, that dirty hum withdraws from your brain[cite: 9]. You are ready[cite: 9]." },
+        { type: "stat", stat: "gurultu", delta: -20, note: "You gathered your breath in the dark — NOISE reduced", noteKind: "system" },
         { type: "stat", stat: "akil", delta: 5 },
       ],
       choices: [
-        { id: "hazir", text: "Step in front of the Artifact", next: "n_k2_gecit" },
+        { id: "hazir", text: "Step out before the Artifact", next: "n_k2_gecit" },
       ],
     },
 
@@ -470,12 +474,12 @@ export const EP05 = {
       checkpoint: true,
       cost: 2,
       events: [
-        { type: "narrate", text: "And you step out from that crevice... You are right in front of the monster. The moment the light of your tablet hits that massive mass, you force yourself not to vomit." },
+        { type: "narrate", text: "You step out from the crevice and you are finally in front of it[cite: 9]. Documents, voices, corpses, and family tales across all these floors pointed to the exact same center[cite: 9]. Now the center is beneath your light[cite: 9]. You hold yourself to keep from vomiting; because if what you witnessed was as simple as a monster, it would be easier to endure[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "A massive, wet, trembling fleshy mass embedded like a tumor inside the rock... Neither plant, nor animal, nor a machine... A combination of the most disgusting states of all three. There are holes on it that open and close irregularly, with pus leaking out from inside; they could be eyes, they could be mouths, or just breathing wounds... That massive radioactive vibration emitting from it makes your bones ache. And right in the middle of your brain, that soft, deceptive voice of your deceased mother whispers: «Three... Why are you late, my child... Three... Come on, come...»" },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — That creature is operating on your soul", noteKind: "alert" },
-        { type: "narrate", text: "The transmitter platform stands at the exact opposite end of that foul pool. Between you is only that massive mass and its opening holes. Selin shouts: «I am clearing a path for you! Those damn roots of Nevin are moving! Whatever you did upstairs, it is saving your life now!»", if: { flag: "nevinKurtarildi", equals: true } },
-        { type: "narrate", text: "The transmitter platform is right across but there is an empty, unprotected death zone between you. Selin whispers desperately: «There is no cover! Just run like crazy and pray for your soul while it reads you! If we could have saved Nevin upstairs, those roots would be a shield, but now we are alone!»", if: { flag: "nevinKurtarildi", equals: false } },
+        { type: "narrate", text: "A massive, wet, shivering mass embedded into the rock like an ur[cite: 9]. Neither plant, nor animal, nor machine[cite: 9]. Perhaps that's why all of PERISHED's classifications failed; they searched for the wrong file title[cite: 9]. The holes on it could be eyes, mouths, or merely breathing wounds[cite: 9]. Its vibration makes your bones ache[cite: 9]. Then it speaks inside the center of your brain with the voice of your deceased mother: «Three... Why are you late, my child... Three... Come along...»[cite: 9] It uses your own memories against you like evidence[cite: 9]." },
+        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — That entity is operating on your soul", noteKind: "alert" },
+        { type: "narrate", text: "The transmitter platform stands at the exact opposite edge of that foul pool[cite: 9]. Between you is only that massive mass and its opening holes[cite: 9]. Selin shouts: «I'm carving out a path for you! Those damned roots of Nevin are moving! Whatever you executed on the upper decks, it's saving your life now!»[cite: 9]", if: { flag: "nevinKurtarildi", equals: true } },
+        { type: "narrate", text: "The transmitter platform is straight ahead, but between you is a completely unprotected, bare death zone[cite: 9]. Selin whispers in despair: «There is no cover! Just sprint like mad and pray for your soul while it reads you! If we could have saved Nevin upstairs, those roots would be cover, but now we are alone!»[cite: 9]", if: { flag: "nevinKurtarildi", equals: false } },
       ],
       choices: [
         { id: "gec", text: "Pass in front of the Artifact", next: "n_gecis_dene" },
@@ -485,51 +489,51 @@ export const EP05 = {
     n_gecis_dene: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You step right into the middle of those malicious gazes. Your consciousness is divided in two: while one half of you is tearing itself apart to run to the opposite side, the other half wants to kneel down, hug that mass of flesh, and melt away inside that deceptive peace. «Three... Your feet are bleeding, why are you running... Three... It's very warm here, everyone is here... Your mother is waiting for you too...»" },
-        { type: "narrate", text: "Right at that moment, those massive roots of Nevin that you saved erupt by bursting the rock and close off the front of those purulent holes of the Artifact, becoming a flesh shield for you! «Now! Run! Don't stop!» tears herself apart Selin.", if: { flag: "nevinKurtarildi", equals: true } },
-        { type: "narrate", text: "That heavy bite sitting in your stomach — that filthy food of the Chief — shows you for a moment to that monster's hive consciousness like someone from the 'family'. The Artifact hesitates for a second, it doesn't think you are a foreign tumor. That one-second hesitation becomes life-giving water for you!", if: { flag: "sofraYedi", equals: true } },
-        { type: "ambient", text: "And suddenly, something completely unexpected happens — From the speaker of that small tablet in your hand, through the sonar line kilometers above, that childish static voice of little Deniz explodes: 「You asked me upstairs... 'Did you join' ... I still don't know my answer, brother. But now I am bursting those floor doors for you. All of them! Run brother, don't ever get caught by my father!」 All the mechanical locks throughout the cave open with a ring!", if: { flag: "denizSoruldu", equals: true } },
+        { type: "narrate", text: "You step right into the center of those foul gazes[cite: 9]. Your consciousness splits in two: one side of you is tearing to sprint to the other side like mad, while the other side wants to sink to its knees and embrace that mass of flesh, melting within that fraudulent peace[cite: 9]. «Three... Your feet are bleeding, why are you running... Three... It is very warm here, everyone is here... Your mother is waiting for you too...»[cite: 9]" },
+        { type: "narrate", text: "Right at that moment, those massive roots of Nevin you saved spout out, shattering the rock, and close off the front of the Artifact's purulent holes to become a fleshy shield for you[cite: 8, 9]! «Now! Sprint! Don't stop!» Selin screams frantically[cite: 9].", if: { flag: "nevinKurtarildi", equals: true } },
+        { type: "narrate", text: "That heavy bite resting in your stomach — that foul meal of the Chief — portrays you to that monster's hive mind like someone from the 'family' for a split second[cite: 9]. The Artifact pauses for a moment, not perceiving you as an alien tumor[cite: 9]. That one-second pause becomes life-saving water for you[cite: 9]!", if: { flag: "sofraYedi", equals: true } },
+        { type: "ambient", text: "And suddenly, something you completely didn't expect happens — Out from the speaker of that small tablet in your hand, from the sonar line miles above, little Deniz's childish, static voice detonates: 「You asked me upstairs... if I joined... I still don't know my answer, brother. But now I am detonating those floor gates for you. All of them! Sprint, brother, don't get caught by my father!」 All the mechanical locks across the cave open with a ring[cite: 9]!", if: { flag: "denizSoruldu", equals: true } },
       ],
       choices: [
-        { id: "kos", text: "Run to the transmitter", next: "n_gecis_orta", if: { flag: "nevinKurtarildi", equals: true } },
-        { id: "kos2", text: "Run to the transmitter (you are counted as family)", next: "n_gecis_orta", if: { flag: "sofraYedi", equals: true } },
-        { id: "kos3", text: "Run to the transmitter (Deniz cleared the path)", next: "n_gecis_orta", if: { flag: "denizSoruldu", equals: true } },
-        { id: "direncsiz", text: "Resist the number, pass through with your will", next: "n_gecis_irade" },
+        { id: "kos", text: "Sprint to the transmitter", next: "n_gecis_orta", if: { flag: "nevinKurtarildi", equals: true } },
+        { id: "kos2", text: "Sprint to the transmitter (You are counted as family)", next: "n_gecis_orta", if: { flag: "sofraYedi", equals: true } },
+        { id: "kos3", text: "Sprint to the transmitter (Deniz cleared the path)", next: "n_gecis_orta", if: { flag: "denizSoruldu", equals: true } },
+        { id: "direncsiz", text: "Resist the digit, pass with your volition", next: "n_gecis_irade" },
       ],
     },
 
-    /* middle of the passage — risk of being caught based on noise/sanity state */
+    /* mid-passage — risk of capture depending on noise/sanity status */
     n_gecis_orta: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You are right in front of that pile of flesh. Its wet, massive holes turn toward you, the radioactive hum it emits vibrates your internal organs. You are right halfway — One more step, one more step until your lungs burst... The Artifact tries to extract the fear in the deepest part of your soul with tweezers: If you made too much noise, if you ate away at your mind on the upper floors, it will catch you instantly." },
+        { type: "narrate", text: "You are right in front of that mass of flesh[cite: 9]. Its wet, massive holes turn toward you, the radioactive hum it emits vibrating your internal organs[cite: 9]. You are right at the halfway point — One more step, one more step until your lungs burst... The Artifact attempts to pull the fear at the deepest corner of your soul with a tweezer: if you made too much noise, if you ate your wits on the upper decks, it will capture you instantly[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "Fortunately, you managed to maintain your silence until coming here — the Artifact cannot find a crumb of madness to hold onto in your mind, you slip right through its hands. The transmitter panel is right in front of you!", ifStat: { stat: "gurultu", lte: 50 } },
+        { type: "narrate", text: "Fortunately, you managed to preserve your silence until reaching here — the Artifact locates no remnant of madness to cling onto in your mind, you slip through its fingers[cite: 9]. The transmitter panel is right before you[cite: 9]!", ifStat: { stat: "gurultu", lte: 50 } },
       ],
       choices: [
         { id: "ulas", text: "Reach the platform", next: "n_platform_ulas", ifStat: { stat: "gurultu", lte: 50 } },
-        { id: "yakala", text: "Advance (The Artifact feels you)", next: "n_gecis_yakala", ifStat: { stat: "gurultu", gte: 51 } },
+        { id: "yakala", text: "Advance (The Artifact senses you)", next: "n_gecis_yakala", ifStat: { stat: "gurultu", gte: 51 } },
       ],
     },
 
     n_gecis_yakala: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You made too much noise, your breathings awakened that monster! A shadowy, fleshy arm of the Artifact darts out from the rock and wraps around your left wrist! This touch burns your flesh like acid. That awful hum paralyzes your brain, that number turns into a command: STOP AND JOIN US. For a moment all the strength is drained from your legs, you stop. That scream of Selin coming from afar tears your eardrums: «Fight it! Say your own name! Forget the number!»" },
-        { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — Malicious flesh fibers gripped your wrist", noteKind: "alert" },
+        { type: "narrate", text: "You made too much noise, your breaths awakened that monster[cite: 9]! A shadowy, fleshy arm of the Artifact lunges from the rock and wraps around your left ankle[cite: 9]! This touch burns your flesh like acid[cite: 9]. That foul hum paralyzes your brain, that digit converting into an order: STOP AND JOIN US[cite: 9]. For a moment, all power drains from your legs, you stop[cite: 9]. Selin’s scream echoing from afar tears your eardrums: «Fight it! Say your own name! Forget the digit!»[cite: 9]" },
+        { type: "tab", stat: "akil", delta: -12, note: "SANITY -12 — Ominous flesh fibers gripped your ankle", noteKind: "alert" },
         { type: "waitTap" },
       ],
       choices: [
-        { id: "kurtul", text: "Shout your own name, break free", next: "n_gecis_kurtul" },
-        { id: "birak", text: "Do not resist, let yourself go (dangerous)", next: "n_son_derin" },
+        { id: "kurtul", text: "Bellow your own name, break free", next: "n_gecis_kurtul" },
+        { id: "birak", text: "Don't resist, surrender yourself (hazardous)", next: "n_son_derin" },
       ],
     },
 
     n_gecis_kurtul: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You shout your own name until blood comes from your throat! Against the code of that monster, you vomit your own identity onto the wall! For a moment the entire cave freezes, that hum stops like a knife. That fleshy bond melts and unties from your wrist and you throw yourself forward, onto the transmitter platform. Your clothes are covered in that disgusting fluid, panting but it is still you!" },
-        { type: "stat", stat: "gurultu", delta: -15, note: "You tore the flesh by shouting your name — NOISE dropped", noteKind: "system" },
+        { type: "narrate", text: "You bellow your own name until blood comes from your throat[cite: 9]! You vomit your own identity against the wall in defiance of that monster's passcode[cite: 9]! For a moment, the entire cave turns ice cold, that hum freezing like a knife[cite: 9]. That fleshy bond dissolves from your ankle and you hurl yourself forward, onto the transmitter platform[cite: 9]. You are coated in that disgusting fluid, panting, but it is still you[cite: 9]!" },
+        { type: "stat", stat: "gurultu", delta: -15, note: "You tore the flesh by bellowing your name — NOISE dropped", noteKind: "system" },
       ],
       choices: [
         { id: "ulas", text: "Reach the platform", next: "n_platform_ulas" },
@@ -539,8 +543,8 @@ export const EP05 = {
     n_gecis_irade: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You have neither a root to be a shield nor a bond that protects you — you only have your pure survival madness! While that disgusting sound flows into your mind like sewage, you count every step you take with your own name. As it says 'Three', you say 'Me!'. One! Two! Three — No, not its three, YOUR OWN THREE! With bloody sweat leaking from your forehead, leaving half of your brain there, you throw yourself onto the platform." },
-        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — You passed with pure will but your brain took damage", noteKind: "alert" },
+        { type: "narrate", text: "You have no root to serve as cover, nor a bond protecting you — you only possess your pure survival madness[cite: 9]! While that foul voice flows into your mind like a sewer, you count every step you take with your own name[cite: 9]. As it says 'Three,' you say 'Me!'[cite: 9] One! Two! Three — No, not its three, YOUR OWN THREE[cite: 9]! With bloody sweat seeping from your forehead, leaving half your brain behind, you fling yourself onto the platform[cite: 9]." },
+        { type: "stat", stat: "akil", delta: -15, note: "SANITY -15 — You passed through pure volition, but your brain sustained damage", noteKind: "alert" },
       ],
       choices: [
         { id: "verici", text: "Reach the transmitter platform", next: "n_platform_ulas" },
@@ -552,21 +556,21 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You are on the platform. That disgusting mass was left behind, the hot wind it emits licks your back but you are now at the head of the console. Selin leaps out from the rock crevice where she was hiding and collapses next to you, her face pale as chalk: «You made it... My God, you survived that hell!» She shouts panting. «Now the worst part begins.»" },
-        { type: "narrate", text: "This transmitter is a primitive sonar panel made by the deceased excavation team to talk to that monster but failed. But half of the screens are dead — the main line coming from the generator is cut. First you need to give life to this junk: connect the cut cables. Selin holds an old schematic to the light of your tablet with trembling hands: «Fit the cables according to their color codes! Don't you dare connect them wrong, if a spark flies out, the sound it makes will completely awaken that bastard!»" },
-        { type: "objective", text: "Power the transmitter." },
-        { type: "note", id: "not_verici_guc", title: "Transmitter power line", text: "The transmitter console is powerless — I need to reconnect the cut cables according to the color code. A wrong connection creates a spark (noise). Once power comes, we can reverse the Artifact's frequency." },
+        { type: "narrate", text: "You are atop the platform[cite: 9]. That foul mass remains behind you, that warm wind it emits licking your back, but now you are at the console[cite: 9]. Selin lunges out from the rock crevice she was hiding in and collapses beside you, her face white as chalk: «You made it... My God, you came out of that hell alive!»[cite: 9] she screams, panting[cite: 9]. «Now the absolute worst part commences[cite: 9].»" },
+        { type: "narrate", text: "This transmitter is a primitive sonar panel built by the deceased excavation crew to speak with that monster, but they failed[cite: 9]. But half the screens are dead — The main line coming from the generator is severed[cite: 9]. First you need to give life to this junk: connect the severed cables[cite: 9]. Selin holds an old schematic to your tablet light with trembling hands: «Connect the cables according to the color codes! Do not connect them faulty, if a spark flies, the sound it generates will awaken that bastard completely!»[cite: 9]" },
+        { type: "objective", text: "Power up the transmitter." },
+        { type: "note", id: "not_verici_guc", title: "Transmitter Power Line", text: "The transmitter is dead[cite: 9]. The cables are severed, as if someone cut its throat at the final moment so it wouldn't speak to the world[cite: 9]. If I can connect the color codes, we will reverse the Artifact's frequency[cite: 9]. This is no longer a repair; it's a report launched from the bottom of the grave[cite: 9]." },
       ],
       choices: [
-        { id: "bagla", text: "Connect the cut power lines", next: "n_verici_guc", if: { flag: "vericiGuc", equals: false } },
-        { id: "gecdur", text: "Power has arrived — proceed to the sequence", next: "n_verici", if: { flag: "vericiGuc", equals: true } },
+        { id: "bagla", text: "Connect the severed power lines", next: "n_verici_guc", if: { flag: "vericiGuc", equals: false } },
+        { id: "gecdur", text: "Power active — proceed to alignment", next: "n_verici", if: { flag: "vericiGuc", equals: true } },
       ],
     },
 
     n_verici_guc: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You tear open the oily back panel of the console with your nails. Five thick, bare-tipped cut cables await the current to come from the generator. Selin holds the light of your tablet inside the panel, her breath burning your neck: «Be quick... But do not tremble. Every spark will unleash that flesh mass upon us.»" },
+        { type: "narrate", text: "You tear open the greasy, rusted back panel of the console with your fingernails[cite: 9]. Five thick, bare-ended severed cables await the current coming from the generator[cite: 9]. Selin holds your tablet light inside the panel, her breath burning your neck: «Be quick... but do not tremble[cite: 9]. Every spark will unleash that mass of flesh upon us[cite: 9].»" },
       ],
       interaction: {
         kind: "wires",
@@ -586,7 +590,7 @@ export const EP05 = {
           { id: "vp5", label: "V" },
         ],
         pairs: { w_ana: "vp1", w_sonar: "vp4", w_amp: "vp2", w_faz: "vp5", w_top: "vp3" },
-        penalty: { gurultu: 14, akil: -5, text: "SPARK — Metal collided, the Artifact flinched! NOISE +14" },
+        penalty: { gurultu: 14, text: "SPARK — Metal clashed, the Artifact startled. NOISE +14" },
         success: "n_verici_guc_ok",
         cancel: "n_platform_ulas",
       },
@@ -596,12 +600,12 @@ export const EP05 = {
       cost: 1,
       events: [
         { type: "system", text: "TRANSMITTER: POWER ACTIVE" },
-        { type: "narrate", text: "The moment you lock the last cable into its slot, the console comes alive like a wild beast — Screens awaken vomiting green static, the massive sonar dish overhead begins to turn with a rusty groan. The Artifact feels this metal current instantly: That voice in your ears sharpens, the number forces your skull with anger: «...THREE... WHAT THE FUCK ARE YOU DOING... THREE...» Selin collapses onto the keys: «Electricity is here! Now we will enter that damn password, quick!»" },
+        { type: "narrate", text: "The instant you lock the final cable into its port, the console awakens like a wild animal — The screens awaken vomiting green static, the giant sonar dish above rotating with a rusted groan[cite: 9]. The Artifact senses this metallic current instantly: The voice inside your ears sharpens, the digit forcing your skull with rage: «...THREE... WHAT THE HELL ARE YOU DOING... THREE...»[cite: 9] Selin collapses onto the buttons: «Electricity is up! Now we input that damned passcode, quick!»[cite: 9]" },
         { type: "flag", set: { vericiGuc: true } },
-        { type: "stat", stat: "gurultu", delta: 10, note: "The sonar dish is turning — NOISE increased", noteKind: "alert" },
+        { type: "stat", stat: "gurultu", delta: 10, note: "The sonar dish is rotating — NOISE increased", noteKind: "alert" },
       ],
       choices: [
-        { id: "dizilim", text: "Proceed to the symbol sequence", next: "n_verici" },
+        { id: "dizilim", text: "Proceed to symbol sequence alignment", next: "n_verici" },
       ],
     },
 
@@ -611,52 +615,52 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "This rusty sonar console now glistens before you like a death bill. There are two deadly stages: First you will vomit that symbol sequence we decoded from those malicious carvings on the wall onto the panel, then you will lock the radio onto the exact opposite of that 432 hertz monster frequency." },
-        { type: "narrate", text: "Selin is leaning over the console, foam leaking from her mouth: «I am reading the sequence, you will press those damn buttons! The order is this: Triangle-eye, Curve, Four-notch, and Wave... This means 'DIE' in that bastard's language! Tell me you are ready!»" },
+        { type: "narrate", text: "The rusted sonar console stands before you like a death bill, gleaming[cite: 9]. There are two phases: first you will input the language the Artifact carved onto the stones into the panel, then you will lock its 432 hertz pulse into reverse[cite: 9]. Like breaking a ritual with technology[cite: 9]. Or forcing the device of the corporation to confess the crime it hid for years[cite: 9]." },
+        { type: "narrate", text: "Selin is leaning over the console, froth seeping from her mouth: «I am reading the sequence, you will hit those damned buttons! The order is this: Triangle-eye, Curl, Four-notch, and Wave... This means 'PERISH' in its foul tongue! Tell me you are ready!»[cite: 9]" },
         { type: "waitTap" },
       ],
       choices: [
-        { id: "sembol", text: "Enter the symbol sequence (Selin is reading)", next: "n_verici_sembol" },
+        { id: "sembol", text: "Input the symbol sequence (Selin is reading)", next: "n_verici_sembol" },
       ],
     },
 
     n_verici_sembol: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Eight decayed buttons on top of the console... Each has those maddening carvings on it. Selin shouts behind you as loud as she can. If you press a single button wrong, the Artifact will turn it back as a lobotomy attack to be made to your brain." },
+        { type: "narrate", text: "Eight decayed keys atop the console... Each bears those maddening carvings[cite: 9]. Selin screams behind you with all her might[cite: 9]. If you strike a single key faulty, the Artifact will repel it as a lobotomy attack executed upon your brain[cite: 9]." },
       ],
       interaction: {
         kind: "symbols",
-        title: "LANGUAGE OF THE ARTIFACT — ENTER THE 'SILENCE' SEQUENCE",
+        title: "LANGUAGE OF THE ARTIFACT — INPUT THE 'SILENCE' SEQUENCE",
         glyphs: ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8"],
-        sequence: ["g5", "g4", "g6", "g7"],
+        sequence: ["g5", "g4", "g6", "g7", "g2", "g8"],
         success: "n_sembol_ok",
         cancel: "n_verici",
-        penalty: { akil: -15, gurultu: 10, text: "WRONG BUTTON — Lightning flashed in your brain! SANITY -15" },
+        penalty: { gurultu: 10, text: "WRONG KEY — The console beeped like a shriek. NOISE +10" },
       },
     },
 
-    /* The Artifact resists when the sequence is entered — moment of tension */
+    /* The Artifact resists when the sequence is input — moment of tension */
     n_sembol_ok: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The moment you press the last symbol, the console swallows the password — And the Artifact FEELS its flesh being cut! The entire cave shakes as if an earthquake is happening; stones, filth rain from the ceiling onto your head, projector lamps burst like crazy. That hum is no longer a mother's voice, it is a monster scream bringing blood from your ears: «NO— FAMILY— DO NOT LEAVE US— LET THE COUNTING NOT STOP—»" },
-        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — The monster is scratching your brain", noteKind: "alert" },
+        { type: "narrate", text: "The moment you press the final symbol, the console swallows the passcode — And the Artifact FEELS its flesh being cut[cite: 9]! The entire cave shudders as if an earthquake is striking; rocks and filth rain down on your head from the ceiling, the projector lamps shattering wildly[cite: 9]. That hum is no longer a mother's voice, it's a savage monster howl bringing blood from your ears: «NO— FAMILY— DO NOT LEAVE US— DO NOT LET THE COUNTING STOP—»[cite: 9]" },
+        { type: "stat", stat: "akil", delta: -10, note: "SANITY -10 — The monster is clawing at your brain", noteKind: "alert" },
         { type: "waitTap" },
-        { type: "ambient", text: "Just at that time, from the sonar line, that raspy, tearful voice of Ece explodes from the radio: «I am holding it! I am pressing a reverse signal from the sonar network and suppressing its brain, becoming a shield for you — But my head is about to explode, I can't hold out! Adjust the frequency, FINISH THIS JOB!»", if: { flag: "eceEleVerildi", equals: false } },
-        { type: "ambient", text: "Ece is gone... You had sold her out like bait upstairs. Protective reverse signal support does not come! That massive mental weight of the Artifact collapses directly inside your skull, your brain is weeping blood, you have to endure alone!", if: { flag: "eceEleVerildi", equals: true } },
-        { type: "narrate", text: "Selin grabs you by your collar and shakes you like crazy, blood leaking from her eyes: «Don't fall apart! Do not lose your consciousness! The last move — adjust the damn radio! Hit that bastard!»" },
+        { type: "ambient", text: "Right then, out from the sonar line, Ece’s rasping, tearful voice detonates over the radio: «I am holding it! I am pumping a reverse signal from the sonar array and depressing its brain, becoming a shield for you — But my head is ready to explode, I can't hold out! Adjust the frequency, FINISH THIS!»", if: { flag: "eceEleVerildi", equals: false } },
+        { type: "ambient", text: "Ece is gone... You sold her out like a bait on the upper floors[cite: 9]. No protective reverse signal assistance arrives! That massive mental weight of the Artifact collapses directly inside your skull, your brain weeping blood, you must endure alone!", if: { flag: "eceEleVerildi", equals: true } },
+        { type: "narrate", text: "Selin grabs you by the collar, shaking you wildly, blood seeping from her eyes: «Don't disintegrate! Don't lose consciousness! The final move — adjust the damned radio! Strike that bastard!»[cite: 9]" },
       ],
       choices: [
-        { id: "frekans", text: "Proceed to the radio frequency", next: "n_verici_frekans" },
+        { id: "frekans", text: "Proceed to the radio frequency adjustments", next: "n_verici_frekans" },
       ],
     },
 
     n_verici_frekans: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The symbols panel flashes red red, the console trembles as if about to explode. Now that final blow: you will bring the dial of the radio to the anti-frequency that will break the 432 hertz death wave of the Artifact. Selin shouts: «Pull it to 433.6! I calculated it, this will collapse that flesh mass! But you have a single chance, if you miss, that wave will turn us to ashes!»" },
-        { type: "narrate", text: "But you had listened to those secret dead broadcasts... Your ear recognizes the rhythm of that static. There is a mistake where Selin said 433.6 in that panic; your instinct, that half-maddened brain of yours tells you that the dial should sit at 433.8. Who will you trust? Your own madness, or Selin?", if: { flag: "frekanslariDuydun", equals: true } },
+        { type: "narrate", text: "The symbols panel flashes red, the console trembling as if ready to explode[cite: 9]. Now for the final blow: you will tune the radio dial to the anti-frequency that will break the Artifact’s 432 hertz death wave[cite: 9]. Selin screams: «Pull it to 433.6! I calculated it, this will collapse that mass of flesh! But you have a single shot, if you miss, that wave will turn us to ash!»[cite: 9]" },
+        { type: "narrate", text: "Yet you listened to those hidden dead broadcasts... Your ear recognizes the rhythm of that static[cite: 9]. You realize that horrific truth Selin is unaware of: There is an error in her panic-driven 433.6; your instinct, your half-mad brain tells you the dial must seat onto 433.8[cite: 9]. Who will you trust[cite: 9]? Your own madness, or Selin[cite: 9]?", if: { flag: "frekanslariDuydun", equals: true } },
       ],
       interaction: {
         kind: "radio",
@@ -667,17 +671,17 @@ export const EP05 = {
       },
     },
 
-    /* ================= MOMENT OF SILENCING — ENDING BRANCHING ================= */
+    /* ================= SILENCING MOMENT — END DIVERGENCE ================= */
 
-    /* ================= CONFRONTATION WITH THE ARTIFACT ================= */
+    /* ================= CONFRONTING THE ARTIFACT ================= */
     n_buluntu_yuz: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "Everything is ready, your finger is on that death button. But before pulling the trigger, one last time... You look at that disgusting pile of flesh. With its open holes, it looks directly into your soul. And beneath that maddening number, for the first time you feel another sensation: a wild, ancient loneliness. A creature left all alone in this dark sewer for millions of years... Could its hunting of humans and making them a mass of flesh be not a massacre, but a disgusting scream thrown not to be left alone? It just wants a family." },
+        { type: "narrate", text: "Everything is ready, your finger rests atop the death button[cite: 9]. Before pulling the trigger, you look at it one final time[cite: 9]. It looks at you from its holes, or so you think[cite: 9]. Beneath the digit, for the first time, you hear something else: isolation[cite: 9]. An ancient, ravenous isolation that insults human logic[cite: 9]. The terrifying thought is this: Perhaps it doesn't destroy humans[cite: 9]. Perhaps it adds them to itself just to avoid being alone[cite: 9]. An entity that doesn't know the difference between a massacre and a family[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "Selin digs her nails into your shoulder and shakes you: «I know what you are thinking... Do not pity that filth! That is not mercy, it is the last bullet it fires into your brain! It is trying to drag you inside that hive too! Make your decision, seconds are left until zero!»" },
-        { type: "narrate", text: "You had decoded the monster's language upstairs... And at that moment lightning flashes in your brain: 'Three' is not a countdown! It is a victim list! It called out three times until today and swallowed three souls: Baturay, Deniz, Nevin. You are the first living piece of flesh that refuses to be the fourth wall of that hive.", if: { flag: "frekanslariDuydun", equals: true } },
+        { type: "narrate", text: "Selin digs her fingernails into your shoulder, shaking you: «I know what you are thinking... Don't show pity to that filth! That isn't mercy, it's the final bullet it's firing into your brain! It's trying to drag you into that hive too! Make your decision, seconds remain until zero!»[cite: 9]" },
+        { type: "narrate", text: "You had deciphered that monster's language upstairs... And at that moment, lightning strikes your brain: 'Three' is not a countdown[cite: 9]! It's a victim list[cite: 9]! It called out three times until today and devoured three souls: Baturay, Deniz, Nevin[cite: 9]. You are the first piece of live flesh that refuses to become the fourth wall of that hive[cite: 9].", if: { flag: "frekanslariDuydun", equals: true } },
         { type: "objective", text: "Fire the frequency." },
       ],
       choices: [
@@ -689,136 +693,136 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "You close your eyes and press the trigger! The console fires that anti-frequency with a wild scream! The entire cave splits in two as if; those ancient walls crack, the last remaining lamps explode like bombs. That hypnotic voice of the Artifact changes for the first time — That calm number replaces itself with the howling of a dying wild animal: «THREEE— THREEE— NOOO—»" },
+        { type: "narrate", text: "Closing your eyes, you pull the trigger[cite: 9]! The console hurls that anti-frequency with a wild shriek[cite: 9]! The entire cave seems split in two; those ancient walls crack, the remaining final lamps exploding like bombs[cite: 9]. That hypnotic voice of the Artifact alters for the first time — That calm digit yields to a savage animal howl experiencing death throes: «TTHHHRREEEEE— TTHHHRREEEEE— NOOOO— FAMILY— DO NOT LEAVE US— DO NOT LET THE COUNTING STOP—»[cite: 9]" },
         { type: "stat", stat: "akil", delta: -10 },
         { type: "waitTap" },
-        { type: "narrate", text: "«It's dying! It's in its death throes!» shouts Selin, wiping the blood flowing from her ears. «But the frequency is not enough, it doesn't completely die! We have to make a final decision, now!» While that last radiation wave emitted by that creature while dying flickers the screen of your tablet, those awful paths before you emerge." },
-        { type: "objective", text: "Make the final choice." },
+        { type: "narrate", text: "«It's dying! It's in agony!» Selin screams, wiping the blood leaking from her ears[cite: 9]. «But the frequency isn't enough, it's not dying completely! We must make a final decision, now!» As that final radiation wave emitted by the creature while dying trembles your tablet screen, those foul paths before you manifest[cite: 9]." },
+        { type: "objective", text: "Make your final choice." },
       ],
       choices: [
-        { id: "yuzey", text: "Lock the frequency, escape to the surface with Selin", next: "n_veda_selin", if: { flag: "eceEleVerildi", equals: false } },
-        { id: "feda", text: "Overload the transmitter — completely destroy the Artifact (sacrifice yourself)", next: "n_son_sessizlik" },
-        { id: "katil", text: "Stop resisting — join the number, choose peace", next: "n_son_derin" },
-        { id: "kayit", text: "Raise the tablet, record everything (document)", next: "n_son_kayit" },
-        { id: "yuzey_zor", text: "Try to escape with Selin (No Ece support)", next: "n_son_sifir", if: { flag: "eceEleVerildi", equals: true } },
+        { id: "yuzey", text: "Lock the frequency, flee to the surface with Selin", next: "n_veda_selin", if: { flag: "eceEleVerildi", equals: false } },
+        { id: "feda", text: "Overload the transmitter — eliminate the Artifact completely (sacrifice yourself)", next: "n_son_sessizlik" },
+        { id: "katil", text: "Cease resisting — join the digit, choose serenity", next: "n_son_derin" },
+        { id: "kayit", text: "Hoist the tablet, record everything (document it)", next: "n_son_kayit" },
+        { id: "yuzey_zor", text: "Attempt to flee with Selin (No assistance from Ece)", next: "n_son_sifir", if: { flag: "eceEleVerildi", equals: true } },
       ],
     },
 
-    /* ===== FAREWELL — LAST MOMENT BEFORE ESCAPE TO SURFACE ===== */
+    /* ===== FAREWELL — THE FINAL MOMENT BEFORE ESCAPING TO THE SURFACE ===== */
     n_veda_selin: {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The frequency gets locked, that flesh mass of the Artifact groans by shrinking into itself. Selin grips your hand but before leaving, one last time to the back... She looks at those three fresh graves in that sanctuary. «We left them inside that flesh...» she says, her throat raspy. «Baturay... That tiny toddler... Nevin... We couldn't save them.»" },
+        { type: "narrate", text: "The frequency locks, that mass of flesh groaning as it contracts into itself[cite: 9]. Selin grips your hand, but before leaving, she looks back at those three fresh graves inside the vault one final time[cite: 9]. «We left them inside that flesh...» she says, her throat rasping[cite: 9]. «Baturay... That tiny toddler... Nevin... We couldn't rescue them[cite: 9].»" },
         { type: "waitTap" },
-        { type: "ambient", text: "Right at that moment, those veiny roots of Nevin that you saved move with a last ditch effort, not to attack you, but by extending from the base of Selin's feet upward, toward those dark stairs, constructing a fleshy escape path for you. You didn't leave them behind; they are carrying you upward.", if: { flag: "nevinKurtarildi", equals: true } },
-        { type: "narrate", text: "«But you are here...» says Selin, wiping the bloody tears in her eyes and looking at you. «And me. Two living humans. In this damn hole, this is a miracle... Run! Run for their memory!» Those rusty stairs going upward beyond the sanctuary are the only exit door under the fading light of your tablet." },
+        { type: "ambient", text: "That exact moment, those veiny roots of Nevin you saved stir with a final effort, not to strike you, but extending from beside Selin’s feet upward, toward those dark stairs to build a fleshy escape path for you[cite: 9]. You didn't leave them behind; they are carrying you upward[cite: 9].", if: { flag: "nevinKurtarildi", equals: true } },
+        { type: "narrate", text: "«But you are here...» Selin says, wiping the bloody tears from her eyes to look at you[cite: 9]. «And I[cite: 9]. Two living humans[cite: 9]. Inside this damned hole, this is a miracle... Sprint[cite: 9]! Sprint for their memory!» Beyond the vault, those rusted stairs climbing upward are the single exit hatch beneath the dimming light of your tablet[cite: 9]." },
       ],
       choices: [
-        { id: "kac", text: "Run upward, to the surface with Selin", next: "n_son_yuzey" },
+        { id: "kac", text: "Sprint upward to the surface with Selin", next: "n_son_yuzey" },
       ],
     },
 
-    /* ===== ENDING 1: SURFACE (best) ===== */
+    /* ===== ENDING 1: SURFACE (THE BEST) ===== */
     n_son_yuzey: {
       events: [
-        { type: "narrate", text: "You completely lock the frequency. That maddening hum of the Artifact lowers like a dying furnace, rasps... And ends. For the first time, for eleven long months for the first time, this damn station sinks into COMPLETE silence. There are only your breathings." },
+        { type: "narrate", text: "You lock the frequency entirely[cite: 9]. The hum of the Artifact lowers first, then rasps, then terminates[cite: 9]. For the first time, the station is silent[cite: 9]. This wasn't real silence; this is a crime machine finally falling unregistered[cite: 9]. Only your breaths remain[cite: 9]. The tiny, irregular, imperfect sounds generated by two living humans[cite: 9]. No protocol can sanitize this sound[cite: 9]." },
         { type: "waitTap" },
-        { type: "ambient", text: "The sound of Ece crying with sobs comes from the sonar line through the radio: «It stopped... That son of a bitch went quiet. The workers on the upper floors are waking up... That redness in their eyes is going away. You did it... My God, you did it!»" },
-        { type: "narrate", text: "Selin holds your hand tightly: «The escape pod is on the K-1 command floor! While the station is quiet, all electronic locks are open! RUN!» Together you climb upward, toward those pitch-black floors. In your hand is only that weak light of the tablet... Six floors. Five floors. Four floors." },
+        { type: "ambient", text: "Ece’s sobbing voice emerges from the sonar line: «It stopped... That piece of garbage went silent[cite: 9]. The workers on the upper decks are waking up... That redness in their eyes is dissolving[cite: 9]. You made it... My God, you made it!»" },
+        { type: "narrate", text: "Selin squeezes your hand tightly: «The escape pod is on the K-1 command floor[cite: 9]! While the station is silent, all electronic locks are open[cite: 9]! SPRINT!» Together you climb upward toward those pitch-black decks[cite: 9]. In your hand is only that weak tablet light... Six floors[cite: 9]. Five floors[cite: 9]. Four floors[cite: 9]." },
       ],
       interaction: {
         kind: "chase",
         title: "K-1 ESCAPE ROUTE — THE FINAL RUN",
-        enemy: "COLLAPSING STATION AND THE ARTIFACT",
+        enemy: "THE COLLAPSING STATION AND THE ARTIFACT",
         success: "n_son_yuzey_basari",
         fail: "n_olum_kacis",
         startDanger: 45,
         phaseMs: 1100,
         hints: {
-          patrol: "The station is groaning, the ceiling is collapsing! Accelerate toward the pod!",
-          search: "Water is flooding in, and roots are blocking the way. Hide and brace yourself!",
-          near: "A massive mound of flesh rises in the darkness. Do not move, hold your breath!"
+          patrol: "The station is groaning, the ceiling collapsing! Accelerate toward the pod![cite: 9]",
+          search: "Water is flooding the surroundings and roots block the path. Hide while protecting yourself![cite: 9]",
+          near: "A massive mass of flesh rises in the dark. Don't move, hold your breath![cite: 9]"
         }
       }
     },
 
     n_olum_kacis: {
       death: true,
-      deathText: "Just as you reached the door of the escape pod, the ceiling collapsed with a massive rumble, and the Artifact's final extensions dragged you down to the bottom of the cold ocean.",
+      deathText: "Just as you reached the door of the escape pod, the ceiling collapsed with a massive roar, and the final extensions of the Artifact dragged you to the bottom of the darkness, into that cold ocean[cite: 9].",
       events: [{ type: "glitch", ms: 1000 }]
     },
 
     n_son_yuzey_basari: {
       ending: true,
       events: [
-        { type: "narrate", text: "When you look back through the thick glass of the escape pod, PERISHED shrinks like a dead fish at the bottom of that dark sea. Selin is panting in the seat next to you, both crying and laughing. Ece's static voice comes from the radio: «See you on the surface, in the fresh air...» Above your head, hundreds of meters above, is a real sky, real stars. And inside your brain, no monster counts anymore." },
+        { type: "narrate", text: "Looking back from the thick glass of the escape pod, PERISHED shrinks like a dead fish at the bottom of that dark sea[cite: 9]. Selin sits in the seat beside you, panting, both weeping and laughing[cite: 9]. Ece’s static voice comes over the radio: «See you on the surface, in the clean air...» Above your head, hundreds of meters up, is a real sky, real stars[cite: 9]. And inside your brain, no monster counts anymore[cite: 9]." },
         { type: "waitTap" },
-        { type: "ambient", text: "Right as the pod is about to launch to the sea surface, something massive crashes onto the thick steel hull from the outside. Once. Then at regular intervals: Three hits. Just like in that torn diary of Baturay... But this sound does not come from WITHIN. It strikes from the OUTSIDE, from the very bottom of that dark ocean. You silenced the Artifact; but that massive thing that fed that flesh mass there for all these years, striking that hull, is still there... And now there is no one left to feed it. That thing is hungry." },
-        { type: "system", text: "— ENDING: SURFACE —" },
-        { type: "system", text: "The Artifact went quiet. You escaped together with Selin and Ece. You survived — and brought the truth to the surface." },
-        { type: "system", text: "But there is still something striking at the bottom of PERISHED. And someone, reading the evidence you sent, will decide to descend down there." },
+        { type: "ambient", text: "Just as the pod is about to launch to the sea surface, something massive strikes the thick steel hull from the outside[cite: 9]. Once[cite: 9]. Then at regular intervals: Three impacts[cite: 9]. Just like inside Baturay’s torn journal... But this sound doesn't originate from WITHIN[cite: 9]. It strikes from OUTSIDE, from the absolute bottom of that dark ocean[cite: 9]. You silenced the Artifact; but that massive thing that struck the hull, that fed that mass of flesh for all these years, is still out there... And now there is no one left to feed it[cite: 9]. That thing is hungry[cite: 9]." },
+        { type: "system", text: "— ENDING: SURFACE —[cite: 9]" },
+        { type: "system", text: "The Artifact went silent[cite: 9]. You escaped along with Selin and Ece[cite: 9]. You survived — and brought the truth to the surface[cite: 9]." },
+        { type: "system", text: "But something is still striking at the bottom of PERISHED[cite: 9]. And someone, reading the evidence you dispatched, will decide to descend down there[cite: 9]." },
         { type: "system", text: "PERISHED · THANK YOU" },
       ]
     },
 
-    /* ===== ENDING 2: SILENCE (sacrifice) ===== */
+    /* ===== ENDING 2: SILENCE (SACRIFICE) ===== */
     n_son_sessizlik: {
       ending: true,
       events: [
-        { type: "narrate", text: "You break the dial of the radio all the way to the last stage — Transformers inside the console explode, sparks erupt into your face. Selin screams: «No! If you overload that much current, that frequency will melt your brain too—» But you don't withdraw your hand from the button. Taking all the poison of that creature, you vomit it back to it at the cost of your own life!" },
+        { type: "narrate", text: "You turn the radio dial all the way to the final stage — The transformers inside the console detonate, sparks venting into your face[cite: 9]. Selin screams: «No! If you overload that much current, that frequency will melt your brain too—» But you don't withdraw your hand from the button[cite: 9]. You take all the poison of that creature and vomit it back at it at the cost of your own life[cite: 9]!" },
         { type: "waitTap" },
-        { type: "narrate", text: "The entire cave gets covered with a blinding white light. That bitter cry of the Artifact and the scream rising from your throat unite in the same frequency and burn the air. You destroy it down to its cells — But that massive energy explosion nails your body to the rock too. The last thing you feel is Selin dragging you toward the door to save you but you pushing her away: «Go... Save yourself...»" },
+        { type: "narrate", text: "The entire cave gets blanketed by a blinding white light[cite: 9]. That sharp wail of the Artifact and the scream ascending from your throat merge at the exact same frequency, burning the air[cite: 9]. You eliminate it down to its cells — But that massive energy blast nails your body to the rock as well[cite: 9]. The final thing you feel is Selin pulling you toward the hatch to save you, but you shove her away: «Go... Save yourself...»[cite: 9]" },
         { type: "waitTap" },
-        { type: "ambient", text: "Selin barely throws herself out and the thick steel hatch closes between you. You remain right at the center of that white hell. While that flesh mass turns to ashes, it leaves a final gift to your mind: Now there is neither static in your ears nor those damn numbers... Just a absolute, clean silence. And this silence is yours forever." },
-        { type: "narrate", text: "Selin will go up to the surface alone. The station was saved. No one downstairs will know the name of that technician who choked that monster with their own life... But that night, everyone on the surface woke up from their sleep with a strange lightness in their chest. As if someone had carried that heavy curse in their place and became a sacrifice." },
-        { type: "system", text: "— ENDING: SILENCE —" },
-        { type: "system", text: "You destroyed the Artifact. By sacrificing yourself, you saved the station — maybe the world. Selin escaped and will tell the truth." },
+        { type: "ambient", text: "Selin barely flings herself outside, and the thick steel hatch closes between you[cite: 9]. You remain right in the center of that white hell[cite: 9]. As that mass of flesh turns to ash, it leaves a final gift to your mind: No more static in your ears, nor those damned numbers... Only an absolute, clean silence[cite: 9]. And this silence is yours forever[cite: 9]." },
+        { type: "narrate", text: "Selin will ascend to the surface alone[cite: 9]. The station is saved[cite: 9]. No one down below will know the name of the technician who silenced the frequency with their own body[cite: 9]. This is the kind of ending corporations love: an anonymous sacrifice, a clean report, a missing log[cite: 9]. But that night, everyone on the surface woke up with a strange lightness in their chests[cite: 9]. Without knowing someone carried and silenced that heavy digit in their stead[cite: 9]." },
+        { type: "system", text: "— ENDING: SILENCE —[cite: 9]" },
+        { type: "system", text: "You destroyed the Artifact[cite: 9]. By sacrificing yourself, you saved the station — perhaps the world[cite: 9]. Selin escaped and will tell the truth[cite: 9]." },
         { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
-    /* ===== ENDING 3: DEEP (darkness) ===== */
+    /* ===== ENDING 3: DEEP (DARKNESS) ===== */
     n_son_derin: {
       ending: true,
       events: [
-        { type: "narrate", text: "Now you don't have even a single cell left to resist. This claustrophobic nightmare that lasted eleven months, six floors of corpse piles, and endless deaths... And that deceptive voice of the Artifact inside your brain is so soft, so warm: «Three... Leave that tablet of yours... Three... There is no pain here... Everyone is here, waiting for you...» You slowly withdraw your clenched fingers from the console." },
+        { type: "narrate", text: "You don't have a single cell left to resist anymore[cite: 9]. Across six floors, everything prepared you for a place: to be personnel, to be a child, to be a specimen, to be a log[cite: 9]. The voice of the Artifact is soft and warm: «Three... Abandon your tablet... There is no pain here... Everyone is here, awaiting you...» Your contracted fingers withdraw from the console[cite: 9]. Surrendering feels less like cowardice, and more like returning home[cite: 9]. That is exactly why it is terrifying[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "«What are you doing?! Come to yourself, press that button!» That terror-filled scream of Selin gets further away inside your brain, melts... While that warm wave emitting from that fleshy mass covers your soul, for the first time you don't resist, you leave yourself to that wet current. And that fake peace... My God, it is so beautiful. Aykut is smiling there. Nevin is there. Baturay, little Deniz... All holding hands. Family." },
-        { type: "narrate", text: "Selin looks behind her and escapes to the surface alone in terror, leaving behind one more victim swallowed by that hive. You became a cell of that flesh mass now. You have no name of your own, no consciousness of your own; you are now 'Us'. And We count patiently in that darkness... Forever. Waiting for a new piece of flesh from above to descend six floors down with a tablet in hand and find us." },
-        { type: "ambient", text: "«...Three... Two... Three... Two... Our sibling has arrived... Welcome...»" },
-        { type: "system", text: "— ENDING: DEEP —" },
-        { type: "system", text: "You joined the Artifact. The pain ended. You are now of the Family too — and you await the next 'child'." },
+        { type: "narrate", text: "«What are you doing?! Snap out of it, hit that button!» Selin’s terror-packed scream grows distant inside your brain, melting away... As that warm wave emitted from that fleshy mass wraps your soul, you don't resist for the first time, abandoning yourself to that wet current[cite: 9]. And that fraudulent peace... My God, it is so beautiful[cite: 9]. Aykut is smiling out there[cite: 9]. Nevin is there[cite: 9]. Baturay, little Deniz... All of them holding hands[cite: 9]. Family[cite: 7, 9]." },
+        { type: "narrate", text: "Selin looks back and flees to the surface alone in sheer terror, leaving behind another victim swallowed by that hive[cite: 9]. You've become a cell of that mass of flesh now[cite: 9]. You have no name of your own, no consciousness of your own; you are now 'We.'[cite: 9] And We count patiently in that dark... forever[cite: 9]. Waiting for another piece of fresh meat from above to descend six floors down with a tablet in hand and find us[cite: 9]." },
+        { type: "ambient", text: "«...Three... Two... Three... Two... Our brother arrived... Welcome...»[cite: 9]" },
+        { type: "system", text: "— ENDING: DEEP —[cite: 9]" },
+        { type: "system", text: "You joined the Artifact[cite: 9]. The pain ended[cite: 9]. You are now of the Family as well — and you await the next 'child.'[cite: 9]" },
         { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
-    /* ===== ENDING 4: RECORD (documentation) ===== */
+    /* ===== ENDING 4: RECORD (DOCUMENTATION) ===== */
     n_son_kayit: {
       ending: true,
       events: [
-        { type: "narrate", text: "Instead of silencing that monster, you raise your tablet in the air with your trembling hands. It has no camera, yes; but you engrave all those malicious sound frequencies emitted by that monster, radioactive waves, the digital map of the carvings — everything into the memory of that small tablet. That last word of Baturay is in your mind: 'Document everything.' The world must see this filth! Everyone rotting in this sewer must have a proof!" },
+        { type: "narrate", text: "Instead of silencing that monster, you hoist your tablet into the air with trembling hands[cite: 9]. It lacks a camera, yes; but you engrave all those foul voice frequencies emitted by that monster, the radioactive waves, the digital map of the carvings — everything into the memory of that small tablet[cite: 9]. Baturay’s final word is in your mind: 'Document everything.'[cite: 9] If they find your corpse, they won't think you were clever[cite: 9]. It doesn't matter[cite: 9]. Evidence outlives intellect[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "«What the fuck are you doing?! Leave that damn device, the countdown is ending, WE NEED TO ESCAPE!» tears herself apart Selin. But hitting your fingers against the screen, you do not stop the recording. The Artifact is in its death throes but it didn't die, the countdown continues at full speed inside your brain. «Two» says that voice. Then «One»." },
-        { type: "narrate", text: "Selin looks at you one last time mixed with terror and pain and darts toward the stairs with that data copy she took from the tablet. She escapes, with that evidence in hand that will shake the world. You remain here, in front of that flesh. While the Artifact whispers that last number, the memory of your tablet fills up and hurls the data upward. When Selin walks out that door, the world will learn about this hell... Thanks to you." },
-        { type: "ambient", text: "In the reflection of the fading screen light of your tablet, you see your own face: completely calm. Like Baturay. Like a true witness who has finished their duty. And that fleshy hole inside your brain whispers one last time: «...Zero.»" },
-        { type: "system", text: "— ENDING: RECORD —" },
-        { type: "system", text: "You didn't escape — you chose to document. You died, but Selin brought the evidence to the surface. The truth can no longer be hidden. Baturay would be proud." },
+        { type: "narrate", text: "«What the hell are you doing?! Drop that damned device, the countdown is ending, WE NEED TO FLEE!» Selin screams frantically[cite: 9]. But you don't stop the logging by tapping the screen[cite: 9]. The Artifact is in agony, but it hasn't died; the countdown continues at full speed inside your brain[cite: 9]. «Two» says that voice[cite: 9]. Then «One»[cite: 9]." },
+        { type: "narrate", text: "Selin gives you a final look mixed with terror and agony and dashes toward the stairs with that data copy she pulled from the tablet[cite: 9]. She is fleeing, with that world-shaking evidence in her hand[cite: 9]. You remain here, before that flesh[cite: 9]. While the Artifact whispers that final digit, your tablet's memory fills up and launches the data upward[cite: 9]. When Selin exits that door, the world will learn of this hell... Thanks to you[cite: 9]." },
+        { type: "ambient", text: "In the reflection of your dimming tablet monitor, you see your own face: Completely calm[cite: 9]. Like Baturay[cite: 9]. Like a true whistleblower who completed their duty[cite: 9]. Whoever listens to this, do not turn my name into something sacred[cite: 9]. Don't call this heroism[cite: 9]. Call this the final log of the people the corporation buried[cite: 9]. And that fleshy hole inside your brain whispers one final time: «...Zero.»[cite: 9]" },
+        { type: "system", text: "— ENDING: RECORD —[cite: 9]" },
+        { type: "system", text: "You didn't flee — you chose to document[cite: 9]. You died, but Selin brought the evidence to the surface[cite: 9]. The truth can no longer be hidden[cite: 9]. Baturay would be proud[cite: 9]." },
         { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },
 
-    /* ===== ENDING 5: ZERO (failure — if no Ece) ===== */
+    /* ===== ENDING 5: ZERO (FAILURE — IF NO ECE) ===== */
     n_son_sifir: {
       ending: true,
       events: [
-        { type: "narrate", text: "Together with Selin, you dash like crazy toward those rusty stairs — But Ece is not there! The sonar line has sunk into a pitch-black silence; there is no mind behind that knows which corridor is open, what the code of which door is, where the safe route is. You had fed Ece to those madmen as bait on floor K-5 and now right at the life-and-death struggle, you were left without a guide." },
+        { type: "narrate", text: "You dash like crazy along with Selin toward those rusted stairs — But Ece is gone[cite: 9]! The sonar line has sunk into a pitch silence; there is no mind left behind to know which corridor is open, what the code to which door is, or where the safe path rests[cite: 9]. You had fed Ece as bait to those madmen on the K-5 floor, and now you are left completely without a guide right in the center of the flesh-market[cite: 9]." },
         { type: "waitTap" },
-        { type: "narrate", text: "Under the fading light of your tablet, you turn into a wrong corridor. Before you stands a massive, hydraulically locked steel door... It doesn't open! You desperately turn back but that flesh mass in the back roars «Two» inside your brain now! The vibration is so strong that warm blood leaks from your ears and your nose, because you couldn't silence it. Selin pounds the handle of the door: «There must be a way... There must be a way—» But no. This place is closed." },
-        { type: "narrate", text: "«One...» whispers that malicious flesh mass. The entire station, all the steel structures on the walls come alive and hum. On the upper floors, all that zombie crew sleeping in their beds open their eyes wide at the same second — They all stand up at once. «Zero...»" },
-        { type: "ambient", text: "And at that moment, that sound stops. Because there is no foreign power left to count inside your brain anymore. Everyone — You, Selin next to you, the workers whose flesh is melting upstairs, and perhaps all that innocent surface at the end of the radio... You are now a single piece of flesh. A single massive hive. A single infinite, calm, completely emptied dead mind." },
-        { type: "system", text: "— ENDING: ZERO —" },
-        { type: "system", text: "You couldn't fully silence the Artifact and you couldn't find the escape path without Ece. The countdown reached zero. The Family now encompasses everyone. Perhaps the surface too." },
+        { type: "narrate", text: "Under the dimming light of your tablet, you turn into the wrong corridor[cite: 9]. Before you looms a massive steel door with a thick, hydraulic lock... It won't open[cite: 9]! You turn back in despair, but that mass of flesh behind is now bellowing «Two» inside your brain[cite: 9]! The vibration is so powerful that warm blood seeps from your ears and nose, because you couldn't silence it[cite: 9]. Selin pounds the door handle: «There must be a way... There must be a way—» But there isn't[cite: 9]. This place is closed[cite: 9]." },
+        { type: "narrate", text: "«One...» whispers that foul mass of flesh[cite: 9]. The entire station, all the steel structures on the walls awaken and hum[cite: 9]. On the upper floors, all that zombie crew sleeping in their beds open their eyes wide simultaneously — All of them stand up at once[cite: 9]. «Zero...»[cite: 9]" },
+        { type: "ambient", text: "And at that moment, that voice stops[cite: 9]. Because there is no longer a foreign power left to count inside your brain[cite: 9]. Everyone — You, Selin beside you, the workers whose flesh is melting upstairs, and perhaps all that innocent surface at the end of the radio... You are now a single piece of flesh[cite: 9]. A single massive hive[cite: 9]. A single endless, calm, entirely hollowed-out dead mind[cite: 9]." },
+        { type: "system", text: "— ENDING: ZERO —[cite: 9]" },
+        { type: "system", text: "You couldn't fully silence the Artifact and failed to find the escape route without Ece[cite: 9]. The countdown hit zero[cite: 9]. The Family now encompasses everyone[cite: 9]. Perhaps the surface too[cite: 9]." },
         { type: "system", text: "PERISHED · THANK YOU" },
       ],
     },

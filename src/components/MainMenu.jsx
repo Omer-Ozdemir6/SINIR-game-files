@@ -76,7 +76,7 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
           fontSize: "clamp(38px, 11vw, 68px)", fontWeight: 700,
           letterSpacing: "0.28em", paddingLeft: "0.28em",
           color: "#dfe6df",
-          textShadow: "0 0 24px rgba(90,140,110,0.35), 0 2px 8px rgba(0,0,0,0.9)",
+          textShadow: "0 0 24px rgba(90,120,140,0.35), 0 2px 8px rgba(0,0,0,0.9)",
         }}>
           PERI<span style={{ color: afterEnding ? "#b9c9bd" : "#7a3a3a" }}>S</span>HED
         </div>
@@ -97,22 +97,25 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
           return (
             <button
               key={it.key}
-              onClick={it.fn}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (it.fn) it.fn();
+              }}
               onMouseEnter={() => setHover(it.key)}
               onMouseLeave={() => setHover(null)}
               onTouchStart={() => setHover(it.key)}
               style={{
                 textAlign: "left",
-                background: on ? "rgba(20,30,26,0.72)" : "transparent",
+                background: on ? "rgba(20,26,30,0.72)" : "transparent",
                 border: "none",
-                borderLeft: on ? "3px solid #7a9a86" : "3px solid transparent",
+                borderLeft: on ? "3px solid #7a8c9a" : "3px solid transparent",
                 cursor: "pointer",
                 padding: "13px 20px",
                 fontFamily: "'Courier New', ui-monospace, monospace",
                 fontSize: "clamp(17px, 4.6vw, 22px)",
                 letterSpacing: "0.14em",
-                color: on ? "#eef0f4" : "#9db0a6",
-                textShadow: on ? "0 0 12px rgba(150,200,170,0.4)" : "0 1px 3px rgba(0,0,0,0.8)",
+                color: on ? "#eef0f4" : "#9db0b8",
+                textShadow: on ? "0 0 12px rgba(150,180,200,0.4)" : "0 1px 3px rgba(0,0,0,0.8)",
                 transition: "all 120ms ease",
                 width: "fit-content", minWidth: 220,
               }}
@@ -129,7 +132,7 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
           position: "relative", marginTop: 30, alignSelf: "flex-start",
           background: "transparent", border: "none", cursor: "pointer",
           fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 10,
-          letterSpacing: "0.2em", color: "#2f4a42", padding: 8,
+          letterSpacing: "0.2em", color: "#2f3e4a", padding: 8,
         }}>
           {t("menu.puzzleTest")}
         </button>

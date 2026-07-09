@@ -13,10 +13,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   // 3 rhythm variations: 0 = Steady, 1 = Accelerating Panic, 2 = Double Thumps (Doublets)
   const rhythmType = nodeHash % 3;
 
-  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed.
-  // Speed is also scaled by adrenaline level (notes scroll faster when panicking).
-  const baseScroll = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
-  const scrollDuration = baseScroll * (1 - (adrenaline / 100) * 0.32);
+  // Base scroll speed — actual scrollDuration is computed after useState
 
   const [gameStarted, setGameStarted] = useState(() => {
     try {
@@ -29,6 +26,11 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const [spikes, setSpikes] = useState([]);
   const [flash, setFlash] = useState(null); // 'hit' or 'miss'
   const [currentTime, setCurrentTime] = useState(0);
+
+  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed.
+  // Speed is also scaled by adrenaline level (notes scroll faster when panicking).
+  const baseScroll = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
+  const scrollDuration = baseScroll * (1 - (adrenaline / 100) * 0.32);
 
   const gameStartedRef = useRef(false);
   const spikesRef = useRef([]);
@@ -48,26 +50,27 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   useEffect(() => {
     const list = [];
     let cur = 1500; // start note after 1.5s to let player react
+    let noteId = 0;
 
     if (rhythmType === 1) {
       // Template 1: Accelerating panic (notes get progressively faster)
       let interval = 1200;
       while (cur < holdMs - 600) {
-        list.push({ id: list.length, time: cur, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false });
         cur += interval;
         interval = Math.max(650, interval - 200);
       }
     } else if (rhythmType === 2) {
       // Template 2: Double thumps (lub-dub ... lub-dub)
       while (cur < holdMs - 600) {
-        list.push({ id: list.length, time: cur, hit: false, missed: false });
-        list.push({ id: list.length + 1, time: cur + 260, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur + 260, hit: false, missed: false });
         cur += 1100 + Math.random() * 200;
       }
     } else {
       // Template 0: Steady rhythmic beats
       while (cur < holdMs - 600) {
-        list.push({ id: list.length, time: cur, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false });
         cur += 800 + Math.random() * 250;
       }
     }
@@ -216,9 +219,9 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   };
 
   const getRhythmName = () => {
-    if (rhythmType === 1) return t("lang") === "tr" ? "Ritim: Hızlanan Çarpıntı" : rhythmType === 2 ? "Rhythm: Accelerating panic" : "Rhythmus: Beschleunigt";
-    if (rhythmType === 2) return t("lang") === "tr" ? "Ritim: Çift Atışlar" : rhythmType === 2 ? "Rhythm: Double Thumps" : "Rhythmus: Doppelschläge";
-    return t("lang") === "tr" ? "Ritim: Düzgün Ritim" : rhythmType === 2 ? "Rhythm: Steady Beats" : "Rhythmus: Stetig";
+    if (rhythmType === 1) return t("lang") === "tr" ? "Ritim: Hızlanan Çarpıntı" : "Rhythm: Accelerating Panic";
+    if (rhythmType === 2) return t("lang") === "tr" ? "Ritim: Çift Atışlar" : "Rhythm: Double Thumps";
+    return t("lang") === "tr" ? "Ritim: Düzgün Ritim" : "Rhythm: Steady Beats";
   };
 
   const descText = t("breath.desc");

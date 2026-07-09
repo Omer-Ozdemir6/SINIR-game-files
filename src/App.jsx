@@ -243,7 +243,11 @@ export default function App() {
       wait(delay, runId).then(resolve);
     });
 
-  const setBatteryBoth = (v) => { batteryRef.current = v; setBattery(v); };
+  const setBatteryBoth = (v) => {
+    batteryRef.current = v;
+    setBattery(v);
+    if (v > 0 && darkRef.current) stopDarkness();
+  };
   const setSparesBoth = (v) => { sparesRef.current = v; setSpares(v); };
   const setFlagsBoth = (updates) => {
     flagsRef.current = { ...flagsRef.current, ...updates };
@@ -321,13 +325,13 @@ export default function App() {
      ilerleyip pil bulmaya çalışır. Süre dolarsa ölüm. Pil takılırsa
      (yedek varsa pil ikonuna dokun / hikayede pil bul) mod biter. */
 
-  const stopDarkness = (silent) => {
+  function stopDarkness(silent) {
     if (darkIntRef.current) { clearInterval(darkIntRef.current); darkIntRef.current = null; }
     if (darkSfxIntRef.current) { clearInterval(darkSfxIntRef.current); darkSfxIntRef.current = null; }
     darkRef.current = false;
     setDark(null);
     if (!silent) AudioSys.heart(null);
-  };
+  }
 
   const startDarkness = () => {
     if (darkRef.current) return;
@@ -1175,10 +1179,10 @@ export default function App() {
       AudioSys.music(null);
       return;
     }
-    // arşiv (menu, notes, docs) veya ayarlar (pause) açıkken sakin ambiyans müziği
-    if (mode === "game" && (screen === "pause" || screen === "menu" || screen === "notes" || screen === "docs")) {
+    // arşiv (menu, notes, docs) veya ayarlar (pause, settings) açıkken sakin ambiyans müziği
+    if (mode === "game" && (screen === "pause" || screen === "settings" || screen === "menu" || screen === "notes" || screen === "docs")) {
       AudioSys.pauseGameMusic();
-      AudioSys.music("credits"); // Sakin arşiv/menü müziği
+      AudioSys.music("archive"); // Sakin arşiv/ayarlar müziği
       return;
     }
     // oyun moduna dönünce (menüler kapandığında) durdurulan oyun müziğini/ambiansını geri yükle

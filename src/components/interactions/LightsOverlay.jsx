@@ -55,7 +55,7 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
         <div 
           style={S.keypadTitle}
           className={`text-xs font-bold tracking-widest uppercase border-b border-zinc-900 pb-2 mb-4 flex justify-between items-center ${
-            done ? 'text-emerald-500' : 'text-amber-600'
+            done ? 'text-sky-400' : 'text-amber-600'
           }`}
         >
           <span>⚡ {t("lights.title")}</span>
@@ -72,10 +72,10 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
               key={i} 
               style={{
                 ...S.lamp,
-                // Eğer bitti ise kararlı yeşil, aksi halde yanma durumuna göre titreyen turuncu/amber/siyah
-                backgroundColor: done ? "#10b981" : on ? "#f59e0b" : "#111",
+                // Eğer bitti ise kararlı mavi, aksi halde yanma durumuna göre titreyen turuncu/amber/siyah
+                backgroundColor: done ? "#38bdf8" : on ? "#f59e0b" : "#111",
                 boxShadow: done 
-                  ? "0 0 16px #10b981" 
+                  ? "0 0 16px #38bdf8" 
                   : on 
                   ? "0 0 14px rgba(245,158,11,0.6), inset 0 0 4px rgba(255,255,255,0.2)" 
                   : "inset 0 0 8px rgba(0,0,0,0.9)",
@@ -121,7 +121,7 @@ export default function LightsOverlay({ lights, done, onPress, onReset, onCancel
         {done && (
           <div 
             style={S.radioLockText}
-            className="bg-emerald-950/40 border border-emerald-900 text-emerald-400 text-xs font-bold py-2 rounded text-center mb-4 tracking-widest uppercase animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+            className="bg-sky-950/40 border border-sky-900 text-sky-400 text-xs font-bold py-2 rounded text-center mb-4 tracking-widest uppercase animate-pulse shadow-[0_0_15px_rgba(56,189,248,0.15)]"
           >
             ✓ {t("lights.done")}
           </div>

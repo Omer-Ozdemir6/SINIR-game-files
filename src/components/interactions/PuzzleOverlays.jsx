@@ -160,9 +160,9 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
         <svg viewBox="0 0 420 210" style={{ width: "100%", maxWidth: 430 }}>
           <defs>
             <radialGradient id="s1-shadow-wall" cx="34%" cy="42%" r="72%">
-              <stop offset="0%" stopColor="#344742" />
-              <stop offset="58%" stopColor="#151d1b" />
-              <stop offset="100%" stopColor="#070807" />
+              <stop offset="0%" stopColor="#344147" />
+              <stop offset="58%" stopColor="#151b1d" />
+              <stop offset="100%" stopColor="#070708" />
             </radialGradient>
             <linearGradient id="s1-shadow-frame" x1="0" x2="1">
               <stop offset="0%" stopColor="#6a573a" />
@@ -180,8 +180,8 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
           </defs>
           {/* projeksiyon lambası (duvar) */}
           <rect x="0" y="0" width="420" height="210" fill="url(#s1-shadow-wall)" />
-          <path d="M236 48 L360 32 L360 176 L236 160 Z" fill="#d8e3ce" opacity={locked ? 0.19 : 0.12} />
-          <path d="M222 70 L360 42 L360 166 L222 140 Z" fill="#cfd9c4" opacity="0.08" />
+          <path d="M236 48 L360 32 L360 176 L236 160 Z" fill="#ced8e3" opacity={locked ? 0.19 : 0.12} />
+          <path d="M222 70 L360 42 L360 166 L222 140 Z" fill="#c4cfd9" opacity="0.08" />
           <g transform="translate(22 40)">
             <rect x="0" y="0" width="164" height="118" fill="url(#s1-shadow-frame)" />
             <rect x="9" y="9" width="146" height="100" fill="#c8b893" />
@@ -303,7 +303,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
       <div style={puzzlePanel} className="s1-panel">
         <div style={S.keypadTitle}>{config.title || t("puzzle.wiresTitle")}</div>
         <svg viewBox="0 0 260 200" style={{ width: "100%", maxWidth: 280 }}>
-          <rect x="0" y="0" width="260" height="200" rx="6" fill="#070d0c" stroke="#14312c" />
+          <rect x="0" y="0" width="260" height="200" rx="6" fill="#070d10" stroke="#142931" />
           {Object.entries(conn).map(([cid, pid]) => {
             const ci = cables.findIndex((c) => c.id === cid);
             const pi = ports.findIndex((p) => p.id === pid);
@@ -332,7 +332,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
           {cables.map((c, i) => (
             <g key={c.id} onClick={() => pickCable(c.id)} style={{ cursor: "pointer" }}>
               <path d={`M8 ${yOf(i, cables.length) - 5} C16 ${yOf(i, cables.length) - 12}, 24 ${yOf(i, cables.length) - 12}, 38 ${yOf(i, cables.length) - 5} L38 ${yOf(i, cables.length) + 5} C24 ${yOf(i, cables.length) + 12}, 16 ${yOf(i, cables.length) + 12}, 8 ${yOf(i, cables.length) + 5} Z`}
-                fill={conn[c.id] ? "#0c1514" : "#101815"}
+                fill={conn[c.id] ? "#0c1215" : "#101518"}
                 stroke={sel === c.id ? "#e8e4d8" : c.color}
                 strokeWidth={sel === c.id ? 2.8 : 1.8} />
               <path d={`M13 ${yOf(i, cables.length)} H35 M18 ${yOf(i, cables.length) - 6} L18 ${yOf(i, cables.length) + 6} M26 ${yOf(i, cables.length) - 6} L26 ${yOf(i, cables.length) + 6}`}
@@ -349,12 +349,12 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
             return (
               <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: "pointer" }}>
                 <rect x="212" y={yOf(i, ports.length) - 13} width="34" height="26" rx="3"
-                  fill={sparking ? "#3a120c" : owner ? "#0c1a16" : isExact ? "#162419" : isCandidate ? "#121814" : "#0a1210"}
-                  stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#7a806e" : "#235248"}
+                  fill={sparking ? "#3a120c" : owner ? "#0c141a" : isExact ? "#162024" : isCandidate ? "#121618" : "#0a1012"}
+                  stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#7a806e" : "#234552"}
                   strokeWidth={isExact ? 3 : 2}
                   style={{ filter: isExact ? `drop-shadow(0 0 8px ${selectedCable.color})` : "none" }} />
                 <path d={`M219 ${yOf(i, ports.length) - 6} H239 M219 ${yOf(i, ports.length)} H239 M219 ${yOf(i, ports.length) + 6} H239`}
-                  stroke={owner ? owner.color : isExact ? selectedCable.color : "#35524b"}
+                  stroke={owner ? owner.color : isExact ? selectedCable.color : "#354852"}
                   strokeWidth="1.5" opacity="0.75" />
                 {isCandidate && (
                   <circle cx="229" cy={yOf(i, ports.length)} r={isExact ? 17 : 14}

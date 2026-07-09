@@ -11,6 +11,7 @@ import { t } from "../i18n";
 export default function Credits({ onClose }) {
   const scrollRef = useRef(null);
   const rafRef = useRef(0);
+  const mountTimeRef = useRef(Date.now());
 
   useEffect(() => {
     let alive = true;
@@ -39,9 +40,17 @@ export default function Credits({ onClose }) {
     return () => { alive = false; cancelAnimationFrame(rafRef.current); };
   }, [onClose]);
 
+  const handleClose = (e) => {
+    e.stopPropagation();
+    // Prevent accidental instant close due to event bubbling or fast clicking
+    if (Date.now() - mountTimeRef.current > 350) {
+      if (onClose) onClose();
+    }
+  };
+
   return (
     <div
-      onClick={onClose}
+      onClick={handleClose}
       className="s1-fadein"
       style={{
         position: "fixed", inset: 0, zIndex: 55,
@@ -67,7 +76,7 @@ export default function Credits({ onClose }) {
           <div style={{
             fontSize: "clamp(24px, 8vw, 38px)", fontWeight: 700,
             letterSpacing: "0.32em", paddingLeft: "0.32em",
-            color: "#e8ecdf", textShadow: "0 0 18px rgba(160,220,180,0.35)",
+            color: "#dfe8ec", textShadow: "0 0 18px rgba(160,195,220,0.35)",
           }}>PERISHED</div>
 
           {/* slogan */}
@@ -79,16 +88,17 @@ export default function Credits({ onClose }) {
           {/* kayan yazılar */}
           <div style={{
             fontSize: 13, lineHeight: 2.2, letterSpacing: "0.08em",
-            color: "#a8bcae", whiteSpace: "pre-wrap",
+            color: "#a8b6bc", whiteSpace: "pre-wrap",
           }}>{t("credits.roll")}</div>
         </div>
       </div>
 
       {/* alt: dokun-kapat ipucu (sabit) */}
       <div style={{
-        position: "absolute", bottom: 20, left: 0, right: 0, textAlign: "center",
+        position: "absolute", bottom: 20, left: 0, right: 0, textspan: "center",
+        textAlign: "center",
         fontFamily: "'Courier New', ui-monospace, monospace",
-        fontSize: 9, letterSpacing: "0.2em", color: "#2f4a42", pointerEvents: "none",
+        fontSize: 9, letterSpacing: "0.2em", color: "#2f3e4a", pointerEvents: "none",
       }}>{t("credits.close").toUpperCase()} · DOKUN</div>
     </div>
   );

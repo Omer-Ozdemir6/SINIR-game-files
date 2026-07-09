@@ -29,19 +29,20 @@ export const SFX_FILES = {
 
 export const MUSIC_FILES = {
   // Menü / arayüz parçaları
-  menu: "",      // ana menü müziği (New Game/Continue'a kadar çalar)
-  intro: "",     // intro mail sekansı müziği
-  credits: "",   // credits ekranı müziği
+  menu: "/audio/music/menu.wav",      // ana menü müziği (New Game/Continue'a kadar çalar)
+  intro: "/audio/music/intro.wav",     // intro mail sekansı müziği
+  credits: "/audio/music/credits.wav",   // credits ekranı müziği
+  archive: "/audio/music/archive.wav",   // ayarlar / arşiv menü müziği
   // Bölüm/atmosfer parçaları — hikayede { type: "music", track: "k6" }
   // ile başlar, { type: "music" } (track'siz) ile susar.
-  k6: "",         // makine dairesi ambiyansı
-  k5: "",         // yaşam destek / Deniz'in katı
-  k2: "",         // buluntu / kazı — final
-  k3: "",         // bahçe / Dr. Nevin'in katı
-  k4: "",         // ev / Şef Harun'un katı
-  chase: "",      // kovalamaca
-  hide: "",       // saklanma gerilimi
-  safe: "",       // checkpoint/güvenli an nefesi
+  k6: "/audio/music/k6.wav",         // makine dairesi ambiyansı
+  k5: "/audio/music/k5.wav",         // yaşam destek / Deniz'in katı
+  k2: "/audio/music/k2.wav",         // buluntu / kazı — final
+  k3: "/audio/music/k3.wav",         // bahçe / Dr. Nevin'in katı
+  k4: "/audio/music/k4.wav",         // ev / Şef Harun'un katı
+  chase: "/audio/music/chase.wav",      // kovalamaca
+  hide: "/audio/music/hide.wav",       // saklanma gerilimi
+  safe: "/audio/music/safe.wav",       // checkpoint/güvenli an nefesi
 };
 
 // Sürekli dip ambiyans (46Hz sentetik uğultunun yerine geçer):

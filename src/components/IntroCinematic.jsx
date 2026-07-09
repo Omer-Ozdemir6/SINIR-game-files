@@ -125,12 +125,12 @@ function SinirTitleCard({ leaving }) {
       <div style={{
         position: "absolute", inset: 0,
         background: [
-          "radial-gradient(circle at 14% 18%, rgba(210,225,205,0.16), transparent 5%)",
-          "radial-gradient(circle at 72% 16%, rgba(210,225,205,0.11), transparent 6%)",
-          "radial-gradient(circle at 82% 66%, rgba(180,205,170,0.16), transparent 8%)",
-          "radial-gradient(circle at 38% 66%, rgba(210,225,205,0.1), transparent 6%)",
-          "linear-gradient(120deg, transparent 0 38%, rgba(220,245,220,0.05) 39%, transparent 43%)",
-          "linear-gradient(63deg, transparent 0 57%, rgba(220,245,220,0.04) 58%, transparent 62%)",
+          "radial-gradient(circle at 14% 18%, rgba(205,215,225,0.16), transparent 5%)",
+          "radial-gradient(circle at 72% 16%, rgba(205,215,225,0.11), transparent 6%)",
+          "radial-gradient(circle at 82% 66%, rgba(170,195,205,0.16), transparent 8%)",
+          "radial-gradient(circle at 38% 66%, rgba(205,215,225,0.1), transparent 6%)",
+          "linear-gradient(120deg, transparent 0 38%, rgba(220,230,245,0.05) 39%, transparent 43%)",
+          "linear-gradient(63deg, transparent 0 57%, rgba(220,230,245,0.04) 58%, transparent 62%)",
           "linear-gradient(90deg, rgba(0,0,0,0.58), transparent 18%, transparent 82%, rgba(0,0,0,0.68))",
         ].join(", "),
         filter: "blur(1.4px)",
@@ -139,26 +139,26 @@ function SinirTitleCard({ leaving }) {
       <div style={{
         position: "absolute", left: "9%", top: "18%",
         width: "18vw", maxWidth: 220, aspectRatio: "1",
-        border: "1px solid rgba(220,245,220,0.14)",
+        border: "1px solid rgba(220,230,245,0.14)",
         transform: "rotate(21deg)",
-        boxShadow: "0 0 26px rgba(190,225,190,0.08)",
+        boxShadow: "0 0 26px rgba(190,210,225,0.08)",
       }} />
       <div style={{
         position: "absolute", right: "12%", bottom: "17%",
         width: "24vw", maxWidth: 280, height: 1,
-        background: "rgba(220,245,220,0.2)",
-        boxShadow: "0 0 30px rgba(220,245,220,0.18)",
+        background: "rgba(220,230,245,0.2)",
+        boxShadow: "0 0 30px rgba(220,230,245,0.18)",
         transform: "rotate(-13deg)",
       }} />
       <div style={{
         position: "absolute", right: "19%", top: "24%",
         width: 92, height: 92,
         borderRadius: "50%",
-        border: "1px dashed rgba(220,245,220,0.16)",
+        border: "1px dashed rgba(220,230,245,0.16)",
       }} />
       <div style={{
         position: "absolute", inset: 0,
-        background: "repeating-radial-gradient(circle at 45% 45%, rgba(220,235,215,0.12) 0 1px, transparent 1px 8px)",
+        background: "repeating-radial-gradient(circle at 45% 45%, rgba(215,225,235,0.12) 0 1px, transparent 1px 8px)",
         opacity: 0.18,
         mixBlendMode: "screen",
       }} />
@@ -166,25 +166,25 @@ function SinirTitleCard({ leaving }) {
         position: "absolute", left: "50%", top: "38%",
         width: 88, height: 122, transform: "translate(-50%, -50%)",
         opacity: 0.62,
-        filter: "drop-shadow(0 0 9px rgba(220,245,220,0.5))",
+        filter: "drop-shadow(0 0 9px rgba(210,225,245,0.5))",
       }}>
         <svg viewBox="0 0 90 130" style={{ width: "100%", height: "100%" }}>
-          <path d="M45 8 L45 118 M25 80 L65 80 M31 72 L59 72 M36 64 L54 64" stroke="#e5f4df" strokeWidth="3" strokeLinecap="round" opacity="0.82" />
-          <path d="M45 14 C36 28 42 38 35 52 C49 45 42 28 55 17" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.55" />
-          <path d="M20 90 C32 82 58 82 70 90 M24 98 C38 92 52 92 66 98" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.7" />
-          <path d="M45 8 L45 118" stroke="#e5f4df" strokeWidth="1" strokeDasharray="2 4" opacity="0.9" />
+          <path d="M45 8 L45 118 M25 80 L65 80 M31 72 L59 72 M36 64 L54 64" stroke="#dfe8f4" strokeWidth="3" strokeLinecap="round" opacity="0.82" />
+          <path d="M45 14 C36 28 42 38 35 52 C49 45 42 28 55 17" fill="none" stroke="#dfe8f4" strokeWidth="2" opacity="0.55" />
+          <path d="M20 90 C32 82 58 82 70 90 M24 98 C38 92 52 92 66 98" fill="none" stroke="#dfe8f4" strokeWidth="2" opacity="0.7" />
+          <path d="M45 8 L45 118" stroke="#dfe8f4" strokeWidth="1" strokeDasharray="2 4" opacity="0.9" />
         </svg>
       </div>
       <div style={{
         position: "absolute", left: "6%", right: "6%", top: "47%",
         display: "flex", alignItems: "center", justifyContent: "center",
         gap: "clamp(14px, 3.8vw, 54px)",
-        color: "rgba(235,248,232,0.94)",
+        color: "rgba(232,242,248,0.94)",
         fontFamily: "Arial, Helvetica, sans-serif",
         fontSize: "clamp(30px, 5.5vw, 72px)",
         fontWeight: 900,
         letterSpacing: "0.24em",
-        textShadow: "0 0 18px rgba(220,248,220,0.68), 0 0 3px rgba(255,255,255,0.84)",
+        textShadow: "0 0 18px rgba(220,232,248,0.68), 0 0 3px rgba(255,255,255,0.84)",
         filter: "blur(0.05px)",
       }}>
         {["P", "E", "R", "I", "S", "H", "E", "D"].map((ch, i) => (
