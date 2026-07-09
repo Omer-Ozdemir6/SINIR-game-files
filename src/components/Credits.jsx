@@ -11,7 +11,11 @@ import { t } from "../i18n";
 export default function Credits({ onClose }) {
   const scrollRef = useRef(null);
   const rafRef = useRef(0);
+  const onCloseRef = useRef(onClose);
   const mountTimeRef = useRef(Date.now());
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     let alive = true;
@@ -31,20 +35,20 @@ export default function Credits({ onClose }) {
       
       const currentTotal = el.scrollHeight || 1000;
       if (y < -currentTotal - 100) { 
-        if (onClose) onClose(); 
+        if (onCloseRef.current) onCloseRef.current(); 
         return; 
       }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => { alive = false; cancelAnimationFrame(rafRef.current); };
-  }, [onClose]);
+  }, []);
 
   const handleClose = (e) => {
     e.stopPropagation();
     // Prevent accidental instant close due to event bubbling or fast clicking
     if (Date.now() - mountTimeRef.current > 350) {
-      if (onClose) onClose();
+      if (onCloseRef.current) onCloseRef.current();
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { styles as S } from "../../styles/theme";
 import { AudioSys } from "../../audio/AudioSys";
 import { t } from "../../i18n";
@@ -123,6 +123,9 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
   const [pitch, setPitch] = useState(config.startPitch ?? -55);
   const [locked, setLocked] = useState(false);
 
+  const dragRef = useRef({ active: false, startX: 0, startY: 0, startYaw: 0, startPitch: 0 });
+  const lastSoundRef = useRef(0);
+
   const angNear = (a, b) => Math.abs(((a - b) % 360 + 540) % 360 - 180) <= tol;
   const check = (yw, pt) => angNear(yw, targetYaw) && angNear(pt, targetPitch);
 
@@ -138,6 +141,7 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
     (Math.abs(((yaw - targetYaw) % 360 + 540) % 360 - 180) +
      Math.abs(((pitch - targetPitch) % 360 + 540) % 360 - 180)) / 180);
   const glow = locked ? 1 : Math.max(0, 1 - dist);
+  const precision = Math.round(glow * 100);
 
   const move = (axis, dir) => {
     if (locked) return;
@@ -145,6 +149,7 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
     let yw = yaw, pt = pitch;
     if (axis === "yaw") yw = (yw + dir * step) % 360;
     if (axis === "pitch") pt = Math.max(-TILT_MAX, Math.min(TILT_MAX, pt + dir * step));
+    if (yw < 0) yw += 360;
     setYaw(yw); setPitch(pt);
     if (check(yw, pt)) {
       setLocked(true);
@@ -153,92 +158,204 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
     }
   };
 
+  const handlePointerDown = (e) => {
+    if (locked) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startYaw: yaw,
+      startPitch: pitch,
+      active: true,
+    };
+  };
+
+  const handlePointerMove = (e) => {
+    if (!dragRef.current.active || locked) return;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    
+    let newYaw = (dragRef.current.startYaw + dx * 0.48) % 360;
+    if (newYaw < 0) newYaw += 360;
+    let newPitch = Math.max(-TILT_MAX, Math.min(TILT_MAX, dragRef.current.startPitch - dy * 0.48));
+    
+    setYaw(newYaw);
+    setPitch(newPitch);
+
+    const now = performance.now();
+    if (now - lastSoundRef.current > 160) {
+      AudioSys.blipSfx(380 + Math.random() * 80);
+      lastSoundRef.current = now;
+    }
+
+    if (check(newYaw, newPitch)) {
+      setLocked(true);
+      dragRef.current.active = false;
+      AudioSys.blipSfx(980);
+      setTimeout(onSuccess, 1400);
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    if (dragRef.current.active) {
+      dragRef.current.active = false;
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
+
+  const shadowWallBg = locked
+    ? "radial-gradient(ellipse at center, #183e44 0%, #061517 72%, #020608 100%)"
+    : `radial-gradient(ellipse at center, rgba(${Math.round(48 + glow * 50)}, ${Math.round(62 + glow * 98)}, ${Math.round(68 + glow * 148)}, 0.9) 0%, #071013 70%, #020405 100%)`;
+
+  const customPanel = {
+    ...puzzlePanel,
+    backgroundColor: "#070c10",
+    backgroundImage: [
+      "linear-gradient(90deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 42px)",
+      "linear-gradient(180deg, rgba(16,28,40,0.45), rgba(4,6,8,0.98))",
+      "radial-gradient(ellipse at 50% 0%, rgba(100,160,220,0.18), rgba(0,0,0,0) 58%)",
+    ].join(", "),
+    border: "1px solid rgba(100, 160, 220, 0.25)",
+    boxShadow: "0 24px 70px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(100,160,220,0.05)",
+  };
+
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={puzzlePanel} className="s1-panel">
-        <div style={S.keypadTitle}>{config.title || t("puzzle.shadowTitle")}</div>
-        <svg viewBox="0 0 420 210" style={{ width: "100%", maxWidth: 430 }}>
+      <div style={customPanel} className="s1-panel">
+        <div style={{ ...S.keypadTitle, borderBottom: "1px solid rgba(100,160,220,0.25)", paddingBottom: 6 }}>
+          {config.title || t("puzzle.shadowTitle")}
+        </div>
+
+        {/* Drag to rotate target zone */}
+        <svg
+          viewBox="0 0 420 210"
+          style={{ width: "100%", maxWidth: 430, cursor: locked ? "default" : "grab", overflow: "visible" }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        >
           <defs>
-            <radialGradient id="s1-shadow-wall" cx="34%" cy="42%" r="72%">
-              <stop offset="0%" stopColor="#344147" />
-              <stop offset="58%" stopColor="#151b1d" />
-              <stop offset="100%" stopColor="#070708" />
-            </radialGradient>
             <linearGradient id="s1-shadow-frame" x1="0" x2="1">
-              <stop offset="0%" stopColor="#6a573a" />
-              <stop offset="42%" stopColor="#2d2418" />
-              <stop offset="100%" stopColor="#907246" />
+              <stop offset="0%" stopColor="#2c3a44" />
+              <stop offset="42%" stopColor="#12181d" />
+              <stop offset="100%" stopColor="#3c505e" />
             </linearGradient>
             <linearGradient id="s1-relic-block" x1="0" x2="1">
-              <stop offset="0%" stopColor="#efe2c4" />
-              <stop offset="48%" stopColor="#a58f68" />
-              <stop offset="100%" stopColor="#4f4638" />
+              <stop offset="0%" stopColor="#2c4256" />
+              <stop offset="48%" stopColor="#182c3c" />
+              <stop offset="100%" stopColor="#3c5870" />
             </linearGradient>
             <filter id="s1-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="1.4" />
+              <feGaussianBlur stdDeviation="1.6" />
             </filter>
           </defs>
-          {/* projeksiyon lambası (duvar) */}
-          <rect x="0" y="0" width="420" height="210" fill="url(#s1-shadow-wall)" />
-          <path d="M236 48 L360 32 L360 176 L236 160 Z" fill="#ced8e3" opacity={locked ? 0.19 : 0.12} />
-          <path d="M222 70 L360 42 L360 166 L222 140 Z" fill="#c4cfd9" opacity="0.08" />
+
+          {/* Dynamic Light projector wall bg */}
+          <rect x="0" y="0" width="420" height="210" fill="none" style={{ fill: shadowWallBg, transition: "fill 300ms" }} />
+
+          {/* Spotlight beams */}
+          <path d="M236 48 L360 32 L360 176 L236 160 Z" fill="#b0ccdb" opacity={locked ? 0.22 : 0.08 + glow * 0.08} />
+          <path d="M222 70 L360 42 L360 166 L222 140 Z" fill="#9dbcdb" opacity={0.05 + glow * 0.05} />
+
+          {/* Shadow Canvas box */}
           <g transform="translate(22 40)">
             <rect x="0" y="0" width="164" height="118" fill="url(#s1-shadow-frame)" />
-            <rect x="9" y="9" width="146" height="100" fill="#c8b893" />
-            <rect x="13" y="13" width="138" height="92" fill="#a79a7d" opacity="0.58" />
-            <path d="M18 90 C48 58 84 82 146 36" fill="none" stroke="#6f684f" strokeWidth="2" opacity="0.42" />
-            <path d="M20 70 C48 44 70 64 92 48 C112 34 130 44 146 24" fill="none" stroke="#574f3f" strokeWidth="1.5" opacity="0.35" />
+            <rect x="9" y="9" width="146" height="100" fill="#18242c" />
+            <rect x="13" y="13" width="138" height="92" fill="#0f161c" opacity="0.82" />
+            
+            {/* Background wireframe grids for laboratory scan feedback */}
+            <path d="M18 90 C48 58 84 82 146 36" fill="none" stroke="#253844" strokeWidth="1.5" opacity="0.32" />
+            <path d="M20 70 C48 44 70 64 92 48 C112 34 130 44 146 24" fill="none" stroke="#1c2d3a" strokeWidth="1" opacity="0.25" />
+
             <g transform="translate(82 59) scale(0.62)">
+              {/* Target Outline Shadow (Hint) */}
               <path d={targetD} fill="none"
-                stroke="#211d18" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"
+                stroke="#0e171c" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"
                 filter="url(#s1-soft-shadow)"
-                opacity={locked ? 0.18 : config.showTarget ? 0.32 : 0.12} />
+                opacity={locked ? 0.12 : config.showTarget ? 0.38 : 0.15} />
+
+              {/* Dynamic Relic Shadow */}
               <path d={curD} fill="none"
-                stroke={locked ? "#10100d" : "#11100dcc"}
+                stroke={locked ? "#40a5b8" : `rgba(${Math.round(80 + glow * 80)}, ${Math.round(140 + glow * 80)}, ${Math.round(180 + glow * 75)}, 0.88)`}
                 strokeWidth={locked ? 8 : 7}
                 strokeLinecap="round" strokeLinejoin="round"
                 style={{
                   transition: "d 120ms linear",
-                  filter: glow > 0.5 ? `drop-shadow(0 0 ${glow * 5}px rgba(20,20,12,${0.28 + glow * 0.35}))` : "url(#s1-soft-shadow)",
+                  filter: glow > 0.45 ? `drop-shadow(0 0 ${glow * 6}px rgba(100,180,220,${0.3 + glow * 0.45}))` : "url(#s1-soft-shadow)",
                 }} />
-              {locked && <circle cx={curPts[0][0]} cy={curPts[0][1]} r="8" fill="#10100d" opacity="0.92" />}
+              {locked && <circle cx={curPts[0][0]} cy={curPts[0][1]} r="8" fill="#40a5b8" opacity="0.8" style={{ filter: "drop-shadow(0 0 4px #40a5b8)" }} />}
             </g>
           </g>
+
+          {/* 3D Relic Hologram Preview */}
           <g transform="translate(308 105) scale(0.72)">
             <path d={curD} fill="none"
-              stroke="#d5c39e" strokeWidth="13" strokeLinecap="square" strokeLinejoin="miter"
-              opacity="0.94"
-              style={{ filter: "drop-shadow(10px 10px 8px rgba(0,0,0,0.65))" }} />
+              stroke="#5885a0" strokeWidth="12" strokeLinecap="square" strokeLinejoin="miter"
+              opacity="0.95"
+              style={{ filter: "drop-shadow(10px 10px 8px rgba(0,0,0,0.8))" }} />
             <path d={curD} fill="none"
-              stroke="#584c3c" strokeWidth="4" strokeLinecap="square" strokeLinejoin="miter"
-              opacity="0.7" />
+              stroke="#1d2e3c" strokeWidth="4" strokeLinecap="square" strokeLinejoin="miter"
+              opacity="0.75" />
+            
+            {/* Relic node junctions */}
             {curPts.map(([x, y], i) => (
               <g key={i} transform={`translate(${x} ${y}) rotate(${(yaw + i * 23) % 360})`}>
                 <rect x="-13" y="-8" width="26" height="16" rx="1.5"
-                  fill="url(#s1-relic-block)" stroke="#6d5e46" strokeWidth="1.4" />
-                <line x1="-9" y1="0" x2="9" y2="0" stroke="#f6e8c8" strokeWidth="1" opacity="0.45" />
+                  fill="url(#s1-relic-block)" stroke="#2c4256" strokeWidth="1.4" />
+                <line x1="-9" y1="0" x2="9" y2="0" stroke="#7faac7" strokeWidth="1" opacity="0.45" />
               </g>
             ))}
-            <circle cx="0" cy="0" r="8" fill={locked ? "#e8c95a" : "#6f5f43"} stroke="#f0e2b6" strokeWidth="1.2" />
+            <circle cx="0" cy="0" r="8" fill={locked ? "#5bf0e2" : "#243c50"} stroke="#80c0e0" strokeWidth="1.2" style={{ transition: "fill 300ms" }} />
           </g>
-          <circle cx="385" cy="105" r="19" fill="#d8e3ce" opacity="0.12" />
-          <circle cx="385" cy="105" r="5" fill="#e8ead8" opacity="0.55" />
-          <rect x="0" y="0" width="420" height="210" fill="none" stroke="rgba(210,170,95,0.14)" strokeWidth="2" />
-          {/* hedef silüet — zor modda sadece belge ipucu varsa görünür */}
-          {/* nesnenin gölgesi — açı değiştikçe ŞEKİL değişir */}
-          {/* merkez göz — kilitlenince açılır */}
+
+          {/* Light bulb/Projector lens mockup */}
+          <circle cx="385" cy="105" r="19" fill="#1b2e3e" opacity="0.45" />
+          <circle cx="385" cy="105" r="5" fill="#a0ccff" opacity="0.85" style={{ filter: "drop-shadow(0 0 6px #a0ccff)" }} />
+          <rect x="0" y="0" width="420" height="210" fill="none" stroke="rgba(100,160,220,0.18)" strokeWidth="2" />
         </svg>
+
+        {/* Dynamic lock status / Match percentage */}
+        <div style={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center", padding: "0 16px", margin: "6px 0 10px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            <span style={{ fontFamily: mono, fontSize: 9, color: "#4c606b" }}>
+              HİZALAMA KİLİDİ (ALIGNMENT MATRIX):
+            </span>
+            <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+              <div style={{ width: 120, height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" }}>
+                <div style={{
+                  width: `${precision}%`,
+                  height: "100%",
+                  background: locked ? "#40a5b8" : `linear-gradient(to right, #243c50, #5b8eb8, #5bf0e2)`,
+                  transition: "width 150ms",
+                }} />
+              </div>
+              <span style={{ fontFamily: mono, fontSize: 10, color: locked ? "#40a5b8" : precision > 80 ? "#5bf0e2" : "#9bb0b8", fontWeight: 700 }}>
+                {precision}% {locked ? "LOCKED" : precision > 80 ? "ALIGNING" : ""}
+              </span>
+            </div>
+          </div>
+          
+          <div style={{ fontFamily: mono, fontSize: 10, color: "#5f7075", textAlign: "right" }}>
+            YAW: {Math.round(yaw)}° | PIT: {Math.round(pitch)}°
+          </div>
+        </div>
+
+        {/* Buttons Row (Accessibility / Arrow Fallbacks) */}
         <div style={P.ctrlRow}>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("yaw", -1)}>⟲ {t("puzzle.rot")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("yaw", 1)}>{t("puzzle.rot")} ⟳</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("pitch", -1)}>▲ {t("puzzle.tilt")}</button>
-          <button className="s1-btn s1-key" style={S.keyBtn} onClick={() => move("pitch", 1)}>{t("puzzle.tilt")} ▼</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", -1)}>⟲ {t("puzzle.rot")}</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("yaw", 1)}>{t("puzzle.rot")} ⟳</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", -1)}>▲ {t("puzzle.tilt")}</button>
+          <button className="s1-btn s1-key" style={{ ...S.keyBtn, borderColor: "rgba(100,160,220,0.3)", color: "#dfe8ec", minWidth: 70 }} onClick={() => move("pitch", 1)}>{t("puzzle.tilt")} ▼</button>
         </div>
-        <div style={locked ? P.msgOk : P.hint}>
-          {locked ? t("puzzle.shadowDone") : t("puzzle.shadowHint")}
+
+        <div style={{ minHeight: 20, display: "flex", alignItems: "center", justifyContent: "center", margin: "8px 0" }}>
+          <div style={locked ? P.msgOk : P.hint}>
+            {locked ? t("puzzle.shadowDone") : t("puzzle.shadowHint")}
+          </div>
         </div>
+
         {!locked && (
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 4 }} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>
@@ -259,20 +376,36 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
   const [spark, setSpark] = useState(null); // {ci, pi}
   const [errors, setErrors] = useState(0);
   const [done, setDone] = useState(false);
+  const [dragPos, setDragPos] = useState(null); // { x, y } local coords
+
+  const svgRef = useRef(null);
   const cables = config.cables;
   const ports = config.ports;
   const selectedCable = cables.find((c) => c.id === sel);
 
   const yOf = (i, n) => 34 + i * (150 / Math.max(1, n - 1));
+  
   const wire = (ci, pi) =>
     `M 44 ${yOf(ci, cables.length)} C 120 ${yOf(ci, cables.length)}, 150 ${yOf(pi, ports.length)}, 214 ${yOf(pi, ports.length)}`;
 
+  const dragWire = (ci, tx, ty) =>
+    `M 44 ${yOf(ci, cables.length)} C ${(44 + tx) / 2} ${yOf(ci, cables.length)}, ${(44 + tx) / 2} ${ty}, ${tx} ${ty}`;
+
   const portOwner = (pid) => cables.find((c) => conn[c.id] === pid);
+
+  const getSVGCoords = (e) => {
+    if (!svgRef.current) return { x: 0, y: 0 };
+    const rect = svgRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 260;
+    const y = ((e.clientY - rect.top) / rect.height) * 200;
+    return { x, y };
+  };
 
   const pickCable = (id) => {
     if (done || conn[id]) return;
     AudioSys.blipSfx(500);
     setSel(id === sel ? null : id);
+    setDragPos(null);
   };
 
   const pickPort = (pid) => {
@@ -284,6 +417,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
       const next = { ...conn, [sel]: pid };
       setConn(next);
       setSel(null);
+      setDragPos(null);
       if (Object.keys(next).length === cables.length) {
         setDone(true);
         AudioSys.blipSfx(980);
@@ -293,29 +427,128 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
       setSpark({ ci, pi });
       setErrors((e) => e + 1);
       setSel(null);
+      setDragPos(null);
       onFail(config.penalty || { gurultu: 4, text: t("puzzle.wiresSpark") });
-      setTimeout(() => setSpark(null), 480);
+      setTimeout(() => setSpark(null), 550);
     }
+  };
+
+  const handlePointerDown = (e, cid) => {
+    if (done || conn[cid]) return;
+    e.stopPropagation();
+    setSel(cid);
+    const coords = getSVGCoords(e);
+    setDragPos(coords);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!sel || done) return;
+    const coords = getSVGCoords(e);
+    setDragPos(coords);
+  };
+
+  const handlePointerUp = (e) => {
+    if (!sel || done) return;
+    const coords = getSVGCoords(e);
+    if (coords.x > 185 && coords.x < 255) {
+      let closestPi = -1;
+      let minDist = 9999;
+      for (let i = 0; i < ports.length; i++) {
+        const portY = yOf(i, ports.length);
+        const dist = Math.abs(coords.y - portY);
+        if (dist < minDist) {
+          minDist = dist;
+          closestPi = i;
+        }
+      }
+      if (closestPi !== -1 && minDist < 24) {
+        const targetPort = ports[closestPi];
+        pickPort(targetPort.id);
+        return;
+      }
+    }
+    setSel(null);
+    setDragPos(null);
+  };
+
+  const customPanel = {
+    ...puzzlePanel,
+    backgroundColor: "#060a0d",
+    backgroundImage: [
+      "linear-gradient(90deg, rgba(255,255,255,0.01) 0 1px, transparent 1px 30px)",
+      "linear-gradient(180deg, rgba(14,24,35,0.4), rgba(3,4,6,0.99))",
+      "radial-gradient(ellipse at 50% 0%, rgba(100,160,220,0.15), rgba(0,0,0,0) 60%)",
+    ].join(", "),
+    border: "1px solid rgba(100, 160, 220, 0.22)",
+    boxShadow: "0 24px 70px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(100,160,220,0.04)",
   };
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
-      <div style={puzzlePanel} className="s1-panel">
-        <div style={S.keypadTitle}>{config.title || t("puzzle.wiresTitle")}</div>
-        <svg viewBox="0 0 260 200" style={{ width: "100%", maxWidth: 280 }}>
-          <rect x="0" y="0" width="260" height="200" rx="6" fill="#070d10" stroke="#142931" />
+      <style>{`
+        @keyframes flow-offset {
+          0% { stroke-dashoffset: 20; }
+          100% { stroke-dashoffset: 0; }
+        }
+        .wire-flow {
+          stroke-dasharray: 6 5;
+          animation: flow-offset 1.4s infinite linear;
+        }
+        @keyframes spark-burst-anim {
+          0% { transform: scale(0.4); opacity: 1; }
+          100% { transform: scale(1.6); opacity: 0; }
+        }
+        .spark-shockwave {
+          animation: spark-burst-anim 0.5s forwards ease-out;
+        }
+      `}</style>
+
+      <div style={customPanel} className="s1-panel">
+        <div style={{ ...S.keypadTitle, borderBottom: "1px solid rgba(100,160,220,0.22)", paddingBottom: 6 }}>
+          {config.title || t("puzzle.wiresTitle")}
+        </div>
+
+        <svg
+          ref={svgRef}
+          viewBox="0 0 260 200"
+          style={{ width: "100%", maxWidth: 280, cursor: sel ? "grabbing" : "default", overflow: "visible" }}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        >
+          <rect x="0" y="0" width="260" height="200" rx="6" fill="#04080b" stroke="#12222e" strokeWidth="1.5" />
+          <line x1="44" y1="0" x2="44" y2="200" stroke="rgba(100,160,220,0.08)" strokeDasharray="3 3" />
+          <line x1="214" y1="0" x2="214" y2="200" stroke="rgba(100,160,220,0.08)" strokeDasharray="3 3" />
+
           {Object.entries(conn).map(([cid, pid]) => {
             const ci = cables.findIndex((c) => c.id === cid);
             const pi = ports.findIndex((p) => p.id === pid);
+            const color = cables[ci].color;
             return (
-              <path key={cid} d={wire(ci, pi)} fill="none"
-                stroke={cables[ci].color} strokeWidth="3" opacity="0.9" />
+              <g key={cid}>
+                <path d={wire(ci, pi)} fill="none" stroke={color} strokeWidth="5.5" opacity="0.18" style={{ filter: `drop-shadow(0 0 5px ${color})` }} />
+                <path d={wire(ci, pi)} fill="none" stroke={color} strokeWidth="3" opacity="0.9" />
+                <path d={wire(ci, pi)} fill="none" stroke="#ffffff" strokeWidth="1.8" className="wire-flow" opacity="0.75" />
+              </g>
             );
           })}
+
           {spark && (
             <path d={wire(spark.ci, spark.pi)} fill="none"
-              stroke="#e06a4a" strokeWidth="3" strokeDasharray="6 5" opacity="0.9" />
+              stroke="#e06a4a" strokeWidth="3.2" strokeDasharray="5 4" opacity="0.95" />
           )}
+
+          {sel && dragPos && (
+            <path
+              d={dragWire(cables.findIndex((c) => c.id === sel), dragPos.x, dragPos.y)}
+              fill="none"
+              stroke={selectedCable.color}
+              strokeWidth="2.8"
+              strokeDasharray="5 3"
+              opacity="0.88"
+              style={{ filter: `drop-shadow(0 0 6px ${selectedCable.color})` }}
+            />
+          )}
+
           {sel && selectedCable && ports.map((p, pi) => {
             if (portOwner(p.id)) return null;
             const ci = cables.findIndex((c) => c.id === sel);
@@ -323,64 +556,106 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
             return (
               <path key={`ghost-${p.id}`} d={wire(ci, pi)} fill="none"
                 stroke={selectedCable.color}
-                strokeWidth={exact ? 3 : 1.6}
-                strokeDasharray={exact ? "none" : "5 7"}
-                opacity={exact ? 0.42 : 0.14}
-                style={{ filter: exact ? `drop-shadow(0 0 7px ${selectedCable.color})` : "none" }} />
+                strokeWidth={exact ? 2.5 : 1.2}
+                strokeDasharray={exact ? "none" : "4 6"}
+                opacity={exact ? 0.38 : 0.08}
+                style={{ filter: exact ? `drop-shadow(0 0 6px ${selectedCable.color})` : "none" }} />
             );
           })}
+
           {cables.map((c, i) => (
-            <g key={c.id} onClick={() => pickCable(c.id)} style={{ cursor: "pointer" }}>
+            <g
+              key={c.id}
+              onPointerDown={(e) => handlePointerDown(e, c.id)}
+              onClick={() => pickCable(c.id)}
+              style={{ cursor: conn[c.id] ? "default" : "grab" }}
+            >
               <path d={`M8 ${yOf(i, cables.length) - 5} C16 ${yOf(i, cables.length) - 12}, 24 ${yOf(i, cables.length) - 12}, 38 ${yOf(i, cables.length) - 5} L38 ${yOf(i, cables.length) + 5} C24 ${yOf(i, cables.length) + 12}, 16 ${yOf(i, cables.length) + 12}, 8 ${yOf(i, cables.length) + 5} Z`}
-                fill={conn[c.id] ? "#0c1215" : "#101518"}
-                stroke={sel === c.id ? "#e8e4d8" : c.color}
-                strokeWidth={sel === c.id ? 2.8 : 1.8} />
+                fill={conn[c.id] ? "#060c0e" : "#0d161c"}
+                stroke={sel === c.id ? "#ffffff" : c.color}
+                strokeWidth={sel === c.id ? 2.6 : 1.6}
+                style={{ filter: sel === c.id ? `drop-shadow(0 0 4px ${c.color})` : "none" }}
+              />
               <path d={`M13 ${yOf(i, cables.length)} H35 M18 ${yOf(i, cables.length) - 6} L18 ${yOf(i, cables.length) + 6} M26 ${yOf(i, cables.length) - 6} L26 ${yOf(i, cables.length) + 6}`}
-                stroke={c.color} strokeWidth="2" opacity={conn[c.id] ? 0.35 : 0.95} strokeLinecap="round" />
+                stroke={c.color} strokeWidth="1.8" opacity={conn[c.id] ? 0.25 : 0.95} strokeLinecap="round" />
               <text x="30" y={yOf(i, cables.length) + 26} textAnchor="middle"
-                fontFamily={mono} fontSize="8" fill="#5f7075">{c.label}</text>
+                fontFamily={mono} fontSize="8" fill="#4c606b" opacity="0.8">{c.label}</text>
             </g>
           ))}
+
           {ports.map((p, i) => {
             const owner = portOwner(p.id);
             const sparking = spark && ports[spark.pi]?.id === p.id;
             const isCandidate = !!sel && !owner;
             const isExact = isCandidate && config.pairs[sel] === p.id;
             return (
-              <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: "pointer" }}>
+              <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: owner ? "default" : "pointer" }}>
                 <rect x="212" y={yOf(i, ports.length) - 13} width="34" height="26" rx="3"
-                  fill={sparking ? "#3a120c" : owner ? "#0c141a" : isExact ? "#162024" : isCandidate ? "#121618" : "#0a1012"}
-                  stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#7a806e" : "#234552"}
-                  strokeWidth={isExact ? 3 : 2}
-                  style={{ filter: isExact ? `drop-shadow(0 0 8px ${selectedCable.color})` : "none" }} />
+                  fill={sparking ? "#330b05" : owner ? "#050b0f" : isExact ? "#0e1a22" : isCandidate ? "#0a1014" : "#03070a"}
+                  stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#5f7075" : "#1b3541"}
+                  strokeWidth={isExact ? 2.6 : 1.6}
+                  style={{
+                    filter: isExact ? `drop-shadow(0 0 6px ${selectedCable.color})` : sparking ? "drop-shadow(0 0 8px #e06a4a)" : "none",
+                    transition: "fill 200ms, stroke 200ms"
+                  }} />
                 <path d={`M219 ${yOf(i, ports.length) - 6} H239 M219 ${yOf(i, ports.length)} H239 M219 ${yOf(i, ports.length) + 6} H239`}
-                  stroke={owner ? owner.color : isExact ? selectedCable.color : "#354852"}
-                  strokeWidth="1.5" opacity="0.75" />
+                  stroke={owner ? owner.color : isExact ? selectedCable.color : "#203642"}
+                  strokeWidth="1.2" opacity="0.65" />
                 {isCandidate && (
-                  <circle cx="229" cy={yOf(i, ports.length)} r={isExact ? 17 : 14}
+                  <circle cx="229" cy={yOf(i, ports.length)} r={isExact ? 16 : 13}
                     fill="none"
-                    stroke={isExact ? selectedCable.color : "#7a806e"}
-                    strokeWidth="1.2"
-                    strokeDasharray={isExact ? "none" : "3 4"}
-                    opacity={isExact ? 0.72 : 0.28} />
+                    stroke={isExact ? selectedCable.color : "#5f7075"}
+                    strokeWidth="1"
+                    strokeDasharray={isExact ? "none" : "3 3"}
+                    opacity={isExact ? 0.65 : 0.25} />
                 )}
-                <text x="229" y={yOf(i, ports.length) + 4} textAnchor="middle"
-                  fontFamily={mono} fontSize={sparking ? "12" : "8"}
-                  fill={sparking ? "#f0a060" : isExact ? "#e8e4d8" : "#7f9eae"}>
+                <text x="229" y={yOf(i, ports.length) + 3} textAnchor="middle"
+                  fontFamily={mono} fontSize={sparking ? "12" : "7.5"}
+                  fill={sparking ? "#f0a060" : isExact ? "#ffffff" : "#637c8a"}>
                   {sparking ? "⚡" : p.label}
                 </text>
               </g>
             );
           })}
+
+          {spark && (
+            <g transform={`translate(229, ${yOf(spark.pi, ports.length)})`}>
+              <circle cx="0" cy="0" r="18" fill="none" stroke="#e06a4a" strokeWidth="2.2" className="spark-shockwave" />
+              {Array.from({ length: 8 }).map((_, idx) => {
+                const angle = (idx * 45 * Math.PI) / 180;
+                const x1 = Math.cos(angle) * 7;
+                const y1 = Math.sin(angle) * 7;
+                const x2 = Math.cos(angle) * 22;
+                const y2 = Math.sin(angle) * 22;
+                return (
+                  <line
+                    key={idx}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                    stroke="#e06a4a"
+                    strokeWidth="1.5"
+                    style={{ animation: "spark-burst-anim 0.5s forwards ease-out" }}
+                  />
+                );
+              })}
+            </g>
+          )}
+
           {errors > 0 && !done && (
-            <text x="10" y="192" fontFamily={mono} fontSize="8" fill="#8a4a3a">⚡ ×{errors}</text>
+            <text x="10" y="192" fontFamily={mono} fontSize="8" fill="#c25844" fontWeight="bold">⚡ VOLTAGE WARNING ×{errors}</text>
           )}
         </svg>
-        <div style={done ? P.msgOk : P.hint}>
-          {done ? t("puzzle.wiresDone") : sel ? t("puzzle.wiresHintPort") : t("puzzle.wiresHintPick")}
+
+        <div style={{ minHeight: 28, display: "flex", alignItems: "center", justifyContent: "center", margin: "6px 0" }}>
+          <div style={done ? P.msgOk : P.hint}>
+            {done ? t("puzzle.wiresDone") : sel ? t("puzzle.wiresHintPort") : t("puzzle.wiresHintPick")}
+          </div>
         </div>
+
         {!done && (
-          <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onCancel}>{t("puzzle.cancel")}</button>
+          <button className="s1-btn s1-menuitem" style={{ ...S.menuClose, marginTop: 4 }} onClick={onCancel}>{t("puzzle.cancel")}</button>
         )}
       </div>
     </div>

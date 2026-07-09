@@ -203,7 +203,7 @@ function SinirTitleCard({ leaving }) {
 }
 
 export default function IntroCinematic({ onFinish }) {
-  const [body, setBody] = useState(PREFILLED);
+  const [body, setBody] = useState(() => t("intro.prefilled"));
   const [phase, setPhase] = useState("mail"); // mail | waitSend | sent | title | titleout | card | done
   const [dialog, setDialog] = useState(false);
   const [status, setStatus] = useState("");
@@ -237,10 +237,10 @@ export default function IntroCinematic({ onFinish }) {
     setPressed("gonder");
     AudioSys.blipSfx(720);
     setTimeout(() => setPressed(null), 200);
-    setStatus("GÖNDERİLİYOR…");
+    setStatus(t("intro.sending"));
     setTimeout(() => {
       if (doneRef.current) return;
-      setStatus("GÖNDERİLDİ ✓");
+      setStatus(t("intro.sent"));
       AudioSys.blipSfx(880);
       setTimeout(() => { if (!doneRef.current) { setPh("title"); AudioSys.boom(); } }, 900);
       setTimeout(() => { if (!doneRef.current) setPh("titleout"); }, 7200);
@@ -306,7 +306,7 @@ export default function IntroCinematic({ onFinish }) {
     (async () => {
       await sleep(1800);
       // 1) Metnin kalanı gözümüzün önünde yavaşça yazılır
-      await typeText(TYPED_END);
+      await typeText(t("intro.typedEnd"));
       if (!alive()) return;
       await sleep(2500); // Yazılan metne bakarak duraksama süresi
       
@@ -357,7 +357,7 @@ export default function IntroCinematic({ onFinish }) {
   }
 
   return (
-    <div ref={rootRef} style={W.backdrop} className={phase === "sent" && status === "GÖNDERİLDİ ✓" ? "s1-fadeout" : "s1-fadein"}>
+    <div ref={rootRef} style={W.backdrop} className={phase === "sent" && status === t("intro.sent") ? "s1-fadeout" : "s1-fadein"}>
       <div style={{
         position: "absolute", left: "4%", bottom: "20%",
         width: "20%", height: "24%",
@@ -378,7 +378,7 @@ export default function IntroCinematic({ onFinish }) {
         {/* pencere başlığı */}
         <div style={W.titleBar}>
           <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <span style={{ fontSize: 9 }}>🔒</span> GÜVENLİ POSTA
+            <span style={{ fontSize: 9 }}>🔒</span> {t("intro.secureMail")}
           </span>
           <span style={W.winBtns}>
             <span style={W.winBtn}>_</span>
@@ -387,7 +387,7 @@ export default function IntroCinematic({ onFinish }) {
           </span>
         </div>
         <div style={W.menuRow}>
-          <span>Dosya</span><span>Düzen</span><span>Görünüm</span><span>Geçmiş</span><span>Yer İmleri</span><span>Araçlar</span><span>Yardım</span>
+          <span>{t("intro.fileMenu")}</span><span>{t("intro.editMenu")}</span><span>{t("intro.viewMenu")}</span><span>{t("intro.historyMenu")}</span><span>{t("intro.bookmarksMenu")}</span><span>{t("intro.toolsMenu")}</span><span>{t("intro.helpMenu")}</span>
         </div>
         <div style={W.urlRow}>
           <span style={{ fontSize: 9, color: "#5a574c" }}>◀ ▶</span>
@@ -400,33 +400,33 @@ export default function IntroCinematic({ onFinish }) {
 
         {/* MAVİ SECURE MAIL bandı */}
         <div style={W.bandRow}>
-          <span style={{ fontSize: 12 }}>🔒</span> GÜVENLİ POSTA
+          <span style={{ fontSize: 12 }}>🔒</span> {t("intro.secureMail")}
         </div>
 
         {/* araç çubuğu */}
         <div style={W.toolRow}>
-          <span>✉ Gönder</span><span>✓ Yazım</span><span>📎 Ekle</span><span>🔒 Güvenlik</span><span>💾 Kaydet</span>
+          <span>{t("intro.toolSend")}</span><span>{t("intro.toolSpell")}</span><span>{t("intro.toolAttach")}</span><span>{t("intro.toolSec")}</span><span>{t("intro.toolSave")}</span>
         </div>
 
         <div style={W.bodyWrap}>
           <div style={W.attach}>
-            <div style={W.attachTitle}>Ekler</div>
+            <div style={W.attachTitle}>{t("intro.attachTitle")}</div>
           </div>
           <div style={W.rightCol}>
             <div style={W.field}>
-              <span style={W.fieldLabel}>Kimden</span>
-              <span style={W.fieldVal}>10260110756 (anonim)</span>
+              <span style={W.fieldLabel}>{t("intro.from")}</span>
+              <span style={W.fieldVal}>{t("intro.senderAnon")}</span>
             </div>
             <div style={W.field}>
-              <span style={W.fieldLabel}>Kime</span>
+              <span style={W.fieldLabel}>{t("intro.to")}</span>
               <span style={W.fieldVal}>t.ergin@derinbasin.tr</span>
             </div>
             <div style={W.subLinks}>
-              <span>Cc Ekle</span><span>|</span><span>Bcc Ekle</span><span>|</span><span>Yanıt Adresi Ekle</span>
+              <span>{t("intro.ccLink")}</span><span>|</span><span>{t("intro.bccLink")}</span><span>|</span><span>{t("intro.replyLink")}</span>
             </div>
             <div style={W.field}>
-              <span style={W.fieldLabel}>Konu</span>
-              <span style={W.fieldVal}>İHBAR / PERISHED Araştırma İstasyonu'nda Yasadışı Faaliyet</span>
+              <span style={W.fieldLabel}>{t("intro.subjectLabel")}</span>
+              <span style={W.fieldVal}>{t("intro.subject")}</span>
             </div>
             <div style={W.page} ref={pageRef}>
               <div style={W.ink}>
@@ -448,11 +448,11 @@ export default function IntroCinematic({ onFinish }) {
                   ...(pressed === "gonder" ? W.btnDown : {}),
                   ...(phase === "waitSend" ? { cursor: "pointer", borderColor: "#5a7a4e", boxShadow: "inset 0 1px 0 #faf8ee, 0 0 10px rgba(120,180,90,0.55)" } : {}),
                 }}>
-                Mesajı gönder
+                {t("intro.btnSend")}
               </div>
               <div ref={silRef}
                 style={{ ...W.btn, ...(pressed === "sil" ? W.btnDown : {}) }}>
-                Vazgeç
+                {t("intro.btnCancel")}
               </div>
             </div>
           </div>
@@ -460,11 +460,11 @@ export default function IntroCinematic({ onFinish }) {
 
         {dialog && (
           <div style={W.dialog}>
-            <div style={W.dialogTitle}>GÜVENLİ POSTA</div>
-            <div style={W.dialogBody}>Taslak silinsin mi?</div>
+            <div style={W.dialogTitle}>{t("intro.dialogTitle")}</div>
+            <div style={W.dialogBody}>{t("intro.dialogBody")}</div>
             <div style={W.dialogRow}>
-              <div ref={evetRef} style={W.btn}>Evet</div>
-              <div ref={hayirRef} style={{ ...W.btn, ...(pressed === "hayir" ? W.btnDown : {}) }}>Hayır</div>
+              <div ref={evetRef} style={W.btn}>{t("intro.dialogYes")}</div>
+              <div ref={hayirRef} style={{ ...W.btn, ...(pressed === "hayir" ? W.btnDown : {}) }}>{t("intro.dialogNo")}</div>
             </div>
           </div>
         )}
