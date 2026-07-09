@@ -82,7 +82,7 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
         </div>
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: 11, letterSpacing: "0.3em", color: "#5f7573",
+          fontSize: 11, letterSpacing: "0.3em", color: "#5f7075",
           marginTop: 6, paddingLeft: "0.3em",
           textShadow: "0 1px 4px rgba(0,0,0,0.9)",
         }}>
@@ -111,7 +111,7 @@ export default function MainMenu({ gameExists, confirmNew, afterEnding = false, 
                 fontFamily: "'Courier New', ui-monospace, monospace",
                 fontSize: "clamp(17px, 4.6vw, 22px)",
                 letterSpacing: "0.14em",
-                color: on ? "#eef4ee" : "#9db0a6",
+                color: on ? "#eef0f4" : "#9db0a6",
                 textShadow: on ? "0 0 12px rgba(150,200,170,0.4)" : "0 1px 3px rgba(0,0,0,0.8)",
                 transition: "all 120ms ease",
                 width: "fit-content", minWidth: 220,

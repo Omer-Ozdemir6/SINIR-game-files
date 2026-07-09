@@ -68,7 +68,7 @@ export function FuseOverlay({ title, marker, hits, needed, msg, done, onTap, onC
           <div style={{ ...S.fuseMarkerEl, left: "calc(" + marker + "% - 2px)" }} />
         </div>
         {msg && (
-          <div style={{ ...S.keypadMsg, color: msg.ok ? "#7fae86" : "#c23b2e" }}>{msg.text}</div>
+          <div style={{ ...S.keypadMsg, color: msg.ok ? "#7f9eb5" : "#c23b2e" }}>{msg.text}</div>
         )}
         <button className="s1-btn s1-key" style={S.bigActionBtn} onClick={onTap}>
           {done ? t("mech.fuseDone") : t("mech.fuseTap", { a: hits, b: needed })}

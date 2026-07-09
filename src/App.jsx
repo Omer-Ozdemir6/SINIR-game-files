@@ -226,10 +226,12 @@ export default function App() {
 
   const readingDelayFor = (kind, text) => {
     const len = String(text || "").length;
-    if (kind === "system") return Math.min(1800, Math.max(750, len * 12));
-    if (kind === "alert") return Math.min(2600, Math.max(1000, len * 16));
-    if (kind === "anons") return Math.min(5200, Math.max(1700, len * 22));
-    return Math.min(4800, Math.max(1300, len * 19));
+    if (kind === "system") return Math.min(3000, Math.max(1000, len * 20));
+    if (kind === "alert") return Math.min(4500, Math.max(1500, len * 28));
+    if (kind === "anons") return Math.min(8000, Math.max(2500, len * 35));
+    // Regular narration & dialogue: slow it down to len * 42 with a comfortable 9.5s max cap,
+    // so players have ample time to read, and fast readers can tap to skip.
+    return Math.min(9500, Math.max(2200, len * 42));
   };
 
   const typeLine = (kind, text, runId, speed = 26) =>
@@ -335,7 +337,7 @@ export default function App() {
     showToast("▼", t("eng.darkStart"), "#c23b2e");
 
     // İlk kısa devre kıvılcımı ve ekran titremesi
-    AudioSys.playSample("glitch", 0.7);
+    AudioSys.burst(500);
     setGlitching(true);
     later(() => setGlitching(false), 500);
 
@@ -345,7 +347,7 @@ export default function App() {
     // 4.8 saniyede bir CSS animasyonuyla senkron şekilde kısa devre ve pırpır
     darkSfxIntRef.current = setInterval(() => {
       if (batteryRef.current > 0 || modeRef.current !== "game" || screenRef.current) return;
-      AudioSys.playSample("glitch", 0.75);
+      AudioSys.burst(600);
       setGlitching(true);
       later(() => setGlitching(false), 600);
     }, 4800);
@@ -622,7 +624,7 @@ export default function App() {
     setSparesBoth(sparesRef.current - 1);
     setBatteryBoth(100);
     AudioSys.pickup();
-    showToast("⚡", t("eng.swapped"), "#7fae86");
+    showToast("⚡", t("eng.swapped"), "#7f9eb5");
   };
 
   // oyuncu bulunan pili almayı seçti
@@ -634,7 +636,7 @@ export default function App() {
     if (gained > 0) {
       setSparesBoth(after);
       AudioSys.pickup();
-      showToast("▲", t("eng.spareGain", { n: gained }), "#7fae86");
+      showToast("▲", t("eng.spareGain", { n: gained }), "#7f9eb5");
     } else {
       // yer yok
       AudioSys.blipSfx(300);
@@ -919,12 +921,12 @@ export default function App() {
 
   /* ---------------- NEFES TUTMA (ADRENALİN KONTROLÜ) ---------------- */
 
-  const finishBreath = (target) => {
+  const finishBreath = useCallback((target) => {
     AudioSys.heart(null);
     setInteraction(null);
     setBreath(null);
     playNode(target);
-  };
+  }, [playNode]);
 
   useEffect(() => {
     if (interaction?.kind !== "breath") {
@@ -1540,6 +1542,111 @@ export default function App() {
       {/* Ölüm */}
       {dying && <div style={S.dyingVignette} className="s1-dying" />}
       {death && <DeathOverlay death={death} onRespawn={respawn} />}
+
+      {/* Fiziksel Kırık Ekran Camı Efekti (Outlast Miles kamerası tarzı) */}
+      {mode === "game" && !screen && !openItem && flags.tabletKirik && (
+        <svg
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 10000,
+          }}
+          viewBox="0 0 1000 600"
+          preserveAspectRatio="none"
+        >
+          {/* Ana çarpışma noktası sağ altta (940, 560) */}
+          {/* 1. Ana hat — sola yukarı uzanan en belirgin çatlak */}
+          <path
+            d="M 940,560 L 870,520 L 780,460 L 670,400 L 520,340 L 340,290 L 140,260"
+            stroke="rgba(255,255,255,0.55)"
+            strokeWidth="1.2"
+            fill="none"
+          />
+          {/* 2. Ana hat — yukarı çıkan */}
+          <path
+            d="M 940,560 L 920,470 L 890,380 L 840,270 L 780,160 L 720,60"
+            stroke="rgba(255,255,255,0.5)"
+            strokeWidth="1.1"
+            fill="none"
+          />
+          {/* 3. Ana hat — sol alt köşeye doğru */}
+          <path
+            d="M 940,560 L 850,570 L 720,585 L 540,592 L 300,596"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="1.0"
+            fill="none"
+          />
+          {/* 4. Ana hat — sağ üste doğru kısa */}
+          <path
+            d="M 940,560 L 960,480 L 975,390 L 990,280"
+            stroke="rgba(255,255,255,0.45)"
+            strokeWidth="1.0"
+            fill="none"
+          />
+          {/* 5. Kısa çapraz hat */}
+          <path
+            d="M 940,560 L 895,545 L 830,530"
+            stroke="rgba(255,255,255,0.38)"
+            strokeWidth="0.8"
+            fill="none"
+          />
+
+          {/* Dallanmalar — ana hatlardan ayrılan ince kollar */}
+          <path d="M 780,460 L 750,500 L 730,520" stroke="rgba(255,255,255,0.28)" strokeWidth="0.7" fill="none" />
+          <path d="M 670,400 L 700,360 L 720,330" stroke="rgba(255,255,255,0.25)" strokeWidth="0.6" fill="none" />
+          <path d="M 520,340 L 530,380 L 510,410" stroke="rgba(255,255,255,0.22)" strokeWidth="0.6" fill="none" />
+          <path d="M 890,380 L 840,370 L 800,380" stroke="rgba(255,255,255,0.25)" strokeWidth="0.6" fill="none" />
+          <path d="M 840,270 L 880,250 L 910,220" stroke="rgba(255,255,255,0.22)" strokeWidth="0.6" fill="none" />
+          <path d="M 850,570 L 860,590 L 870,598" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" fill="none" />
+          <path d="M 960,480 L 980,470 L 998,450" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" fill="none" />
+
+          {/* Örümcek ağı halkaları — darbe merkezinin etrafında eğri çizgiler */}
+          <path
+            d="M 920,540 Q 950,530 960,550"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="0.8"
+            fill="none"
+          />
+          <path
+            d="M 900,525 Q 955,505 975,545"
+            stroke="rgba(255,255,255,0.3)"
+            strokeWidth="0.7"
+            fill="none"
+          />
+          <path
+            d="M 880,510 Q 960,475 988,540"
+            stroke="rgba(255,255,255,0.22)"
+            strokeWidth="0.6"
+            fill="none"
+          />
+
+          {/* Darbe merkezi — küçük kırık cam parçaları */}
+          <polygon
+            points="940,560 950,548 935,543 928,555"
+            fill="rgba(255,255,255,0.12)"
+            stroke="rgba(255,255,255,0.5)"
+            strokeWidth="0.8"
+          />
+          <polygon
+            points="940,560 955,555 950,570 938,568"
+            fill="rgba(255,255,255,0.1)"
+            stroke="rgba(255,255,255,0.45)"
+            strokeWidth="0.7"
+          />
+          <polygon
+            points="940,560 930,568 920,578 932,580"
+            fill="rgba(255,255,255,0.08)"
+            stroke="rgba(255,255,255,0.35)"
+            strokeWidth="0.6"
+          />
+          {/* Darbe noktasında hafif parlama */}
+          <circle cx="940" cy="560" r="3" fill="rgba(255,255,255,0.18)" />
+          <circle cx="940" cy="560" r="8" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+        </svg>
+      )}
     </div>
   );
 }

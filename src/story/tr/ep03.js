@@ -526,8 +526,9 @@ export const EP03 = {
     n_fanus_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Merdivenlerden aşağı çılgınlar gibi atılıyorsun! Merdivenin ortasında Şef ile burun buruna geliyorsun, o iğrenç dikişli yüzünün sıcak salyası yüzüne sıçrıyor! Satırı savuruyor, ceketini yırtıyor ama çevik bir hamleyle kollarının altından sıyrılıp hole yuvarlanıyorsun. Kalbin göğsünü delmek üzere, tablet sarsıntıdan neredeyse elinden düşecek!" },
-        { type: "flag", set: { sefNerede: "sef_odasi" } },
+        { type: "narrate", text: "Merdivenlerden aşağı çılgınlar gibi atılıyorsun! Merdivenin ortasında Şef ile burun buruna geliyorsun, o iğrenç dikişli yüzünün sıcak salyası yüzüne sıçrıyor! Satırı savuruyor, ceketini yırtıyor ama çevik bir hamleyle kollarının altından sıyrılıp hole yuvarlanıyorsun. Kalbin göğsünü delmek üzere, tablet elinden kayıp merdiven demirlerine çarpıyor! Çıtırdayan cam sesiyle birlikte tabletin sol köşesinde büyük bir çatlak hattı uzanıyor..." },
+        { type: "glitch", ms: 900 },
+        { type: "flag", set: { sefNerede: "sef_odasi", tabletKirik: true } },
         { type: "stat", stat: "akil", delta: -12, note: "AKIL -12 — Ölümün nefesini yüzünde hissettin!", noteKind: "alert" },
         { type: "stat", stat: "gurultu", delta: 15 },
       ],

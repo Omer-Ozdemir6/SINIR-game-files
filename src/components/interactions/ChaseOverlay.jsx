@@ -43,14 +43,12 @@ export default function ChaseOverlay({ config, onSuccess, onFail }) {
   useEffect(() => {
     AudioSys.music(config.music || "chase");
     AudioSys.heart(380);
-    AudioSys.burst(120);
 
     const phaseTimer = setInterval(() => {
       setPhaseIndex((p) => {
         const next = p + 1;
         const nextPhase = PHASES[next % PHASES.length];
         if (nextPhase.key === "near") AudioSys.boom();
-        else AudioSys.clank();
         return next;
       });
     }, config.phaseMs || 1450);
@@ -136,7 +134,7 @@ export default function ChaseOverlay({ config, onSuccess, onFail }) {
         </div>
         <div style={S.chaseHint}>{config.hints?.[phase.key] || phase.hint}</div>
 
-        <Meter label={ui.exit} value={progress} color="#7fae86" />
+        <Meter label={ui.exit} value={progress} color="#7f9eb5" />
         <Meter label={ui.danger} value={danger} color="#c23b2e" />
         <Meter label={ui.breath} value={oxygen} color="#d0a64a" />
 

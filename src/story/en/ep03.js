@@ -522,8 +522,9 @@ export const EP03 = {
     n_fanus_kos: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You dash down the stairs like crazy! Halfway down the stairs, you come face to face with the Chef, the hot drool from his disgusting stitched face splattering onto yours! He swings the cleaver, tearing your jacket, but with an agile move, you slip under his arms and roll into the hallway. Your heart is about to pierce your chest, the tablet almost falling from your hand from the impact!" },
-        { type: "flag", set: { sefNerede: "sef_odasi" } },
+        { type: "narrate", text: "You dash down the stairs like crazy! Halfway down the stairs, you come face to face with the Chef, the hot drool from his disgusting stitched face splattering onto yours! He swings the cleaver, tearing your jacket, but with an agile move, you slip under his arms and roll into the hallway. Your heart is about to pierce your chest, the tablet slips from your hands and slams against the iron handrails! With the sound of cracking glass, a large fracture line spreads across the left corner of the screen..." },
+        { type: "glitch", ms: 900 },
+        { type: "flag", set: { sefNerede: "sef_odasi", tabletKirik: true } },
         { type: "stat", stat: "akil", delta: -12, note: "SANITY -12 — You felt the breath of death on your face!", noteKind: "alert" },
         { type: "stat", stat: "gurultu", delta: 15 },
       ],

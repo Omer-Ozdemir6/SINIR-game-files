@@ -9,7 +9,7 @@ const playSwitchSound = () => {
 };
 
 const playResetSound = () => {
-  AudioSys.burst(150);
+  AudioSys.clank();
 };
 
 export default function LightsOverlay({ lights, done, onPress, onReset, onCancel }) {

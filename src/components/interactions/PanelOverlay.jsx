@@ -38,7 +38,7 @@ export default function PanelOverlay({ interaction, flags, msg, onPress, onCance
           <span style={S.panelLightLabel}>{allOk ? t("panel.ready") : t("panel.missing")}</span>
         </div>
         {msg && (
-          <div style={{ ...S.keypadMsg, color: msg.ok ? "#7fae86" : "#d24234" }}>{msg.text}</div>
+          <div style={{ ...S.keypadMsg, color: msg.ok ? "#7f9eb5" : "#d24234" }}>{msg.text}</div>
         )}
         <button className="s1-btn s1-redbtn" style={S.redButton} onClick={onPress} aria-label={t("panel.start")} />
         <div style={S.redButtonLabel}>{t("panel.start")}</div>

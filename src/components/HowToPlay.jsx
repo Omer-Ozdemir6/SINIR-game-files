@@ -25,7 +25,7 @@ export default function HowToPlay({ onClose }) {
         </div>
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: 11, letterSpacing: "0.1em", color: "#5f7573",
+          fontSize: 11, letterSpacing: "0.1em", color: "#5f7075",
           textAlign: "center", marginBottom: 26,
         }}>
           {t("howto.subtitle")}

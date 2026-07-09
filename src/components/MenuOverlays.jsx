@@ -73,7 +73,7 @@ export function SettingsOverlay({ speedIdx, glitchFx, soundOn, hapticsOn, lang, 
                 </button>
               ))}
             </div>
-            <div style={{ fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 9, letterSpacing: "0.06em", color: "#3f5a52", marginTop: 6, lineHeight: 1.6 }}>
+            <div style={{ fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 9, letterSpacing: "0.06em", color: "#3f525a", marginTop: 6, lineHeight: 1.6 }}>
               {t("settings.langNote")}
             </div>
           </div>

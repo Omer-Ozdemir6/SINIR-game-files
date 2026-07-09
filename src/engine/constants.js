@@ -1,5 +1,5 @@
 // Yayın modu: true iken geliştirici araçları (bulmaca testi) gizlenir.
-export const IS_RELEASE = true;
+export const IS_RELEASE = false;
 
 /* SINIR-1 — MOTOR SABİTLERİ
    Bölüme özel veriler (bayraklar, hikaye) src/story/ altındadır;

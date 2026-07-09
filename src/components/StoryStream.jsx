@@ -89,7 +89,7 @@ export default function StoryStream({
       {tapWait && (
         <div style={{
           fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 10,
-          letterSpacing: "0.18em", color: "#5f7573", textAlign: "center",
+          letterSpacing: "0.18em", color: "#5f7075", textAlign: "center",
           padding: "10px 0 4px",
         }}>
           <span className="s1-cursor">▸</span> {t("stream.tap")}

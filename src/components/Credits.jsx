@@ -16,9 +16,9 @@ export default function Credits({ onClose }) {
     let alive = true;
     const el = scrollRef.current;
     if (!el) return;
-    let y = el.parentElement.clientHeight;      // alttan başla
+    
+    let y = window.innerHeight || 800;          // Start from the bottom of the viewport
     el.style.transform = `translateY(${y}px)`;
-    const total = el.scrollHeight;
     const speed = 0.032;                         // px/ms — yavaş, sinematik
 
     let last = performance.now();
@@ -27,7 +27,12 @@ export default function Credits({ onClose }) {
       const dt = now - last; last = now;
       y -= speed * dt;
       el.style.transform = `translateY(${y}px)`;
-      if (y < -total - 60) { if (onClose) onClose(); return; }
+      
+      const currentTotal = el.scrollHeight || 1000;
+      if (y < -currentTotal - 100) { 
+        if (onClose) onClose(); 
+        return; 
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -67,7 +72,7 @@ export default function Credits({ onClose }) {
 
           {/* slogan */}
           <div style={{
-            fontSize: 11, letterSpacing: "0.12em", color: "#5f7573",
+            fontSize: 11, letterSpacing: "0.12em", color: "#5f7075",
             marginTop: 14, marginBottom: 60, padding: "0 20px",
           }}>{t("credits.tagline")}</div>
 

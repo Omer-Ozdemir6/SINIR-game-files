@@ -13,8 +13,10 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   // 3 rhythm variations: 0 = Steady, 1 = Accelerating Panic, 2 = Double Thumps (Doublets)
   const rhythmType = nodeHash % 3;
 
-  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed
-  const scrollDuration = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
+  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed.
+  // Speed is also scaled by adrenaline level (notes scroll faster when panicking).
+  const baseScroll = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
+  const scrollDuration = baseScroll * (1 - (adrenaline / 100) * 0.32);
 
   const [gameStarted, setGameStarted] = useState(() => {
     try {
@@ -33,6 +35,14 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const adrenalineRef = useRef(30);
   const startTimeRef = useRef(0);
   const animationFrameId = useRef(null);
+
+  const onSuccessRef = useRef(onSuccess);
+  const onFailRef = useRef(onFail);
+
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+    onFailRef.current = onFail;
+  }, [onSuccess, onFail]);
 
   // Generate heartbeat notes based on the chosen rhythm template
   useEffect(() => {
@@ -117,6 +127,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
       });
 
       if (adrenalineChanged) {
+        spikesRef.current = updatedSpikes;
         setAdrenaline(adrenalineRef.current);
         setSpikes([...updatedSpikes]);
       }
@@ -126,7 +137,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
         gameStartedRef.current = false;
         AudioSys.heart(null);
         AudioSys.blipSfx(100); // Death sound
-        onFail(failTo);
+        if (onFailRef.current) onFailRef.current(failTo);
         return;
       }
 
@@ -134,7 +145,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
       if (elapsed >= holdMs + 1000) {
         gameStartedRef.current = false;
         AudioSys.heart(null);
-        onSuccess(successTo);
+        if (onSuccessRef.current) onSuccessRef.current(successTo);
         return;
       }
 
@@ -149,7 +160,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [gameStarted, holdMs, failTo, successTo, onFail, onSuccess]);
+  }, [gameStarted, holdMs, failTo, successTo]);
 
   // Attempt to hit the closest active note
   const registerHit = useCallback(() => {
@@ -246,9 +257,18 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     );
   }
 
+  // Calculate visual jitter based on adrenaline level to simulate panic camera shake
+  const jitterX = adrenaline > 70 ? (Math.random() - 0.5) * 8.5 : adrenaline > 45 ? (Math.random() - 0.5) * 3 : 0;
+  const jitterY = adrenaline > 70 ? (Math.random() - 0.5) * 8.5 : adrenaline > 45 ? (Math.random() - 0.5) * 3 : 0;
+  const jitterRotate = adrenaline > 70 ? (Math.random() - 0.5) * 2.5 : 0;
+  const panelTransform = `translate(${jitterX}px, ${jitterY}px) rotate(${jitterRotate}deg)`;
+
+  // Make the target zone flicker under high adrenaline to raise difficulty
+  const targetFlicker = adrenaline > 75 && Math.random() > 0.6 ? 0.35 : 1;
+
   return (
     <div style={styles.overlayDim} onPointerDown={(e) => { e.stopPropagation(); registerHit(); }}>
-      <div style={styles.gamePanel} onClick={(e) => e.stopPropagation()}>
+      <div style={{ ...styles.gamePanel, transform: panelTransform }} onClick={(e) => e.stopPropagation()}>
         <div style={styles.gameHeader}>
           <span style={styles.gameTitle}>{t("breath.title")}</span>
           <span style={{
@@ -270,7 +290,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
             <div style={{
               ...styles.meterFill,
               width: `${adrenaline}%`,
-              backgroundColor: adrenaline > 70 ? "#c23b2e" : adrenaline > 40 ? "#c79a52" : "#7fae86",
+              backgroundColor: adrenaline > 70 ? "#c23b2e" : adrenaline > 40 ? "#c79a52" : "#7f9eb5",
               boxShadow: adrenaline > 70 ? "0 0 12px #c23b2e" : "none",
             }} />
           </div>
@@ -281,15 +301,16 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
           {/* Target Zone */}
           <div style={{
             ...styles.targetZone,
-            borderColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#454a3f",
-            boxShadow: flash === "hit" ? "inset 0 0 18px rgba(127,174,134,0.5), 0 0 15px rgba(127,174,134,0.3)" 
+            opacity: targetFlicker,
+            borderColor: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#454a3f",
+            boxShadow: flash === "hit" ? "inset 0 0 18px rgba(127,174,134,0.5), 0 0 15px rgba(127,148,174,0.3)" 
                      : flash === "miss" ? "inset 0 0 18px rgba(194,59,46,0.5), 0 0 15px rgba(194,59,46,0.3)" 
                      : "none",
             backgroundColor: flash === "hit" ? "rgba(127,174,134,0.08)" : flash === "miss" ? "rgba(194,59,46,0.08)" : "rgba(0,0,0,0.15)",
           }}>
             <div style={{
               ...styles.targetLine,
-              backgroundColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#566052",
+              backgroundColor: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#525a60",
             }} />
           </div>
 
@@ -324,7 +345,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
                   <path
                     d="M 0 32 L 12 32 L 16 48 L 21 8 L 26 56 L 30 32 L 42 32"
                     fill="none"
-                    stroke={s.hit ? "#7fae86" : s.missed ? "#c23b2e" : "#ffffff"}
+                    stroke={s.hit ? "#7f9eb5" : s.missed ? "#c23b2e" : "#ffffff"}
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -345,9 +366,9 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
             fontSize: "12px",
             letterSpacing: "0.12em",
             transform: flash ? "scale(0.92)" : "scale(1)",
-            borderColor: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#566052",
-            color: flash === "hit" ? "#7fae86" : flash === "miss" ? "#c23b2e" : "#d7d0b8",
-            boxShadow: flash === "hit" ? "0 0 15px rgba(127,174,134,0.3)" : "none",
+            borderColor: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#525a60",
+            color: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#d7d0b8",
+            boxShadow: flash === "hit" ? "0 0 15px rgba(127,148,174,0.3)" : "none",
           }}>
             👆 {t("lang") === "tr" ? "DOKUN" : "TAP"}
           </div>
@@ -448,7 +469,7 @@ const styles = {
   },
   previewTargetLine: {
     width: "1.5px",
-    backgroundColor: "#7fae86",
+    backgroundColor: "#7f9eb5",
     height: "100%",
   },
   previewHeartbeat: {
@@ -476,7 +497,7 @@ const styles = {
   },
   startBtn: {
     padding: "14px",
-    backgroundColor: "#7fae86",
+    backgroundColor: "#7f9eb5",
     border: "none",
     color: "#050706",
     fontWeight: "bold",
@@ -484,7 +505,7 @@ const styles = {
     letterSpacing: "0.15em",
     fontFamily: "'Courier New', monospace",
     cursor: "pointer",
-    boxShadow: "0 8px 20px rgba(127,174,134,0.3)",
+    boxShadow: "0 8px 20px rgba(127,148,174,0.3)",
     transition: "background-color 0.2s",
   },
   gamePanel: {

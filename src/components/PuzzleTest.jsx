@@ -122,7 +122,7 @@ export default function PuzzleTest({ onBack, onDemo }) {
           <div style={{
             fontFamily: "'Courier New', ui-monospace, monospace", fontSize: 12,
             letterSpacing: "0.12em", marginTop: 24,
-            color: msg.ok ? "#7fae86" : "#c23b2e",
+            color: msg.ok ? "#7f9eb5" : "#c23b2e",
           }}>
             {msg.text}
           </div>

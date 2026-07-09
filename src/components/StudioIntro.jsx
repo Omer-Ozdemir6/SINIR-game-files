@@ -42,16 +42,16 @@ export default function StudioIntro({ onDone }) {
       {phase === "pre" && (
         <div style={{
           position: "absolute", inset: 0, zIndex: 0,
-          background: "radial-gradient(ellipse at 48% 48%, rgba(47,68,37,0.78) 0%, rgba(20,31,18,0.78) 38%, rgba(3,6,5,0.98) 100%)",
+          background: "radial-gradient(ellipse at 48% 48%, rgba(37,50,68,0.78) 0%, rgba(18,24,31,0.78) 38%, rgba(3,5,6,0.98) 100%)",
           overflow: "hidden",
         }} className="s1-fadein">
           <div style={{
             position: "absolute", inset: 0,
             background: [
-              "radial-gradient(circle at 14% 18%, rgba(210,225,205,0.12), transparent 4%)",
-              "radial-gradient(circle at 72% 16%, rgba(210,225,205,0.09), transparent 5%)",
-              "radial-gradient(circle at 82% 66%, rgba(180,205,170,0.12), transparent 7%)",
-              "radial-gradient(circle at 38% 66%, rgba(210,225,205,0.08), transparent 5%)",
+              "radial-gradient(circle at 14% 18%, rgba(205,215,225,0.12), transparent 4%)",
+              "radial-gradient(circle at 72% 16%, rgba(205,215,225,0.09), transparent 5%)",
+              "radial-gradient(circle at 82% 66%, rgba(170,190,205,0.12), transparent 7%)",
+              "radial-gradient(circle at 38% 66%, rgba(205,215,225,0.08), transparent 5%)",
               "linear-gradient(90deg, rgba(0,0,0,0.55), transparent 18%, transparent 82%, rgba(0,0,0,0.65))",
             ].join(", "),
             filter: "blur(1px)",
@@ -59,7 +59,7 @@ export default function StudioIntro({ onDone }) {
           }} />
           <div style={{
             position: "absolute", inset: 0,
-            background: "repeating-radial-gradient(circle at 45% 45%, rgba(220,235,215,0.09) 0 1px, transparent 1px 7px)",
+            background: "repeating-radial-gradient(circle at 45% 45%, rgba(215,225,235,0.09) 0 1px, transparent 1px 7px)",
             opacity: 0.12,
             mixBlendMode: "screen",
           }} />
@@ -67,11 +67,11 @@ export default function StudioIntro({ onDone }) {
             position: "absolute", left: "6%", right: "6%", top: "43%",
             display: "flex", alignItems: "center", justifyContent: "center",
             gap: "clamp(18px, 6.5vw, 86px)",
-            color: "rgba(225,245,220,0.86)",
+            color: "rgba(220,230,245,0.86)",
             fontFamily: "'Courier New', ui-monospace, monospace",
             fontSize: "clamp(24px, 5vw, 56px)",
             letterSpacing: "0.2em",
-            textShadow: "0 0 12px rgba(210,245,210,0.42), 0 0 2px rgba(255,255,255,0.65)",
+            textShadow: "0 0 12px rgba(210,220,245,0.42), 0 0 2px rgba(255,255,255,0.65)",
             filter: "blur(0.15px)",
           }}>
             {["P", "E", "R", "I", "S", "H", "E", "D"].map((ch, i) => (
@@ -85,13 +85,13 @@ export default function StudioIntro({ onDone }) {
             position: "absolute", left: "50%", top: "38%",
             width: 86, height: 122, transform: "translate(-50%, -50%)",
             opacity: 0.72,
-            filter: "drop-shadow(0 0 9px rgba(220,245,220,0.5))",
+            filter: "drop-shadow(0 0 9px rgba(210,225,245,0.5))",
           }}>
             <svg viewBox="0 0 90 130" style={{ width: "100%", height: "100%" }}>
-              <path d="M45 8 L45 118 M25 80 L65 80 M31 72 L59 72 M36 64 L54 64" stroke="#e5f4df" strokeWidth="3" strokeLinecap="round" opacity="0.82" />
-              <path d="M45 14 C36 28 42 38 35 52 C49 45 42 28 55 17" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.55" />
-              <path d="M20 90 C32 82 58 82 70 90 M24 98 C38 92 52 92 66 98" fill="none" stroke="#e5f4df" strokeWidth="2" opacity="0.7" />
-              <path d="M45 8 L45 118" stroke="#e5f4df" strokeWidth="1" strokeDasharray="2 4" opacity="0.9" />
+              <path d="M45 8 L45 118 M25 80 L65 80 M31 72 L59 72 M36 64 L54 64" stroke="#dfe8f4" strokeWidth="3" strokeLinecap="round" opacity="0.82" />
+              <path d="M45 14 C36 28 42 38 35 52 C49 45 42 28 55 17" fill="none" stroke="#dfe8f4" strokeWidth="2" opacity="0.55" />
+              <path d="M20 90 C32 82 58 82 70 90 M24 98 C38 92 52 92 66 98" fill="none" stroke="#dfe8f4" strokeWidth="2" opacity="0.7" />
+              <path d="M45 8 L45 118" stroke="#dfe8f4" strokeWidth="1" strokeDasharray="2 4" opacity="0.9" />
             </svg>
           </div>
           <div style={{

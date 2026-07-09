@@ -10,17 +10,17 @@ export { mono, serif, hand };
 export const styles = {
   root: {
     position: "fixed", inset: 0, backgroundColor: "#04090b",
-    color: "#aebfbc", fontFamily: serif, overflow: "hidden", userSelect: "none",
+    color: "#aebbbf", fontFamily: serif, overflow: "hidden", userSelect: "none",
   },
   gameLayer: {
     position: "absolute", inset: 0, display: "flex", flexDirection: "column",
-    backgroundImage: "radial-gradient(ellipse at 50% 0%, rgba(20,42,46,0.35) 0%, rgba(4,9,11,0) 60%)",
+    backgroundImage: "radial-gradient(ellipse at 50% 0%, rgba(20,36,46,0.35) 0%, rgba(4,9,11,0) 60%)",
   },
 
   menuRoot: {
     position: "fixed", inset: 0, overflow: "hidden", userSelect: "none",
-    backgroundColor: "#050b07",
-    backgroundImage: "radial-gradient(ellipse at 30% 40%, rgba(30,70,45,0.5) 0%, rgba(5,11,7,0) 55%), radial-gradient(ellipse at 75% 70%, rgba(18,45,30,0.45) 0%, rgba(5,11,7,0) 50%)",
+    backgroundColor: "#05070b",
+    backgroundImage: "radial-gradient(ellipse at 30% 40%, rgba(30,45,70,0.5) 0%, rgba(5,7,11,0) 55%), radial-gradient(ellipse at 75% 70%, rgba(18,30,45,0.45) 0%, rgba(5,7,11,0) 50%)",
   },
   menuVignette: {
     position: "absolute", inset: 0, pointerEvents: "none",
@@ -30,44 +30,44 @@ export const styles = {
     position: "relative", height: "100%", display: "flex", flexDirection: "column",
     justifyContent: "center", alignItems: "center", gap: 8,
   },
-  menuTitle: { fontFamily: mono, fontSize: "clamp(28px, 10.5vw, 46px)", letterSpacing: "0.28em", whiteSpace: "nowrap", textAlign: "center", maxWidth: "100%", color: "#dceade", fontWeight: 700, textShadow: "0 0 20px rgba(90,180,120,0.3)" },
-  menuSub: { fontFamily: mono, fontSize: 10, letterSpacing: "0.25em", color: "#4d6e58", marginBottom: 30 },
+  menuTitle: { fontFamily: mono, fontSize: "clamp(28px, 10.5vw, 46px)", letterSpacing: "0.28em", whiteSpace: "nowrap", textAlign: "center", maxWidth: "100%", color: "#dce2ea", fontWeight: 700, textShadow: "0 0 20px rgba(90,120,180,0.3)" },
+  menuSub: { fontFamily: mono, fontSize: 10, letterSpacing: "0.25em", color: "#4d5e6e", marginBottom: 30 },
   mmButtons: { display: "flex", flexDirection: "column", gap: 20, alignItems: "center" },
   mmBtn: {
     fontFamily: mono, fontSize: 19, fontWeight: 700, letterSpacing: "0.22em",
-    color: "#eef4ee", backgroundColor: "transparent", border: "1px solid transparent",
+    color: "#eef0f4", backgroundColor: "transparent", border: "1px solid transparent",
     borderRadius: 999, padding: "10px 30px", cursor: "pointer",
     textShadow: "0 1px 4px rgba(0,0,0,0.9)",
   },
 
   warnRoot: {
-    position: "fixed", inset: 0, backgroundColor: "#070a08",
-    backgroundImage: "radial-gradient(ellipse at 60% 20%, rgba(28,42,34,0.5) 0%, rgba(7,10,8,0) 55%)",
+    position: "fixed", inset: 0, backgroundColor: "#07080a",
+    backgroundImage: "radial-gradient(ellipse at 60% 20%, rgba(28,34,42,0.5) 0%, rgba(7,8,10,0) 55%)",
     display: "flex", flexDirection: "column", justifyContent: "center",
     alignItems: "center", padding: "0 30px", userSelect: "none", gap: 40,
   },
   warnBody: { maxWidth: 560, display: "flex", flexDirection: "column", gap: 26 },
   warnText: {
-    fontFamily: mono, fontSize: 14.5, lineHeight: 1.85, color: "#c9d4c9",
+    fontFamily: mono, fontSize: 14.5, lineHeight: 1.85, color: "#c9d0d4",
     letterSpacing: "0.04em", margin: 0, textShadow: "0 1px 3px rgba(0,0,0,0.9)",
   },
   warnContinue: {
     fontFamily: mono, fontSize: 14, fontWeight: 700, letterSpacing: "0.2em",
-    color: "#eef4ee", backgroundColor: "rgba(0,0,0,0.45)",
-    border: "1px solid #4a5c4e", borderRadius: 999, padding: "10px 34px", cursor: "pointer",
+    color: "#eef0f4", backgroundColor: "rgba(0,0,0,0.45)",
+    border: "1px solid #4a4e5c", borderRadius: 999, padding: "10px 34px", cursor: "pointer",
   },
 
   header: {
     display: "flex", justifyContent: "space-between", alignItems: "center",
-    padding: "8px 12px", borderBottom: "1px solid #10201f",
+    padding: "8px 12px", borderBottom: "1px solid #10171f",
     fontFamily: mono, fontSize: 11, letterSpacing: "0.12em", flexShrink: 0, gap: 8,
   },
   headerLeft: { display: "flex", gap: 8, alignItems: "center" },
   gearBtn: {
-    fontFamily: mono, fontSize: 17, color: "#8ba3a0", backgroundColor: "transparent",
-    border: "1px solid #1b3234", borderRadius: 3, padding: "4px 10px", cursor: "pointer", lineHeight: 1.2,
+    fontFamily: mono, fontSize: 17, color: "#8b9ca3", backgroundColor: "transparent",
+    border: "1px solid #1b2c34", borderRadius: 3, padding: "4px 10px", cursor: "pointer", lineHeight: 1.2,
   },
-  stationTag: { color: "#d7e4e0", fontWeight: 700 },
+  stationTag: { color: "#d7dfe4", fontWeight: 700 },
   sectorTag: { color: "#4d6b6e" },
   headerRight: { display: "flex", gap: 10, alignItems: "center" },
   gaugeCol: { display: "flex", flexDirection: "column", gap: 4 },
@@ -96,8 +96,8 @@ export const styles = {
 
   archiveBtn: {
     fontFamily: mono, fontSize: 10, letterSpacing: "0.1em",
-    padding: "8px 10px", backgroundColor: "transparent", color: "#8ba3a0",
-    border: "1px solid #1b3234", borderRadius: 3, cursor: "pointer",
+    padding: "8px 10px", backgroundColor: "transparent", color: "#8b9ca3",
+    border: "1px solid #1b2c34", borderRadius: 3, cursor: "pointer",
   },
 
   dimLayer: { position: "fixed", inset: 0, zIndex: 6, pointerEvents: "none", transitionProperty: "background-color", transitionDuration: "800ms" },
@@ -122,19 +122,19 @@ export const styles = {
 
   beginBtn: {
     fontFamily: mono, fontSize: 12, letterSpacing: "0.15em", padding: "14px 28px",
-    backgroundColor: "transparent", color: "#d7e4e0", border: "1px solid #2a4548",
+    backgroundColor: "transparent", color: "#d7dfe4", border: "1px solid #2a3e48",
     borderRadius: 3, cursor: "pointer", marginTop: 8,
   },
 
   stream: { flex: 1, overflowY: "auto", padding: "24px 20px 0", maxWidth: 620, width: "100%", margin: "0 auto" },
-  streamTrimNotice: { fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", color: "#485b56", textAlign: "center", padding: "4px 0 10px" },
+  streamTrimNotice: { fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", color: "#48565b", textAlign: "center", padding: "4px 0 10px" },
 
   lineBase: {
-    narrate: { fontSize: 17, lineHeight: 1.75, margin: "0 0 18px", color: "#aebfbc" },
-    ambient: { fontSize: 15, lineHeight: 1.7, margin: "0 0 18px", color: "#5f7573", fontStyle: "italic" },
+    narrate: { fontSize: 17, lineHeight: 1.75, margin: "0 0 18px", color: "#aebbbf" },
+    ambient: { fontSize: 15, lineHeight: 1.7, margin: "0 0 18px", color: "#5f7075", fontStyle: "italic" },
     system: { fontFamily: mono, fontSize: 12, lineHeight: 1.6, margin: "0 0 18px", color: "#c79a52", letterSpacing: "0.05em" },
     alert: { fontFamily: mono, fontSize: 12, lineHeight: 1.6, margin: "0 0 18px", color: "#c05a48", letterSpacing: "0.05em" },
-    choice: { fontFamily: mono, fontSize: 13, lineHeight: 1.6, margin: "0 0 22px", color: "#5f7573" },
+    choice: { fontFamily: mono, fontSize: 13, lineHeight: 1.6, margin: "0 0 22px", color: "#5f7075" },
     anons: { fontFamily: mono, fontSize: 13, lineHeight: 1.75, margin: "0 0 18px", color: "#d9c27a", letterSpacing: "0.06em", textShadow: "0 0 10px rgba(215,190,110,0.25)" },
   },
 
@@ -146,18 +146,18 @@ export const styles = {
   choices: { display: "flex", flexDirection: "column", gap: 10, margin: "6px 0 20px" },
   choiceBtn: {
     fontFamily: mono, fontSize: 13, textAlign: "left", padding: "14px 16px",
-    backgroundColor: "rgba(13,26,27,0.6)", color: "#c3d4d1",
-    border: "1px solid #1b3234", borderRadius: 3, cursor: "pointer", lineHeight: 1.5,
+    backgroundColor: "rgba(13,22,27,0.6)", color: "#c3ced4",
+    border: "1px solid #1b2c34", borderRadius: 3, cursor: "pointer", lineHeight: 1.5,
   },
   choiceLocked: {
     fontFamily: mono, fontSize: 13, textAlign: "left", padding: "14px 16px",
-    backgroundColor: "rgba(10,14,14,0.5)", color: "#48544f",
-    border: "1px dashed #1b2626", borderRadius: 3, cursor: "default", lineHeight: 1.5,
+    backgroundColor: "rgba(10,14,14,0.5)", color: "#484f54",
+    border: "1px dashed #1b2226", borderRadius: 3, cursor: "default", lineHeight: 1.5,
   },
 
   endWrap: { textAlign: "center", padding: "30px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 10 },
-  endTitle: { fontFamily: mono, fontSize: "clamp(16px, 5.5vw, 22px)", letterSpacing: "0.25em", color: "#d7e4e0", textAlign: "center" },
-  endText: { color: "#5f7573", fontStyle: "italic", fontSize: 14, lineHeight: 1.6 },
+  endTitle: { fontFamily: mono, fontSize: "clamp(16px, 5.5vw, 22px)", letterSpacing: "0.25em", color: "#d7dfe4", textAlign: "center" },
+  endText: { color: "#5f7075", fontStyle: "italic", fontSize: 14, lineHeight: 1.6 },
 
   overlayDim: {
     position: "fixed", inset: 0, backgroundColor: "rgba(2,4,5,0.85)",
@@ -179,13 +179,13 @@ export const styles = {
   crtScreen: {
     width: "100%", borderRadius: 4,
     border: "3px solid #140806",
-    backgroundColor: "#0a1d14",
-    backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 2px, transparent 4px), radial-gradient(ellipse at 50% 40%, rgba(80,220,160,0.08) 0%, rgba(0,0,0,0) 70%)",
-    boxShadow: "inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(80,220,160,0.1)",
+    backgroundColor: "#0a141d",
+    backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 2px, transparent 4px), radial-gradient(ellipse at 50% 40%, rgba(80,160,220,0.08) 0%, rgba(0,0,0,0) 70%)",
+    boxShadow: "inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(80,160,220,0.1)",
     padding: "10px 12px",
   },
   crtRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 6px" },
-  crtLabel: { fontFamily: mono, fontSize: 12, letterSpacing: "0.16em", color: "#9fd8bc", textShadow: "0 0 7px rgba(90,220,160,0.55)" },
+  crtLabel: { fontFamily: mono, fontSize: 12, letterSpacing: "0.16em", color: "#9fc4d8", textShadow: "0 0 7px rgba(90,160,220,0.55)" },
   crtMark: { fontFamily: mono, fontSize: 15, fontWeight: 700 },
   panelLightRow: { display: "flex", alignItems: "center", gap: 8 },
   panelLight: { width: 12, height: 12, borderRadius: "50%", border: "2px solid #140806" },
@@ -221,25 +221,25 @@ export const styles = {
   },
   keypadFace: {
     width: "100%", borderRadius: 6, padding: "16px 14px 14px",
-    backgroundColor: "rgba(12,16,15,0.94)", border: "1px solid #202924",
+    backgroundColor: "rgba(12,16,15,0.94)", border: "1px solid #202429",
     boxShadow: "inset 0 0 28px rgba(0,0,0,0.72)",
   },
   keypadHeaderRow: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 12 },
-  keypadTinyLabel: { fontFamily: mono, fontSize: 8, letterSpacing: "0.24em", color: "#60756b", marginBottom: 5 },
-  keypadTitle: { fontFamily: mono, fontSize: 12, letterSpacing: "0.16em", color: "#a8c7ba", lineHeight: 1.4 },
+  keypadTinyLabel: { fontFamily: mono, fontSize: 8, letterSpacing: "0.24em", color: "#606b75", marginBottom: 5 },
+  keypadTitle: { fontFamily: mono, fontSize: 12, letterSpacing: "0.16em", color: "#a8bac7", lineHeight: 1.4 },
   keypadBadge: {
     fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", padding: "5px 7px",
     border: "1px solid #4d4428", backgroundColor: "rgba(0,0,0,0.35)",
   },
   keypadScreen: {
     position: "relative", overflow: "hidden", borderRadius: 5,
-    backgroundColor: "#03100e", border: "1px solid #24544c",
+    backgroundColor: "#03100e", border: "1px solid #243e54",
     padding: "13px 12px 9px", marginBottom: 12,
-    boxShadow: "inset 0 0 22px rgba(0,0,0,0.85), 0 0 20px rgba(42,126,110,0.12)",
+    boxShadow: "inset 0 0 22px rgba(0,0,0,0.85), 0 0 20px rgba(42,110,126,0.12)",
   },
   keypadScreenGlow: {
     position: "absolute", inset: 0, pointerEvents: "none",
-    backgroundImage: "repeating-linear-gradient(0deg, rgba(130,230,200,0.05) 0, rgba(130,230,200,0.05) 1px, transparent 1px, transparent 4px)",
+    backgroundImage: "repeating-linear-gradient(0deg, rgba(130,200,230,0.05) 0, rgba(130,200,230,0.05) 1px, transparent 1px, transparent 4px)",
     opacity: 0.65,
   },
   keypadCodeRow: { position: "relative", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 9 },
@@ -247,10 +247,10 @@ export const styles = {
     height: 48, borderRadius: 4, border: "1px solid rgba(50,90,82,0.45)",
     backgroundColor: "rgba(2,9,8,0.72)", display: "flex", alignItems: "center", justifyContent: "center",
   },
-  keypadDigit: { fontFamily: mono, fontSize: 25, color: "#7fdcc3", width: 22, textAlign: "center", textShadow: "0 0 10px rgba(90,220,190,0.55)" },
+  keypadDigit: { fontFamily: mono, fontSize: 25, color: "#7fbcdc", width: 22, textAlign: "center", textShadow: "0 0 10px rgba(90,190,220,0.55)" },
   keypadProgress: { position: "relative", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginTop: 10 },
   keypadProgressSeg: { height: 3, borderRadius: 2, transitionProperty: "background-color", transitionDuration: "150ms" },
-  keypadSignalLine: { position: "relative", display: "flex", justifyContent: "space-between", marginTop: 8, fontFamily: mono, fontSize: 8, letterSpacing: "0.18em", color: "#60756b" },
+  keypadSignalLine: { position: "relative", display: "flex", justifyContent: "space-between", marginTop: 8, fontFamily: mono, fontSize: 8, letterSpacing: "0.18em", color: "#606b75" },
   keypadMsg: { fontFamily: mono, fontSize: 11, letterSpacing: "0.12em", textAlign: "center", minHeight: 16, marginBottom: 10 },
   keypadBodyGrid: { display: "grid", gridTemplateColumns: "42px 1fr", gap: 12, alignItems: "stretch" },
   keypadWireBay: {
@@ -264,7 +264,7 @@ export const styles = {
     fontFamily: mono, fontSize: 16, padding: "13px 0",
     backgroundColor: "rgba(18,25,24,0.95)",
     backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.22))",
-    color: "#c3d7cf", border: "1px solid #303b36", borderRadius: 4, cursor: "pointer",
+    color: "#c3cfd7", border: "1px solid #303b36", borderRadius: 4, cursor: "pointer",
     boxShadow: "0 3px 0 #070908, inset 0 0 10px rgba(0,0,0,0.45)",
   },
   keyAlt: {
@@ -274,8 +274,8 @@ export const styles = {
   },
   keyEnter: {
     fontFamily: mono, fontSize: 11, padding: "13px 0", backgroundColor: "rgba(16,34,22,0.98)",
-    color: "#9dd9aa", border: "1px solid #2b5735", borderRadius: 4, cursor: "pointer",
-    boxShadow: "0 3px 0 #071007, inset 0 0 12px rgba(60,180,90,0.08)",
+    color: "#9db8d9", border: "1px solid #2b5735", borderRadius: 4, cursor: "pointer",
+    boxShadow: "0 3px 0 #071007, inset 0 0 12px rgba(60,90,180,0.08)",
   },
 
   lightsRow: { display: "flex", gap: 12, justifyContent: "center" },
@@ -286,10 +286,10 @@ export const styles = {
   },
   lightBtn: {
     fontFamily: mono, fontSize: 14, width: 42, padding: "12px 0",
-    backgroundColor: "rgba(13,26,25,0.8)", color: "#b9d4cc",
-    border: "1px solid #1d3a36", borderRadius: 6, cursor: "pointer",
+    backgroundColor: "rgba(13,26,25,0.8)", color: "#b9ccd4",
+    border: "1px solid #1d303a", borderRadius: 6, cursor: "pointer",
   },
-  lightsHintText: { fontFamily: mono, fontSize: 10, color: "#5a6e62", letterSpacing: "0.08em", textAlign: "center", lineHeight: 1.7 },
+  lightsHintText: { fontFamily: mono, fontSize: 10, color: "#5a626e", letterSpacing: "0.08em", textAlign: "center", lineHeight: 1.7 },
 
   /* Vana */
   valveWrap: { padding: 6 },
@@ -306,7 +306,7 @@ export const styles = {
   /* Şalter */
   leverTrack: {
     width: 34, height: 130, borderRadius: 17,
-    backgroundColor: "#0c1210", border: "1px solid #2a3830",
+    backgroundColor: "#0c1012", border: "1px solid #2a3038",
     position: "relative", overflow: "hidden",
   },
   leverArm: {
@@ -318,23 +318,23 @@ export const styles = {
   /* Sigorta */
   fuseTrack: {
     width: "100%", height: 26, borderRadius: 6, position: "relative",
-    backgroundColor: "#0c1210", border: "1px solid #2a3830", overflow: "hidden",
+    backgroundColor: "#0c1012", border: "1px solid #2a3038", overflow: "hidden",
   },
   fuseZone: {
     position: "absolute", left: "40%", width: "20%", top: 0, bottom: 0,
-    backgroundColor: "rgba(127,174,134,0.25)", borderLeft: "1px solid #7fae86", borderRight: "1px solid #7fae86",
+    backgroundColor: "rgba(127,148,174,0.25)", borderLeft: "1px solid #7f9eb5", borderRight: "1px solid #7f9eb5",
   },
   fuseMarkerEl: {
     position: "absolute", top: 0, bottom: 0, width: 4,
     backgroundColor: "#e8d98a", boxShadow: "0 0 8px rgba(232,217,138,0.8)",
   },
 
-  mechProgTrack: { width: "100%", height: 6, backgroundColor: "#0c1210", borderRadius: 3, overflow: "hidden" },
-  mechProgFill: { height: "100%", backgroundColor: "#7fae86", transitionProperty: "width", transitionDuration: "100ms" },
+  mechProgTrack: { width: "100%", height: 6, backgroundColor: "#0c1012", borderRadius: 3, overflow: "hidden" },
+  mechProgFill: { height: "100%", backgroundColor: "#7f9eb5", transitionProperty: "width", transitionDuration: "100ms" },
   bigActionBtn: {
     fontFamily: mono, fontSize: 15, letterSpacing: "0.15em", width: "100%",
-    padding: "16px 0", backgroundColor: "rgba(13,26,25,0.9)", color: "#d7e4e0",
-    border: "1px solid #2a4a44", borderRadius: 8, cursor: "pointer",
+    padding: "16px 0", backgroundColor: "rgba(13,22,27,0.9)", color: "#d7dfe4",
+    border: "1px solid #2a3e4a", borderRadius: 8, cursor: "pointer",
     touchAction: "none",
   },
 
@@ -346,7 +346,7 @@ export const styles = {
     alignItems: "center", gap: 22, padding: "0 30px", textAlign: "center",
     cursor: "pointer", touchAction: "none",
   },
-  breathTitle: { fontFamily: mono, fontSize: 17, letterSpacing: "0.25em", color: "#c9d4c9" },
+  breathTitle: { fontFamily: mono, fontSize: 17, letterSpacing: "0.25em", color: "#c9d0d4" },
   breathPhaseText: { fontFamily: serif, fontStyle: "italic", fontSize: 15, color: "#7a8c88", minHeight: 24 },
   breathBars: { display: "flex", flexDirection: "column", gap: 14, width: "100%", maxWidth: 340 },
   breathBarBlock: { display: "flex", flexDirection: "column", gap: 5, alignItems: "stretch" },
@@ -361,7 +361,7 @@ export const styles = {
   },
   chasePanel: {
     width: "100%", maxWidth: 470, borderRadius: 8,
-    backgroundColor: "rgba(7,10,9,0.98)", border: "1px solid #2c332d",
+    backgroundColor: "rgba(7,10,9,0.98)", border: "1px solid #2c2d33",
     boxShadow: "0 0 70px rgba(0,0,0,0.95), inset 0 0 40px rgba(80,30,20,0.18)",
     padding: "22px 18px", display: "flex", flexDirection: "column",
     gap: 13, alignItems: "center",
@@ -370,8 +370,8 @@ export const styles = {
   chaseEnemy: { fontFamily: serif, fontStyle: "italic", fontSize: 16, color: "#b55a45" },
   chaseCorridor: {
     position: "relative", width: "100%", height: 84, overflow: "hidden",
-    border: "1px solid #25302b", borderRadius: 4, backgroundColor: "#050706",
-    backgroundImage: "repeating-linear-gradient(90deg, rgba(55,65,55,0.12) 0, rgba(55,65,55,0.12) 8px, transparent 8px, transparent 26px), linear-gradient(180deg, rgba(210,180,120,0.05), rgba(0,0,0,0.4))",
+    border: "1px solid #252b30", borderRadius: 4, backgroundColor: "#050706",
+    backgroundImage: "repeating-linear-gradient(90deg, rgba(55,55,65,0.12) 0, rgba(55,55,65,0.12) 8px, transparent 8px, transparent 26px), linear-gradient(180deg, rgba(210,180,120,0.05), rgba(0,0,0,0.4))",
   },
   chaseBeam: {
     position: "absolute", top: 0, bottom: 0, right: "12%", width: "52%",
@@ -386,19 +386,19 @@ export const styles = {
   },
   chasePlayer: {
     position: "absolute", bottom: 14, width: 14, height: 24, borderRadius: 6,
-    backgroundColor: "#7fae86", boxShadow: "0 0 12px rgba(127,174,134,0.35)",
+    backgroundColor: "#7f9eb5", boxShadow: "0 0 12px rgba(127,148,174,0.35)",
     transitionProperty: "left", transitionDuration: "320ms",
   },
   chaseStatusRow: {
     width: "100%", display: "flex", justifyContent: "space-between", gap: 12,
-    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em", color: "#9aa393",
+    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em", color: "#939aa3",
   },
   chaseHint: { minHeight: 18, fontFamily: serif, fontStyle: "italic", fontSize: 14, color: "#a69b82" },
   chaseButtons: { display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 8, width: "100%" },
 
   menuPanel: {
     width: "100%", maxWidth: 520, borderRadius: 14,
-    backgroundColor: "rgba(8,9,7,0.94)", border: "1px solid #23241c",
+    backgroundColor: "rgba(8,9,7,0.94)", border: "1px solid #1c2324",
     boxShadow: "0 0 60px rgba(0,0,0,0.9)",
     padding: "34px 24px 22px", display: "flex", flexDirection: "column",
     alignItems: "center", gap: 26,
@@ -416,7 +416,7 @@ export const styles = {
     borderRadius: 999, cursor: "pointer",
   },
   creditsText: {
-    fontFamily: mono, fontSize: 12, lineHeight: 2, color: "#9aa393",
+    fontFamily: mono, fontSize: 12, lineHeight: 2, color: "#939aa3",
     letterSpacing: "0.08em", textAlign: "center", whiteSpace: "pre-wrap",
   },
 
@@ -425,18 +425,18 @@ export const styles = {
   segRow: { display: "flex", gap: 10 },
   segBtn: {
     fontFamily: mono, fontSize: 11, letterSpacing: "0.12em", padding: "9px 16px",
-    backgroundColor: "transparent", color: "#7d8878",
-    border: "1px solid #26302a", borderRadius: 999, cursor: "pointer",
+    backgroundColor: "transparent", color: "#787d88",
+    border: "1px solid #262a30", borderRadius: 999, cursor: "pointer",
   },
   segActive: {
     fontFamily: mono, fontSize: 11, letterSpacing: "0.12em", padding: "9px 16px",
-    backgroundColor: "rgba(40,60,48,0.5)", color: "#dbe8dc",
-    border: "1px solid #4a6a54", borderRadius: 999, cursor: "pointer",
+    backgroundColor: "rgba(40,48,60,0.5)", color: "#dbdce8",
+    border: "1px solid #4a546a", borderRadius: 999, cursor: "pointer",
   },
 
   listPanel: {
     width: "100%", maxWidth: 560, maxHeight: "82vh", borderRadius: 12,
-    backgroundColor: "rgba(8,9,7,0.94)", border: "1px solid #23241c",
+    backgroundColor: "rgba(8,9,7,0.94)", border: "1px solid #1c2324",
     boxShadow: "0 0 60px rgba(0,0,0,0.9)",
     padding: "22px 20px 16px", display: "flex", flexDirection: "column", gap: 14,
   },
@@ -550,7 +550,7 @@ export const styles = {
   },
   boHoldFill: {
     position: "absolute", left: 0, top: 0, bottom: 0,
-    backgroundColor: "rgba(127,174,134,0.3)",
+    backgroundColor: "rgba(127,148,174,0.3)",
   },
   boHoldText: { position: "relative", fontFamily: mono, fontSize: 12, letterSpacing: "0.15em", color: "#c9b89a" },
 
@@ -558,33 +558,33 @@ export const styles = {
 
   /* Açılış sinematiği — kurumsal posta terminali */
   introRoot: {
-    position: "fixed", inset: 0, backgroundColor: "#050a09", zIndex: 40,
+    position: "fixed", inset: 0, backgroundColor: "#05090a", zIndex: 40,
     display: "flex", flexDirection: "column", justifyContent: "center",
     alignItems: "center", padding: "20px 16px",
     transitionProperty: "opacity", transitionDuration: "1100ms",
   },
   mailWindow: {
     width: "100%", maxWidth: 400, borderRadius: 6, position: "relative",
-    backgroundColor: "#07100e", border: "1px solid #1d3230",
-    boxShadow: "0 0 70px rgba(0,0,0,0.9), inset 0 0 40px rgba(10,30,28,0.35)",
+    backgroundColor: "#070e10", border: "1px solid #1d3032",
+    boxShadow: "0 0 70px rgba(0,0,0,0.9), inset 0 0 40px rgba(10,28,30,0.35)",
     padding: "16px 16px 14px", display: "flex", flexDirection: "column", gap: 10,
     fontFamily: mono, overflow: "hidden",
   },
-  mailTitle: { fontSize: 10, letterSpacing: "0.2em", color: "#4d8a7a", textAlign: "center", paddingBottom: 8, borderBottom: "1px solid #14231f" },
-  mailField: { display: "flex", gap: 8, fontSize: 11, color: "#7fae9c", alignItems: "baseline" },
-  mailFieldLabel: { color: "#3f6b5e", fontSize: 10, letterSpacing: "0.1em", minWidth: 44 },
+  mailTitle: { fontSize: 10, letterSpacing: "0.2em", color: "#4d7a8a", textAlign: "center", paddingBottom: 8, borderBottom: "1px solid #141f23" },
+  mailField: { display: "flex", gap: 8, fontSize: 11, color: "#7f9eae", alignItems: "baseline" },
+  mailFieldLabel: { color: "#3f5e6b", fontSize: 10, letterSpacing: "0.1em", minWidth: 44 },
   mailBody: {
-    minHeight: 150, fontSize: 12.5, lineHeight: 1.8, color: "#9fd8bc",
-    textShadow: "0 0 6px rgba(90,220,160,0.35)", whiteSpace: "pre-wrap",
-    borderTop: "1px solid #14231f", paddingTop: 10,
+    minHeight: 150, fontSize: 12.5, lineHeight: 1.8, color: "#9fc4d8",
+    textShadow: "0 0 6px rgba(90,160,220,0.35)", whiteSpace: "pre-wrap",
+    borderTop: "1px solid #141f23", paddingTop: 10,
   },
-  mailButtons: { display: "flex", justifyContent: "space-between", gap: 10, paddingTop: 10, borderTop: "1px solid #14231f" },
+  mailButtons: { display: "flex", justifyContent: "space-between", gap: 10, paddingTop: 10, borderTop: "1px solid #141f23" },
   mailBtn: {
-    fontFamily: mono, fontSize: 10, letterSpacing: "0.15em", color: "#7fae9c",
-    backgroundColor: "#0b1a16", border: "1px solid #1d3230", borderRadius: 3,
+    fontFamily: mono, fontSize: 10, letterSpacing: "0.15em", color: "#7f9eae",
+    backgroundColor: "#0b161a", border: "1px solid #1d3032", borderRadius: 3,
     padding: "8px 14px", transitionProperty: "background-color, color", transitionDuration: "150ms",
   },
-  mailBtnActive: { backgroundColor: "#1d4436", color: "#d8ffe9" },
+  mailBtnActive: { backgroundColor: "#1d3644", color: "#d8efff" },
   mailStatus: { fontSize: 10, letterSpacing: "0.12em", color: "#c79a52", minHeight: 14, textAlign: "center" },
   mailCursor: {
     position: "absolute", width: 0, height: 0, zIndex: 5,
@@ -613,7 +613,7 @@ export const styles = {
   },
   introSkip: {
     position: "fixed", right: 14, bottom: 14, zIndex: 42,
-    fontFamily: mono, fontSize: 10, letterSpacing: "0.2em", color: "#3f6b5e",
+    fontFamily: mono, fontSize: 10, letterSpacing: "0.2em", color: "#3f5e6b",
     backgroundColor: "transparent", border: "none", padding: 10,
   },
 
@@ -661,21 +661,21 @@ export const styles = {
   /* Radyo konsolu (v8'de eksikti — eklendi) */
   radioPanel: {
     width: "100%", maxWidth: 360, borderRadius: 10,
-    backgroundColor: "rgba(7,12,11,0.97)", border: "1px solid #1d3230",
-    boxShadow: "0 0 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(10,30,28,0.4)",
+    backgroundColor: "rgba(7,12,11,0.97)", border: "1px solid #1d3032",
+    boxShadow: "0 0 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(10,28,30,0.4)",
     padding: "24px 22px 18px", display: "flex", flexDirection: "column",
     alignItems: "center", gap: 16,
   },
   radioFreqDisplay: {
-    fontFamily: mono, fontSize: 34, color: "#7fdcc3",
-    textShadow: "0 0 12px rgba(90,220,190,0.5)", width: "100%", textAlign: "center",
-    padding: "10px 0", backgroundColor: "#050a09", border: "1px solid #16403a", borderRadius: 6,
+    fontFamily: mono, fontSize: 34, color: "#7fbcdc",
+    textShadow: "0 0 12px rgba(90,190,220,0.5)", width: "100%", textAlign: "center",
+    padding: "10px 0", backgroundColor: "#05090a", border: "1px solid #163a40", borderRadius: 6,
   },
-  radioMhz: { fontSize: 14, color: "#4d8a7a" },
+  radioMhz: { fontSize: 14, color: "#4d7a8a" },
   radioSignalRow: { display: "flex", alignItems: "center", gap: 8, width: "100%" },
   radioSignalTrack: { flex: 1, height: 6, backgroundColor: "#0c1718", borderRadius: 3, overflow: "hidden" },
   radioSignalFill: { height: "100%", transitionProperty: "width", transitionDuration: "200ms" },
   radioHint: { fontStyle: "italic", fontSize: 13.5, minHeight: 42, textAlign: "center", lineHeight: 1.65 },
   radioButtons: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, width: "100%" },
-  radioLockText: { fontFamily: mono, fontSize: 10, letterSpacing: "0.15em", color: "#7fae86", textAlign: "center" },
+  radioLockText: { fontFamily: mono, fontSize: 10, letterSpacing: "0.15em", color: "#7f9eb5", textAlign: "center" },
 };

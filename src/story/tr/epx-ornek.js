@@ -35,7 +35,21 @@ export const EPX = {
         { id: "rampa", text: "Aşağı inen karanlık rampaya gir", next: "nx_ambar_giris" },
         { id: "sag", text: "Tütsü kokusunu izle", next: "nx_koridor_dolan" },
         { id: "kapi", text: "Doğruca kapının çarkını dene", next: "nx_kapi_dene" },
+        { id: "test_kirik", text: "[TEST] Tableti Demir Korkuluklara Çarp (Ekranı Kır)", next: "nx_test_ekran_kir" },
       ],
+    },
+
+    nx_test_ekran_kir: {
+      cost: 0,
+      events: [
+        { type: "narrate", text: "Tableti sertçe çelik korkuluğun köşesine çarpıyorsun. Şiddetli bir statik çatırtı duyuluyor..." },
+        { type: "glitch", ms: 900 },
+        { type: "flag", set: { tabletKirik: true } },
+        { type: "narrate", text: "Ekranın sol alt köşesi tuzla buz oldu! Çatlaklar tüm ekrana yayılıyor. (Artık kırık ekranı test edebilirsiniz. Koridora geri dönüyorsunuz.)" }
+      ],
+      choices: [
+        { id: "geri", text: "Koridora geri dön", next: "nx_giris" }
+      ]
     },
 
     /* --- parça 1: revir (soğuk dal) --- */

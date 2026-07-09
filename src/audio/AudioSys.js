@@ -427,8 +427,33 @@ export const AudioSys = {
   },
 
   burst(ms = 160) {
-    // Glitch is kept as a visual effect only; repeated static bursts were too fatiguing during play.
-    return;
+    if (!this.enabled) return;
+    const name = "glitch";
+    const src = SFX_FILES[name];
+    if (src) {
+      try {
+        const list = (this._pool[name] = this._pool[name] || []);
+        let a = list.find((x) => x.paused || x.ended);
+        if (!a) {
+          a = new Audio(src);
+          list.push(a);
+        }
+        a.volume = 0.55;
+        a.currentTime = 0;
+        a.play().catch(() => {});
+        setTimeout(() => {
+          try {
+            a.pause();
+          } catch (e) {}
+        }, ms);
+        return;
+      } catch (e) {}
+    }
+    if (!this.inited) return;
+    try {
+      this.n.burstG.gain.setValueAtTime(0.045, Tone.now());
+      this.n.burstG.gain.exponentialRampToValueAtTime(0.0001, Tone.now() + ms / 1000);
+    } catch (e) {}
   },
 
   blipSfx(freq = 90) {

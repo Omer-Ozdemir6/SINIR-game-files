@@ -27,7 +27,7 @@ export default function LoadingScreen({ onDone }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const R = 30;   // çember yarıçapı
+  const R = 18;   // çember yarıçapı
   const cx = 50, cy = 50;
 
   return (
@@ -39,14 +39,14 @@ export default function LoadingScreen({ onDone }) {
       {/* hafif doku/leke (atmosfer) */}
       <div style={{
         position: "absolute", inset: 0, opacity: 0.5, pointerEvents: "none",
-        background: "radial-gradient(circle at 22% 30%, rgba(60,80,70,0.12) 0%, transparent 30%), radial-gradient(circle at 78% 68%, rgba(50,70,60,0.10) 0%, transparent 28%)",
+        background: "radial-gradient(circle at 22% 30%, rgba(60,70,80,0.12) 0%, transparent 30%), radial-gradient(circle at 78% 68%, rgba(50,60,70,0.10) 0%, transparent 28%)",
       }} />
 
-      <svg width="96" height="96" viewBox="0 0 100 100" style={{
+      <svg width="56" height="56" viewBox="0 0 100 100" style={{
         position: "absolute",
-        right: "clamp(22px, 7vw, 84px)",
-        bottom: "clamp(22px, 7vh, 70px)",
-        filter: "drop-shadow(0 0 6px rgba(0,0,0,0.8))",
+        right: "clamp(18px, 5vw, 60px)",
+        bottom: "clamp(18px, 5vh, 50px)",
+        filter: "drop-shadow(0 0 4px rgba(0,0,0,0.8))",
       }}>
         {Array.from({ length: DOTS }).map((_, i) => {
           const ang = (i / DOTS) * Math.PI * 2 - Math.PI / 2;
@@ -56,7 +56,7 @@ export default function LoadingScreen({ onDone }) {
           let d = (i - active + DOTS) % DOTS;         // ileri mesafe
           const near = Math.min(d, DOTS - d);          // dairesel mesafe
           const bright = Math.max(0.16, 1 - near * 0.22);
-          const rad = 2.6 + (near === 0 ? 2.2 : near === 1 ? 1.0 : 0);
+          const rad = 2.0 + (near === 0 ? 1.6 : near === 1 ? 0.7 : 0);
           return (
             <circle key={i} cx={x} cy={y} r={rad}
               fill="#cdd6cf" opacity={bright} />

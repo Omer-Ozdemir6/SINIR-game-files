@@ -71,7 +71,7 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
             position: "relative",
             height: 66,
             marginTop: 12,
-            border: "1px solid #566052",
+            border: "1px solid #525a60",
             background: "linear-gradient(180deg, #d8cfad, #7f765a)",
             boxShadow: "inset 0 0 18px rgba(0,0,0,0.65)",
             overflow: "hidden",
@@ -93,7 +93,7 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
               top: 4,
               bottom: 5,
               width: 3,
-              background: phase === "cut" ? "#9a3328" : targetGlow ? "#7fae86" : "#211f18",
+              background: phase === "cut" ? "#9a3328" : targetGlow ? "#7f9eb5" : "#211f18",
               boxShadow: targetGlow ? "0 0 10px rgba(127,174,134,0.75)" : "0 0 8px rgba(0,0,0,0.5)",
               transition: "left 160ms ease",
             }} />
@@ -141,7 +141,7 @@ export default function RadioOverlay({ freq, target = 432, phase, signal, lock =
 
         {phase === "lock" && <div style={S.radioLockText}>{t("radio.locked")}</div>}
         {phase === "cut" && <div style={{ ...S.radioLockText, color: "#c23b2e" }}>{t("radio.cut")}</div>}
-        {phase === "transmit" && <div style={{ ...S.radioLockText, color: "#7fae86" }}>{t("radio.transmit")}</div>}
+        {phase === "transmit" && <div style={{ ...S.radioLockText, color: "#7f9eb5" }}>{t("radio.transmit")}</div>}
       </div>
     </div>
   );

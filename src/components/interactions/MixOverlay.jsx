@@ -6,8 +6,8 @@ import { t } from "../../i18n";
 const mono = "'Courier New', ui-monospace, monospace";
 
 const P = {
-  hint: { fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", color: "#5f7573", textAlign: "center", lineHeight: 1.7 },
-  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7fae86", textAlign: "center", minHeight: 15 },
+  hint: { fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", color: "#5f7075", textAlign: "center", lineHeight: 1.7 },
+  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7f9eb5", textAlign: "center", minHeight: 15 },
   msgBad: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#c23b2e", textAlign: "center", minHeight: 15 },
   ctrlRow: { display: "flex", gap: 8, width: "100%", justifyContent: "center", flexWrap: "wrap" },
 };
@@ -87,7 +87,7 @@ export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
             <line key={i} x1="140" x2="148" y1={112 - ((i + 1) / capacity) * 96} y2={112 - ((i + 1) / capacity) * 96}
               stroke="#2a4a42" strokeWidth="1.5" />
           ))}
-          <text x="158" y="70" fontFamily={mono} fontSize="9" fill="#5f7573">{total}/{capacity}</text>
+          <text x="158" y="70" fontFamily={mono} fontSize="9" fill="#5f7075">{total}/{capacity}</text>
         </svg>
         <div style={P.ctrlRow}>
           {bottles.map((bt) => (

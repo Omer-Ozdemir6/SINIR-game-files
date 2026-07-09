@@ -20,8 +20,8 @@ import { t } from "../../i18n";
 const mono = "'Courier New', ui-monospace, monospace";
 
 const P = {
-  hint: { fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", color: "#5f7573", textAlign: "center", lineHeight: 1.7 },
-  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7fae86", textAlign: "center", minHeight: 15 },
+  hint: { fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", color: "#5f7075", textAlign: "center", lineHeight: 1.7 },
+  msgOk: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#7f9eb5", textAlign: "center", minHeight: 15 },
   msgBad: { fontFamily: mono, fontSize: 11, letterSpacing: "0.15em", color: "#c23b2e", textAlign: "center", minHeight: 15 },
   ctrlRow: { display: "flex", gap: 8, width: "100%", justifyContent: "center", flexWrap: "wrap" },
 };
@@ -338,7 +338,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
               <path d={`M13 ${yOf(i, cables.length)} H35 M18 ${yOf(i, cables.length) - 6} L18 ${yOf(i, cables.length) + 6} M26 ${yOf(i, cables.length) - 6} L26 ${yOf(i, cables.length) + 6}`}
                 stroke={c.color} strokeWidth="2" opacity={conn[c.id] ? 0.35 : 0.95} strokeLinecap="round" />
               <text x="30" y={yOf(i, cables.length) + 26} textAnchor="middle"
-                fontFamily={mono} fontSize="8" fill="#5f7573">{c.label}</text>
+                fontFamily={mono} fontSize="8" fill="#5f7075">{c.label}</text>
             </g>
           ))}
           {ports.map((p, i) => {
@@ -366,7 +366,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
                 )}
                 <text x="229" y={yOf(i, ports.length) + 4} textAnchor="middle"
                   fontFamily={mono} fontSize={sparking ? "12" : "8"}
-                  fill={sparking ? "#f0a060" : isExact ? "#e8e4d8" : "#7fae9c"}>
+                  fill={sparking ? "#f0a060" : isExact ? "#e8e4d8" : "#7f9eae"}>
                   {sparking ? "⚡" : p.label}
                 </text>
               </g>
@@ -482,7 +482,7 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
             );
           })}
           <text x="0" y="5" textAnchor="middle" fontFamily={mono} fontSize="11"
-            fill={done ? "#7fae86" : "#3f5a52"}>
+            fill={done ? "#7f9eb5" : "#3f525a"}>
             {progress}/{seq.length}
           </text>
         </svg>
@@ -715,7 +715,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
                 aspectRatio: "1", cursor: "pointer",
                 clipPath: "polygon(8% 0, 88% 4%, 100% 24%, 92% 92%, 20% 100%, 0 78%, 4% 16%)",
                 backgroundColor: "#c9c3b3",
-                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7fae8644" : "1px solid #4a3a28",
+                outline: sel === pos ? "2px solid #d8b34a" : right && !done ? "1px solid #7f9eb544" : "1px solid #4a3a28",
                 overflow: "hidden", transition: "outline 150ms, transform 150ms",
                 transform: sel === pos ? "translateY(-2px)" : "none",
                 boxShadow: "inset 0 0 12px rgba(0,0,0,0.35)",
@@ -829,7 +829,7 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
         <div style={S.keypadTitle}>{config.title || t("puzzle.colorTitle")}</div>
         {config.showTarget && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-            <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: "#5f7573" }}>
+            <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: "#5f7075" }}>
               {t("puzzle.colorTarget")}
             </span>
             {grid(config.target, 90, false)}
