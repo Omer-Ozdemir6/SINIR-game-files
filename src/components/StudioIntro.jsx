@@ -1,40 +1,47 @@
-import { useState, useEffect } from "react";
-import { AudioSys } from "../audio/AudioSys";
+import { useState, useEffect, useRef } from "react";
 
 export default function StudioIntro({ onDone }) {
-  const [phase, setPhase] = useState("pre"); // pre | black | in | hold | out
-  const [glitch, setGlitch] = useState(false);
+  const [phase, setPhase] = useState("pre"); // pre | video
+  const videoRef = useRef(null);
 
   useEffect(() => {
     let alive = true;
-    const seq = [
-      [4200, () => setPhase("black")],
-      [5600, () => setPhase("in")],
-      [7200, () => setPhase("hold")],
-      [8200, () => { setGlitch(true); AudioSys.burst?.(140); }],
-      [8420, () => setGlitch(false)],
-      [9400, () => { setGlitch(true); AudioSys.burst?.(120); }],
-      [9650, () => setGlitch(false)],
-      [10800, () => setPhase("out")],
-      [11800, () => { if (alive) onDone(); }],
-    ];
-    const timers = seq.map(([ms, fn]) => setTimeout(() => { if (alive) fn(); }, ms));
-    return () => { alive = false; timers.forEach(clearTimeout); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Show the first logo (PERISHED) for 4 seconds, then transition to the studio video
+    const timer = setTimeout(() => {
+      if (alive) {
+        setPhase("video");
+      }
+    }, 4000);
+
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
   }, []);
 
-  const cls = phase === "out" ? "s1-fadeout" : "";
-  const logoCls = phase === "in" ? "s1-fadein" : "";
-  const visible = phase !== "pre" && phase !== "black";
+  useEffect(() => {
+    if (phase === "video" && videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.log("Autoplay blocked, muting video to play...");
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(e => console.error("Video play failed:", e));
+        }
+      });
+    }
+  }, [phase]);
 
   return (
     <div
       onClick={onDone}
-      className={cls + (glitch ? " s1-glitch" : "")}
       style={{
-        position: "fixed", inset: 0, zIndex: 60,
+        position: "fixed",
+        inset: 0,
+        zIndex: 60,
         background: "#000",
-        display: "flex", alignItems: "center", justifyContent: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         cursor: "pointer",
         overflow: "hidden",
       }}
@@ -101,48 +108,24 @@ export default function StudioIntro({ onDone }) {
         </div>
       )}
 
-      {glitch && (
-        <>
-          <div style={{
-            position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-            background: "repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 2px, transparent 4px)",
-            mixBlendMode: "screen",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
-            background: "linear-gradient(90deg, rgba(194,59,46,0.12), transparent 30%, transparent 70%, rgba(58,122,154,0.12))",
-            transform: "translateX(4px)",
-          }} />
-          <div style={{
-            position: "absolute", left: 0, right: 0, top: "38%", height: "8%", zIndex: 4,
-            background: "rgba(0,0,0,0.6)", transform: "translateX(-8px)", pointerEvents: "none",
-          }} />
-          <div style={{
-            position: "absolute", left: 0, right: 0, top: "62%", height: "4%", zIndex: 4,
-            background: "rgba(255,255,255,0.05)", transform: "translateX(10px)", pointerEvents: "none",
-          }} />
-        </>
-      )}
-
-      <div
-        className={logoCls}
-        style={{
-          position: "relative", zIndex: 1,
-          width: "min(52vw, 300px)",
-          opacity: visible ? undefined : 0,
-          filter: glitch
-            ? "drop-shadow(3px 0 #c23b2e) drop-shadow(-3px 0 #3a7a9a)"
-            : "none",
-          transform: glitch ? "translateX(-3px) skewX(-1deg)" : "none",
-        }}
-      >
-        <img
-          src="/red-doors-studio-logo.jpeg"
-          alt="RED DOORS"
-          style={{ width: "100%", height: "auto", display: "block" }}
-          draggable={false}
+      {phase === "video" && (
+        <video
+          ref={videoRef}
+          src="/studio_intro.mp4"
+          playsInline
+          onEnded={onDone}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            objectPosition: "center",
+            backgroundColor: "#000",
+          }}
         />
-      </div>
+      )}
     </div>
   );
 }

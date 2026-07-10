@@ -160,20 +160,22 @@ export const styles = {
   endText: { color: "#5f7075", fontStyle: "italic", fontSize: 14, lineHeight: 1.6 },
 
   overlayDim: {
-    position: "fixed", inset: 0, backgroundColor: "rgba(2,4,5,0.85)",
+    position: "fixed", inset: 0, backgroundColor: "#020405",
     display: "flex", justifyContent: "center", alignItems: "center",
-    padding: "20px 14px", zIndex: 20,
+    padding: 0, zIndex: 20,
   },
 
   /* Ana kontrol paneli — kırmızı acil ışığı altında metal pano */
   ironPanel: {
-    width: "100%", maxWidth: 330, borderRadius: 6,
+    position: "absolute", inset: 0,
+    width: "100%", height: "100%", maxWidth: "none", borderRadius: 0,
     backgroundColor: "#240d09",
     backgroundImage: "linear-gradient(165deg, rgba(120,34,22,0.55) 0%, rgba(24,7,5,0.95) 62%), radial-gradient(ellipse at 50% -10%, rgba(220,60,35,0.28) 0%, rgba(0,0,0,0) 55%)",
-    border: "1px solid #4a1a10",
+    border: "none",
     boxShadow: "0 0 80px rgba(150,30,12,0.22), 0 0 40px rgba(0,0,0,0.9), inset 0 0 34px rgba(0,0,0,0.75)",
-    padding: "24px 24px 16px", display: "flex", flexDirection: "column",
-    alignItems: "center", gap: 15,
+    padding: "24px 16px 20px", display: "flex", flexDirection: "column",
+    alignItems: "center", justifyContent: "center", gap: 15,
+    boxSizing: "border-box", overflowY: "auto",
   },
   ironTitle: { fontFamily: mono, fontSize: 10, letterSpacing: "0.22em", color: "#c98576", textAlign: "center", textShadow: "0 0 8px rgba(200,60,30,0.4)" },
   crtScreen: {
@@ -201,13 +203,15 @@ export const styles = {
   redButtonLabel: { fontFamily: mono, fontSize: 10, letterSpacing: "0.28em", color: "#d3948a" },
 
   keypadPanel: {
-    width: "min(92vw, 430px)", maxWidth: 430, borderRadius: 8,
+    position: "absolute", inset: 0,
+    width: "100%", height: "100%", maxWidth: "none", borderRadius: 0,
     backgroundColor: "rgba(9,11,10,0.98)",
     backgroundImage: "linear-gradient(135deg, rgba(70,78,68,0.16), rgba(4,8,8,0.4) 42%, rgba(0,0,0,0.25))",
-    border: "1px solid #38413a",
-    boxShadow: "0 0 70px rgba(0,0,0,0.95), inset 0 0 45px rgba(0,0,0,0.72)",
-    padding: "12px 12px 14px", display: "flex", flexDirection: "column",
-    alignItems: "center", gap: 12,
+    border: "none",
+    boxShadow: "inset 0 0 45px rgba(0,0,0,0.72)",
+    padding: "24px 16px 20px", display: "flex", flexDirection: "column",
+    alignItems: "center", justifyContent: "center", gap: 12,
+    boxSizing: "border-box", overflowY: "auto",
   },
   keypadTopRail: { width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 3px" },
   keypadScrew: {
@@ -660,11 +664,13 @@ export const styles = {
 
   /* Radyo konsolu (v8'de eksikti — eklendi) */
   radioPanel: {
-    width: "100%", maxWidth: 360, borderRadius: 10,
-    backgroundColor: "rgba(7,12,11,0.97)", border: "1px solid #1d3032",
+    position: "absolute", inset: 0,
+    width: "100%", height: "100%", maxWidth: "none", borderRadius: 0,
+    backgroundColor: "rgba(7,12,11,0.97)", border: "none",
     boxShadow: "0 0 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(10,28,30,0.4)",
-    padding: "24px 22px 18px", display: "flex", flexDirection: "column",
-    alignItems: "center", gap: 16,
+    padding: "24px 16px 20px", display: "flex", flexDirection: "column",
+    alignItems: "center", justifyContent: "center", gap: 16,
+    boxSizing: "border-box", overflowY: "auto",
   },
   radioFreqDisplay: {
     fontFamily: mono, fontSize: 34, color: "#7fbcdc",

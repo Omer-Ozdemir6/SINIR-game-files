@@ -32,7 +32,7 @@ export const EP01 = {
         { type: "narrate", text: "Üç gün önce gelen e-posta ilk bakışta lütuf gibiydi. 'PERISHED araştırma istasyonu, acil bakım personeli aranıyor.' Maaş akılalmazdı, mülakat yoktu, soru yoktu. Şimdi bunun bir iş ilanı değil, boşalan bir satıra yazılmış yeni isim olduğunu anlıyorsun. Denizaltının kapakları kapanınca yüzeyde kalan tek şey özgeçmişin oldu. Aşağıda seni bekleyen şey ise bir vardiya değil, düzgün dosyalanmış bir kayboluş." },
         { type: "narrate", text: "İşe alım formunda 'kapalı alan toleransı' diye tek satırlık bir kutucuk vardı. O kutucuğu işaretlediğin an bu yer seni yasal olarak yutmuş. Kimliğin, imzan, acil durumda aranacak kişinin numarası... Hepsi yüzeyde kalmış. Burada aşağıda yalnızca görev numaran var ve görev numarası çığlık atamaz." },
         { type: "narrate", text: "Seni uyandıran şey kulakları tırmalayan bir alarm değil. Jeneratörün aniden ÖLMESİ. Kulaklarındaki o uğultu bıçak gibi kesiliyor ve K-6 katının mutlak, boğucu karanlığı göğsüne bir karabasan gibi çöküyor. Kalbinin göğüs kafesini zorladığını hissediyorsun." },
-        { type: "narrate", text: "Ranzadan doğrulurken nefesin daralıyor. Acil durum aydınlatmasının o hastalıklı kırmızı pırıltısı bile sönmüş, her yer kör karanlık. Panikle elini uzatıyorsun ve parmakların sana verilen şirketin bakım tabletini buluyor. Güç tuşuna bastığında çatlak ekran aniden parlıyor; çiğ, mavi-beyaz, buz gibi bir ışık suratına çarpıyor. Şu an bu zifiri dünyadaki tek dayanağın, tek ışık kaynağın bu ekran. Önceki teknisyenden kalmış; parmak izleriyle lekelenmiş kilit ekranında silinmemiş bir isim parıldıyor: 'B. Soylu'." },
+        { type: "narrate", text: "Ranzadan doğrulurken nefesin daralıyor. Acil durum aydınlatmasının o hastalıklı kırmızı pırıltısı bile sönmüş, her yer kör karanlık. Panikle elini uzatıyorsun ve parmakların sana verilen şirketin bakım tabletini buluyor. Güç tuşuna bastığında tabletin ekranı aniden parlıyor; çiğ, mavi-beyaz, buz gibi bir ışık suratına çarpıyor. Şu an bu zifiri dünyadaki tek dayanağın, tek ışık kaynağın bu ekran. Önceki teknisyenden kalmış; parmak izleriyle lekelenmiş kilit ekranında silinmemiş bir isim parıldıyor: 'B. Soylu'." },
         { type: "note", id: "not_uyanis", title: "İlk gece", text: "Beni buraya iş için değil, boşalan bir ceset yuvasını doldurmak için çağırmışlar. Önceki teknisyen 'görevi bırakmış' dediler. Tablet onun. Parmak izleri hâlâ camda. Eğer Baturay gerçekten gittiyse neden bütün istasyon onun eşyasını bana miras bırakılmış bir kefen gibi veriyor? Ben paranoyak değilim. Bu yer daha ilk dakikadan yalan söylüyor." },
         { type: "waitTap" },
         { type: "objective", text: "K-6 güç kesintisini araştır." },
@@ -719,7 +719,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Kapı aralığından dışarı bakıyorsun: O yaratık koridorun tam ortasında durmuş, sırtı sana dönük, kendi etrafında delice sallanarak uykusunda SAYIYOR gibi titriyor. K-5 hava kilidi koridorun tam diğer ucunda. İki yolun var ve ikisi de onun hemen yanından geçmek zorunda." },
-        { type: "narrate", text: "Sol duvarda katın ana şalteri duruyor. Eğer onu indirirsen K-6 katı tamamen kör olacak; o canavar karanlıkta yavaşlayacak ama sen de tabletinin o çatlak, soluk ekran ışığına mahkum kalacaksın. Ya da ışıklar açıkken, gürültüyü göze alıp deliler gibi KOŞACAKSIN." },
+        { type: "narrate", text: "Sol duvarda katın ana şalteri duruyor. Eğer onu indirirsen K-6 katı tamamen kör olacak; o canavar karanlıkta yavaşlayacak ama sen de tabletinin o soluk ekran ışığına mahkum kalacaksın. Ya da ışıklar açıkken, gürültüyü göze alıp deliler gibi KOŞACAKSIN." },
         { type: "alert", text: "KARAR VER — UZUN DÜŞÜNENLERİ BU TESİS SEVMEZ" },
       ],
       timer: { seconds: 8 },
@@ -733,7 +733,7 @@ export const EP01 = {
       cost: 4,
       events: [
         { type: "system", text: "K-6 GÜÇ HATTI: MANUEL KESİNTİ — TÜM KAT KARANLIK" },
-        { type: "narrate", text: "Şalteri aşağı indiriyorsun ve koca kat tek bir saniyede kapkara, sağır bir sessizliğe gömülüyor. Şimdi evrendeki tek ışığın elindeki o çatlak tablet ekranı... Ve o ekranın ışığı her adımında biraz daha zayıflıyor, pilli tükeniyor. Yaratığın inlemesi aniden kesiliyor, kafası karışmış gibi duraksıyor... Güzel." },
+        { type: "narrate", text: "Şalteri aşağı indiriyorsun ve koca kat tek bir saniyede kapkara, sağır bir sessizliğe gömülüyor. Şimdi evrendeki tek ışığın elindeki o tabletin ekranı... Ve o ekranın ışığı her adımında biraz daha zayıflıyor, pili tükeniyor. Yaratığın inlemesi aniden kesiliyor, kafası karışmış gibi duraksıyor... Güzel." },
         { type: "ambient", text: "Kör karanlıkta elinle duvarı sayarak, sürünerek ilerliyorsun. Bir havalandırma... Bir yangın dolabı... Bir duvar nişi... O nişin içinden az önce bir şeyin tıkırtısı mı geldi?" },
       ],
       choices: [
@@ -838,7 +838,7 @@ export const EP01 = {
         { type: "narrate", text: "Kapağın öbür yüzü tamamen sessiz. Ne bir inleme ne bir darbe sesi... Bu lanetli gece boyunca ilk kez, bu tesisteki hiçbir şey senin tam olarak nerede olduğunu bilmiyor. Küçük, zavallı bir zafer... Ama bütünüyle senin.", if: { flag: "isaret", equals: false } },
         { type: "pause", ms: 1200 },
         { type: "glitch", ms: 400 },
-        { type: "ambient", text: "Ve tam cebinde kapalı duran o çatlak tablet, aniden kendi kendine cızırdayarak uyanıyor. Hoparlöründen dijital, bozuk bir çocuk sesi yükseliyor. Ağır ağır sayıyor: «...altı... beş...» Sonra aniden susuyor. K-5 katının dipsiz karanlığı, merdivenlerin dibinde seni bekliyor." },
+        { type: "ambient", text: "Ve tam cebinde kapalı duran o tablet, aniden kendi kendine cızırdayarak uyanıyor. Hoparlöründen dijital, bozuk bir çocuk sesi yükseliyor. Ağır ağır sayıyor: «...altı... beş...» Sonra aniden susuyor. K-5 katının dipsiz karanlığı, merdivenlerin dibinde seni bekliyor." },
         { type: "ambient", text: "O cızırtının altında, çok daha derinde ikinci bir ses katmanı duyuyorsun: Islak, hırıltılı bir nefes ve bozuk bir ninninin mırıltıları... Sen bütün gece etrafı dinlediğini sanıyordun. Oysa tüm bu zaman boyunca, karanlığın içinden DİNLENEN sendin.", if: { flag: "frekanslariDuydun", equals: true } },
         
       ],

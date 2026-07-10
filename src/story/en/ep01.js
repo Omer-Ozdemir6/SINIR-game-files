@@ -32,7 +32,7 @@ export const EP01 = {
         { type: "narrate", text: "The email that arrived three days ago felt like a blessing at first glance. 'PERISHED research station, urgent maintenance personnel required.' The pay was absurd, no interviews, no questions. Now, you realize it wasn't a job listing; it was just a new name written over an emptied slot. When the submarine's hatches sealed, the only thing left on the surface was your resume. What awaits you down here isn't a shift; it's a properly filed disappearance." },
         { type: "narrate", text: "On the recruitment form, there was a single-line checkbox labeled 'confined space tolerance.' The exact moment you checked that box, this place legally swallowed you whole. Your identity, your signature, your emergency contact number... all stayed on the surface. Down here, you are nothing but a task number, and a task number cannot scream." },
         { type: "narrate", text: "What wakes you up isn't a ear-piercing alarm. It is the generator suddenly DYING. That hum ringing in your ears cuts off like a knife, and the absolute, suffocating darkness of the K-6 floor settles onto your chest like a nightmare. You can feel your heart hammering against your ribs." },
-        { type: "narrate", text: "As you sit up from the bunk, your breath shortens. Even the sickly red glow of the emergency lighting has faded out; everything is pitch black. Panicking, you reach out, and your fingers find the corporate maintenance tablet assigned to you. When you press the power button, the cracked screen suddenly flickers alive, slamming a raw, icy, blue-white light right into your face. Right now, this screen is your only anchor, your only light source in this pitch-black world. It belongs to the previous technician; a single uncleared name gleams across the fingerprint-smudged lock screen: 'B. Soylu'." },
+        { type: "narrate", text: "As you sit up from the bunk, your breath shortens. Even the sickly red glow of the emergency lighting has faded out; everything is pitch black. Panicking, you reach out, and your fingers find the corporate maintenance tablet assigned to you. When you press the power button, the tablet's screen suddenly flickers alive, slamming a raw, icy, blue-white light right into your face. Right now, this screen is your only anchor, your only light source in this pitch-black world. It belongs to the previous technician; a single uncleared name gleams across the fingerprint-smudged lock screen: 'B. Soylu'." },
         { type: "note", id: "not_uyanis", title: "The First Night", text: "They didn't call me here for a job; they called me to fill a vacant corpse slot. They claimed the previous technician 'resigned.' The tablet is his. His fingerprints are still on the glass. If Baturay really left, why does the entire station pass his belongings down to me like an inherited shroud? I am not paranoid. This place is lying from the very first minute." },
         { type: "waitTap" },
         { type: "objective", text: "Investigate the K-6 power outage." },
@@ -720,7 +720,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "narrate", text: "You peer through the door gap: That creature is standing right in the middle of the corridor, its back turned to you, shivering as if it is COUNTING in its sleep while swaying wildly. The K-5 airlock is at the exact opposite end of the hall. You have two paths, and both force you to pass right beside it." },
-        { type: "narrate", text: "The main breaker switch of the floor sits on the left wall. If you pull it down, the K-6 floor will be rendered completely blind; that monster will slow down in the dark, but you will also be condemned to the cracked, pale screen light of your tablet. Or, with the lights on, you take the risk of making noise and RUN like mad." },
+        { type: "narrate", text: "The main breaker switch of the floor sits on the left wall. If you pull it down, the K-6 floor will be rendered completely blind; that monster will slow down in the dark, but you will also be condemned to the pale screen light of your tablet. Or, with the lights on, you take the risk of making noise and RUN like mad." },
         { type: "alert", text: "MAKE A DECISION — THIS FACILITY DOES NOT FAVOR LONG THINKERS" },
       ],
       timer: { seconds: 8 },
@@ -734,7 +734,7 @@ export const EP01 = {
       cost: 4,
       events: [
         { type: "system", text: "K-6 POWER GRID: MANUAL SEVERANCE — ENTIRE FLOOR BLINDED" },
-        { type: "narrate", text: "You pull the breaker down, and the entire floor plunges into a pitch-black, deafening silence in a single second. Now, your only light in the universe is that cracked tablet screen... and that screen's light grows weaker with every step, its power bleeding out. The creature's groaning abruptly stops, pausing as if confused... Good." },
+        { type: "narrate", text: "You pull the breaker down, and the entire floor plunges into a pitch-black, deafening silence in a single second. Now, your only light in the universe is that tablet screen... and that screen's light grows weaker with every step, its power bleeding out. The creature's groaning abruptly stops, pausing as if confused... Good." },
         { type: "ambient", text: "In the blind darkness, you advance by counting the wall with your hand, crawling along. A ventilation duct... A fire cabinet... A wall niche... Did the rattle of something just emerge from within that niche?" },
       ],
       choices: [
@@ -839,7 +839,7 @@ export const EP01 = {
         { type: "narrate", text: "The other side of the hatch is completely silent. Not a groan, not an impact sound... For the first time during this cursed night, nothing in this facility knows exactly where you are. A small, pitiful victory... but entirely yours.", if: { flag: "isaret", equals: false } },
         { type: "pause", ms: 1200 },
         { type: "glitch", ms: 400 },
-        { type: "ambient", text: "And right in your pocket, that shut-off, cracked tablet suddenly wakes up, crackling on its own. A digital, distorted child's voice ascends from its speaker. It counts heavily and slowly: «...six... five...» Then it goes abruptly silent. The bottomless dark of the K-5 floor awaits you at the bottom of the stairs." },
+        { type: "ambient", text: "And right in your pocket, that shut-off tablet suddenly wakes up, crackling on its own. A digital, distorted child's voice ascends from its speaker. It counts heavily and slowly: «...six... five...» Then it goes abruptly silent. The bottomless dark of the K-5 floor awaits you at the bottom of the stairs." },
         { type: "ambient", text: "Beneath that static, much deeper down, you catch a second layer of sound: a wet, wheezing breath and the murmurs of a distorted lullaby... You thought you were listening to your surroundings all night. Instead, during all this time, you were the one being LISTENED TO from within the dark.", if: { flag: "frekanslariDuydun", equals: true } },
         
       ],

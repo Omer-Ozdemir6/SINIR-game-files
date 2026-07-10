@@ -17,8 +17,9 @@ export const UI = {
       puzzleTest: "· bulmaca testi ·",
     },
     warn: {
-      p1: "PERISHED yoğun gerilim, şiddet ve rahatsız edici temalar içerir. En iyi deneyim için karanlık bir ortamda ve kulaklıkla oynayın.",
-      p2: "PERISHED su altı araştırma tesisinde gece bakım vardiyasındaki teknisyensin. Yüzeyle bağlantı üç saat önce kesildi ve tesiste bir şeyler korkunç derecede yanlış. Elinde sadece ekranı çatlamış, bataryası can çekişen bir bakım tableti var. O senin tek ışığın, tek kaydın ve bu zifiri karanlıktaki tek dostun. Hayatta kalabildiğin kadar kal.Ama asla unutma: Sen bir asker değilsin; bu derinlikte hayatta kalmanın tek yolu koşmak, saklanmak ya da ölmek.",
+      p1: "PERISHED yoğun gerilim, şiddet ve rahatsız edici temalar içerir.",
+      p2: "PERISHED su altı araştırma tesisinde gece bakım vardiyasındaki yalnız bir teknisyensin. Yüzeyle bağlantı saatler önce kesildi ve okyanusun dibindeki bu karanlık koridorlarda bir şeyler korkunç derecede yanlış gidiyor.",
+      p3: "Elindeki tek şey; bataryası tükenmek üzere olan ve zifiri karanlıkta sana rehberlik edecek olan bakım tabletindir. Sınırlı kaynaklarını akıllıca yönet, ses çıkarmaktan kaçın ve ne pahasına olursa olsun akıl sağlığını korumaya çalış. Çünkü derinlerde yalnız değilsin.",
       cont: "Devam Et",
     },
     intro: {
@@ -241,8 +242,9 @@ export const UI = {
       puzzleTest: "· puzzle test ·",
     },
     warn: {
-      p1: "PERISHED contains intense tension, violence, and disturbing themes. For the best experience, play in a dark room and with headphones.",
-      p2: "You are the maintenance technician on the night shift at the PERISHED sub-surface research station. Connection with the surface was severed three hours ago, and something is horribly wrong with the facility. You hold only a maintenance tablet with a cracked screen and a dying battery. It is your only light, your only log, and your sole companion in this zifiri dark. Survive as long as you can. But never forget: You are not a soldier; the only way to survive at this depth is to run, hide, or die.",
+      p1: "PERISHED contains intense tension, violence, and disturbing themes.",
+      p2: "You are a lone maintenance technician on the night shift at the PERISHED sub-surface research station. Connection with the surface was severed hours ago, and something is going horribly wrong in these dark corridors at the bottom of the ocean.",
+      p3: "All you have is a maintenance tablet with a dying battery to guide you through the pitch black. Manage your limited resources wisely, avoid making noise, and try to preserve your sanity at all costs. Because you are not alone in the depths.",
       cont: "Continue",
     },
     intro: {
@@ -463,8 +465,9 @@ de: {
       puzzleTest: "· Rätseltest ·",
     },
     warn: {
-      p1: "GRENZE-1 enthält intensive Spannung, Gewalt und verstörende Themen. Für das beste Spielerlebnis wird eine dunkle Umgebung und die Verwendung von Kopfhörern empfohlen.",
-      p2: "Du bist Techniker in der Nachtschicht einer Unterwasser-Forschungsstation in GRENZE-1. Vor drei Stunden ist die Verbindung zur Oberfläche abgebrochen, und in der Station läuft etwas schrecklich schief. Alles, was du hast, ist ein Wartungstablet mit einem rissigen Bildschirm und fast leerem Akku. Es ist dein einziges Licht, deine einzige Verbindung und dein einziger Freund in dieser pechschwarzen Dunkelheit. Überlebe so lange du kannst. Aber vergiss niemals: Du bist kein Soldat; in dieser Tiefe gibt es nur drei Wege zu überleben: rennen, verstecken oder sterben.",
+      p1: "GRENZE-1 enthält intensive Spannung, Gewalt und verstörende Themen.",
+      p2: "Du bist ein einsamer Wartungstechniker in der Nachtschicht der Unterwasser-Forschungsstation in GRENZE-1. Vor Stunden wurde die Verbindung zur Oberfläche unterbrochen, und in den dunklen Gängen am Grunde des Ozeans läuft etwas schrecklich schief.",
+      p3: "Alles was du hast, ist ein Wartungstablet mit fast leerem Akku, das dich durch die pechschwarze Finsternis führt. Verwalte deine begrenzten Ressourcen weise, vermeide Lärm und versuche um jeden Preis, deinen Verstand zu bewahren. Denn in der Tiefe bist du nicht allein.",
       cont: "Fortsetzen",
     },
     intro: { skip: "ÜBERSPRINGEN ▸▸", later: "Einige Tage später.", pressSend: "DRÜCKE 'NACHRICHT SENDEN', UM DIE NACHRICHT ABSZUSENDEN" },

@@ -15,6 +15,7 @@ export default function WarningScreen({ onContinue }) {
       <div style={S.warnBody}>
         <p style={S.warnText}>{t("warn.p1")}</p>
         <p style={S.warnText}>{t("warn.p2")}</p>
+        <p style={S.warnText}>{t("warn.p3")}</p>
       </div>
       <button className="s1-btn s1-mm" style={S.warnContinue} onClick={go}>
         {t("warn.cont")}
