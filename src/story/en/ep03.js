@@ -483,6 +483,7 @@ export const EP03 = {
     },
 
     n_fanus_al: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "You strike and shatter the glass cloche[cite: 7]! Sharp shards slash your hand, blood smudging onto the tablet[cite: 7]. That exact moment, the ear-tearing, crazed roar of the monster erupts from the loudspeakers in every corner of the house: \"YOU TOUCHED MY SACRED SANCTUM! I WILL TEAR YOU TO PIECES!\"[cite: 7] Fast, thumping footsteps come rushing up the stairs...[cite: 7] You snatch the tooth and bolt[cite: 7]!" },

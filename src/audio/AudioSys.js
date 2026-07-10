@@ -244,30 +244,28 @@ export const AudioSys = {
 
   fadeOutMusic(durationMs = 2500) {
     try {
-      if (this._musicEl) {
-        const audioEl = this._musicEl;
+      const audioEl = this._musicEl;
+      if (audioEl) {
+        // Elemanı hemen ayır ki bunun hemen ardından başlayacak yeni bir
+        // parça (music()'in sert _stopSampleMusic çağrısı) bu fade'i
+        // yarıda kesmesin; arka planda kendi başına sessizleşip dursun.
+        this._musicEl = null;
+        this._musicTrack = null;
         const startVol = audioEl.volume;
         const steps = 20;
         const intervalMs = durationMs / steps;
         let count = 0;
         const timer = setInterval(() => {
           count++;
-          if (audioEl) {
-            audioEl.volume = Math.max(0, startVol * (1 - count / steps));
-            if (count >= steps) {
-              clearInterval(timer);
-              audioEl.pause();
-              if (this._musicEl === audioEl) {
-                this._musicEl = null;
-                this._musicTrack = null;
-              }
-            }
-          } else {
+          audioEl.volume = Math.max(0, startVol * (1 - count / steps));
+          if (count >= steps) {
             clearInterval(timer);
+            audioEl.pause();
           }
         }, intervalMs);
+        return;
       }
-      if (this.inited && !this._musicEl) {
+      if (this.inited) {
         try {
           this.n.musicGain.gain.rampTo(0, durationMs / 1000);
           this.n.musicNoiseGain.gain.rampTo(0, durationMs / 1000);
@@ -554,9 +552,31 @@ export const AudioSys = {
   },
 
   tick() {
-    if (this.playSample("tick")) return;
+    // Klavye tıkı hızlı ardışık gelir; havuzdan yeni eleman almak yerine
+    // TEK elemanı her seferinde baştan başlatıyoruz ki sesler üst üste
+    // binip birbirine karışmasın (önceki tık kesilir, yenisi başlar).
+    if (this.enabled && SFX_FILES.tick) {
+      if (!this._tickEl) this._tickEl = new Audio(SFX_FILES.tick);
+      // currentTime ataması, dosya henüz yüklenmemişken bazı tarayıcılarda
+      // hata fırlatabilir — bu durumda bile play() denenmeye devam etsin,
+      // sentetik sese düşmesin.
+      try { this._tickEl.currentTime = 0; } catch (e) {}
+      this._tickEl.play().catch(() => {});
+      return;
+    }
     if (!this.inited || !this.enabled) return;
     try { this.n.blip.triggerAttackRelease(180, "64n"); } catch (e) {}
+  },
+
+  mouseClick() {
+    if (this.enabled && SFX_FILES.mouseButton) {
+      if (!this._mouseEl) this._mouseEl = new Audio(SFX_FILES.mouseButton);
+      try { this._mouseEl.currentTime = 0; } catch (e) {}
+      this._mouseEl.play().catch(() => {});
+      return;
+    }
+    if (!this.inited || !this.enabled) return;
+    try { this.n.blip.triggerAttackRelease(520, "64n"); } catch (e) {}
   },
 
   batteryLowSfx() {

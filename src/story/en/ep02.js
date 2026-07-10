@@ -325,6 +325,7 @@ export const EP02 = {
     },
 
     n_t2: {
+      checkpoint: true,
       cost: 3,
       events: [
         { type: "narrate", text: "The left branch squeezes you into such a tight bottleneck that your shoulders wedge against the steel on both sides; you can't breathe. Just as you are pinned in that narrow trap, from directly ahead... you hear the sound of something wet, heavy, and unhuman scraping the aluminum steel, crawling toward you. It's closing in!" },
@@ -624,6 +625,7 @@ export const EP02 = {
     },
 
     n_harun2: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "YOU SPRINT LIKE CRAZY! Your heart explodes in your ears. That massive man behind you pursues, swinging his flashlight; his strides are heavy but so immense that the distance closes with impossible speed! Two savage choices lie before you: the steel door of the service ladder to the right, or that rusted ventilation vent on the floor!" },

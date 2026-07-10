@@ -116,6 +116,7 @@ export const EP04 = {
     /* ================= FİDE ODASI — örnek 1 (mavi spor) + lore ================= */
 
     n_fide: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "Fide odasında yüzlerce saksı raflara dizilmiş. Etiketleri düzenli, toprakları nemli, prosedürleri tamam. İçlerinden çıkan solgun filizler çocuk ellerine benziyor; doğanın değil, arşivlenmiş suçun büyümesi bu. Ortadaki dev saksıda mavi spor kesesi irin dolu bir çıban gibi atıyor. PERISHED burada bitki yetiştirmemiş. Kanıtı köklendirmiş." },
@@ -165,6 +166,7 @@ export const EP04 = {
     /* ================= SU DEPOSU GEÇİDİ — örnek 2 (kök özütü) ================= */
 
     n_su_gecit: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "Su deposuna giden koridor tamamen yoğun, parıltılı bir sis tabakasıyla kaplanmış. Görüş mesafen sıfır. Koridorun sonundaki kırık boru kavşağında, köklerden süzülen simsiyah, viskoz bir sıvı damlıyor: Kök özütü. Geçit çok uzun ve elindeki tabletin ışığı bu siste sadece bir duvar gibi geri yansıyor. Tek bir nefesle bu cehennemi boydan boya koşmak zorundasın." },
@@ -207,6 +209,7 @@ export const EP04 = {
     /* ================= KOMPOST — örnek 3 (kan) + Selin + ölüm ================= */
 
     n_kompost_kapi: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "Kompost çukuru katın en altındaki lağım ve çürüme havuzu. Resmi kayıtlarda buna atık döngüsü demiş olabilirler. Gerçekte başarısız deneylerin, atık dokuların ve kayıtsız cesetlerin unutulma yeri. Kokusu burnundan beynine saplanıyor. Bir kurum bir şeyi komposta attığında onu yok ettiğini sanır; burada ise her şey çürüyüp geri dönmüş." },

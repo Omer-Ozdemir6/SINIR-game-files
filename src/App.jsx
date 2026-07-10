@@ -138,6 +138,7 @@ export default function App() {
   const timerRef = useRef(null);
   const flashRef = useRef(null);
   const toastRef = useRef(null);
+  const toastQueueRef = useRef([]);
   const batteryWarnRef = useRef(null);
   const timeoutsRef = useRef([]);
   const scrollRef = useRef(null);
@@ -175,6 +176,8 @@ export default function App() {
     timeoutsRef.current = [];
     if (flashRef.current) { clearTimeout(flashRef.current); flashRef.current = null; }
     if (toastRef.current) { clearTimeout(toastRef.current); toastRef.current = null; }
+    toastQueueRef.current = [];
+    setToast(null);
   };
   const later = (fn, ms) => {
     const id = setTimeout(() => {
@@ -295,10 +298,19 @@ export default function App() {
     return true;
   };
 
+  // Tek seferde bir toast gösterilir; art arda gelenler kuyruğa girer ki
+  // bir toast (örn. "Kaydediliyor…") başka biri tarafından anında ezilmesin.
+  const advanceToast = () => {
+    const next = toastQueueRef.current.shift();
+    if (!next) { toastRef.current = null; setToast(null); return; }
+    setToast(next);
+    const dur = toastQueueRef.current.length > 0 ? 1400 : 3200;
+    toastRef.current = setTimeout(advanceToast, dur);
+  };
+
   const showToast = (icon, text, color) => {
-    setToast({ icon, text, color, key: Date.now() });
-    if (toastRef.current) clearTimeout(toastRef.current);
-    toastRef.current = setTimeout(() => setToast(null), 3200);
+    toastQueueRef.current.push({ icon, text, color, key: Date.now() + Math.random() });
+    if (!toastRef.current) advanceToast();
   };
 
   const glitchBurst = (ms) => {
@@ -551,6 +563,7 @@ export default function App() {
         clock: clockRef.current,
       };
       saveGame(checkpointRef.current); // kalıcı kayıt
+      showToast("💾", t("eng.saved"), "#6f8a90");
     }
 
     // RİTİM KURALI: art arda iki "meta" olay (döküman/not/görev/pil)

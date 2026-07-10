@@ -538,6 +538,7 @@ export const EP01 = {
     /* ================= 6-B KORİDORU → RADYO ================= */
 
     n_koridor2: {
+      checkpoint: true,
       cost: 1,
       noiseGate: [{ min: 65, once: "pusu2", node: "n_enc2" }],
       events: [

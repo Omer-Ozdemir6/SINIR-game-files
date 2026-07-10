@@ -116,6 +116,7 @@ export const EP04 = {
     /* ================= SEEDLING ROOM — SPECIMEN 1 (BLUE SPORE) + LORE ================= */
 
     n_fide: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "Hundreds of pots are arranged on shelves inside the seedling room[cite: 8]. Their labels are neat, their soil moist, their procedures complete[cite: 8]. The pale sprouts emerging from within resemble children's hands; this is the growth of archived crime, not nature[cite: 8]. In the central giant pot, a blue spore sac throbs like a pus-filled boil[cite: 8]. PERISHED didn't cultivate plants here[cite: 8]. It rooted the evidence[cite: 8]." },
@@ -166,6 +167,7 @@ export const EP04 = {
     /* ================= WATER STORAGE PASSAGE — SPECIMEN 2 (ROOT EXTRACT) ================= */
 
     n_su_gecit: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "The corridor leading to the water storage is completely blanketed by a dense, shimmering fog layer[cite: 8]. Your visibility is zero[cite: 8]. At the broken pipe junction at the end of the corridor, a pitch-black, viscous fluid drips from the roots: Root extract[cite: 8]. The passage is immensely long, and the light from your tablet only reflects back like a wall in this fog[cite: 8]. You must sprint across this hellhole in a single breath[cite: 8]." },
@@ -208,6 +210,7 @@ export const EP04 = {
     /* ================= COMPOST — SPECIMEN 3 (BLOOD) + SELIN + DEATH ================= */
 
     n_kompost_kapi: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "The compost pit is the waste cycle and decay pool at the very bottom of the floor[cite: 8]. They might have called this a waste loop in official records[cite: 8]. In reality, it's the forgetting place for failed experiments, waste tissues, and unregistered corpses[cite: 8]. Its stench stabs from your nostrils into your brain[cite: 8]. When a corporation throws something into the compost, it thinks it destroyed it; here, everything decayed and returned[cite: 8]." },

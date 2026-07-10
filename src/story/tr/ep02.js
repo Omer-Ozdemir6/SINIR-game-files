@@ -325,6 +325,7 @@ export const EP02 = {
     },
 
     n_t2: {
+      checkpoint: true,
       cost: 3,
       events: [
         { type: "narrate", text: "Sol kol seni o kadar dar bir boğaza sokuyor ki, omuzların iki yandan çeliğe sıkışıyor, nefes alamıyorsun. Tam o dar kapanda kalmışken, tam önünden... Islak, ağır, insana benzemeyen bir şeyin alüminyum çeliği tırmalayarak sana doğru sürünme sesini duyuyorsun. Yaklaşıyor!" },
@@ -624,6 +625,7 @@ export const EP02 = {
     },
 
     n_harun2: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "ÇILGINLAR GİBİ KOŞUYORSUN! Kalbin kulaklarında patlıyor. Arkandaki o devasa adam feneri sallayarak geliyor; adımları ağır ama o kadar büyük ki aradaki mesafe imkansız bir hızla kapanıyor! Önünde iki vahşi seçenek var: Sağdaki servis merdiveninin çelik kapısı ya da zemindeki o paslı havalandırma menfezi!" },

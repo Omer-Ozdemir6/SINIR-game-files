@@ -228,6 +228,7 @@ export default function IntroCinematic({ onFinish }) {
   const finish = () => {
     if (doneRef.current) return;
     doneRef.current = true;
+    AudioSys.fadeOutMusic(1400); // intro müziği yavaşça kısılsın, birden kesilmesin
     onFinish();
   };
 
@@ -235,7 +236,7 @@ export default function IntroCinematic({ onFinish }) {
     if (phaseRef.current !== "waitSend" || doneRef.current) return;
     setPh("sent");
     setPressed("gonder");
-    AudioSys.blipSfx(720);
+    AudioSys.mouseClick();
     setTimeout(() => setPressed(null), 200);
     setStatus(t("intro.sending"));
     setTimeout(() => {
@@ -264,7 +265,7 @@ export default function IntroCinematic({ onFinish }) {
         setBody((b) => b + currentChar);
         
         // Klavye ses taklidi
-        if (i % 2 === 0) AudioSys.blipSfx(180);
+        if (i % 2 === 0) AudioSys.tick();
         
         i += 1;
 
@@ -297,7 +298,7 @@ export default function IntroCinematic({ onFinish }) {
     const click = async (name) => {
       if (!alive()) return;
       setPressed(name);
-      AudioSys.blipSfx(520);
+      AudioSys.mouseClick();
       await sleep(180);
       setPressed(null);
       await sleep(240);

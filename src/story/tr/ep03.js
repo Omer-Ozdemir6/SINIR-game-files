@@ -483,6 +483,7 @@ export const EP03 = {
     },
 
     n_fanus_al: {
+      checkpoint: true,
       cost: 1,
       events: [
         { type: "narrate", text: "Cam fanusu vurup parçalıyorsun! Keskin şarapnel parçaları elini kesiyor, kanlar tablete bulaşıyor. O an evin her köşesindeki hoparlörlerden canavarın kulakları tırmalayan, delirmiş kükremesi yükseliyor: \"KUTSALIMA DOKUNDUN! SENİ PARÇALARA AYIRACAĞIM!\" Merdivenlerden yukarı doğru gelen çok hızlı, gümbür gümbür koşan ayak sesleri... Dişi kapıp fırlıyorsun!" },

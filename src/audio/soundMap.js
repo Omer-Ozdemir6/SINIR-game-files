@@ -16,6 +16,7 @@ export const SFX_FILES = {
   clank: "/audio/sfx/clank.mp3",      // metal darbe (vana turu, kilit)
   tick: "/audio/sfx/tick.mp3",       // klavye tık'ı (intro)
   click: "",      // arayüz buton tıklaması
+  mouseButton: "/audio/sfx/mouse_button.mp3", // fare tık'ı (intro ekranı butonları)
   scratch: "/audio/sfx/scratch.mp3",    // kalemle not yazma
   page: "/audio/sfx/page.mp3",       // kâğıt/sayfa hışırtısı
   pickup: "/audio/sfx/pickup.mp3",     // pil/eşya alma
@@ -30,9 +31,9 @@ export const SFX_FILES = {
 
 export const MUSIC_FILES = {
   // Menü / arayüz parçaları
-  menu: "/audio/music/menu.wav",      // ana menü müziği (New Game/Continue'a kadar çalar)
-  intro: "/audio/music/intro.wav",     // intro mail sekansı müziği
-  credits: "/audio/music/credits.wav",   // credits ekranı müziği
+  menu: "/audio/music/main_menu.mp3",   // ana menü müziği (New Game/Continue'a kadar çalar)
+  intro: "/audio/music/intro.mp3",     // intro mail sekansı müziği
+  credits: "/audio/music/credits.mp3",   // credits ekranı müziği
   archive: "/audio/music/archive.wav",   // ayarlar / arşiv menü müziği
   // Bölüm/atmosfer parçaları — hikayede { type: "music", track: "k6" }
   // ile başlar, { type: "music" } (track'siz) ile susar.
