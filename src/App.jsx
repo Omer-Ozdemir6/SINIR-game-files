@@ -154,6 +154,7 @@ export default function App() {
   const leverIntRef = useRef(null);
   const leverHoldingRef = useRef(false);
   const fuseIntRef = useRef(null);
+  const fuseGraceRef = useRef(0); // ibrenin son yeşil bölgede olduğu zaman damgası (tepki payı için)
   const breathIntRef = useRef(null);
   const breathHoldingRef = useRef(false);
   const breathStateRef = useRef(null);
@@ -303,13 +304,13 @@ export default function App() {
   const advanceToast = () => {
     const next = toastQueueRef.current.shift();
     if (!next) { toastRef.current = null; setToast(null); return; }
-    setToast(next);
     const dur = toastQueueRef.current.length > 0 ? 1400 : 3200;
+    setToast({ ...next, dur });
     toastRef.current = setTimeout(advanceToast, dur);
   };
 
-  const showToast = (icon, text, color) => {
-    toastQueueRef.current.push({ icon, text, color, key: Date.now() + Math.random() });
+  const showToast = (icon, text, color, plain = false) => {
+    toastQueueRef.current.push({ icon, text, color, plain, key: Date.now() + Math.random() });
     if (!toastRef.current) advanceToast();
   };
 
@@ -563,7 +564,7 @@ export default function App() {
         clock: clockRef.current,
       };
       saveGame(checkpointRef.current); // kalıcı kayıt
-      showToast("💾", t("eng.saved"), "#6f8a90");
+      showToast("", t("eng.saved"), "#6f8a90", true);
     }
 
     // RİTİM KURALI: art arda iki "meta" olay (döküman/not/görev/pil)
@@ -897,6 +898,9 @@ export default function App() {
       if (fuseIntRef.current) { clearInterval(fuseIntRef.current); fuseIntRef.current = null; }
       return;
     }
+    const min = interaction.zoneMin ?? 44;
+    const max = interaction.zoneMax ?? 56;
+    fuseGraceRef.current = -Infinity;
     let dir = 1, pos = 0;
     let last = performance.now();
     fuseIntRef.current = setInterval(() => {
@@ -906,6 +910,7 @@ export default function App() {
       pos += dir * 2.4 * (dt / 20);
       if (pos >= 100) { pos = 100; dir = -1; }
       if (pos <= 0) { pos = 0; dir = 1; }
+      if (pos >= min && pos <= max) fuseGraceRef.current = now;
       setFuseMarker(pos);
     }, 40);
     return () => { if (fuseIntRef.current) { clearInterval(fuseIntRef.current); fuseIntRef.current = null; } };
@@ -916,11 +921,14 @@ export default function App() {
     const min = interaction.zoneMin ?? 44;
     const max = interaction.zoneMax ?? 56;
     const inZone = fuseMarker >= min && fuseMarker <= max;
-    if (inZone) {
+    // Tepki + dokunma gecikmesi payı: ibre son 150ms içinde yeşil
+    // bölgedeyse de vuruş sayılır — "gördüm, bastım ama olmadı" hissini giderir.
+    const recentlyInZone = performance.now() - fuseGraceRef.current <= 150;
+    if (inZone || recentlyInZone) {
       AudioSys.fuseSfx();
       const next = fuseHits + 1;
       setFuseHits(next);
-      setFuseMsg({ text: t("mech.fuseOk", { a: next, b: interaction.hits }), ok: true });
+      setFuseMsg({ text: t("mech.fuseOk", { a: next, b: interaction.hits }), ok: true, key: Date.now() });
       if (next >= interaction.hits) {
         setMechDone(true);
         const target = interaction.success;
@@ -932,7 +940,7 @@ export default function App() {
       statsRef.current = { ...statsRef.current, gurultu: Math.min(100, (statsRef.current.gurultu || 0) + 4) };
       setStats({ ...statsRef.current });
       checkThresholds(runIdRef.current);
-      setFuseMsg({ text: t("mech.fuseSpark"), ok: false });
+      setFuseMsg({ text: t("mech.fuseSpark"), ok: false, key: Date.now() });
     }
   };
 
@@ -1164,6 +1172,8 @@ export default function App() {
   // global buton tıklama sesi + hafif titreşim (tüm butonlara)
   useEffect(() => {
     const onClick = (e) => {
+      AudioSys.resumeIfBlocked(); // autoplay engeliyle duraklamışsa devam ettir
+      AudioSys.unlockSfx(); // sonradan programatik çalınacak efektlerin kilidini önden aç
       const el = e.target.closest("button, .s1-btn, [role='button']");
       if (!el) return;
       AudioSys.uiClick();
@@ -1458,14 +1468,14 @@ export default function App() {
       )}
       {interaction?.kind === "radio" && (
         <RadioOverlay freq={radioFreq} target={interaction.target} phase={radioPhase} signal={radioSignal}
-          lock={radioLock} hint={radioHint} glitchFx={glitchFx} onAdjust={radioAdjust} />
+          lock={radioLock} hint={radioHint} glitchFx={glitchFx} onAdjust={radioAdjust} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "lights" && (
         <LightsOverlay lights={lights} done={lightsDone}
           onPress={lightsPress} onReset={lightsReset} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "valve" && (
-        <ValveOverlay title={interaction.title} deg={valveDeg} done={mechDone} busy={valveBusy}
+        <ValveOverlay title={interaction.title} deg={valveDeg} done={mechDone} busy={valveBusy} turns={interaction.turns || 6}
           onTurn={valveTurn} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "lever" && (
@@ -1473,6 +1483,7 @@ export default function App() {
       )}
       {interaction?.kind === "fuse" && (
         <FuseOverlay title={interaction.title} marker={fuseMarker} hits={fuseHits} needed={interaction.hits || 2}
+          zoneMin={interaction.zoneMin ?? 44} zoneMax={interaction.zoneMax ?? 56}
           msg={fuseMsg} done={mechDone} onTap={fuseTap} onCancel={interactionCancel} />
       )}
       {interaction?.kind === "shadow" && (
@@ -1505,6 +1516,7 @@ export default function App() {
       )}
       {interaction?.kind === "breath" && breath && (
         <BreathOverlay
+          key={currentNodeId}
           interaction={interaction}
           onSuccess={finishBreath}
           onFail={finishBreath}

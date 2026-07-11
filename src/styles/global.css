@@ -33,6 +33,9 @@ img { -webkit-user-drag: none; user-drag: none; }
     0% { opacity: 0; } 8% { opacity: 1; } 18% { opacity: 0.15; } 28% { opacity: 1; }
     38% { opacity: 0.15; } 48% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
   }
+  @keyframes s1-toastfade {
+    0% { opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; }
+  }
   @keyframes s1-panelin { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
   @keyframes s1-glitchjitter {
     0% { transform: translate(0, 0); filter: none; }
@@ -101,6 +104,35 @@ img { -webkit-user-drag: none; user-drag: none; }
     72% { transform: translateX(2px); }
     100% { transform: translateX(0); filter: none; }
   }
+
+  /* Mekanik bulmacalar (vana/şalter/sigorta) — dokunuş/başarı/hata "juice" */
+  @keyframes s1-mechPulse {
+    0% { box-shadow: 0 0 0 rgba(127,190,220,0); }
+    35% { box-shadow: 0 0 24px rgba(127,190,220,0.6); }
+    100% { box-shadow: 0 0 0 rgba(127,190,220,0); }
+  }
+  @keyframes s1-mechKnock {
+    0% { transform: scale(1); }
+    30% { transform: scale(0.96); }
+    60% { transform: scale(1.025); }
+    100% { transform: scale(1); }
+  }
+  @keyframes s1-mechDoneGlow {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(122,214,150,0.55)); }
+    50% { filter: drop-shadow(0 0 15px rgba(122,214,150,0.95)); }
+  }
+  @keyframes s1-mechSpark {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.2); }
+    55% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
+  }
+  @keyframes s1-mechZonePulse {
+    0%, 100% { opacity: 0.7; } 50% { opacity: 1; }
+  }
+  .s1-mech-pulse { animation: s1-mechPulse 420ms ease-out, s1-mechKnock 420ms ease-out; }
+  .s1-mech-done { animation: s1-mechDoneGlow 1.4s ease-in-out infinite; }
+  .s1-mech-spark { animation: s1-mechSpark 460ms ease-out forwards; }
+  .s1-mech-zone { animation: s1-mechZonePulse 1.1s ease-in-out infinite; }
   .s1-cursor { color: #7fa39f; animation-name: s1-blink; animation-duration: 0.9s; animation-iteration-count: infinite; }
   .s1-line { animation-name: s1-linefade; animation-duration: 0.85s; animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); animation-fill-mode: both; }
   .s1-death { animation-name: s1-fade; animation-duration: 1.2s; animation-timing-function: ease-in; }
@@ -108,6 +140,7 @@ img { -webkit-user-drag: none; user-drag: none; }
   .s1-batblink { animation-name: s1-blink; animation-duration: 0.7s; animation-iteration-count: infinite; }
   .s1-objective { animation-name: s1-objflash; animation-duration: 4.2s; animation-timing-function: ease-in-out; animation-fill-mode: forwards; }
   .s1-toast { animation-name: s1-toastblink; animation-duration: 3.2s; animation-timing-function: linear; animation-fill-mode: forwards; }
+  .s1-toast-fade { animation-name: s1-toastfade; animation-timing-function: ease; animation-fill-mode: forwards; }
   .s1-panel, .s1-paper { animation-name: s1-panelin; animation-duration: 0.25s; animation-timing-function: ease-out; }
   .s1-glitch { animation-name: s1-glitchjitter; animation-duration: 0.22s; animation-timing-function: steps(3); animation-iteration-count: infinite; }
   .s1-flicker { animation-name: s1-flickerAnim; animation-duration: 2.6s; animation-timing-function: steps(1); animation-iteration-count: infinite; }
@@ -125,7 +158,8 @@ img { -webkit-user-drag: none; user-drag: none; }
   .s1-menuitem:hover { border-color: #4a4a38 !important; }
   .s1-row:hover { background-color: rgba(30,30,22,0.5) !important; }
   @media (prefers-reduced-motion: reduce) {
-    .s1-cursor, .s1-line, .s1-death, .s1-critical, .s1-objective, .s1-toast, .s1-panel, .s1-paper, .s1-glitch, .s1-flicker, .s1-blackflash, .s1-powerflash, .s1-darkmode, .s1-dying {
+    .s1-cursor, .s1-line, .s1-death, .s1-critical, .s1-objective, .s1-toast, .s1-toast-fade, .s1-panel, .s1-paper, .s1-glitch, .s1-flicker, .s1-blackflash, .s1-powerflash, .s1-darkmode, .s1-dying,
+    .s1-mech-pulse, .s1-mech-done, .s1-mech-spark, .s1-mech-zone {
       animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
     }
   }

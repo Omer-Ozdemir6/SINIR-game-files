@@ -16,8 +16,16 @@ export default function Hud({ dimOpacity, objectiveFlash, toast }) {
       )}
 
       {toast && (
-        <div key={toast.key} style={{ ...S.toast, color: toast.color, borderColor: toast.color + "55" }} className="s1-toast">
-          <span style={S.toastIcon}>{toast.icon}</span> {toast.text}
+        <div
+          key={toast.key}
+          style={
+            toast.plain
+              ? { ...S.toast, color: toast.color, border: "none", backgroundColor: "transparent", animationDuration: (toast.dur || 3200) + "ms" }
+              : { ...S.toast, color: toast.color, borderColor: toast.color + "55" }
+          }
+          className={toast.plain ? "s1-toast-fade" : "s1-toast"}
+        >
+          {toast.icon ? <><span style={S.toastIcon}>{toast.icon}</span> {toast.text}</> : toast.text}
         </div>
       )}
     </>

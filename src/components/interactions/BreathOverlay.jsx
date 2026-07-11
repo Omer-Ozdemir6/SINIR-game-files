@@ -2,6 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { t } from "../../i18n";
 import { AudioSys } from "../../audio/AudioSys";
 
+// Renk havuzu — zorluk arttıkça devreye giren renk sayısı artar.
+const COLORS = [
+  { id: "red", hex: "#c23b2e", glow: "rgba(194,59,46,0.55)" },
+  { id: "blue", hex: "#7f9eb5", glow: "rgba(127,158,181,0.55)" },
+  { id: "amber", hex: "#c79a52", glow: "rgba(199,154,82,0.55)" },
+];
+
 export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const holdMs = interaction.holdMs || 7000;
   const failTo = interaction.fail;
@@ -9,11 +16,18 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
 
   // Generate dynamic rhythm template based on a hash of the node ID
   const nodeHash = (successTo || "nx").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  
+
   // 3 rhythm variations: 0 = Steady, 1 = Accelerating Panic, 2 = Double Thumps (Doublets)
   const rhythmType = nodeHash % 3;
 
-  // Base scroll speed — actual scrollDuration is computed after useState
+  // Zorluk katmanı: holdMs kısaldıkça zorluk artar (kolay/orta/zor).
+  const difficulty = holdMs <= 7000 ? "hard" : holdMs <= 7800 ? "medium" : "easy";
+  // Kolayda tek renk (tek düğme), orta ve zorda 3 renk karışık gelir.
+  const colorCount = difficulty === "easy" ? 1 : 3;
+  // Zor modda notalar çok daha hızlı akar; orta ve kolay arasındaki fark daha ölçülü.
+  const baseScroll = difficulty === "hard" ? 600 : difficulty === "medium" ? 1000 : 1400;
+  // Zor modda isabet penceresi de biraz daralır.
+  const windowMs = difficulty === "hard" ? 100 : difficulty === "medium" ? 120 : 150;
 
   const [gameStarted, setGameStarted] = useState(() => {
     try {
@@ -27,16 +41,14 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const [flash, setFlash] = useState(null); // 'hit' or 'miss'
   const [currentTime, setCurrentTime] = useState(0);
 
-  // Difficulty speed based on holdMs: shorter holdMs usually means faster note speed.
-  // Speed is also scaled by adrenaline level (notes scroll faster when panicking).
-  const baseScroll = holdMs <= 7000 ? 900 : holdMs <= 7800 ? 1100 : 1300;
-  const scrollDuration = baseScroll * (1 - (adrenaline / 100) * 0.32);
-
   const gameStartedRef = useRef(false);
   const spikesRef = useRef([]);
   const adrenalineRef = useRef(30);
   const startTimeRef = useRef(0);
+  const lastTimeRef = useRef(0);
+  const gameTimeRef = useRef(0);
   const animationFrameId = useRef(null);
+  const lastPressRef = useRef(0); // en son basılan renk düğmesi — sadece görsel geri bildirim için
 
   const onSuccessRef = useRef(onSuccess);
   const onFailRef = useRef(onFail);
@@ -51,33 +63,39 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     const list = [];
     let cur = 1500; // start note after 1.5s to let player react
     let noteId = 0;
+    // Kolayda tüm tur boyunca tek sabit renk; orta/zorda her nota rastgele renk alır.
+    // Seçim her zaman EKRANDA GÖSTERİLEN buton sayısı (colorCount) kadar renk
+    // arasından yapılmalı — yoksa kolay modda basılacak buton hiç olmayan bir
+    // renk gelip bulmaca çözülemez hale gelebiliyordu.
+    const fixedColor = colorCount === 1 ? Math.floor(Math.random() * colorCount) : null;
+    const pickColor = () => (fixedColor !== null ? fixedColor : Math.floor(Math.random() * colorCount));
 
     if (rhythmType === 1) {
       // Template 1: Accelerating panic (notes get progressively faster)
       let interval = 1200;
       while (cur < holdMs - 600) {
-        list.push({ id: noteId++, time: cur, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false, color: pickColor() });
         cur += interval;
         interval = Math.max(650, interval - 200);
       }
     } else if (rhythmType === 2) {
       // Template 2: Double thumps (lub-dub ... lub-dub)
       while (cur < holdMs - 600) {
-        list.push({ id: noteId++, time: cur, hit: false, missed: false });
-        list.push({ id: noteId++, time: cur + 260, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false, color: pickColor() });
+        list.push({ id: noteId++, time: cur + 260, hit: false, missed: false, color: pickColor() });
         cur += 1100 + Math.random() * 200;
       }
     } else {
       // Template 0: Steady rhythmic beats
       while (cur < holdMs - 600) {
-        list.push({ id: noteId++, time: cur, hit: false, missed: false });
+        list.push({ id: noteId++, time: cur, hit: false, missed: false, color: pickColor() });
         cur += 800 + Math.random() * 250;
       }
     }
 
     setSpikes(list);
     spikesRef.current = list;
-  }, [holdMs, rhythmType]);
+  }, [holdMs, rhythmType, colorCount]);
 
   // Adjust heart sound loop according to adrenaline level
   useEffect(() => {
@@ -106,33 +124,45 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   useEffect(() => {
     if (!gameStarted) return;
 
-    startTimeRef.current = performance.now();
+    lastTimeRef.current = performance.now();
+    gameTimeRef.current = 0;
     gameStartedRef.current = true;
 
     const tick = () => {
       if (!gameStartedRef.current) return;
 
-      const elapsed = performance.now() - startTimeRef.current;
+      const now = performance.now();
+      const dt = now - lastTimeRef.current;
+      lastTimeRef.current = now;
+
+      // Speed up notes movement dynamically based on stress (up to 45% faster)
+      const speedFactor = 1 + (adrenalineRef.current / 100) * 0.45;
+      gameTimeRef.current += dt * speedFactor;
+
+      const elapsed = gameTimeRef.current;
       setCurrentTime(elapsed);
 
       // Check for missed notes that scrolled past
       let adrenalineChanged = false;
-      const updatedSpikes = spikesRef.current.map((s) => {
+      let nextAdrenaline = adrenalineRef.current;
+
+      const nextSpikes = spikesRef.current.map((s) => {
         if (!s.hit && !s.missed && elapsed > s.time + 120) {
-          s.missed = true;
-          adrenalineRef.current = Math.min(100, adrenalineRef.current + 20);
+          nextAdrenaline = Math.min(100, nextAdrenaline + 20);
           adrenalineChanged = true;
           setFlash("miss");
           AudioSys.blipSfx(180); // Low failure sound
           setTimeout(() => setFlash(null), 250);
+          return { ...s, missed: true };
         }
         return s;
       });
 
       if (adrenalineChanged) {
-        spikesRef.current = updatedSpikes;
-        setAdrenaline(adrenalineRef.current);
-        setSpikes([...updatedSpikes]);
+        adrenalineRef.current = nextAdrenaline;
+        spikesRef.current = nextSpikes;
+        setAdrenaline(nextAdrenaline);
+        setSpikes(nextSpikes);
       }
 
       // Check failure condition
@@ -165,12 +195,12 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     };
   }, [gameStarted, holdMs, failTo, successTo]);
 
-  // Attempt to hit the closest active note
-  const registerHit = useCallback(() => {
+  // Attempt to hit the closest active note — colorIdx must match the note's color
+  const registerHit = useCallback((colorIdx) => {
     if (!gameStartedRef.current) return;
 
-    const elapsed = performance.now() - startTimeRef.current;
-    const windowMs = 120; // +/- 120ms hit window
+    const elapsed = gameTimeRef.current;
+    if (elapsed > holdMs - 400) return; // Ignore input during final success transition
 
     // Find the closest unhit, not-yet-missed note
     let closestNote = null;
@@ -186,24 +216,29 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
       }
     });
 
-    if (closestNote && minDiff <= windowMs) {
+    const isHit = closestNote && minDiff <= windowMs && closestNote.color === colorIdx;
+
+    if (isHit) {
       // HIT Success
-      closestNote.hit = true;
+      const nextSpikes = spikesRef.current.map((s) =>
+        s.id === closestNote.id ? { ...s, hit: true } : s
+      );
+      spikesRef.current = nextSpikes;
       adrenalineRef.current = Math.max(0, adrenalineRef.current - 15);
       setAdrenaline(adrenalineRef.current);
-      setSpikes([...spikesRef.current]);
+      setSpikes(nextSpikes);
       setFlash("hit");
       AudioSys.blipSfx(560); // High positive blip
       setTimeout(() => setFlash(null), 200);
     } else {
-      // False/Empty Press is a MISS
+      // Wrong button, wrong timing, or empty press — all count as a MISS
       adrenalineRef.current = Math.min(100, adrenalineRef.current + 15);
       setAdrenaline(adrenalineRef.current);
       setFlash("miss");
       AudioSys.blipSfx(180);
       setTimeout(() => setFlash(null), 200);
     }
-  }, []);
+  }, [holdMs, windowMs]);
 
 
 
@@ -224,6 +259,13 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
     return t("lang") === "tr" ? "Ritim: Düzgün Ritim" : "Rhythm: Steady Beats";
   };
 
+  const getDifficultyLabel = () => {
+    const tr = t("lang") === "tr";
+    if (difficulty === "hard") return tr ? "Zorluk: YÜKSEK" : "Difficulty: HIGH";
+    if (difficulty === "medium") return tr ? "Zorluk: ORTA" : "Difficulty: MEDIUM";
+    return tr ? "Zorluk: KOLAY" : "Difficulty: LOW";
+  };
+
   const descText = t("breath.desc");
 
   if (!gameStarted) {
@@ -237,7 +279,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
 
           <div style={styles.rhythmIndicator}>
             <span>{getRhythmName()}</span>
-            <span style={styles.speedLabel}>{holdMs <= 7000 ? "Zorluk: YÜKSEK" : "Zorluk: ORTA"}</span>
+            <span style={styles.speedLabel}>{getDifficultyLabel()}</span>
           </div>
 
           <div style={styles.tutorialPreviewBox}>
@@ -246,10 +288,14 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
                 <div style={styles.previewTargetLine} />
               </div>
               <svg width="40" height="60" viewBox="0 0 40 60" style={styles.previewHeartbeat}>
-                <path d="M 0 30 L 12 30 L 16 45 L 20 5 L 24 55 L 28 30 L 40 30" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 0 30 L 12 30 L 16 45 L 20 5 L 24 55 L 28 30 L 40 30" fill="none" stroke={COLORS[0].hex} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <div style={{ ...styles.previewKeycap, borderRadius: "50%" }}>👆</div>
+            <div style={styles.previewBtnRow}>
+              {COLORS.slice(0, colorCount).map((c) => (
+                <div key={c.id} style={{ ...styles.previewColorDot, backgroundColor: c.hex, boxShadow: `0 0 8px ${c.glow}` }} />
+              ))}
+            </div>
           </div>
 
           <button style={styles.startBtn} onClick={startMinigame}>
@@ -270,7 +316,7 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
   const targetFlicker = adrenaline > 75 && Math.random() > 0.6 ? 0.35 : 1;
 
   return (
-    <div style={styles.overlayDim} onPointerDown={(e) => { e.stopPropagation(); registerHit(); }}>
+    <div style={styles.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <div style={{ ...styles.gamePanel, transform: panelTransform }} onClick={(e) => e.stopPropagation()}>
         <div style={styles.gameHeader}>
           <span style={styles.gameTitle}>{t("breath.title")}</span>
@@ -323,9 +369,11 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
           {/* Scrolling Heartbeats */}
           {spikes.map((s) => {
             const elapsed = currentTime;
-            const x = targetX + ((s.time - elapsed) / scrollDuration) * (100 - targetX);
+            const x = targetX + ((s.time - elapsed) / baseScroll) * (100 - targetX);
 
             if (x < -10 || x > 110) return null;
+
+            const noteColor = COLORS[s.color] || COLORS[0];
 
             return (
               <div
@@ -337,18 +385,18 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
                   transform: "translate(-50%, -50%)",
                   transition: "none",
                   opacity: s.hit ? 0.35 : 1,
-                  filter: s.hit 
+                  filter: s.hit
                     ? "drop-shadow(0 0 2px rgba(127,174,134,0.4))"
-                    : s.missed 
-                      ? "drop-shadow(0 0 4px rgba(194,59,46,0.7))" 
-                      : "drop-shadow(0 0 6px rgba(255,255,255,0.7))",
+                    : s.missed
+                      ? "drop-shadow(0 0 4px rgba(194,59,46,0.7))"
+                      : `drop-shadow(0 0 7px ${noteColor.glow})`,
                 }}
               >
                 <svg width="42" height="64" viewBox="0 0 42 64" style={{ overflow: "visible" }}>
                   <path
                     d="M 0 32 L 12 32 L 16 48 L 21 8 L 26 56 L 30 32 L 42 32"
                     fill="none"
-                    stroke={s.hit ? "#7f9eb5" : s.missed ? "#c23b2e" : "#ffffff"}
+                    stroke={s.hit ? "#7f9eb5" : s.missed ? "#c23b2e" : noteColor.hex}
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -359,21 +407,24 @@ export default function BreathOverlay({ interaction, onSuccess, onFail }) {
           })}
         </div>
 
-        {/* Input area prompt */}
+        {/* Input area — gelen notanın rengiyle eşleşen düğmeye bas */}
         <div style={styles.inputArea}>
-          <div style={{
-            ...styles.keycap,
-            width: "auto",
-            padding: "8px 24px",
-            borderRadius: "20px",
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            transform: flash ? "scale(0.92)" : "scale(1)",
-            borderColor: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#525a60",
-            color: flash === "hit" ? "#7f9eb5" : flash === "miss" ? "#c23b2e" : "#d7d0b8",
-            boxShadow: flash === "hit" ? "0 0 15px rgba(127,148,174,0.3)" : "none",
-          }}>
-            👆 {t("lang") === "tr" ? "DOKUN" : "TAP"}
+          <div style={styles.colorBtnRow}>
+            {COLORS.slice(0, colorCount).map((c, idx) => (
+              <button
+                key={c.id}
+                style={{
+                  ...styles.colorBtn,
+                  backgroundColor: c.hex,
+                  transform: flash && lastPressRef.current === idx ? "scale(0.9)" : "scale(1)",
+                  boxShadow: flash === "hit" && lastPressRef.current === idx
+                    ? `0 0 20px ${c.glow}, inset 0 0 10px rgba(255,255,255,0.4)`
+                    : `0 4px 10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.25)`,
+                  opacity: flash === "miss" && lastPressRef.current === idx ? 0.55 : 1,
+                }}
+                onPointerDown={(e) => { e.stopPropagation(); lastPressRef.current = idx; registerHit(idx); }}
+              />
+            ))}
           </div>
           <div style={styles.inputTip}>
             {t("breath.target")}
@@ -483,20 +534,16 @@ const styles = {
     opacity: 0.8,
     filter: "drop-shadow(0 0 3px rgba(255,255,255,0.6))",
   },
-  previewKeycap: {
-    width: "36px",
-    height: "36px",
-    border: "2px solid #e8e4d2",
-    borderRadius: "6px",
+  previewBtnRow: {
     display: "flex",
+    gap: "10px",
     alignItems: "center",
-    justifyContent: "center",
-    fontFamily: "'Courier New', monospace",
-    fontWeight: "bold",
-    fontSize: "16px",
-    background: "linear-gradient(180deg, #2c2d27, #0d0e0d)",
-    color: "#e8e4d2",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.5)",
+  },
+  previewColorDot: {
+    width: "26px",
+    height: "26px",
+    borderRadius: "50%",
+    border: "2px solid rgba(255,255,255,0.35)",
   },
   startBtn: {
     padding: "14px",
@@ -612,20 +659,20 @@ const styles = {
     gap: "8px",
     marginTop: "8px",
   },
-  keycap: {
-    width: "48px",
-    height: "48px",
-    border: "2px solid",
-    borderRadius: "8px",
+  colorBtnRow: {
     display: "flex",
-    alignItems: "center",
+    gap: "16px",
     justifyContent: "center",
-    fontFamily: "'Courier New', monospace",
-    fontWeight: "bold",
-    fontSize: "20px",
-    background: "linear-gradient(180deg, #1b1c18, #050605)",
-    boxShadow: "0 6px 12px rgba(0,0,0,0.6)",
-    transition: "transform 100ms ease, border-color 100ms ease",
+  },
+  colorBtn: {
+    width: "58px",
+    height: "58px",
+    borderRadius: "50%",
+    border: "2px solid rgba(255,255,255,0.3)",
+    cursor: "pointer",
+    padding: 0,
+    transition: "transform 100ms ease, box-shadow 100ms ease, opacity 100ms ease",
+    touchAction: "none",
   },
   inputTip: {
     fontFamily: "'Courier New', monospace",

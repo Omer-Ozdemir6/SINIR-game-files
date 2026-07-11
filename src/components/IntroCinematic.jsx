@@ -237,6 +237,7 @@ export default function IntroCinematic({ onFinish }) {
     setPh("sent");
     setPressed("gonder");
     AudioSys.mouseClick();
+    AudioSys.fadeOutMusic(2200); // gönderilince intro müziği yavaşça sönsün
     setTimeout(() => setPressed(null), 200);
     setStatus(t("intro.sending"));
     setTimeout(() => {

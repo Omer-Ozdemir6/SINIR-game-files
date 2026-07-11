@@ -77,7 +77,7 @@ export const UI = {
         { title: "SONLAR", body: "Verdiğin kararlar oyunun sonunu belirler. Beş farklı son var. Kimi kurtardığın, kime güvendiğin, neyi feda ettiğin — hepsi önemli. Her şeyi görmek için birden fazla oyna." },
       ],
     },
-    disclaimer: { body: "Bu oyundaki bütün karakter ve yerler hayal ürünüdür. Gerçek kişi ve yerlerle benzerlikler tamamen tesadüf eseridir." },
+    disclaimer: { body: "Bu oyundaki bütün karakterler ve yerler hayal ürünüdür. Gerçek kişi ve yerlerle benzerlikler tamamen tesadüf eseridir." },
     hud: {
       noise: "GÜRÜLTÜ", archive: "ARŞİV",
       objective: "Görev: ",
@@ -178,7 +178,7 @@ export const UI = {
     },
     breath: {
       title: "ADRENALİN PATLAMASI",
-      desc: "Tehlike yaklaşıyor! Sakin kalmalı ve kalp ritmini kontrol altında tutmalısın. Sağdan sola kayan ritim dalgaları hedef çizgisinin (yeşil kutu) tam ortasındayken ekrana dokun. Iskalarsan veya yanlış zamanda dokunursan adrenalin seviyen yükselir ve yakalanırsın!",
+      desc: "Tehlike yaklaşıyor! Sakin kalmalı ve kalp ritmini kontrol altında tutmalısın. Sağdan sola kayan renkli dalgalar hedef çizgisinin tam ortasına gelince, alttaki AYNI RENKTEKİ düğmeye bas. Iskalarsan, yanlış renge basarsan veya yanlış zamanda basarsan adrenalin seviyen yükselir ve yakalanırsın!",
       startBtn: "OYUNU BAŞLAT",
       target: "HEDEF ZAMANI",
       adrenaline: "ADRENALİN",
@@ -404,7 +404,7 @@ export const UI = {
     },
     breath: {
       title: "ACOUSTIC SUPPRESSION",
-      desc: "Danger approaches! You must remain calm and keep the resonance under control. Press the device buttons exactly when the sliding rhythm waves hit the center of the target line (amber box). If you miss or press at the wrong time, resonance spikes and your location is tracked!",
+      desc: "Danger approaches! You must remain calm and keep the resonance under control. When a sliding colored wave hits the center of the target line, press the matching colored button below. Miss it, press the wrong color, or press at the wrong time, and resonance spikes — your location is tracked!",
       startBtn: "START CALIBRATION",
       target: "FILTER LINE",
       adrenaline: "RESONANCE",
@@ -593,7 +593,7 @@ de: {
     },
     breath: {
       title: "ADRENALINSCHUB",
-      desc: "Gefahr nähert sich! Du musst ruhig bleiben und deinen Herzschlag stabil halten. Tippe auf den Bildschirm, wenn die Herzfrequenzspitzen genau mit dem Zielbereich (grüner Kasten) übereinstimmen. Fehlende Schläge oder falsches Timing erhöhen dein Adrenalin!",
+      desc: "Gefahr nähert sich! Du musst ruhig bleiben und deinen Herzschlag stabil halten. Wenn eine farbige Welle die Mitte der Ziellinie erreicht, drücke die Taste in DERSELBEN FARBE darunter. Verpasst du sie, drückst du die falsche Farbe oder zur falschen Zeit, steigt dein Adrenalin!",
       startBtn: "SPIEL STARTEN",
       target: "TREFFERFENSTER",
       adrenaline: "ADRENALIN",

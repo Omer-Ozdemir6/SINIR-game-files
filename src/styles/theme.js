@@ -296,50 +296,115 @@ export const styles = {
   lightsHintText: { fontFamily: mono, fontSize: 10, color: "#5a626e", letterSpacing: "0.08em", textAlign: "center", lineHeight: 1.7 },
 
   /* Vana */
-  valveWrap: { padding: 6 },
-  valveWheel: {
-    width: 110, height: 110, borderRadius: "50%",
-    border: "8px solid #5a4f3a", position: "relative",
-    transitionProperty: "transform", transitionDuration: "250ms",
-    boxShadow: "inset 0 0 18px rgba(0,0,0,0.7)",
+  valveWrap: { padding: 10, display: "flex", alignItems: "center", justifyContent: "center" },
+  valveRim: {
+    width: 134, height: 134, borderRadius: "50%", position: "relative",
+    backgroundImage: "radial-gradient(circle at 34% 30%, rgba(255,255,255,0.05), transparent 55%), radial-gradient(circle, #1c211f 60%, #0c0f0d 100%)",
+    border: "1px solid #33392f",
+    boxShadow: "inset 0 0 22px rgba(0,0,0,0.85), 0 2px 10px rgba(0,0,0,0.6)",
+    display: "flex", alignItems: "center", justifyContent: "center",
   },
-  valveSpokeV: { position: "absolute", left: "50%", top: 0, bottom: 0, width: 6, marginLeft: -3, backgroundColor: "#5a4f3a" },
-  valveSpokeH: { position: "absolute", top: "50%", left: 0, right: 0, height: 6, marginTop: -3, backgroundColor: "#5a4f3a" },
-  valveHub: { position: "absolute", left: "50%", top: "50%", width: 22, height: 22, margin: "-11px 0 0 -11px", borderRadius: "50%", backgroundColor: "#3a3428", border: "2px solid #6b5f46" },
+  valveBolt: {
+    position: "absolute", left: "50%", top: "50%", width: 6, height: 6, borderRadius: "50%",
+    backgroundColor: "#40473c", marginLeft: -3, marginTop: -3,
+    boxShadow: "inset 0 1px 1px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.6)",
+  },
+  valveWheel: {
+    width: 104, height: 104, borderRadius: "50%", position: "relative",
+    backgroundImage: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.14), transparent 45%), linear-gradient(160deg, #6b5f46, #443a29 60%, #2c2519)",
+    border: "6px solid #4a4130",
+    boxShadow: "inset 0 0 14px rgba(0,0,0,0.65), 0 3px 10px rgba(0,0,0,0.55)",
+    transitionProperty: "transform", transitionDuration: "220ms", transitionTimingFunction: "cubic-bezier(.2,.9,.3,1.2)",
+  },
+  valveSpoke: {
+    position: "absolute", left: "50%", top: "50%", width: 8, height: "74%",
+    borderRadius: 4, transformOrigin: "50% 50%",
+    backgroundImage: "linear-gradient(90deg, #372f21, #6b5f46 45%, #372f21)",
+    boxShadow: "inset 0 0 3px rgba(0,0,0,0.6)",
+  },
+  valveHub: {
+    position: "absolute", left: "50%", top: "50%", width: 30, height: 30,
+    margin: "-15px 0 0 -15px", borderRadius: "50%",
+    backgroundImage: "radial-gradient(circle at 35% 30%, #7a6d4e, #2c2519 75%)",
+    border: "2px solid #1e1a11", boxShadow: "inset 0 0 6px rgba(0,0,0,0.8)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+  },
+  valveHubDot: {
+    width: 8, height: 8, borderRadius: "50%", backgroundColor: "#3a4038",
+    transitionProperty: "background-color, box-shadow", transitionDuration: "300ms",
+  },
+  valveHandle: {
+    position: "absolute", left: "50%", top: -3, width: 11, height: 19,
+    marginLeft: -5.5, borderRadius: "3px 3px 6px 6px",
+    backgroundImage: "linear-gradient(180deg, #8a7c58, #4a4130)",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.6)",
+  },
 
   /* Şalter */
   leverTrack: {
-    width: 34, height: 130, borderRadius: 17,
-    backgroundColor: "#0c1012", border: "1px solid #2a3038",
-    position: "relative", overflow: "hidden",
+    width: 44, height: 150, borderRadius: 10, position: "relative",
+    backgroundColor: "#0a0d0f", border: "1px solid #262c31",
+    boxShadow: "inset 0 0 14px rgba(0,0,0,0.85)", overflow: "hidden",
+  },
+  leverTick: { position: "absolute", left: 6, right: 6, height: 1, backgroundColor: "rgba(127,158,181,0.16)" },
+  leverFill: {
+    position: "absolute", left: 4, right: 4, bottom: 4, borderRadius: 8,
+    backgroundImage: "linear-gradient(180deg, rgba(127,190,220,0.55), rgba(127,190,220,0.05))",
+    transitionProperty: "height", transitionDuration: "60ms",
   },
   leverArm: {
-    position: "absolute", left: 4, right: 4, height: 30, borderRadius: 13,
-    backgroundColor: "#7d7a68", boxShadow: "0 2px 8px rgba(0,0,0,0.8)",
-    transitionProperty: "bottom", transitionDuration: "80ms",
+    position: "absolute", left: 3, right: 3, height: 26, borderRadius: 8,
+    backgroundImage: "linear-gradient(180deg, #a8a08a, #6b6552 55%, #494432)",
+    border: "1px solid #322d21",
+    boxShadow: "0 3px 8px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18)",
+    transitionProperty: "bottom, box-shadow", transitionDuration: "80ms",
+  },
+  leverGrip: {
+    position: "absolute", inset: "5px 8px", borderRadius: 4,
+    backgroundImage: "repeating-linear-gradient(180deg, rgba(0,0,0,0.32) 0, rgba(0,0,0,0.32) 2px, transparent 2px, transparent 5px)",
   },
 
   /* Sigorta */
   fuseTrack: {
-    width: "100%", height: 26, borderRadius: 6, position: "relative",
-    backgroundColor: "#0c1012", border: "1px solid #2a3038", overflow: "hidden",
+    width: "100%", height: 34, borderRadius: 6, position: "relative",
+    backgroundColor: "#0a0d0f", border: "1px solid #262c31", overflow: "hidden",
+    boxShadow: "inset 0 0 14px rgba(0,0,0,0.85)",
+  },
+  fuseTicks: {
+    position: "absolute", inset: 0, pointerEvents: "none",
+    backgroundImage: "repeating-linear-gradient(90deg, rgba(127,158,181,0.16) 0, rgba(127,158,181,0.16) 1px, transparent 1px, transparent 10%)",
   },
   fuseZone: {
-    position: "absolute", left: "40%", width: "20%", top: 0, bottom: 0,
-    backgroundColor: "rgba(127,148,174,0.25)", borderLeft: "1px solid #7f9eb5", borderRight: "1px solid #7f9eb5",
+    position: "absolute", top: 0, bottom: 0,
+    backgroundImage: "linear-gradient(180deg, rgba(122,214,150,0.3), rgba(122,214,150,0.1))",
+    borderLeft: "1px solid #7ad696", borderRight: "1px solid #7ad696",
   },
   fuseMarkerEl: {
-    position: "absolute", top: 0, bottom: 0, width: 4,
-    backgroundColor: "#e8d98a", boxShadow: "0 0 8px rgba(232,217,138,0.8)",
+    position: "absolute", top: -2, bottom: -2, width: 3, borderRadius: 2,
+    backgroundColor: "#e8d98a", boxShadow: "0 0 10px rgba(232,217,138,0.9), 0 0 3px #e8d98a",
+  },
+  fuseSpark: {
+    position: "absolute", top: "50%", width: 28, height: 28, borderRadius: "50%",
+    pointerEvents: "none", transform: "translate(-50%, -50%)",
   },
 
   mechProgTrack: { width: "100%", height: 6, backgroundColor: "#0c1012", borderRadius: 3, overflow: "hidden" },
-  mechProgFill: { height: "100%", backgroundColor: "#7f9eb5", transitionProperty: "width", transitionDuration: "100ms" },
+  mechProgFill: {
+    height: "100%", backgroundColor: "#7f9eb5", transitionProperty: "width", transitionDuration: "100ms",
+    boxShadow: "0 0 8px rgba(127,190,220,0.5)",
+  },
+  mechSegRow: { display: "flex", gap: 4, width: "100%", justifyContent: "center", flexWrap: "wrap" },
+  mechSeg: {
+    width: 12, height: 7, borderRadius: 2, backgroundColor: "#1a2228",
+    transitionProperty: "background-color, box-shadow", transitionDuration: "200ms",
+  },
   bigActionBtn: {
     fontFamily: mono, fontSize: 15, letterSpacing: "0.15em", width: "100%",
-    padding: "16px 0", backgroundColor: "rgba(13,22,27,0.9)", color: "#d7dfe4",
-    border: "1px solid #2a3e4a", borderRadius: 8, cursor: "pointer",
-    touchAction: "none",
+    padding: "16px 0", color: "#d7dfe4", borderRadius: 8, cursor: "pointer", touchAction: "none",
+    backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2))",
+    backgroundColor: "rgba(13,22,27,0.9)",
+    border: "1px solid #2a3e4a",
+    boxShadow: "0 3px 0 #060b0d, inset 0 0 10px rgba(0,0,0,0.4)",
   },
 
   /* Nefes */

@@ -5,7 +5,7 @@ const mono = "'Courier New', ui-monospace, monospace";
 
 const pct = (freq) => ((freq - 410) / 40) * 100;
 
-export default function RadioOverlay({ freq, target = 432, phase, signal, lock = 0, hint, glitchFx, onAdjust }) {
+export default function RadioOverlay({ freq, target = 432, phase, signal, lock = 0, hint, glitchFx, onAdjust, onCancel }) {
   const needle = Math.max(0, Math.min(100, pct(freq)));
   const targetMark = Math.max(0, Math.min(100, pct(target)));
   const targetGlow = phase === "lock";

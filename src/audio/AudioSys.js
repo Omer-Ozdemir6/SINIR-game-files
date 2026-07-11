@@ -46,6 +46,10 @@ export const AudioSys = {
       try {
         if (Tone.context && Tone.context.state !== "running") {
           await Tone.context.resume();
+          // Bazı tarayıcılarda AudioContext'i devam ettirmek, o an çalan
+          // native <audio> müziğini (örn. menü parçası) kesintiye uğratıp
+          // duraklatabiliyor — hemen ardından geri devam ettir.
+          this.resumeIfBlocked();
         }
       } catch (e) {}
       return;
@@ -138,6 +142,12 @@ export const AudioSys = {
         metal,
       };
       this.inited = true;
+
+      // AudioContext'in ilk kez başlatılması, o an çalan native <audio>
+      // müziğini (örn. menü parçası) kesintiye uğratıp duraklatabiliyor —
+      // hemen ardından geri devam ettir ki bir sonraki tıklamaya kadar
+      // sessiz kalıp "aniden yeniden başlıyor" gibi görünmesin.
+      this.resumeIfBlocked();
 
       if (this._pendingMusic) this._startSyntheticMusic(this._pendingMusic);
     } catch (e) {
@@ -238,6 +248,44 @@ export const AudioSys = {
             }, 3000);
           }
         }, 30000); // 30 saniye boyunca çalsın ve bitsin
+      }
+    } catch (e) {}
+  },
+
+  // Tarayıcı autoplay politikası, kullanıcı hiç dokunmadan otomatik başlayan
+  // müziği (örn. menü müziği) sessizce engelleyebilir — play() çağrılmış
+  // ama eleman "paused" kalmıştır. İlk gerçek tıklamada bunu çağırıp o
+  // duraklamış elemanı sadece OLDUĞU YERDEN devam ettiriyoruz (baştan
+  // başlatmıyoruz), böylece müzik bir kez sessizce "kilitliyken" bir
+  // dahaki tıklamada aniden/yeniden başlıyormuş hissi vermez.
+  // Bazı tarayıcılar, bir ses elemanının İLK çalışının doğrudan gerçek bir
+  // tıklama anında olmasını şart koşar. "Sil"/"Hayır" gibi butonlar bilgisayar
+  // ekranındaki imleç animasyonuyla PROGRAMATİK tıklanıyor (gerçek tıklama
+  // değil) — sayfada daha önce gerçek tıklama olsa bile bu yüzden sessiz
+  // kalabiliyorlar. Sayfadaki ilk gerçek tıklamada bu elemanları sessizce
+  // (ses seviyesi 0) bir kez çalıp durdurarak önceden "kilidini açıyoruz".
+  unlockSfx() {
+    if (this._sfxUnlocked) return;
+    this._sfxUnlocked = true;
+    [["_tickEl", SFX_FILES.tick], ["_mouseEl", SFX_FILES.mouseButton]].forEach(([prop, src]) => {
+      if (!src) return;
+      try {
+        const el = this[prop] || (this[prop] = new Audio(src));
+        const vol = el.volume;
+        el.volume = 0;
+        el.play().then(() => {
+          el.pause();
+          el.currentTime = 0;
+          el.volume = vol;
+        }).catch(() => { el.volume = vol; });
+      } catch (e) {}
+    });
+  },
+
+  resumeIfBlocked() {
+    try {
+      if (this.enabled && this._musicEl && this._musicEl.paused) {
+        this._musicEl.play().catch(() => {});
       }
     } catch (e) {}
   },
