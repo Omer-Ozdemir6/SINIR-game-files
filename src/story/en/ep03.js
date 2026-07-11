@@ -36,6 +36,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "music", track: "k4" },
+        { type: "sting", name: "stingK4" },
         { type: "system", text: "FLOOR: K-4 — PERSONNEL LIVING QUARTERS · MESS HALL · CABINS" },
         { type: "narrate", text: "You climb out of the shaft hatch straight into a home[cite: 7]. The word home should have been a comforting word to your brain; not here[cite: 7]. Floral wallpaper is glued over steel walls, carpets are rolled across the deck, and crude imitations of family photographs are hung in the corners[cite: 7]. Someone didn't understand the concept of a hearth, but they memorized its recipe[cite: 7]. The faint glow of your tablet exposes the rust, sewage, and decay festering beneath the wallpaper[cite: 7]. The decor is thin; the lie is thick[cite: 7]." },
         { type: "narrate", text: "This home wasn't emulated; it was memorized[cite: 7]. Someone learned the shape of being a family from photographs, dining hours, and child room dimensions, pounding them all inside the steel in the wrong sequence[cite: 7]. There is no affection here; there is only the procedure of affection[cite: 7]. Sit, eat, smile, obey[cite: 7]. Fail to do so, and become a part of the menu[cite: 7]." },
@@ -167,11 +168,6 @@ export const EP03 = {
       events: [
         { type: "narrate", text: "You are in the home's hallway[cite: 7]. The tablet light hits the framed 'family photographs.'[cite: 7] The faces have been scraped away with a knife; massive smiles have been drawn in their place with blood-red ink[cite: 7]. This isn't vandalism executed in rage; it's a correction made with patience[cite: 7]. Harun didn't erase the faces, he erased the disobedient expressions[cite: 7]. He left behind only mouths fitting for the family[cite: 7].", if: { flag: "holIlk", equals: false } },
         { type: "flag", set: { holIlk: true } },
-        { type: "status", items: [
-          { label: "PHOTOGRAPH", flag: "yadigar1" },
-          { label: "RING", flag: "yadigar2" },
-          { label: "BABY TOOTH", flag: "yadigar3" },
-        ] },
         { type: "ambient", text: "The sounds of a cleaver hacking and bones snapping emerge from the kitchen — the Chief is butchering something in there[cite: 7]. The feeble glint on your tablet screen illuminates five dark doors ahead: the kitchen, the child's room, the chief's upper deck quarters, the cold storage, and that narrow intercom niche[cite: 7]." },
       ],
       choices: [
@@ -603,6 +599,7 @@ export const EP03 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k4b" },
         { type: "narrate", text: "The moment you step down into the hallway, the entire house floods with a crimson hell light[cite: 7]! The loudspeakers explode with static, and Harun's savage wail, proving his complete descent into madness, rattles the home: \"YOU TOOK MY KEY! YOU STOLE HIS MOTHER'S RING! I WILL NOT LET YOU LIVE!\"[cite: 7] The baits are spent now, he will hunt you by your scent[cite: 7]!" },
         { type: "alert", text: "⚠ YOU DID NOT EAT THAT MEAT! HE CAUGHT YOUR SCENT AND WENT WILD WITH RAGE — SPRINT TOWARD THE STORAGE!", if: { flag: "sofraReddetti", equals: true } },
         { type: "narrate", text: "The cold storage is at the very end of the corridor[cite: 7]. As the light of your tablet shakes from the tremors, you see that the single obstacle ahead is that colossal cannibal[cite: 7].", if: { flag: "sofraReddetti", equals: false } },
@@ -672,11 +669,9 @@ export const EP03 = {
         { type: "ambient", text: "Right behind the hatch, that monster's tearful, schizophrenic voice ascends: \"...Everyone abandons me[cite: 7]. Sevgi left... Deniz went below... and you fled too[cite: 7]. Am I always to remain all alone at this table?\"[cite: 7] Then a deep, ominous silence falls[cite: 7]." },
         { type: "ambient", text: "Ece's rasping voice comes from the tablet's speaker: «My god... I heard those sounds[cite: 7]. You made it... you descended to K-3[cite: 7]. That's Dr[cite: 7]. Nevin's laboratory floor... biologist[cite: 7]. She might not have gone mad like that guy... Watch out, strange things are breathing down there...»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "narrate", text: "You descend the rungs down into absolute darkness[cite: 7]. Your tablet light catches twitching botanical masses below; not vines, but like waiting veins[cite: 7]. K-4 tried to draft you into the family[cite: 7]. The place below will draft you into the soil[cite: 7]. This station converts a human into a different word on every floor: personnel, child, specimen[cite: 7]. Now, you are going to learn the next word[cite: 7]." },
-        { type: "system", text: "— END OF EPISODE 3: HOME —[cite: 7]" },
-        { type: "system", text: "K-3: 'THE GARDEN' — Dr. Nevin's Floor — Coming Soon" },
       ],
       choices: [
-        { id: "k3", text: "Descend into K-3", next: "n_k3_giris" },
+        { id: "k3", text: "Descend into K-3", next: "n_k3_giris", loading: true },
       ],
     },
 

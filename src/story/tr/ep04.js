@@ -39,6 +39,7 @@ export const EP04 = {
       cost: 1,
       events: [
         { type: "music", track: "k3" },
+        { type: "sting", name: "stingK3" },
         { type: "system", text: "DEHŞET KATMANI: K-3 — TERK EDİLMİŞ SERA VE ET VE KÖK" },
         { type: "narrate", text: "Merdivenin dibinde sıcak, nemli, leş kokan bir karanlık seni karşılıyor. K-3 nefes alıyor ama ciğerlerle değil; duvarlardan sarkan kökler damar gibi atıyor, tavan etli bir ağız gibi kapanıp açılıyor. Bilim buraya doğayı getirmemiş. Doğaya insan acısını öğretmiş. Tabletinin soğuk ışığı çürümeyi aydınlatıyor ve bir anda anlıyorsun: ışık burada görmeni sağlamıyor, seni görülebilir yapıyor." },
         { type: "narrate", text: "Buradaki her şey büyümüş ama hiçbir şey yaşamıyor. Kökler damar gibi atıyor, yapraklar deri gibi terliyor, çiçekler açmak yerine küçük ağızlar gibi aralanıp kapanıyor. K-3 doğa değil; laboratuvarın Tanrı’yı taklit etmeye çalışırken yaptığı düşük, yarım ve acı çeken bir kopya." },
@@ -63,11 +64,6 @@ export const EP04 = {
       events: [
         { type: "narrate", text: "Merkez seranın cam kubbesi kırılmış; kan kırmızısı acil durum ışığı her şeyi tıbbi bir fotoğraf gibi açık ediyor. Ortada Nevin var. İnsan demek zor, bitki demek de yalan. Omurgasından çıkan kökler zemine damar gibi yayılmış. Bir doktoru laboratuvara bağlamamışlar; laboratuvarı doktora bağlamışlar. K-3'ün kalbi atıyorsa, bu onun hâlâ acı çektiği anlamına geliyor.", if: { flag: "seraIlk", equals: false } },
         { type: "flag", set: { seraIlk: true } },
-        { type: "status", items: [
-          { label: "MAVİ SPOR", flag: "ornek1" },
-          { label: "KÖK ÖZÜTÜ", flag: "ornek2" },
-          { flag: "ornek3", label: "KAN ÖRNEĞİ" },
-        ] },
         { type: "ambient", text: "Nevin kımıldamıyor ama boynu çıtırdayarak aç bir hayvan gibi hafifçe senin tabletinin ışığına doğru dönüyor. \"...Yeni bir et parçası...\" diye fısıldıyor kapalı, çürümüş göz kapaklarının arkasından. \"Yürü, küçük fide. Attığın her adımın sarsıntısı omuriliğimden beynime ulaşıyor. Kaçamazsın. Kökler sabırlıdır... Seni sindirmemi bekle.\"" },
       ],
       choices: [
@@ -344,6 +340,7 @@ export const EP04 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k3b" },
         { type: "narrate", text: "Sera merkezine dönüyorsun. Nevin toprağa gömülmüş etten bir kütle gibi duruyor; ama gözlerini açtığında canavardan önce yorgun bir insan görüyorsun. Bu daha dayanılmaz. Çünkü onu öldürmek kolay olurdu. Onu anlamak zor. K-2 kapısı arkasında, yani çıkışın bir hastanın göğüs kafesinden geçiyor. PERISHED her kaçış yolunu birinin suçuna bağlamış." },
         { type: "narrate", text: "\"Serumu kokluyorum...\" diye inliyor, ağzından sümüksü sıvılar dökülerek. \"Selin'in kanı... Hâlâ taze, hâlâ sıcak.\" Etraftaki devasa kökler bir kırbaç gibi havaya kalkıyor, etrafını sarıyor ama henüz darbe indirmiyor. \"Karar ver, küçük böcek. Bu acıyı bitirecek misin, yoksa beni bu kabusa mahkum mu edeceksin?\"" },
         { type: "waitTap" },

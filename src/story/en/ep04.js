@@ -39,6 +39,7 @@ export const EP04 = {
       cost: 1,
       events: [
         { type: "music", track: "k3" },
+        { type: "sting", name: "stingK3" },
         { type: "system", text: "TERROR STRATUM: K-3 — ABANDONED GREENHOUSE AND FLESH AND ROOT" },
         { type: "narrate", text: "At the bottom of the ladder, a warm, humid, foul-smelling darkness greets you[cite: 8]. K-3 breathes, but not with lungs; roots dangling from the walls throb like veins, the ceiling opening and closing like a fleshy mouth[cite: 8]. Science didn't bring nature here[cite: 8]. It taught nature human agony[cite: 8]. The cold light of your tablet illuminates the decay, and in an instant, you realize: light here doesn't enable you to see, it makes you visible[cite: 8]." },
         { type: "narrate", text: "Everything here has grown, yet nothing lives[cite: 8]. Roots throb like veins, leaves sweat like skin, and instead of blooming, flowers part and close like tiny mouths[cite: 8]. K-3 is not nature; it is a miscarriage, a half-formed and suffering copy made by the laboratory while trying to emulate God[cite: 8]." },
@@ -63,11 +64,6 @@ export const EP04 = {
       events: [
         { type: "narrate", text: "The glass dome of the central greenhouse has been shattered; the blood-red emergency light exposes everything like a medical photograph[cite: 8]. Nevin is in the center[cite: 8]. It is difficult to call her human, and a lie to call her a plant[cite: 8]. Roots erupting from her spine spread across the deck like veins[cite: 8]. They didn't bind a doctor to the laboratory; they bound the laboratory to the doctor[cite: 8]. If the heart of K-3 beats, it means she is still suffering[cite: 8].", if: { flag: "seraIlk", equals: false } },
         { type: "flag", set: { seraIlk: true } },
-        { type: "status", items: [
-          { label: "BLUE SPORE", flag: "ornek1" },
-          { label: "ROOT EXTRACT", flag: "ornek2" },
-          { flag: "ornek3", label: "BLOOD SAMPLE" },
-        ] },
         { type: "ambient", text: "Nevin remains motionless, yet her neck cracks as she subtly turns toward the light of your tablet like a starved animal[cite: 8]. \"...Another piece of meat...\" she whispers from behind her sealed, rotting eyelids[cite: 8]. \"Walk, little seedling[cite: 8]. The tremor of every step you take travels up my spinal cord to my brain[cite: 8]. You cannot escape[cite: 8]. Roots are patient... wait for me to digest you[cite: 8].\"" },
       ],
       choices: [
@@ -345,6 +341,7 @@ export const EP04 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k3b" },
         { type: "narrate", text: "You return to the greenhouse center[cite: 8]. Nevin stands like a mass of flesh buried in the soil; but when she opens her eyes, you see an exhausted human before a monster[cite: 8]. This is more unendurable[cite: 8]. Because killing her would be easy[cite: 8]. Understanding her is hard[cite: 8]. The K-2 hatch is behind her, meaning your exit passes through a patient's rib cage[cite: 8]. PERISHED linked every escape route to someone's crime[cite: 8]." },
         { type: "narrate", text: "\"I can smell the serum...\" she groans, slimy fluids spilling from her mouth[cite: 8]. \"Selin's blood... Still fresh, still warm[cite: 8].\" The massive roots around hoist into the air like whips, enveloping you, but they haven't struck a blow yet[cite: 8]. \"Make your choice, small insect[cite: 8]. Will you end this agony, or condemn me to this nightmare?\"[cite: 8]" },
         { type: "waitTap" },

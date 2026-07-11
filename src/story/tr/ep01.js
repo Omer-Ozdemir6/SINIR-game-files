@@ -25,6 +25,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "music", track: "k6" },
+        { type: "sting", name: "stingK6" },
         { type: "system", text: "PERISHED BAKIM TABLETİ v2.3 — YENİDEN BAŞLATILIYOR…" },
         { type: "system", text: "SAAT: 03:47 · DERİNLİK: 214M · HARİCİ BAĞLANTI: YOK (3 SA 12 DK)" },
         { type: "pause", ms: 900 },
@@ -307,11 +308,6 @@ export const EP01 = {
         { type: "narrate", text: "Demir merdivenlerden aşağı, bileklerine kadar yükselen simsiyah, buz gibi suya iniyorsun. Pompa platformu... Sağında paslı, devasa A vanası; solunda ise karanlığa açılan B odasının kapısı duruyor. Karşıda, çiğ kırmızı bir acil durum ışığı ana paneli aydınlatıyor. Ve platformun dip tarafında, suyun İÇİNE DOĞRU gömülerek devam eden o daracık, klostrofobik sintine tüneli uzanıyor.", if: { flag: "platIlk", equals: false } },
         { type: "objective", text: "Pompa platformunu çalıştır." },
         { type: "flag", set: { platIlk: true } },
-        { type: "status", items: [
-          { label: "POMPA A", flag: "pompaA" },
-          { label: "POMPA B", flag: "pompaB" },
-          { label: "POMPA C", flag: "pompaC" },
-        ] },
         { type: "ambient", text: "Siyah su ayak bileklerinde nabız gibi ağır ağır atıyor, tenini donduruyor. C pompası buralarda değil; boru hatları suyun içindeki o karanlık dehlize doğru batıp kayboluyor." },
       ],
       choices: [
@@ -348,7 +344,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaA: true } },
-        { type: "system", text: "POMPA A: AKTİF ▮ — TAHLİYE HATTI 1 AÇIK" },
         { type: "narrate", text: "Vana son bir gayretle, çığlık atarak dönüyor. Boruların içinden boğulan birinin gırtlağından çıkan o leş ses gibi su emilmeye başlıyor. Kolların pas ve kir içinde kalmış, kulaklarında pompanın canavarca homurtusu... İlki bitti." },
       ],
       choices: [
@@ -395,7 +390,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaB: true } },
-        { type: "system", text: "POMPA B: AKTİF ▮ — TAHLİYE HATTI 2 AÇIK" },
         { type: "narrate", text: "Metal kol yerine oturuyor ve koca oda muazzam bir titreşimle sarsılıyor. O köşede asılı duran şey — o leş kıyafet ya da her neyse — bu sarsıntıyla birlikte yavaşça SALLANMAYA başlıyor. Arkana bile bakmadan odadan fırlıyorsun." },
       ],
       choices: [
@@ -447,7 +441,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaC: true } },
-        { type: "system", text: "POMPA C: AKTİF ▮ — TAHLİYE HATTI 3 AÇIK" },
         { type: "narrate", text: "Sigorta yuvaya büyük bir 'çıt' sesiyle oturuyor ve üçüncü hat da devasa bir kükremeyle çalışmaya başlıyor. Su büyük bir girdap oluşturarak hızla çekilmeye başlıyor; tünelden geri kaçarken seviye dizlerine kadar iniyor. Şimdi tek şansın ana panel. O büyük kırmızı buton." },
       ],
       choices: [
@@ -719,6 +712,7 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k6b" },
         { type: "narrate", text: "Kapı aralığından dışarı bakıyorsun: O yaratık koridorun tam ortasında durmuş, sırtı sana dönük, kendi etrafında delice sallanarak uykusunda SAYIYOR gibi titriyor. K-5 hava kilidi koridorun tam diğer ucunda. İki yolun var ve ikisi de onun hemen yanından geçmek zorunda." },
         { type: "narrate", text: "Sol duvarda katın ana şalteri duruyor. Eğer onu indirirsen K-6 katı tamamen kör olacak; o canavar karanlıkta yavaşlayacak ama sen de tabletinin o soluk ekran ışığına mahkum kalacaksın. Ya da ışıklar açıkken, gürültüyü göze alıp deliler gibi KOŞACAKSIN." },
         { type: "alert", text: "KARAR VER — UZUN DÜŞÜNENLERİ BU TESİS SEVMEZ" },

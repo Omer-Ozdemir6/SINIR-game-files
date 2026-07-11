@@ -19,7 +19,8 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "music", track: "k5_sinir_dread" },
+        { type: "music", track: "k5" },
+        { type: "sting", name: "stingK5" },
         { type: "system", text: "FLOOR: K-5 — LIFE SUPPORT · THE BRINK OF DEATH · CYCLE OF WATER AND BLOOD" },
         { type: "narrate", text: "The moment you descend the stairs, the air filling your lungs turns heavy with rust, mold, and decaying meat. K-5 doesn't operate like a facility floor; it operates like a hollowed organ you've stepped inside. Pipes throb, filters hiss as if suffocating. The machinery here isn't malfunctioning; it has been kept alive under the guise of an error. It feels as if someone designed this place not to offer aid, but to measure your breath count." },
         { type: "narrate", text: "Fear down here is not random. The cameras, loudspeakers, and console panels along the walls are placed so methodically that K-5 feels less like a floor and more like a massive experimental cage stripped of an observation booth. At the end of every corridor, something is measuring you: how much noise you make, how fast you panic, how many seconds you endure before begging." },
@@ -49,11 +50,6 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "A suffocating distribution junction opening into four savage darknesses. A puddle of coagulated, blackened fluid rests on the deck — its stench scratches your throat. One of the lifeless cameras on the ceiling rotates, its inner gears screeching in agony, driving its lens straight into your eyes. The light from your tablet stretches the surrounding shadows into towering monsters on the walls.", if: { flag: "hubIlk", equals: false } },
         { type: "flag", set: { hubIlk: true } },
-        { type: "status", items: [
-          { label: "CARD I", flag: "kart1" },
-          { label: "CARD II", flag: "kart2" },
-          { label: "CARD III", flag: "kart3" },
-        ] },
         { type: "ambient", text: "Directional signs on the wall are choked with rust and grime: PRESSURE CHAMBER · TUNNEL NETWORK · OBSERVATION ROOM · EXIT. Directly beneath the signs, someone scratched, likely until their fingernails ripped off: 'They didn't die in order, so croak whenever you are ready.'" },
       ],
       choices: [
@@ -589,6 +585,7 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k5b" },
         { type: "flag", set: { mezun: true } },
         { type: "system", text: "EXIT LOCK OPENED — TRANSIT TO K-4 HELL PERMITTED" },
         { type: "anons", text: "「Congratulations, victim... One graduate out of four pieces of meat. Take this, let it be a reward from me to you.」 The dark vent above you suddenly shudders, and a fresh, packaged tablet battery drops right at your feet! 「A small favor... Don't tell anyone, I wouldn't want to ruin my sadistic image here.」" },
@@ -637,6 +634,7 @@ export const EP02 = {
     },
 
     n_harun2_chase: {
+      events: [],
       interaction: {
         kind: "chase",
         title: "K-5 CORRIDOR",

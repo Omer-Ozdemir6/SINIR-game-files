@@ -19,7 +19,8 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "music", track: "k5_sinir_dread" },
+        { type: "music", track: "k5" },
+        { type: "sting", name: "stingK5" },
         { type: "system", text: "KAT: K-5 — YAŞAM DESTEK · ÖLÜMÜN EŞİĞİ · SU VE KAN DÖNGÜSÜ" },
         { type: "narrate", text: "Merdivenlerden indiğin an ciğerlerine dolan hava pas, küf ve çürüyen etle ağırlaşıyor. K-5 bir kat gibi değil, içine girilmiş bir organ gibi çalışıyor. Borular zonkluyor, filtreler boğulur gibi tıslıyor. Buradaki makineler arızalı değil; arıza bahanesiyle canlı tutulmuş. Sanki biri burayı yardım etmek için değil, nefes alışını ölçmek için tasarlamış." },
         { type: "narrate", text: "Burada korku rastgele değil. Duvarlardaki kameralar, hoparlörler ve paneller öyle düzenli yerleştirilmiş ki K-5 bir kat değil, gözlem odası olmayan dev bir deney kafesi gibi. Her koridorun sonunda seni ölçen bir şey var: ne kadar ses çıkarıyorsun, ne kadar hızlı panikliyorsun, yalvarmadan önce kaç saniye dayanıyorsun." },
@@ -49,11 +50,6 @@ export const EP02 = {
       events: [
         { type: "narrate", text: "Dört vahşi karanlığa açılan boğucu bir dağıtım kavşağı. Zeminde pıhtılaşmış, kararmış bir sıvı birikintisi var — kokusu genzini yakıyor. Tavandaki cansız kameralardan biri, içindeki dişliler çığlık ata ata dönüyor ve merceğini doğrudan gözlerine saplıyor. Tabletinin ışığı, etraftaki gölgeleri duvarlarda devasa canavarlara dönüştürüyor.", if: { flag: "hubIlk", equals: false } },
         { type: "flag", set: { hubIlk: true } },
-        { type: "status", items: [
-          { label: "KART I", flag: "kart1" },
-          { label: "KART II", flag: "kart2" },
-          { label: "KART III", flag: "kart3" },
-        ] },
         { type: "ambient", text: "Duvarda pas ve pislikle kaplanmış yön levhaları: BASINÇ ODASI · TÜNEL AĞI · GÖZLEM ODASI · ÇIKIŞ. Levhaların hemen altına, muhtemelen tırnakları sökülene kadar kazımış biri: 'Sırayla ölmediler, sen de hazır olduğunda geber.'" },
       ],
       choices: [
@@ -589,6 +585,7 @@ export const EP02 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k5b" },
         { type: "flag", set: { mezun: true } },
         { type: "system", text: "ÇIKIŞ KİLİDİ AÇILDI — K-4 CEHENNEMİNE GEÇİŞ SERBEST" },
         { type: "anons", text: "「Tebrikler kurban... Dört ette bir mezun. Al bakalım, bu benden sana bir ödül olsun.」 Tependeki karanlık menfez aniden sarsılıyor ve ayağının dibine taze, ambalajlı bir tablet pili düşüyor! 「Küçük bir kıyak... Kimseye söyleme, buradaki sadist imajımı bozmak istemem.」" },
@@ -637,6 +634,7 @@ export const EP02 = {
     },
 
     n_harun2_chase: {
+      events: [],
       interaction: {
         kind: "chase",
         title: "K-5 KORİDORU",

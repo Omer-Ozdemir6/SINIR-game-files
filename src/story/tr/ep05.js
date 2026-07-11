@@ -36,6 +36,7 @@ export const EP05 = {
       cost: 1,
       events: [
         { type: "music", track: "k2" },
+        { type: "sting", name: "stingK2" },
         { type: "system", text: "KAT: K-2 — ARKEOLOJİ · KAZI SAHASI · [KAYIT DIŞI]" },
         { type: "narrate", text: "Son metal basamak kırılıp arkanda çınlıyor ve ayakların ıslak, soğuk, yabancı kayaya basıyor. K-2 istasyonun parçası değil; istasyon onun üstüne kapatılmış bir kapak. Tablet ışığı duvardaki lekeleri yakalıyor. Hayır, leke değil. Deriye kazınır gibi taşa oyulmuş çentikler. Binlerce yıllık bir kayıt sistemi. İnsan yazısı değil ama yine de tutanak gibi: azalan, tükenen, sayan bir şey." },
         { type: "narrate", text: "Boşluğun ortasında paslı iskeleler, birbirine dolanmış kalın siyah kablolar ve adeta tapan kör bir tarikat gibi dizilmiş çürüyen ekipmanlar var... Hepsi merkezdeki o dipsiz anomalinin etrafını sarmış. Onu göremiyorsun, çünkü tabletinin zayıf ışığı o zifiri karanlığı yırtmaya yetmiyor. Ama kusma hissiyle gelen o berbat titreşimi HİSSEDİYORSUN. Diş köklerin sızlıyor, kulak zarların patlayacak gibi parazit yapıyor ve zihninin içine kirli bir pas gibi bir sayı çakılıyor: Üç." },
@@ -310,6 +311,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "epRandom" },
         { type: "narrate", text: "Sığınağın tam köşesinde, aşağıya doğru spiral çizen daracık, yapışkan bir tünel var. Bu insan eliyle kazılmamış; Buluntu’nun o etsi, ıslak köklerinin kayayı asitle eriterek açtığı organik bir boğaz sanki. İçeriden insanı kusan sıcak, nemli bir hava ve mideni bulandıran alçak bir bağırsak gurultusu yükseliyor. Oraya girmek tam bir delilik. Ama o karanlığın içinden bir şey senin adını sayıklıyor gibi." },
         { type: "waitTap" },
         { type: "flag", set: { tunelGoruldu: true } },
@@ -445,6 +447,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k2b" },
         { type: "narrate", text: "Sığınağın çıkışındaki o son yarıkta duruyorsun. Önü tamamen o yaratığın inine açılıyor. Selin elini omzuna koyuyor, parmakları titriyor: «Bu eşikten tek bir adım attığın an geri dönüşün yok. O canavarın önünde durduğumuz an ruhumuzu ameliyat masasına yatıracak. Hazır mısın? Tabletini, pillerini, aklından kalan son kırıntıları kontrol et... Orada hata yaparsan seni kurtaramam.»" },
         { type: "waitTap" },
         { type: "narrate", text: "Kamp alanından bulduğun o kulak tıkaçları cebinde... O içteki lağım sesini tamamen kesmeyecek ama tam delireceğin an beynine bir saniye nefes aldırabilir.", if: { flag: "kampArandi", equals: true } },

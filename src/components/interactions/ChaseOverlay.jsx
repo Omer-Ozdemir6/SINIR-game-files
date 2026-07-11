@@ -36,8 +36,16 @@ export default function ChaseOverlay({ config, onSuccess, onFail }) {
   };
 
   const setAct = (next) => {
+    const prev = actionRef.current;
     actionRef.current = next;
     setAction(next);
+    // Saklanırken gerilim müziği "hide"e geçer; saklanmayı bırakınca
+    // kovalamaca müziğine geri döner.
+    if (next === "hide" && prev !== "hide") {
+      AudioSys.music("hide");
+    } else if (prev === "hide" && next !== "hide") {
+      AudioSys.music(config.music || "chase");
+    }
   };
 
   useEffect(() => {

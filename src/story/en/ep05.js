@@ -36,6 +36,7 @@ export const EP05 = {
       cost: 1,
       events: [
         { type: "music", track: "k2" },
+        { type: "sting", name: "stingK2" },
         { type: "system", text: "FLOOR: K-2 — ARCHAEOLOGY · EXCAVATION SITE · [UNREGISTERED]" },
         { type: "narrate", text: "The final metal rung snaps and clangs behind you, and your feet step onto wet, cold, alien rock[cite: 9]. K-2 is not part of the station; the station is a hatch sealed over it[cite: 9]. The tablet light catches marks on the wall[cite: 9]. No, not stains[cite: 9]. Notches carved into the stone as if etched into skin[cite: 9]. A recording system thousands of years old[cite: 9]. Not human writing, yet still like a ledger: something diminishing, exhausting, counting[cite: 9]." },
         { type: "narrate", text: "In the center of the void are rusted scaffoldings, tangled thick black cables, and decaying equipment arranged like a blindly worshipping cult... All of them surround that bottomless anomaly in the center[cite: 9]. You cannot see it, because the weak light of your tablet isn't enough to rip through that pitch darkness[cite: 9]. But you CAN FEEL that wretched vibration coming with a wave of nausea[cite: 9]. The roots of your teeth ache, your eardrums emit static as if ready to burst, and a number is pounded into your mind like a dirty rust nail: Three[cite: 9]." },
@@ -311,6 +312,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "epRandom" },
         { type: "narrate", text: "Right in the corner of the vault, there is a tight, sticky tunnel spiraling downward[cite: 9]. This wasn't dug by human hands; it's like an organic throat opened by the Artifact's wet, fleshy roots dissolving the rock with acid[cite: 9]. A warm, humid air that vomits humanity and a low bowel growl that turns your stomach ascend from within[cite: 9]. Entering there is pure madness[cite: 9]. But something inside that darkness seems to murmur your name[cite: 9]." },
         { type: "waitTap" },
         { type: "flag", set: { tunelGoruldu: true } },
@@ -446,6 +448,7 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k2b" },
         { type: "narrate", text: "You stand at that final crevice at the exit of the vault[cite: 9]. The front opens entirely into the lair of that creature[cite: 9]. Selin places her hand on your shoulder, her fingers trembling: «The moment you take a single step across this threshold, there is no turning back[cite: 9]. The moment we stand before that monster, it will lay our souls on an operating table[cite: 9]. Are you ready[cite: 9]? Check your tablet, your batteries, the final remnants remaining of your wits... I can't rescue you if you make an error out there[cite: 9].»" },
         { type: "waitTap" },
         { type: "narrate", text: "Those earplugs you retrieved from the campsite are in your pocket... They won't completely cut off that inner sewer voice, but they can grant your brain a second of breath right when you are about to go mad[cite: 9].", if: { flag: "kampArandi", equals: true } },

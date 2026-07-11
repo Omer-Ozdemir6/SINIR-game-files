@@ -192,6 +192,30 @@ export const styles = {
   panelLightRow: { display: "flex", alignItems: "center", gap: 8 },
   panelLight: { width: 12, height: 12, borderRadius: "50%", border: "2px solid #140806" },
   panelLightLabel: { fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: "#a3705f" },
+  panelScreenWrap: { position: "relative", width: "100%" },
+  panelCornerLight: {
+    position: "absolute", top: -5, right: -5, width: 10, height: 10, borderRadius: "50%",
+    border: "1px solid #1a0906", zIndex: 1,
+  },
+  panelHardwareRow: { display: "flex", alignItems: "center", justifyContent: "center", gap: 14 },
+  panelDial: {
+    width: 34, height: 34, borderRadius: "50%",
+    backgroundImage: "radial-gradient(circle at 35% 28%, #6b6358, #2a2620 70%)",
+    border: "2px solid #1a1712",
+    boxShadow: "inset 0 0 6px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5)",
+  },
+  panelSmallBtn: {
+    width: 22, height: 22, borderRadius: 3,
+    backgroundColor: "#2a1410",
+    border: "1px solid #4a241a",
+    boxShadow: "inset 0 1px 2px rgba(255,255,255,0.08), inset 0 -2px 4px rgba(0,0,0,0.6)",
+  },
+  panelSlot: {
+    width: 8, height: 30, borderRadius: 2,
+    backgroundColor: "#0a0605",
+    border: "1px solid #3a1c14",
+    boxShadow: "inset 0 0 6px rgba(0,0,0,0.9)",
+  },
   redButton: {
     width: 76, height: 76, borderRadius: "50%",
     backgroundColor: "#c0261a",

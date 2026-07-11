@@ -27,6 +27,17 @@ export const SFX_FILES = {
   glitch: "/audio/sfx/glitch.mp3",     // parazit patlaması
   heartbeat: "/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
   batteryLow: "", // pil zayıf uyarısı (dı-dıt sesi)
+
+  // Outlast tarzı kısa gerilim müzikleri (sting) — her biri SADECE 5 katın
+  // giriş anında, birer kere çalan kendine özgü bir parça. Genel/tekrarlı
+  // bir sistem değil: 5 parça, 5 sabit yer. Çalarken ambiyansı/müziği
+  // kısar, bitince geri getirir. Dosyayı buraya koyunca (mp3/ogg/wav)
+  // otomatik devreye girer, kod değişikliği gerekmez.
+  stingK6: "/audio/sfx/sting_k6.mp3",  // K-6 girişi (ep01)
+  stingK5: "/audio/sfx/sting_k5.mp3",  // K-5 girişi (ep02)
+  stingK4: "/audio/sfx/sting_k4.mp3",  // K-4 girişi (ep03)
+  stingK3: "/audio/sfx/sting_k3.mp3",  // K-3 girişi (ep04)
+  stingK2: "/audio/sfx/sting_k2.mp3",  // K-2 girişi (ep05, final)
 };
 
 export const MUSIC_FILES = {
@@ -35,17 +46,54 @@ export const MUSIC_FILES = {
   intro: "/audio/music/intro.mp3",     // intro mail sekansı müziği
   credits: "/audio/music/credits.mp3",   // credits ekranı müziği
   archive: "/audio/music/archive.wav",   // ayarlar / arşiv menü müziği
-  // Bölüm/atmosfer parçaları — hikayede { type: "music", track: "k6" }
+  endsound: "/audio/music/endsound.mp3", // final ekranı (EndingCards) — siyah ekranda yazılar akarken çalar
+
+  // Bölüm giriş parçaları — hikayede { type: "music", track: "k6" }
   // ile başlar, { type: "music" } (track'siz) ile susar.
-  k6: "/audio/music/k6.wav",         // makine dairesi ambiyansı
-  k5: "/audio/music/k5.wav",         // yaşam destek / Deniz'in katı
-  k2: "/audio/music/k2.wav",         // buluntu / kazı — final
-  k3: "/audio/music/k3.wav",         // bahçe / Dr. Nevin'in katı
-  k4: "/audio/music/k4.wav",         // ev / Şef Harun'un katı
-  chase: "/audio/music/chase.wav",      // kovalamaca
-  hide: "/audio/music/hide.wav",       // saklanma gerilimi
-  safe: "/audio/music/safe.wav",       // checkpoint/güvenli an nefesi
+  k6: "/audio/music/ep01.mp3",  // K-6 girişi
+  k5: "/audio/music/ep02.mp3",  // K-5 girişi
+  k4: "/audio/music/ep03.mp3",  // K-4 girişi
+  k3: "/audio/music/ep04.mp3",  // K-3 girişi
+  k2: "/audio/music/ep05.mp3",  // K-2 girişi (final)
+
+  // Bölüm "ikinci perde" parçaları — o bölümün dönüşü olmayan/final
+  // sahnesine girerken devreye giriyor (bkz. hikaye dosyalarındaki
+  // ilgili checkpoint düğümleri).
+  k6b: "/audio/music/ep01-2.mp3",
+  k5b: "/audio/music/ep02-2.mp3",
+  k4b: "/audio/music/ep03-2.mp3",
+  k3b: "/audio/music/ep04-2.mp3",
+  k2b: "/audio/music/ep05-2.mp3",
+
+  epRandom: "/audio/music/ep-random.mp3", // ep05'teki opsiyonel gizli tünel keşfi
+
+  chase: "/audio/music/chase.mp3",      // kovalamaca
+  hide: "/audio/music/hide.mp3",       // saklanma gerilimi
+  safe: "/audio/music/safe.wav",       // checkpoint/güvenli an nefesi (rastgele döngü havuzunun bir parçası)
 };
 
-// Sürekli dip ambiyans (46Hz sentetik uğultunun yerine geçer):
+// Bölüm müziği bittiğinde ya da "güvenli an" durumuna dönüldüğünde bu
+// havuzdan RASTGELE bir parça seçilip döngüde çalınır (hep aynı "safe"
+// yerine çeşitlilik için).
+export const LOOP_POOL = [
+  "/audio/music/safe.wav",
+  "/audio/music/loop2.mp3",
+  "/audio/music/loop3.mp3",
+  "/audio/music/underwater_loop.mp3",
+];
+
+// Sürekli dip ambiyans — oyun başında bu havuzdan RASTGELE bir parça
+// seçilip döngüde arka planda çalar (46Hz sentetik uğultunun yerine
+// geçer). Havuz boşsa sentetik uğultuya düşülür.
+export const AMBIENCE_POOL = [
+  "/audio/music/ambience1.mp3",
+  "/audio/music/ambience2.mp3",
+  "/audio/music/ambience3.mp3",
+  "/audio/music/ambience4.mp3",
+  "/audio/music/ambience5.mp3",
+  "/audio/music/ambience6.mp3",
+];
+
+// Tekil sabit dip ambiyans dosyası (eski tek-dosya sistemi) — havuz
+// tanımlıysa kullanılmaz, sadece AMBIENCE_POOL boşsa devreye girer.
 export const AMBIENT_FILE = ""; // örn "/audio/amb/derin-ugultu.ogg"

@@ -25,6 +25,7 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "music", track: "k6" },
+        { type: "sting", name: "stingK6" },
         { type: "system", text: "PERISHED MAINTENANCE TABLET v2.3 — REBOOTING…" },
         { type: "system", text: "TIME: 03:47 · DEPTH: 214M · EXTERNAL LINK: NONE (3 HR 12 MIN)" },
         { type: "pause", ms: 900 },
@@ -308,11 +309,6 @@ export const EP01 = {
         { type: "narrate", text: "You descend the iron ladder into pitch-black, ice-cold water that rises up to your ankles. The pump platform... To your right stands the massive, rusted valve A; to your left, the door to room B opens into darkness. Straight ahead, a raw red emergency light illuminates the main control panel. And at the far end of the platform, the narrow, claustrophobic bilge tunnel stretches out, sinking straight INTO the water.", if: { flag: "platIlk", equals: false } },
         { type: "objective", text: "Boot up the pump platform." },
         { type: "flag", set: { platIlk: true } },
-        { type: "status", items: [
-          { label: "PUMP A", flag: "pompaA" },
-          { label: "PUMP B", flag: "pompaB" },
-          { label: "PUMP C", flag: "pompaC" },
-        ] },
         { type: "ambient", text: "The black water throbs heavily around your ankles like a pulse, freezing your skin. Pump C isn't anywhere in sight; the pipelines sink and disappear into that dark abyss beneath the water." },
       ],
       choices: [
@@ -349,7 +345,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaA: true } },
-        { type: "system", text: "PUMP A: ACTIVE ▮ — DRAINAGE LINE 1 OPEN" },
         { type: "narrate", text: "With one final effort, the valve turns, screeching in agony. Water begins to draw with a sound like someone choking on fluid deep in their throat. Your arms are caked in rust and grime, the monstrous growl of the pump fills your ears... The first one is done." },
       ],
       choices: [
@@ -396,7 +391,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaB: true } },
-        { type: "system", text: "PUMP B: ACTIVE ▮ — DRAINAGE LINE 2 OPEN" },
         { type: "narrate", text: "The metal lever snaps into place, and the massive room shudders with a violent vibration. That thing hanging in the corner—that foul suit or whatever it is—begins to SWING slowly with the tremor. You bolt out of the room without looking back." },
       ],
       choices: [
@@ -448,7 +442,6 @@ export const EP01 = {
       cost: 1,
       events: [
         { type: "flag", set: { pompaC: true } },
-        { type: "system", text: "PUMP C: ACTIVE ▮ — DRAINAGE LINE 3 OPEN" },
         { type: "narrate", text: "The fuse seats into the slot with a loud click, and the third line roars to life with a massive rumble. The water forms a giant vortex, draining away rapidly; as you scramble back from the tunnel, the level drops to your knees. Now, your only shot is the main panel. That big red button." },
       ],
       choices: [
@@ -720,6 +713,7 @@ export const EP01 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k6b" },
         { type: "narrate", text: "You peer through the door gap: That creature is standing right in the middle of the corridor, its back turned to you, shivering as if it is COUNTING in its sleep while swaying wildly. The K-5 airlock is at the exact opposite end of the hall. You have two paths, and both force you to pass right beside it." },
         { type: "narrate", text: "The main breaker switch of the floor sits on the left wall. If you pull it down, the K-6 floor will be rendered completely blind; that monster will slow down in the dark, but you will also be condemned to the pale screen light of your tablet. Or, with the lights on, you take the risk of making noise and RUN like mad." },
         { type: "alert", text: "MAKE A DECISION — THIS FACILITY DOES NOT FAVOR LONG THINKERS" },

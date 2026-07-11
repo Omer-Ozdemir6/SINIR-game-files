@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import { SFX_FILES, MUSIC_FILES, AMBIENT_FILE } from "./soundMap";
+import { SFX_FILES, MUSIC_FILES, AMBIENT_FILE, LOOP_POOL, AMBIENCE_POOL } from "./soundMap";
 
 const MUSIC_PROFILES = {
   menu: { drone: 42, bass: "E1", notes: ["E2", "F2", "D2", "E1"], interval: 5200, gain: 0.07, noise: 0.012 },
@@ -127,6 +127,7 @@ export const AudioSys = {
         ambOsc,
         ambGain,
         rumble,
+        rumbleF,
         rumbleG,
         statG,
         burstG,
@@ -142,6 +143,7 @@ export const AudioSys = {
         metal,
       };
       this.inited = true;
+      this._tuneAmbient(this._activeGameTrack || "menu", true); // başlangıç akordu
 
       // AudioContext'in ilk kez başlatılması, o an çalan native <audio>
       // müziğini (örn. menü parçası) kesintiye uğratıp duraklatabiliyor —
@@ -188,8 +190,13 @@ export const AudioSys = {
       }
 
       // Menü veya alet parçası mı kontrol et
-      const isMenuTrack = (track === "menu" || track === "credits" || track === "intro" || track === "archive");
-      
+      const isMenuTrack = (track === "menu" || track === "credits" || track === "intro" || track === "archive" || track === "endsound");
+
+      // Sürekli dip uğultu (ambient) her katın/parçanın kendi tonuna göre
+      // yeniden akort edilir — K-6, K-5, K-4, K-3, K-2 birbirinden farklı
+      // bir alt-frekans ve gürültü rengi taşır.
+      this._tuneAmbient(track);
+
       if (!isMenuTrack) {
         this._activeGameTrack = track;
         this._isEpisodeTrack = (track !== this._bgAmbientTrack);
@@ -200,7 +207,11 @@ export const AudioSys = {
         }
       }
 
-      const file = MUSIC_FILES[track];
+      // "Güvenli an" döngüsü sabit tek dosya yerine bir havuzdan rastgele
+      // seçilir — her girişte çeşitlilik olsun diye.
+      const file = (track === this._bgAmbientTrack && LOOP_POOL.length)
+        ? LOOP_POOL[Math.floor(Math.random() * LOOP_POOL.length)]
+        : MUSIC_FILES[track];
       if (file) {
         this._pendingMusic = null;
         this._stopSyntheticMusic();
@@ -331,6 +342,7 @@ export const AudioSys = {
         this._pausedGameTrack = this._musicTrack;
         if (this._musicEl) {
           this._pausedGameTime = this._musicEl.currentTime;
+          this._pausedMusicSrc = this._musicEl.src; // hangi dosya çalıyordu — devam ederken aynısına dönmek için
           this._musicEl.pause();
           this._musicEl = null;
         } else {
@@ -347,7 +359,10 @@ export const AudioSys = {
         const track = this._pausedGameTrack;
         this._pausedGameTrack = null;
         
-        const file = MUSIC_FILES[track];
+        // Duraklatılan dosya bellidir (_pausedMusicSrc) — "güvenli an" döngüsü
+        // olsa bile rastgele yeni bir seçim yapmadan AYNI parçadan devam eder.
+        const file = this._pausedMusicSrc || MUSIC_FILES[track];
+        this._pausedMusicSrc = null;
         if (file) {
           this._stopSyntheticMusic();
           const a = new Audio(file);
@@ -425,15 +440,42 @@ export const AudioSys = {
     if (clearTrack) this._musicTrack = null;
   },
 
+  // Sürekli dip uğultuyu (alt-frekans osilatör + kahverengi gürültü filtresi)
+  // aktif kata göre yeniden akort eder — her kat kendi derinlik/gürültü
+  // karakterine göre farklı bir "alttan gelen uğultu" hissi verir.
+  // (MUSIC_PROFILES'taki drone/noise değerleri zaten kat başına ayarlı;
+  // burada onları sub-bass uğultuya çeviriyoruz, ekstra ses dosyası gerekmez.)
+  _tuneAmbient(track, instant = false) {
+    if (!this.inited) return;
+    const profile = MUSIC_PROFILES[track] || MUSIC_PROFILES.menu;
+    const droneFreq = Math.max(18, profile.drone * 0.82);
+    const filterFreq = 75 + profile.noise * 2200;
+    const gainMul = 0.75 + profile.noise * 6;
+    this._ambientGainMul = gainMul;
+    const rampTime = instant ? 0.01 : 2.4;
+    try {
+      this.n.ambOsc.frequency.rampTo(droneFreq, rampTime);
+      this.n.rumbleF.frequency.rampTo(filterFreq, rampTime);
+      if (this._ambientOn && this.enabled) {
+        this.n.ambGain.gain.rampTo(0.028 * gainMul, rampTime);
+        this.n.rumbleG.gain.rampTo(0.014 * gainMul, rampTime);
+      }
+    } catch (e) {}
+  },
+
   ambient(on) {
     this._ambientOn = !!on;
-    if (AMBIENT_FILE) {
+    // Sürekli dip ambiyans: havuzdan rastgele seçilir (ilk açılışta bir kere),
+    // sonra o parça döngüde çalar. Havuz boşsa tekil AMBIENT_FILE'a, o da
+    // yoksa sentetik uğultuya düşülür.
+    if (AMBIENCE_POOL.length || AMBIENT_FILE) {
       try {
         if (on) {
           if (!this._ambEl) {
-            this._ambEl = new Audio(AMBIENT_FILE);
+            const src = AMBIENCE_POOL.length ? AMBIENCE_POOL[Math.floor(Math.random() * AMBIENCE_POOL.length)] : AMBIENT_FILE;
+            this._ambEl = new Audio(src);
             this._ambEl.loop = true;
-            this._ambEl.volume = 0.5;
+            this._ambEl.volume = 0.35;
           }
           if (this.enabled) this._ambEl.play().catch(() => {});
         } else if (this._ambEl) {
@@ -443,9 +485,10 @@ export const AudioSys = {
       return;
     }
     if (!this.inited) return;
+    const gm = this._ambientGainMul || 1;
     try {
-      this.n.ambGain.gain.rampTo(on && this.enabled ? 0.028 : 0, 0.8);
-      this.n.rumbleG.gain.rampTo(on && this.enabled ? 0.014 : 0, 1.1);
+      this.n.ambGain.gain.rampTo(on && this.enabled ? 0.028 * gm : 0, 0.8);
+      this.n.rumbleG.gain.rampTo(on && this.enabled ? 0.014 * gm : 0, 1.1);
     } catch (e) {}
 
     if (this._ambientTimer) clearInterval(this._ambientTimer);
@@ -456,6 +499,40 @@ export const AudioSys = {
         this.burst(randomBetween(70, 150));
       }, 9000);
     }
+  },
+
+  // Outlast tarzı kısa gerilim müziği (sting): yeni mekana giriş, tehlike
+  // yaklaşması ya da önemli bir olay öncesi çalınır. Çalarken alttaki
+  // müziği/ambiyansı kısa süreliğine kısar (duck), bitince geri getirir.
+  // Dosya tanımlı değilse (henüz eklenmemişse) sessizce hiçbir şey yapmaz.
+  sting(name) {
+    if (!this.enabled) return;
+    const src = SFX_FILES[name];
+    if (!src) return;
+    const now = Date.now();
+    if (now - (this._lastStingAt || 0) < 4000) return; // art arda spam olmasın
+    this._lastStingAt = now;
+    try {
+      const el = new Audio(src);
+      el.volume = 0.9;
+      const musicEl = this._musicEl;
+      const prevMusicVol = musicEl ? musicEl.volume : null;
+      const gm = this._ambientGainMul || 1;
+      if (musicEl) musicEl.volume = prevMusicVol * 0.3;
+      if (this.inited) {
+        this.n.ambGain.gain.rampTo(this._ambientOn && this.enabled ? 0.028 * gm * 0.3 : 0, 0.35);
+        this.n.rumbleG.gain.rampTo(this._ambientOn && this.enabled ? 0.014 * gm * 0.3 : 0, 0.35);
+      }
+      const restore = () => {
+        if (musicEl && this._musicEl === musicEl) musicEl.volume = prevMusicVol;
+        if (this.inited) {
+          this.n.ambGain.gain.rampTo(this._ambientOn && this.enabled ? 0.028 * gm : 0, 0.9);
+          this.n.rumbleG.gain.rampTo(this._ambientOn && this.enabled ? 0.014 * gm : 0, 0.9);
+        }
+      };
+      el.addEventListener("ended", restore);
+      el.play().catch(() => restore());
+    } catch (e) {}
   },
 
   heart(intervalMs) {

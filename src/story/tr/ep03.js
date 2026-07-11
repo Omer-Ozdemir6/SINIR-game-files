@@ -36,6 +36,7 @@ export const EP03 = {
       cost: 1,
       events: [
         { type: "music", track: "k4" },
+        { type: "sting", name: "stingK4" },
         { type: "system", text: "KAT: K-4 — PERSONEL YAŞAM ALANI · YEMEKHANE · KAMARALAR" },
         { type: "narrate", text: "Baca kapağından bir eve tırmanıyorsun. Ev kelimesi beynin için güvenli bir kelime olmalıydı; burada değil. Çelik duvarların üstüne çiçekli kağıt yapıştırılmış, zemine halı serilmiş, köşelere aile fotoğrafı taklitleri asılmış. Birileri yuva fikrini anlamamış ama tarifini ezberlemiş. Tabletinin zayıf ışığı duvar kağıdının altındaki pası, lağımı ve çürümeyi gösteriyor. Dekor ince; yalan daha kalın." },
         { type: "narrate", text: "Bu ev taklit edilmemiş, ezberlenmiş. Birileri aile olmanın şeklini fotoğraflardan, yemek saatlerinden, çocuk odası ölçülerinden öğrenmiş ve hepsini çeliğin içine yanlış sırayla çakmış. Burada sevgi yok; sevginin prosedürü var. Otur, ye, gülümse, itaat et. Etmezsen sofranın bir parçası ol." },
@@ -167,11 +168,6 @@ export const EP03 = {
       events: [
         { type: "narrate", text: "Evin holündesin. Tablet ışığı çerçeveli 'aile fotoğraflarına' vuruyor. Yüzler bıçakla kazınmış, yerlerine kan kırmızısı mürekkeple devasa gülümsemeler çizilmiş. Bu öfkeyle yapılmış bir tahribat değil; sabırla yapılmış bir düzeltme. Harun yüzleri değil, itaatsiz ifadeleri silmiş. Geriye yalnızca aileye uygun ağızlar bırakmış.", if: { flag: "holIlk", equals: false } },
         { type: "flag", set: { holIlk: true } },
-        { type: "status", items: [
-          { label: "FOTOĞRAF", flag: "yadigar1" },
-          { label: "YÜZÜK", flag: "yadigar2" },
-          { label: "SÜT DİŞİ", flag: "yadigar3" },
-        ] },
         { type: "ambient", text: "Mutfaktan satır sesleri ve kemik kırılma gürültüleri geliyor — Şef orada bir şeyler parçalıyor. Tabletinin ekranındaki zayıf parıltı önündeki beş karanlık kapıyı aydınlatıyor: mutfak, çocuk odası, şefin üst kattaki odası, soğuk depo ve o dar interkom nişi." },
       ],
       choices: [
@@ -603,6 +599,7 @@ export const EP03 = {
       checkpoint: true,
       cost: 1,
       events: [
+        { type: "music", track: "k4b" },
         { type: "narrate", text: "Hole indiğin an tüm ev kırmızı bir cehennem ışığına boğuluyor! Hoparlörler cızırdayarak patlıyor ve Harun'un tamamen delirdiğini gösteren o vahşi feryadı evi inletiyor: \"ANAHTARIMI ALDIN! ANNESİNİN YÜZÜĞÜNÜ ÇALDIN! SENİ YAŞATMAYACAĞIM!\" Artık yemler bitti, seni kokundan avlayacak!" },
         { type: "alert", text: "⚠ O ETİ YEMEDİN! KOKUNU ALDI VE ÖFKEDEN DELİRDİ — DEPOYA DOĞRU KOŞ!", if: { flag: "sofraReddetti", equals: true } },
         { type: "narrate", text: "Soğuk depo koridorun ta sonunda. Elindeki tabletin ışığı sarsıntıdan titrerken önündeki tek engelin o devasa yamyam olduğunu görüyorsun.", if: { flag: "sofraReddetti", equals: false } },
@@ -672,11 +669,9 @@ export const EP03 = {
         { type: "ambient", text: "Kapağın hemen arkasından, o canavarın ağlamaklı, şizofrenik sesi yükseliyor: \"...Herkes beni terk ediyor. Sevgi gitti... Deniz aşağı indi... Sen de kaçtın. Ben hep bu sofrada tek başıma mı kalacağım?\" Sonra derin, tekinsiz bir sessizlik çöküyor." },
         { type: "ambient", text: "Tabletin hoparlöründen Ece'nin hırıltılı sesi geliyor: «Aman Tanrım... O sesleri duydum. Başardın... K-3'e indin. Orası Dr. Nevin'in laboratuvar katı... Biyolog. O herif gibi delirmemiş olabilir... Dikkat et, orada garip şeyler nefes alıyor...»", if: { flag: "eceEleVerildi", equals: false } },
         { type: "narrate", text: "Merdivenlerden aşağı, mutlak karanlığa iniyorsun. Tablet ışığı aşağıda kıpırdayan bitkisel kütleleri yakalıyor; sarmaşık değil, bekleyen damarlar gibi. K-4 seni aileye katmaya çalıştı. Aşağıdaki yer seni toprağa katacak. Bu istasyon her katta insanı başka bir kelimeye çeviriyor: personel, evlat, örnek. Şimdi sıradaki kelimeyi öğrenmeye gidiyorsun." },
-        { type: "system", text: "— BÖLÜM 3 SONU: EV —" },
-        { type: "system", text: "K-3: 'BAHÇE' — Dr. Nevin'in katı — yakında" },
       ],
       choices: [
-        { id: "k3", text: "K-3'e in", next: "n_k3_giris" },
+        { id: "k3", text: "K-3'e in", next: "n_k3_giris", loading: true },
       ],
     },
 

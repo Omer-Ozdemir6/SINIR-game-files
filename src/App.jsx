@@ -36,9 +36,19 @@ import BreathOverlay from "./components/interactions/BreathOverlay";
 import ChaseOverlay from "./components/interactions/ChaseOverlay";
 import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./components/interactions/PuzzleOverlays";
 import DarknessOverlay from "./components/DarknessOverlay";
+import EndingCards from "./components/EndingCards";
 
 const MENU_AFTER_END_KEY = "sinir1_menu_after_ending";
 const PuzzleTest = lazy(() => import("./components/PuzzleTest"));
+
+// Bitiş düğümlerinde en sondaki ardışık "system" olayları (— SON: X —,
+// özet, TEŞEKKÜRLER) artık kayan hikaye ekranı yerine EndingCards'ta
+// tek tek gösterilir. Bu, o kuyruğu geri kalan olaylardan ayırır.
+function splitEndingEvents(events) {
+  let i = events.length;
+  while (i > 0 && events[i - 1].type === "system") i--;
+  return { mainEvents: events.slice(0, i), cardTexts: events.slice(i).map((e) => e.text) };
+}
 
 /* ============================================================
    SINIR-1 — OYUN MOTORU (App)
@@ -68,6 +78,8 @@ export default function App() {
   const [currentNodeId, setCurrentNodeId] = useState(null);
   const [death, setDeath] = useState(null);
   const [ended, setEnded] = useState(false);
+  const [endingCards, setEndingCards] = useState(null); // bitiş özet kartları (sırayla gösterilir)
+  const [chapterLoading, setChapterLoading] = useState(false); // bölüm geçişi / ölümden devam arasına giren yükleme ekranı
   const [showCredits, setShowCredits] = useState(false);
   const [endFade, setEndFade] = useState(false);
   const [menuAfterEnding, setMenuAfterEnding] = useState(() => {
@@ -134,6 +146,8 @@ export default function App() {
   const objectiveRef = useRef("—");
   const seenObjectivesRef = useRef(new Set());
   const checkpointRef = useRef(null);
+  const pendingLoadRef = useRef(null); // yükleme ekranı bitince oynatılacak düğüm
+  const pendingRespawnRef = useRef(false); // yükleme ekranı bitince ölümden devam edilsin mi
   const currentTrackRef = useRef(null);
   const timerRef = useRef(null);
   const flashRef = useRef(null);
@@ -398,6 +412,12 @@ export default function App() {
       case "alert": return typeLine("alert", ev.text, runId, 14);
       case "pause": return wait(ev.ms || 800, runId);
       case "glitch": return runGlitch(ev.ms || 600);
+      case "sting": {
+        // Outlast tarzı kısa gerilim müziği — 5 katın girişinde birer kere
+        // çalan kendine özgü parça (ör. name: "stingK6").
+        if (ev.name) AudioSys.sting(ev.name);
+        return;
+      }
       case "flag": { setFlagsBoth(ev.set); return; }
       case "status": {
         for (const item of ev.items) {
@@ -567,11 +587,17 @@ export default function App() {
       showToast("", t("eng.saved"), "#6f8a90", true);
     }
 
+    // Bitiş düğümündeyse, en sondaki özet kartları ("— SON: X —" vb.)
+    // normal akıştan ayrılıp EndingCards'a bırakılır — burada sadece
+    // öncesindeki anlatı (narrate/ambient/waitTap) normal akışta oynar.
+    const endingSplit = node.ending ? splitEndingEvents(node.events) : null;
+    const eventsToPlay = endingSplit ? endingSplit.mainEvents : (node.events || []);
+
     // RİTİM KURALI: art arda iki "meta" olay (döküman/not/görev/pil)
     // gelirse araya otomatik dokunma kapısı girer — ödül seli oluşamaz.
     const META = new Set(["document", "note", "objective", "battery"]);
     let prevMeta = false;
-    for (const ev of node.events) {
+    for (const ev of eventsToPlay) {
       if (runIdRef.current !== runId) return;
       const isMeta = META.has(ev.type);
       if (isMeta && prevMeta) {
@@ -590,6 +616,7 @@ export default function App() {
       try { localStorage.setItem(MENU_AFTER_END_KEY, "1"); } catch (e) {}
       clearGame();
       setGameExists(false);
+      setEndingCards(endingSplit.cardTexts);
       return;
     }
     if (node.interaction) {
@@ -622,7 +649,32 @@ export default function App() {
     setChoicesVisible(false);
     clockRef.current += 1 + Math.floor(Math.random() * 3);
     setLines((ls) => [...ls, { kind: "choice", text: (auto ? "· · · " : "» ") + choice.text }]);
+    if (choice.loading) {
+      pendingLoadRef.current = choice.next;
+      setChapterLoading(true);
+      return;
+    }
     playNode(choice.next);
+  };
+
+  // Bölüm geçişi / ölümden devam arasına giren yükleme ekranı bitince
+  // bekleyen düğümü oynatır ya da son kontrol noktasından devam eder.
+  const finishChapterLoading = () => {
+    setChapterLoading(false);
+    if (pendingRespawnRef.current) {
+      pendingRespawnRef.current = false;
+      respawn();
+      return;
+    }
+    const target = pendingLoadRef.current;
+    pendingLoadRef.current = null;
+    if (target) playNode(target);
+  };
+
+  const respawnWithLoading = () => {
+    setDeath(null);
+    pendingRespawnRef.current = true;
+    setChapterLoading(true);
   };
 
   const handleSkipTap = () => {
@@ -1452,6 +1504,12 @@ export default function App() {
         }} />
       )}
 
+      {endingCards && (
+        <EndingCards cards={endingCards} onDone={() => { setEndingCards(null); setShowCredits(true); }} />
+      )}
+
+      {chapterLoading && <LoadingScreen onDone={finishChapterLoading} />}
+
       {showCredits && (
         <Credits onClose={() => {
           setShowCredits(false); clearGame(); setGameExists(false); setEnded(false); setMode("menu");
@@ -1572,7 +1630,7 @@ export default function App() {
 
       {/* Ölüm */}
       {dying && <div style={S.dyingVignette} className="s1-dying" />}
-      {death && <DeathOverlay death={death} onRespawn={respawn} />}
+      {death && <DeathOverlay death={death} onRespawn={respawnWithLoading} />}
 
       {/* Fiziksel Kırık Ekran Camı Efekti (Outlast Miles kamerası tarzı) */}
       {mode === "game" && !screen && !openItem && flags.tabletKirik && (
