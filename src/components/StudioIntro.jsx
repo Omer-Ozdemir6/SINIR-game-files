@@ -31,9 +31,20 @@ export default function StudioIntro({ onDone }) {
     }
   }, [phase]);
 
+  // PERISHED ekranındayken dokunma logoya/videoya geçirir; video
+  // aşamasındayken dokunma introyu bitirir. Tek tıkla ikisini birden
+  // atlamasın diye aşamaya göre ayrı davranır.
+  const handleClick = () => {
+    if (phase === "pre") {
+      setPhase("video");
+    } else {
+      onDone();
+    }
+  };
+
   return (
     <div
-      onClick={onDone}
+      onClick={handleClick}
       style={{
         position: "fixed",
         inset: 0,

@@ -2,9 +2,9 @@
    SINIR-1 — SES DOSYASI HARİTASI
    Bir sese GERÇEK KAYIT bağlamak için: dosyayı public/audio/
    altına koy ve buradaki yolunu doldur. Boş ("") bırakılan her
-   isim otomatik olarak sentetik (Tone.js) sese düşer — yani
-   dosya ekledikçe oyun parça parça gerçek sese geçer, hiçbir
-   kod değişikliği gerekmez.
+   isim SESSİZ kalır — sentetik/sahte bir sesle telafi edilmez.
+   Dosya ekledikçe oyun parça parça sese kavuşur, kod değişikliği
+   gerekmez.
 
    Örnek: blip: "/audio/sfx/blip.ogg"
    Desteklenen formatlar: mp3 / ogg / wav (tarayıcı ne çalarsa)
@@ -26,7 +26,11 @@ export const SFX_FILES = {
   boom: "",       // ölüm/darbe vuruşu
   glitch: "/audio/sfx/glitch.mp3",     // parazit patlaması
   heartbeat: "/audio/sfx/heartbeat.mp3",  // TEK kalp vuruşu (ritmi motor tekrarlar)
-  batteryLow: "", // pil zayıf uyarısı (dı-dıt sesi)
+  batteryLow: "/audio/sfx/batterylow.mp3", // pil zayıf uyarısı
+  panelSound: "/audio/sfx/panelsound.mp3", // ana kontrol paneli — büyük kırmızı buton aktivasyonu
+  radioStatic: "/audio/sfx/radiostatic.mp3", // radyo frekans ayarı — arama sırasında döngüde çalar (kısık ses)
+  keypadButton: "/audio/sfx/keypad_button.mp3", // şifre paneli — her tuşa (rakam/sil/onayla) basışta
+  puzzleButton: "/audio/sfx/puzzle_button.mp3", // bulmaca dokunuşu — kablo seçme, karo/hexagon çevirme vb.
 
   // Outlast tarzı kısa gerilim müzikleri (sting) — her biri SADECE 5 katın
   // giriş anında, birer kere çalan kendine özgü bir parça. Genel/tekrarlı
@@ -97,3 +101,13 @@ export const AMBIENCE_POOL = [
 // Tekil sabit dip ambiyans dosyası (eski tek-dosya sistemi) — havuz
 // tanımlıysa kullanılmaz, sadece AMBIENCE_POOL boşsa devreye girer.
 export const AMBIENT_FILE = ""; // örn "/audio/amb/derin-ugultu.ogg"
+
+// Vana çevirme sesi havuzu — her dokunuşta bu havuzdan rastgele bir dosya
+// seçilir (bir öncekiyle aynısı tekrar gelmez), böylece art arda aynı vana
+// çevrilse bile her basışta biraz farklı bir gıcırtı duyulur.
+export const VALVE_POOL = [
+  "/audio/sfx/valve.mp3",
+  "/audio/sfx/valve1.mp3",
+  "/audio/sfx/valve2.mp3",
+  "/audio/sfx/valve3.mp3",
+];

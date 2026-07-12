@@ -55,14 +55,15 @@ export default function Credits({ onClose }) {
   return (
     <div
       onClick={handleClose}
-      className="s1-fadein"
       style={{
         position: "fixed", inset: 0, zIndex: 55,
         background: "#000", overflow: "hidden", cursor: "pointer",
       }}
     >
+      {/* Arka plan hep tam opak (siyah-siyah kesintisiz geçiş için) —
+          fade-in sadece içerikte, arkadaki ekran asla görünmesin. */}
       {/* TEK kayan blok: logo + isim + yazılar birlikte akar */}
-      <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center" }}>
+      <div className="s1-fadein" style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center" }}>
         <div
           ref={scrollRef}
           style={{

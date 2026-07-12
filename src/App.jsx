@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, useEffect, useRef, useCallback } from "react";
+import { Suspense, lazy, useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 import { AudioSys } from "./audio/AudioSys";
 import { t, getLang, setLang, LANGS } from "./i18n";
@@ -48,6 +48,17 @@ function splitEndingEvents(events) {
   let i = events.length;
   while (i > 0 && events[i - 1].type === "system") i--;
   return { mainEvents: events.slice(0, i), cardTexts: events.slice(i).map((e) => e.text) };
+}
+
+// Seçenek sırasını karıştırır (Fisher-Yates) — aynı seçenek her oyunda
+// hep aynı konumda (üstte/altta) durmasın diye.
+function shuffled(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 /* ============================================================
@@ -224,13 +235,20 @@ export default function App() {
 
   const hardWait = (ms) => new Promise((resolve) => later(resolve, ms));
 
-  /* RİTİM KAPISI: hikaye durur, oyuncu dokunana kadar bekler.
-     Yoğun anları (döküman+görev+not selini) tek tek sindirtir. */
-  const waitTap = (runId) =>
+  /* RİTİM KAPISI: hikaye durur, oyuncu dokunana kadar bekler (otomatik
+     ilerlemez). "Devam için dokun" ipucu ANINDA değil, oyuncu bir süre
+     (idleMs) dokunmazsa belirir — sessizce bekleyen okuyucuyu rahatsız
+     etmeden, uzun süre hareketsiz kalanı hatırlatır. */
+  const waitTap = (runId, idleMs = 1600) =>
     new Promise((resolve) => {
       if (runIdRef.current !== runId) return resolve();
-      setTapWait(true);
+      setTapWait(false);
+      const hintId = later(() => {
+        if (runIdRef.current === runId) setTapWait(true);
+      }, idleMs);
       tapWaitRef.current = () => {
+        clearTimeout(hintId);
+        timeoutsRef.current = timeoutsRef.current.filter((t) => t !== hintId);
         tapWaitRef.current = null;
         setTapWait(false);
         resolve();
@@ -252,13 +270,16 @@ export default function App() {
     return Math.min(9500, Math.max(2200, len * 42));
   };
 
-  const typeLine = (kind, text, runId, speed = 26) =>
+  const typeLine = (kind, text, runId) =>
     new Promise((resolve) => {
       if (runIdRef.current !== runId) return resolve();
       setTyping(false);
       setLines((ls) => [...ls, { kind, text }]);
-      const delay = Math.round(readingDelayFor(kind, text) * speedMultRef.current);
-      wait(delay, runId).then(resolve);
+      // Artık otomatik ilerlemez — oyuncu dokunana kadar bekler. "Devam
+      // için dokun" ipucu, satırın normalde okunacağı süre (uzunluk +
+      // hız ayarına göre) dolunca belirir.
+      const idleMs = Math.round(readingDelayFor(kind, text) * speedMultRef.current);
+      waitTap(runId, idleMs).then(resolve);
     });
 
   const setBatteryBoth = (v) => {
@@ -406,10 +427,10 @@ export default function App() {
   const playEvent = async (ev, runId) => {
     if (ev.if && !flagOk(ev.if)) return;
     switch (ev.type) {
-      case "narrate": return typeLine("narrate", ev.text, runId, 26);
-      case "ambient": return typeLine("ambient", ev.text, runId, 30);
-      case "system": return typeLine("system", ev.text, runId, 12);
-      case "alert": return typeLine("alert", ev.text, runId, 14);
+      case "narrate": return typeLine("narrate", ev.text, runId);
+      case "ambient": return typeLine("ambient", ev.text, runId);
+      case "system": return typeLine("system", ev.text, runId);
+      case "alert": return typeLine("alert", ev.text, runId);
       case "pause": return wait(ev.ms || 800, runId);
       case "glitch": return runGlitch(ev.ms || 600);
       case "sting": {
@@ -422,7 +443,7 @@ export default function App() {
       case "status": {
         for (const item of ev.items) {
           const on = !!flagsRef.current[item.flag];
-          await typeLine("system", item.label + ": " + (on ? t("eng.statusOn") : t("eng.statusOff")), runId, 8);
+          await typeLine("system", item.label + ": " + (on ? t("eng.statusOn") : t("eng.statusOff")), runId);
           if (runIdRef.current !== runId) return;
         }
         return;
@@ -440,7 +461,7 @@ export default function App() {
         setStats(next);
         // merkezî eşik izleyicisi: gürültü/akıl eşiklerini kontrol et
         if (checkThresholds(runId)) return;   // ölüm tetiklendiyse akışı durdur
-        if (ev.note) return typeLine(ev.noteKind || "alert", "⚠ " + ev.note, runId, 14);
+        if (ev.note) return typeLine(ev.noteKind || "alert", "⚠ " + ev.note, runId);
         return;
       }
       case "battery": {
@@ -453,7 +474,7 @@ export default function App() {
         }
         return wait(1500, runId);
       }
-      case "anons": return typeLine("anons", ev.text, runId, 20);
+      case "anons": return typeLine("anons", ev.text, runId);
       case "music": { currentTrackRef.current = ev.track || null; AudioSys.music(ev.track || null); return; }
       case "document": {
         if (!docsRef.current.find((d) => d.id === ev.doc.id)) {
@@ -773,8 +794,7 @@ export default function App() {
     if (!interaction || interaction.kind !== "panel") return;
     const allOk = interaction.require.every((f) => flagsRef.current[f]);
     if (allOk) {
-      AudioSys.clank();
-      AudioSys.blipSfx(980);
+      AudioSys.playSample("panelSound");
       setPanelMsg({ text: t("panel.starting"), ok: true });
       const target = interaction.success;
       later(() => { setInteraction(null); playNode(target); }, 1200);
@@ -818,7 +838,7 @@ export default function App() {
       }
     }
   };
-  const kpKey = (k) => { if (k === t("keypad.del")) kpClear(); else if (k === t("keypad.enter")) kpSubmit(); else kpPress(k); };
+  const kpKey = (k) => { AudioSys.keypadButtonSfx(); if (k === t("keypad.del")) kpClear(); else if (k === t("keypad.enter")) kpSubmit(); else kpPress(k); };
 
   const interactionCancel = () => {
     if (!interaction) return;
@@ -1219,6 +1239,13 @@ export default function App() {
     return () => clearInterval(iv);
   }, [interaction, radioFreq, radioPhase]);
 
+  // Radyo ekranı açıkken statik parazit döngüde çalar, kapanınca durur.
+  useEffect(() => {
+    const isRadio = interaction?.kind === "radio";
+    AudioSys.radioStatic(isRadio);
+    return () => AudioSys.radioStatic(false);
+  }, [interaction]);
+
   /* ---------------- ses durumları ---------------- */
 
   // global buton tıklama sesi + hafif titreşim (tüm butonlara)
@@ -1251,7 +1278,13 @@ export default function App() {
       AudioSys.music("intro");
       return;
     }
-    // boot/disclaimer/loading: sessiz.
+    // Yeni oyun akışındaki yükleme ekranı: menü müziği burada yavaşça
+    // sönsün, intro kendi müziğiyle temiz başlasın (ani kesme olmasın).
+    if (mode === "loading") {
+      AudioSys.fadeOutMusic(1200);
+      return;
+    }
+    // boot/disclaimer/bootload/resumeload: sessiz.
     if (mode === "boot" || mode === "disclaimer" || mode === "bootload" || mode === "resumeload") {
       AudioSys.music(null);
       return;
@@ -1318,10 +1351,16 @@ export default function App() {
   const node = currentNodeId ? STORY.nodes[currentNodeId] : null;
   const bColor = batteryColorOf(battery);
 
-  const visibleChoices = (node?.choices || []).filter((c) => flagOk(c.if) && statOk(c.ifStat));
+  const eligibleChoices = (node?.choices || []).filter((c) => flagOk(c.if) && statOk(c.ifStat));
+  // Sıra, aynı düğümde aynı seçenek seti gösterildiği sürece SABİT kalır
+  // (her render'da yeniden karışmaz) — sadece düğüm ya da uygun seçenek
+  // seti değişince yeniden karıştırılır.
+  const choiceKey = currentNodeId + ":" + eligibleChoices.map((c) => c.id).join(",");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const visibleChoices = useMemo(() => shuffled(eligibleChoices), [choiceKey]);
 
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
-  const wordsObscured = battery <= 15;
+  const wordsObscured = battery <= 5;
   const choicesObscured = battery <= 5;
   const flickering = (battery > 0 && battery <= 12 && screen !== "blackout") || batteryFlicker;
 

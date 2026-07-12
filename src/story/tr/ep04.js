@@ -76,20 +76,16 @@ export const EP04 = {
       ],
     },
 
-    /* YENİ: sera iklim paneli — colorgrid bulmacası (ışık spektrumu) */
+    /* YENİ: sera ışık gülü — colorgrid (hexagon) bulmacası */
     n_iklim_panel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Seranın köşesinde, üzeri sümüksü bir sıvıyla kaplı eski bir iklim kontrol paneli can çekişiyor. Dokuz adet gösterge bozuk bir nabız gibi ritimsizce yanıyor. Bu yanlış spektrum yüzünden fideler mutasyona uğramış, adeta canlı insan uzuvlarına benzemişler. Panelin yanındaki paslı duvara Nevin pençeleriyle kazımış: 'Doğru spektrum canavarları uyutur. Kırmızı aç bırakır, mavi çürümeyi durdurur.' Eğer bu ışıkları doğru sıraya sokamazsan, kökler seni acımasızca parçalayacak." },
-        { type: "note", id: "not_iklim", title: "İklim Paneli Çaresizliği", text: "Işık spektrumu delirme noktasında. Fideler insan eti gibi büyüyor. Eğer paneli maviye çekebilirsem, o iğrenç köklerin gerginliği sönecek ve bana bir parça nefes alma şansı tanıyacak." },
+        { type: "narrate", text: "Seranın köşesinde tuhaf, pirinçten dökülmüş eski bir alet duruyor: Ortasında kan kırmızısı camdan bir gül, çevresinde dikenli demir yapraklarla çevrili altı adet döner ayna-yaprak. Bu, Nevin'in kendi elleriyle kurduğu bir 'ışık gülü' — güneş ışığını kırıp fidelere hangi rengin ulaşacağını belirleyen ilkel bir düzenek. Yapraklar şu an rastgele açılarda sıkışmış, ışığı çarpık kırıp fideleri insan eti gibi büyümeye zorluyor. Panelin yanındaki paslı duvara Nevin pençeleriyle kazımış: 'Doğru açı canavarları uyutur. Kırmızı aç bırakır, mavi çürümeyi durdurur.' Eğer bu yaprakları çevirip gülü tamamlayamazsan, kökler seni acımasızca parçalayacak." },
+        { type: "note", id: "not_iklim", title: "İklim Paneli Çaresizliği", text: "Işık gülü delirme noktasında. Fideler insan eti gibi büyüyor. Eğer pirinç yaprakları doğru açılara çevirip gülü tamamlayabilirsem, ışık maviye dönüşecek ve o iğrenç köklerin gerginliği sönecek — bana bir parça nefes alma şansı tanıyacak." },
       ],
       interaction: {
         kind: "colorgrid",
-        title: "IŞIK SPEKTRUMU — CANAVARLARI UYUT",
-        palette: ["#1a1a22", "#3a5a9a", "#5a9a6a", "#c2a24a"],
-        target: [1,2,1, 2,1,2, 1,2,1],
-        start:  [0,0,0, 0,0,0, 0,0,0],
-        cols: 3,
+        title: "IŞIK GÜLÜ — YAPRAKLARI HİZALA",
         success: "n_iklim_cozuldu",
         cancel: "n_sera",
       },
@@ -98,7 +94,7 @@ export const EP04 = {
     n_iklim_cozuldu: {
       cost: 1,
       events: [
-        { type: "system", text: "IŞIK SPEKTRUMU: ÖLÜ MAVİ — GEÇİCİ SESSİZLİK" },
+        { type: "system", text: "IŞIK GÜLÜ: ÖLÜ MAVİ — GEÇİCİ SESSİZLİK" },
         { type: "narrate", text: "Kızıl ışık yerini soğuk, hastalıklı bir mavi spektruma bıraktığı an etraftaki etli kökler acı dolu bir tıslamayla gevşiyor. Duvarlardan sarkan sarmaşıklar sanki felç geçirmiş gibi yere yığılıyor. Nevin'in hırıltısı bile yavaşlıyor, ağır bir kış uykusuna çekiliyor. Bu lanet ölüm sessizliğini iyi kullan, çünkü sonsuza kadar sürmeyecek." },
         { type: "flag", set: { iklimCozuldu: true } },
         { type: "stat", stat: "akil", delta: 5, note: "PSİKOLOJİK RAHATLAMA +5 — Kökler uykuya daldı", noteKind: "system" },

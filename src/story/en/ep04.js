@@ -76,20 +76,16 @@ export const EP04 = {
       ],
     },
 
-    /* GREENHOUSE CLIMATE PANEL — COLORGRID PUZZLE (LIGHT SPECTRUM) */
+    /* GREENHOUSE ROSE OF LIGHT — COLORGRID (HEXAGON) PUZZLE */
     n_iklim_panel: {
       cost: 1,
       events: [
-        { type: "narrate", text: "In the corner of the greenhouse, an old climate control panel covered in a slimy fluid is convulsing[cite: 8]. Nine indicators blink rhythmically like a broken pulse[cite: 8]. Due to this incorrect spectrum, the seedlings have mutated, resembling living human extremities[cite: 8]. On the rusted wall beside the panel, Nevin scratched with her claws: 'The correct spectrum puts the monsters to sleep[cite: 8]. Red starves them, blue halts the decay[cite: 8].' If you cannot align these lights into the correct sequence, the roots will tear you apart mercilessly[cite: 8]." },
-        { type: "note", id: "not_iklim", title: "Climate Panel Despair", text: "The light spectrum is on the verge of driving things mad[cite: 8]. Seedlings are growing like human flesh[cite: 8]. If I can shift the panel to blue, the tension of those foul roots will collapse, granting me a small pocket of breathing room[cite: 8]." },
+        { type: "narrate", text: "In the corner of the greenhouse stands a strange, brass-cast old device: at its center a blood-red glass rose, ringed by six rotating mirror-petals bound in thorned iron. This is a 'rose of light' Nevin built with her own hands — a crude mechanism that bends sunlight and decides which color reaches the seedlings. The petals are currently locked at random angles, bending the light wrong and forcing the seedlings to grow like living human flesh. On the rusted wall beside it, Nevin scratched with her claws: 'The correct angle puts the monsters to sleep. Red starves them, blue halts the decay.' If you can't turn these petals to complete the rose, the roots will tear you apart without mercy." },
+        { type: "note", id: "not_iklim", title: "Climate Panel Despair", text: "The rose of light is on the verge of driving things mad. Seedlings are growing like human flesh. If I can turn the brass petals to the right angles and complete the rose, the light will shift to blue and the tension in those foul roots will collapse — giving me a small pocket of breathing room." },
       ],
       interaction: {
         kind: "colorgrid",
-        title: "LIGHT SPECTRUM — PUT THE MONSTERS TO SLEEP",
-        palette: ["#1a1a22", "#3a5a9a", "#5a9a6a", "#c2a24a"],
-        target: [1,2,1, 2,1,2, 1,2,1],
-        start:  [0,0,0, 0,0,0, 0,0,0],
-        cols: 3,
+        title: "ROSE OF LIGHT — ALIGN THE PETALS",
         success: "n_iklim_cozuldu",
         cancel: "n_sera",
       },
@@ -98,8 +94,8 @@ export const EP04 = {
     n_iklim_cozuldu: {
       cost: 1,
       events: [
-        { type: "system", text: "LIGHT SPECTRUM: DEAD BLUE — TEMPORARY SILENCE" },
-        { type: "narrate", text: "The instant the crimson light yields to a cold, sickly blue spectrum, the fleshy roots relax with an agonizing hiss[cite: 8]. Vines dangling from the walls collapse to the deck as if paralyzed[cite: 8]. Even Nevin's rasping slows, withdrawing into a heavy hibernation[cite: 8]. Exploit this damned deathly silence well, because it will not last forever[cite: 8]." },
+        { type: "system", text: "ROSE OF LIGHT: DEAD BLUE — TEMPORARY SILENCE" },
+        { type: "narrate", text: "The instant the crimson light yields to a cold, sickly blue spectrum, the fleshy roots relax with an agonizing hiss. Vines dangling from the walls collapse to the deck as if paralyzed. Even Nevin's rasping slows, withdrawing into a heavy hibernation. Exploit this damned deathly silence well, because it will not last forever." },
         { type: "flag", set: { iklimCozuldu: true } },
         { type: "stat", stat: "akil", delta: 5, note: "PSYCHOLOGICAL RELIEF +5 — The roots have fallen asleep", noteKind: "system" },
         { type: "battery", spares: 1 },

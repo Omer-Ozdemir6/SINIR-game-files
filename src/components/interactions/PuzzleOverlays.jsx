@@ -72,25 +72,46 @@ const rad = (d) => (d * Math.PI) / 180;
    ------------------------------------------------------------ */
 
 // 3B nokta [x,y,z]; segment = [i,j] iki nokta indexi
-// KalÄ±ntÄ±nÄ±n dÃ¼ÄŸÃ¼m noktalarÄ± (Buluntu iÅŸareti doÄŸru aÃ§Ä±da belirir)
+// Kalıntının düğüm noktaları — hedef açıda (yaw=0, pitch=0) gölge kapıdaki
+// oymayla birebir eşleşir: badem biçimli bir GÖZ (dış hat + baklava pupil)
+// ve gözden dışa doğru fışkıran, her biri farklı yönde bükülen 6 adet
+// düzensiz "etsi kol". z ekseni koludan koluna değişir ki yanlış açıda
+// (hedefin dışında) hepsi üst üste binip anlamsız bir yığın gibi görünsün.
 const OBJ_NODES = [
-  [0, -70, 10],    // 0: Haç üst ucu
-  [0, 70, -15],    // 1: Haç alt ucu
-  [-45, -15, -20],  // 2: Yatay sol uç
-  [45, -15, 20],   // 3: Yatay sağ uç
-  [-25, -15, -12], // 4: Çember sol orta (r=25)
-  [0, -40, 18],    // 5: Çember üst (r=25)
-  [25, -15, -18],  // 6: Çember sağ orta (r=25)
-  [0, 10, 12],     // 7: Çember alt (r=25)
-  [-18, -33, -15], // 8: Çember sol-üst
-  [18, -33, 15],   // 9: Çember sağ-üst
-  [18, 3, -15],    // 10: Çember sağ-alt
-  [-18, 3, 15],    // 11: Çember sol-alt
+  [-40, 0, 0],     // 0: göz — sol köşe
+  [-20, -15, 5],   // 1: göz — üst-sol kavis
+  [0, -20, 8],     // 2: göz — üst orta (kapak tepesi)
+  [20, -15, 5],    // 3: göz — üst-sağ kavis
+  [40, 0, 0],      // 4: göz — sağ köşe
+  [18, 10, -5],    // 5: göz — alt-sağ kavis
+  [0, 14, -8],     // 6: göz — alt orta
+  [-18, 10, -5],   // 7: göz — alt-sol kavis
+  [0, -7, 4],      // 8: pupil — üst
+  [7, 0, 2],       // 9: pupil — sağ
+  [0, 7, -2],      // 10: pupil — alt
+  [-7, 0, 0],      // 11: pupil — sol
+  [-45, -38, 15],  // 12: kol A (üst-sol) — dirsek
+  [-58, -55, 22],  // 13: kol A — uç
+  [50, -32, -12],  // 14: kol B (üst-sağ) — dirsek
+  [75, -45, -20],  // 15: kol B — uç
+  [-68, 8, 10],    // 16: kol C (sol) — dirsek
+  [-90, 20, 16],   // 17: kol C — uç
+  [62, -5, -14],   // 18: kol D (sağ) — dirsek
+  [82, -10, -22],  // 19: kol D — uç
+  [10, 38, -22],   // 20: kol E (alt) — dirsek
+  [18, 62, -28],   // 21: kol E — uç
+  [-35, 30, 9],    // 22: kol F (alt-sol) — dirsek
+  [-44, 54, 18],   // 23: kol F — uç
 ];
 const OBJ_EDGES = [
-  [0, 1],          // Dikey gövde çizgisi
-  [2, 3],          // Yatay kol çizgisi
-  [4, 8], [8, 5], [5, 9], [9, 6], [6, 10], [10, 7], [7, 11], [11, 4] // Hüzme dairesi (Halo çemberi)
+  [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0], // göz dış hattı (kapalı)
+  [8, 9], [9, 10], [10, 11], [11, 8],                             // pupil (baklava, kapalı)
+  [1, 12], [12, 13],   // kol A
+  [3, 14], [14, 15],   // kol B
+  [0, 16], [16, 17],   // kol C
+  [4, 18], [18, 19],   // kol D
+  [6, 20], [20, 21],   // kol E
+  [7, 22], [22, 23],   // kol F
 ];
 
 
@@ -148,7 +169,6 @@ export function ShadowOverlay({ config, onSuccess, onFail, onCancel }) {
 
   const move = (axis, dir) => {
     if (locked) return;
-    AudioSys.clank();
     let yw = yaw, pt = pitch;
     if (axis === "yaw") yw = (yw + dir * step) % 360;
     if (axis === "pitch") pt = Math.max(-TILT_MAX, Math.min(TILT_MAX, pt + dir * step));
@@ -382,6 +402,9 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
   const [errors, setErrors] = useState(0);
   const [done, setDone] = useState(false);
   const [dragPos, setDragPos] = useState(null); // { x, y } local coords
+  // Denenip yanlış çıkan (kablo, port) eşleşmeleri — hangi portun DOĞRU
+  // olduğunu asla göstermez, sadece "bunu zaten denedin" diye hatırlatır.
+  const [wrongTries, setWrongTries] = useState({});
 
   const svgRef = useRef(null);
   const cables = config.cables;
@@ -408,7 +431,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
 
   const pickCable = (id) => {
     if (done || conn[id]) return;
-    AudioSys.blipSfx(500);
+    AudioSys.puzzleButtonSfx();
     setSel(id === sel ? null : id);
     setDragPos(null);
   };
@@ -418,7 +441,6 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
     const ci = cables.findIndex((c) => c.id === sel);
     const pi = ports.findIndex((p) => p.id === pid);
     if (config.pairs[sel] === pid) {
-      AudioSys.clank();
       const next = { ...conn, [sel]: pid };
       setConn(next);
       setSel(null);
@@ -431,6 +453,7 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
     } else {
       setSpark({ ci, pi });
       setErrors((e) => e + 1);
+      setWrongTries((prev) => ({ ...prev, [sel]: [...(prev[sel] || []), pid] }));
       setSel(null);
       setDragPos(null);
       onFail(config.penalty || { gurultu: 4, text: t("puzzle.wiresSpark") });
@@ -558,14 +581,17 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
             {sel && selectedCable && ports.map((p, pi) => {
               if (portOwner(p.id)) return null;
               const ci = cables.findIndex((c) => c.id === sel);
-              const exact = config.pairs[sel] === p.id;
+              // Hiçbir port doğru cevabı ele vermez — hepsi AYNI stille
+              // gösterilir. Daha önce bu kablo için denenip yanlış çıkmış
+              // bir port varsa (wasTried), sadece biraz daha soluk çizilir
+              // ki oyuncu aynı yanlışı bilmeden tekrar denemesin.
+              const wasTried = (wrongTries[sel] || []).includes(p.id);
               return (
                 <path key={`ghost-${p.id}`} d={wire(ci, pi)} fill="none"
                   stroke={selectedCable.color}
-                  strokeWidth={exact ? 2.5 : 1.2}
-                  strokeDasharray={exact ? "none" : "4 6"}
-                  opacity={exact ? 0.38 : 0.08}
-                  style={{ filter: exact ? `drop-shadow(0 0 6px ${selectedCable.color})` : "none" }} />
+                  strokeWidth={1.2}
+                  strokeDasharray="4 6"
+                  opacity={wasTried ? 0.04 : 0.14} />
               );
             })}
 
@@ -593,31 +619,35 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
               const owner = portOwner(p.id);
               const sparking = spark && ports[spark.pi]?.id === p.id;
               const isCandidate = !!sel && !owner;
-              const isExact = isCandidate && config.pairs[sel] === p.id;
+              // Hangi portun doğru olduğunu ASLA belli etmez — tüm adaylar
+              // birbirinin aynı görünür. Sadece bu kablo için daha önce
+              // denenip yanlış çıkmış bir portsa hafifçe soluklaşır.
+              const wasTried = isCandidate && (wrongTries[sel] || []).includes(p.id);
               return (
                 <g key={p.id} onClick={() => pickPort(p.id)} style={{ cursor: owner ? "default" : "pointer" }}>
                   <rect x="212" y={yOf(i, ports.length) - 13} width="34" height="26" rx="3"
-                    fill={sparking ? "#330b05" : owner ? "#050b0f" : isExact ? "#0e1a22" : isCandidate ? "#0a1014" : "#03070a"}
-                    stroke={sparking ? "#e06a4a" : owner ? owner.color : isExact ? selectedCable.color : isCandidate ? "#5f7075" : "#1b3541"}
-                    strokeWidth={isExact ? 2.6 : 1.6}
+                    fill={sparking ? "#330b05" : owner ? "#050b0f" : isCandidate ? "#0a1014" : "#03070a"}
+                    stroke={sparking ? "#e06a4a" : owner ? owner.color : isCandidate ? "#5f7075" : "#1b3541"}
+                    strokeWidth={1.6}
                     style={{
-                      filter: isExact ? `drop-shadow(0 0 6px ${selectedCable.color})` : sparking ? "drop-shadow(0 0 8px #e06a4a)" : "none",
+                      opacity: wasTried ? 0.55 : 1,
+                      filter: sparking ? "drop-shadow(0 0 8px #e06a4a)" : "none",
                       transition: "fill 200ms, stroke 200ms"
                     }} />
                   <path d={`M219 ${yOf(i, ports.length) - 6} H239 M219 ${yOf(i, ports.length)} H239 M219 ${yOf(i, ports.length) + 6} H239`}
-                    stroke={owner ? owner.color : isExact ? selectedCable.color : "#203642"}
-                    strokeWidth="1.2" opacity="0.65" />
+                    stroke={owner ? owner.color : "#203642"}
+                    strokeWidth="1.2" opacity={wasTried ? 0.35 : 0.65} />
                   {isCandidate && (
-                    <circle cx="229" cy={yOf(i, ports.length)} r={isExact ? 16 : 13}
+                    <circle cx="229" cy={yOf(i, ports.length)} r={13}
                       fill="none"
-                      stroke={isExact ? selectedCable.color : "#5f7075"}
+                      stroke="#5f7075"
                       strokeWidth="1"
-                      strokeDasharray={isExact ? "none" : "3 3"}
-                      opacity={isExact ? 0.65 : 0.25} />
+                      strokeDasharray="3 3"
+                      opacity={wasTried ? 0.12 : 0.25} />
                   )}
                   <text x="229" y={yOf(i, ports.length) + 3} textAnchor="middle"
                     fontFamily={mono} fontSize={sparking ? "12" : "7.5"}
-                    fill={sparking ? "#f0a060" : isExact ? "#ffffff" : "#637c8a"}>
+                    fill={sparking ? "#f0a060" : "#637c8a"} opacity={wasTried ? 0.5 : 1}>
                     {sparking ? "⚡" : p.label}
                   </text>
                 </g>
@@ -699,7 +729,7 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
   const press = (id) => {
     if (done) return;
     if (seq[progress] === id) {
-      AudioSys.blipSfx(640 + progress * 90);
+      AudioSys.puzzleButtonSfx();
       setFlash({ id, ok: true });
       setTimeout(() => setFlash(null), 300);
       const next = progress + 1;
@@ -875,7 +905,7 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
 
   const rotate = (i) => {
     if (done) return;
-    AudioSys.blipSfx(380 + i * 120);
+    AudioSys.puzzleButtonSfx();
     const next = rots.slice();
     // Sadece saat yÃ¶nÃ¼nde (clockwise-only) dÃ¶ndÃ¼rme
     next[i] = (next[i] + rings[i].step) % 360;
@@ -1134,37 +1164,58 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
 }
 
 /* ============================================================
-   5) KARO KAPISI â€” karÄ±ÅŸmÄ±ÅŸ karolarÄ± ikiÅŸer ikiÅŸer deÄŸiÅŸtirerek
-   bÃ¼yÃ¼k deseni tamamla (dÃ¶kÃ¼mandaki bilgi doÄŸru dizilimi anlatÄ±r).
-   config: { scramble:[2,0,1,...] (baÅŸlangÄ±Ã§ permÃ¼tasyonu, 9 eleman) }
-   Desen tek bÃ¼yÃ¼k SVG'dir; her karo kendi doÄŸru penceresini gÃ¶sterir.
+   5) KARO KAPISI — karışmış karoları ikişer ikişer değiştirerek
+   büyük deseni tamamla (dökümandaki bilgi doğru dizilimi anlatır).
+   config: { scramble:[2,0,1,...] (başlangıç permütasyonu, 9 eleman) }
+   Desen tek büyük SVG'dir; her karo kendi doğru penceresini gösterir.
+
+   Görsel: K-6 yedek aydınlatma devre panosu — dokuz modül yuvası,
+   ortadaki ana hatta bağlanan bakır izler. Çözülünce dokuz gösterge
+   lambası amber renkte yanar (hikâyedeki "modüller" ve "K-6 yedek
+   aydınlatma hattı" tarifiyle birebir eşleşir).
    ============================================================ */
 
 const TILE_ART = [
-  // Arka Plandaki Gotik Kemer (Crypt Arch)
-  { d: "M 15 110 V 50 A 45 45 0 0 1 105 50 V 110", stroke: "#5a4835", strokeWidth: 2.2, fill: "none" },
-  { d: "M 20 110 V 52 A 40 40 0 0 1 100 52 V 110", stroke: "#2e2217", strokeWidth: 1, fill: "none" },
+  // Panel kasası (dış ve iç çerçeve)
+  { d: "M4 4 H116 V116 H4 Z", stroke: "#3a3226", strokeWidth: 2.5, fill: "none" },
+  { d: "M9 9 H111 V111 H9 Z", stroke: "#1c1710", strokeWidth: 1, fill: "none" },
 
-  // Sol ve Sağ Şeytani Yarasa Kanatları (Bat Wings extending across outer tiles)
-  { d: "M 38 48 C 10 30, 5 62, 35 72 C 24 62, 24 52, 38 48 Z", fill: "#241a12", stroke: "#120d09", strokeWidth: 1.5 },
-  { d: "M 82 48 C 110 30, 115 62, 85 72 C 96 62, 96 52, 82 48 Z", fill: "#241a12", stroke: "#120d09", strokeWidth: 1.5 },
-  
-  // Şeytani Boynuzlar (Left and right curved horns)
-  { d: "M 46 36 C 30 18, 18 38, 36 48 C 38 44, 32 28, 46 36 Z", fill: "#423224", stroke: "#1c140c", strokeWidth: 1.2 },
-  { d: "M 74 36 C 90 18, 102 38, 84 48 C 82 44, 88 28, 74 36 Z", fill: "#423224", stroke: "#1c140c", strokeWidth: 1.2 },
+  // Dış modülleri birbirine bağlayan bakır iz çerçevesi
+  { d: "M20 20 H100 V100 H20 Z", stroke: "#6a5a34", strokeWidth: 1.6, fill: "none" },
 
-  // Kuru Kafa Kemik Gövdesi (Skull core)
-  { d: "M 44 40 Q 60 22, 76 40 C 79 50, 73 66, 73 76 L 47 76 C 47 66, 41 50, 44 40 Z", fill: "#dcd6c8", stroke: "#3d3324", strokeWidth: 2 },
-  
-  // Çene ve Dişler
-  { d: "M 50 76 V 84 H 70 V 76 M 54 76 V 84 M 58 76 V 84 M 62 76 V 84 M 66 76 V 84", stroke: "#3d3324", strokeWidth: 1.5, fill: "none" },
+  // Merkez hatta (K-6 ana hattı) açılan 8 bakır iz
+  { d: "M20 20 L60 60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M100 20 L60 60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M20 100 L60 60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M100 100 L60 60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M60 20 V60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M20 60 H60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M100 60 H60", stroke: "#6a5a34", strokeWidth: 1.6 },
+  { d: "M60 100 V60", stroke: "#6a5a34", strokeWidth: 1.6 },
 
-  // Burun deliği (Nasal cavity)
-  { d: "M 58 58 L 60 52 L 62 58 Z", fill: "#1c0d02", stroke: "#3d3324", strokeWidth: 0.8 },
+  // 8 çevre modülü (yuvasından sökülüp karışan parçalar)
+  { d: "M13 13 H27 V27 H13 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M53 13 H67 V27 H53 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M93 13 H107 V27 H93 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M13 53 H27 V67 H13 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M93 53 H107 V67 H93 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M13 93 H27 V107 H13 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M53 93 H67 V107 H53 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
+  { d: "M93 93 H107 V107 H93 Z", fill: "#1c2420", stroke: "#4a4030", strokeWidth: 1.4 },
 
-  // Ürkütücü Boş Göz Çukurları (Hollow creepy eyes - çözülünce kırmızı parlar)
-  { d: "M 48 48 Q 54 44, 58 48 Q 54 53, 48 48 Z", fill: "#1a0802", stroke: "#4a0a0a", strokeWidth: 1, glow: "#d0021b", isEye: true },
-  { d: "M 62 48 Q 66 44, 72 48 Q 66 53, 62 48 Z", fill: "#1a0802", stroke: "#4a0a0a", strokeWidth: 1, glow: "#d0021b", isEye: true },
+  // Merkez ana hat modülü (K-6 hub — diğerlerinden büyük, elmas çerçeveli)
+  { d: "M60 44 L76 60 L60 76 L44 60 Z", fill: "#221a10", stroke: "#7a6238", strokeWidth: 1.8 },
+
+  // 9 gösterge lambası — kırıkken sönük, doğru sıraya girince amber parlar
+  { d: "M20 17 L23 20 L20 23 L17 20 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M60 17 L63 20 L60 23 L57 20 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M100 17 L103 20 L100 23 L97 20 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M20 57 L23 60 L20 63 L17 60 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M100 57 L103 60 L100 63 L97 60 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M20 97 L23 100 L20 103 L17 100 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M60 97 L63 100 L60 103 L57 100 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M100 97 L103 100 L100 103 L97 100 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
+  { d: "M60 56 L64 60 L60 64 L56 60 Z", fill: "#3a1408", stroke: "#5a2410", strokeWidth: 0.8, glow: "#ffcf6b", isLed: true },
 ];
 
 export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
@@ -1177,7 +1228,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
   const tap = (pos) => {
     if (done) return;
     if (sel === null) {
-      AudioSys.blipSfx(500);
+      AudioSys.puzzleButtonSfx();
       setSel(pos);
       return;
     }
@@ -1186,7 +1237,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
       return;
     }
     
-    AudioSys.clank();
+    AudioSys.puzzleButtonSfx();
     const next = perm.slice();
     [next[sel], next[pos]] = [next[pos], next[sel]];
     setPerm(next);
@@ -1205,9 +1256,9 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
       <style>{`
-        @keyframes eye-pulse {
-          0%, 100% { fill: #1a0802; filter: drop-shadow(0 0 1px rgba(208,2,27,0.3)); }
-          50% { fill: #d0021b; filter: drop-shadow(0 0 6px rgba(208,2,27,0.95)); }
+        @keyframes led-pulse {
+          0%, 100% { fill: #3a1408; filter: drop-shadow(0 0 1px rgba(255,207,107,0.3)); }
+          50% { fill: #ffcf6b; filter: drop-shadow(0 0 6px rgba(255,207,107,0.95)); }
         }
         @keyframes tile-solve-flash {
           0% { filter: brightness(1) contrast(1); }
@@ -1269,7 +1320,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
                     {/* Gravür arkaplan taş doku çizgileri */}
                     <rect x={tx} y={ty} width="40" height="40" fill="none" stroke="#0e0804" strokeWidth="0.8" opacity="0.35" />
                     
-                    {/* Master gothic eye paths */}
+                    {/* Devre panosu modül çizimleri */}
                     {TILE_ART.map((item, i) => {
                       const strokeColor = done && item.glow ? item.glow : item.stroke;
                       return (
@@ -1283,7 +1334,7 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
                           style={{
                             transition: "stroke 600ms, filter 600ms",
                             filter: done && item.glow ? `drop-shadow(0 0 4px ${item.glow})` : "none",
-                            animation: item.isEye && done ? "eye-pulse 2s infinite ease-in-out" : "none",
+                            animation: item.isLed && done ? "led-pulse 2s infinite ease-in-out" : "none",
                           }}
                         />
                       );
@@ -1309,10 +1360,12 @@ export function TilesOverlay({ config, onSuccess, onFail, onCancel }) {
 }
 
 /* ============================================================
-   6) HEKSAGON LAHÄ°T BULMACASI â€”
-   Kozmik GÃ¼neÅŸ ve Ay gÃ¶rseline sahip 7 heksagonal taÅŸtan oluÅŸan lahit.
-   Oyuncu dÄ±ÅŸ karolara dokunarak baÄŸlÄ± olduÄŸu 3'lÃ¼ grubu seÃ§er ve yandÄ±rÄ±r.
-   AynÄ± karoya tekrar dokunulduÄŸunda bu 3'lÃ¼ grup saat yÃ¶nÃ¼nde 120 derece dÃ¶ner.
+   6) IŞIK GÜLÜ BULMACASI —
+   Nevin'in seradaki pirinç ışık-kırma düzeneği: ortada kan kırmızı bir
+   cam gül, çevresinde 6 dikenli yaprak-ayna. Oyuncu dış karolara
+   dokunarak bağlı olduğu 3'lü yaprak grubunu seçer ve çevirir.
+   Aynı karoya tekrar dokunulduğunda bu 3'lü grup saat yönünde 120
+   derece döner — doğru açıda gül tamamlanır, ışık maviye döner.
    ============================================================ */
 
 const SLOTS = [
@@ -1449,12 +1502,13 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
       rotateGroup(slotIdx);
     } else {
       // Select the group corresponding to this outer slot
-      AudioSys.blipSfx(420);
+      AudioSys.puzzleButtonSfx();
       setSelectedGroup(slotIdx);
     }
   };
 
   const rotateGroup = (activeSlot) => {
+    AudioSys.puzzleButtonSfx();
     const group = GROUPS[activeSlot];
     const knob = group.knob;
 
@@ -1468,8 +1522,6 @@ export function ColorGridOverlay({ config, onSuccess, onFail, onCancel }) {
     const hex0 = hexagons.find((h) => h.slotIdx === sorted[0].slotIdx);
     const hex1 = hexagons.find((h) => h.slotIdx === sorted[1].slotIdx);
     const hex2 = hexagons.find((h) => h.slotIdx === sorted[2].slotIdx);
-
-    AudioSys.clank();
 
     const next = hexagons.map((h) => {
       if (h.id === hex0.id) return { ...h, slotIdx: sorted[1].slotIdx };

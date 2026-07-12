@@ -8,9 +8,7 @@ const playSwitchSound = () => {
   AudioSys.uiClick();
 };
 
-const playResetSound = () => {
-  AudioSys.clank();
-};
+const playResetSound = () => {};
 
 export default function LightsOverlay({ lights, done, onPress, onReset, onCancel }) {
   const [isGlitching, setIsGlitching] = useState(false);

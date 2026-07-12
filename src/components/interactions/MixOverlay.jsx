@@ -76,7 +76,7 @@ export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
     }, 450);
 
     // Play high quality mechanical click / drop sound
-    AudioSys.blipSfx(420 + Math.random() * 120);
+    AudioSys.puzzleButtonSfx();
 
     const next = { ...mix, [id]: (mix[id] || 0) + 1 };
     setMix(next);
@@ -100,7 +100,7 @@ export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
 
   const empty = () => {
     if (state !== "idle" || total === 0) return;
-    AudioSys.blipSfx(300);
+    AudioSys.puzzleButtonSfx();
     setMix({});
   };
 
