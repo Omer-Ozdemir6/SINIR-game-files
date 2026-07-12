@@ -229,8 +229,8 @@ export const EP04 = {
         { type: "document", open: true, doc: {
           id: "d_selin", title: "Selin'in Kanlı Notu", style: "hand",
           meta: "— Parçalanmış Soğutucu Çantadan —",
-          body: "Bunu her kim bulduysa...\n\nBenim adım Selin. Eğer bu çantayı bulduysan Nevin hâlâ kapıda bekliyor olabilir.\nO beni ölen kızı sandı. Bunu yazarken bile bu cümlenin bana sağladığı\nhayattan utanıyorum. Beni korudu, çünkü artık kim olduğumu değil, kimi\nkaybettiğini görüyor.\n\nKanımı buraya bıraktım. Formül:\nMavi spor + kök özütü + benim kanım.\nOran: 1 / 2 / 3.\nYanlış karışım onu öldürmez. Keşke öldürse. Yanlış karışım Nevin'in içinde\nkalan son insan parçasını da köklere teslim eder.\n\nBen K-2'ye iniyorum. Buluntu orada. Bütün bu ailenin, saymanın, uykuda\nkonuşan ölülerin kaynağı orada.\n\nBeni arama. Ama serumu yaparsan önce Nevin'i kurtar.\nO bu cehennemin doktoru değildi. İlk hastasıydı.\n\n— S." } },
-          { type: "note", id: "not_selin", title: "Son Parça ve Tarif", text: "Selin kendi kanını soğutucu çantada bırakmış. Nevin onu kızı sandığı için hayatta tutmuş. Bu tesisin en merhametli hareketi bile bir deliliğin yan etkisi. Tarif net: 1 spor, 2 özüt, 3 kan. Yanlış karışım Nevin'i öldürmeyecek; onu tamamen burada bırakacak. Bunu yaparsam hata yapma hakkım yok." },
+          body: "Bunu her kim bulduysa...\n\nBenim adım Selin. Eğer bu çantayı bulduysan Nevin hâlâ kapıda bekliyor olabilir.\nO beni ölen kızı sandı. Bunu yazarken bile bu cümlenin bana sağladığı\nhayattan utanıyorum. Beni korudu, çünkü artık kim olduğumu değil, kimi\nkaybettiğini görüyor.\n\nKanımı buraya bıraktım. Formül:\nMavi spor + kök özütü + benim kanım.\nOran: 2 / 3 / 4.\nYanlış karışım onu öldürmez. Keşke öldürse. Yanlış karışım Nevin'in içinde\nkalan son insan parçasını da köklere teslim eder.\n\nBen K-2'ye iniyorum. Buluntu orada. Bütün bu ailenin, saymanın, uykuda\nkonuşan ölülerin kaynağı orada.\n\nBeni arama. Ama serumu yaparsan önce Nevin'i kurtar.\nO bu cehennemin doktoru değildi. İlk hastasıydı.\n\n— S." } },
+          { type: "note", id: "not_selin", title: "Son Parça ve Tarif", text: "Selin kendi kanını soğutucu çantada bırakmış. Nevin onu kızı sandığı için hayatta tutmuş. Bu tesisin en merhametli hareketi bile bir deliliğin yan etkisi. Tarif net: 2 spor, 3 özüt, 4 kan. Yanlış karışım Nevin'i öldürmeyecek; onu tamamen burada bırakacak. Bunu yaparsam hata yapma hakkım yok." },
         { type: "objective", text: "Üç örneği laboratuvara getir." },
       ],
       choices: [
@@ -248,7 +248,7 @@ export const EP04 = {
         { type: "document", open: true, if: { flag: "labTarif", equals: false }, doc: {
           id: "d_tarif", title: "Duvara Kazınmış Formül", style: "hand",
           meta: "— Nevin'in Kendi Kanıyla Yazdığı Formül —",
-          body: "PANZEHİR — Hücresel Geri Çekilme\n\nÇok hassas oran. Yanlış karışım öldürmez, ÖLÜMDEN DAHA KÖTÜ bir şeye sebep olur.\n\n  MAVİ SPOR ...... 1 ÖLÇÜ (Hücre baskılayıcı)\n  KÖK ÖZÜTÜ ...... 2 ÖLÇÜ (Taşıyıcı katran)\n  KAN ............ 3 ÖLÇÜ (Bağlayıcı hayat özü)\n\nSıra önemsiz, ORAN mutlak olmalı. Toplam 6 ölçü. Kan az olursa etkisiz kalır. Spor fazla olursa canavarı besler. Dikkat et!" } },
+          body: "PANZEHİR — Hücresel Geri Çekilme\n\nÇok hassas oran. Yanlış karışım öldürmez, ÖLÜMDEN DAHA KÖTÜ bir şeye sebep olur.\n\n  MAVİ SPOR ...... 2 ÖLÇÜ (Hücre baskılayıcı)\n  KÖK ÖZÜTÜ ...... 3 ÖLÇÜ (Taşıyıcı katran)\n  KAN ............ 4 ÖLÇÜ (Bağlayıcı hayat özü)\n\nSıra önemsiz, ORAN mutlak olmalı. Toplam 9 ölçü. Kan az olursa etkisiz kalır. Spor fazla olursa canavarı besler. Dikkat et!" } },
         { type: "flag", set: { labTarif: true } },
       ],
       choices: [
@@ -261,17 +261,17 @@ export const EP04 = {
     n_lab_mix: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Ellerin korkudan ve titremekten tüpleri sabitleyemiyor. Formül net: 1 spor, 2 özüt, 3 kan. Toplam 6 ölçü. Gözlerini karart ve şırıngayı doldur. Hata yaparsan odadan canlı çıkamazsın." },
+        { type: "narrate", text: "Ellerin korkudan ve titremekten tüpleri sabitleyemiyor. Nevin'in duvara kazıdığı formülü hatırlamaya çalış — sıra önemli değil ama oranı harfiyen tutturmalısın. Gözlerini karart ve şırıngayı doldur. Hata yaparsan odadan canlı çıkamazsın." },
       ],
       interaction: {
         kind: "mix",
-        title: "KABUS KARIŞIMI — ORANI TUTTUR (1 SPOR · 2 ÖZÜT · 3 KAN)",
+        title: "KABUS KARIŞIMI — FORMÜLÜ HATIRLA, ORANI TUTTUR",
         bottles: [
           { id: "spor", label: "SPOR", color: "#4a6ac2" },
           { id: "ozut", label: "ÖZÜT", color: "#4aa26a" },
           { id: "kan", label: "KAN", color: "#a23a3a" },
         ],
-        target: { spor: 1, ozut: 2, kan: 3 },
+        target: { spor: 2, ozut: 3, kan: 4 },
         success: "n_serum_hazir",
         cancel: "n_lab",
         penalty: { gurultu: 6, text: "KORKUNÇ HATA — Tüp patladı, odaya asit gazı yayıldı. GÜRÜLTÜ +6" },

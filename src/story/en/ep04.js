@@ -225,13 +225,13 @@ export const EP04 = {
       checkpoint: true,
       cost: 2,
       events: [
-        { type: "narrate", text: "Advancing along the tight, slippery passage, you locate a small shelter hidden in the wall[cite: 8]. Tattered overalls, scattered rusted ration cans, and a medical cooler bag humming faintly in the corner... Opening the bag, amidst the ice packs, you find a tube full of fresh human blood on the verge of freezing, and a note written in a shaking hand[cite: 8]. Selin... took refuge here before fleeing[cite: 8]." },
+        { type: "narrate", text: "Advancing along the tight, slippery passage, you locate a small shelter hidden in the wall. Tattered overalls, scattered rusted ration cans, and a medical cooler bag humming faintly in the corner... Opening the bag, amidst the ice packs, you find a tube full of fresh human blood on the verge of freezing, and a note written in a shaking hand. Selin... took refuge here before fleeing." },
         { type: "flag", set: { ornek3: true } },
         { type: "document", open: true, doc: {
           id: "d_selin", title: "Selin's Bloody Note", style: "hand",
           meta: "— From the Mangled Cooler Bag —",
-          body: "Whoever finds this...\n\nMy name is Selin. If you found this bag, Nevin might still be waiting at the hatch.\nShe mistook me for her deceased daughter. Even as I write this, I feel ashamed of the life that sentence granted me.\nShe shielded me because she no longer sees who I am, but who she lost.\n\nI left my blood here. The formula:\nBlue spore + root extract + my blood.\nRatio: 1 / 2 / 3.\nA faulty mix won't kill her. I wish it would. A faulty mix surrenders the last remaining human fragment inside Nevin over to the roots completely.\n\nI am descending to K-2. The Artifact is out there. The source of all this family business, the counting, the murmuring dead is out there.\n\nDon't look for me. But if you make the serum, save Nevin first.\nShe wasn't the doctor of this hellhole. She was its first patient.\n\n— S." } },
-          { type: "note", id: "not_selin", title: "The Final Piece and Recipe", text: "Selin left her own blood inside the cooler bag[cite: 8]. Nevin kept her alive because she mistook her for her daughter[cite: 8]. The most merciful act of this facility is a side effect of a madness[cite: 8]. The recipe is clear: 1 spore, 2 extract, 3 blood[cite: 8]. A faulty mix won't kill Nevin; it will abandon her here completely[cite: 8]. If I execute this, I have no margin for error[cite: 8]." },
+          body: "Whoever finds this...\n\nMy name is Selin. If you found this bag, Nevin might still be waiting at the hatch.\nShe mistook me for her deceased daughter. Even as I write this, I feel ashamed of the life that sentence granted me.\nShe shielded me because she no longer sees who I am, but who she lost.\n\nI left my blood here. The formula:\nBlue spore + root extract + my blood.\nRatio: 2 / 3 / 4.\nA faulty mix won't kill her. I wish it would. A faulty mix surrenders the last remaining human fragment inside Nevin over to the roots completely.\n\nI am descending to K-2. The Artifact is out there. The source of all this family business, the counting, the murmuring dead is out there.\n\nDon't look for me. But if you make the serum, save Nevin first.\nShe wasn't the doctor of this hellhole. She was its first patient.\n\n— S." } },
+          { type: "note", id: "not_selin", title: "The Final Piece and Recipe", text: "Selin left her own blood inside the cooler bag. Nevin kept her alive because she mistook her for her daughter. The most merciful act of this facility is a side effect of a madness. The recipe is clear: 2 spore, 3 extract, 4 blood. A faulty mix won't kill Nevin; it will abandon her here completely. If I execute this, I have no margin for error." },
         { type: "objective", text: "Bring the three specimens to the laboratory." },
       ],
       choices: [
@@ -249,7 +249,7 @@ export const EP04 = {
         { type: "document", open: true, if: { flag: "labTarif", equals: false }, doc: {
           id: "d_tarif", title: "The Formula Scratched onto the Wall", style: "hand",
           meta: "— Formula Written with Nevin's Own Blood —",
-          body: "ANTIDOTE — Cellular Retraction\n\nA highly sensitive ratio. A faulty mix won't kill, it causes something WORSE THAN DEATH.\n\n  BLUE SPORE ...... 1 UNIT (Cellular suppressor)\n  ROOT EXTRACT ..... 2 UNITS (Carrier tar)\n  BLOOD ............ 3 UNITS (Binding life essence)\n\nThe sequence is trivial, the RATIO must be absolute. 6 units total. If blood is insufficient, it remains ineffective. If spores are excessive, it feeds the monster. Be careful!" } },
+          body: "ANTIDOTE — Cellular Retraction\n\nA highly sensitive ratio. A faulty mix won't kill, it causes something WORSE THAN DEATH.\n\n  BLUE SPORE ...... 2 UNITS (Cellular suppressor)\n  ROOT EXTRACT ..... 3 UNITS (Carrier tar)\n  BLOOD ............ 4 UNITS (Binding life essence)\n\nThe sequence is trivial, the RATIO must be absolute. 9 units total. If blood is insufficient, it remains ineffective. If spores are excessive, it feeds the monster. Be careful!" } },
         { type: "flag", set: { labTarif: true } },
       ],
       choices: [
@@ -262,17 +262,17 @@ export const EP04 = {
     n_lab_mix: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Your hands are shaking too much from terror to stabilize the vials[cite: 8]. The formula is clear: 1 spore, 2 extract, 3 blood[cite: 8]. 6 units total[cite: 8]. Steel your nerves and fill the syringe[cite: 8]. If you make an error, you won't leave the room alive[cite: 8]." },
+        { type: "narrate", text: "Your hands are shaking too much from terror to stabilize the vials. Try to remember the formula Nevin scratched into the wall — the order doesn't matter, but the ratio must be exact. Steel your nerves and fill the syringe. If you make an error, you won't leave the room alive." },
       ],
       interaction: {
         kind: "mix",
-        title: "NIGHTMARE COCKTAIL — MATCH THE RATIO (1 SPORE · 2 EXTRACT · 3 BLOOD)",
+        title: "NIGHTMARE COCKTAIL — RECALL THE FORMULA, MATCH THE RATIO",
         bottles: [
           { id: "spor", label: "SPORE", color: "#4a6ac2" },
           { id: "ozut", label: "EXTRACT", color: "#4aa26a" },
           { id: "kan", label: "BLOOD", color: "#a23a3a" },
         ],
-        target: { spor: 1, ozut: 2, kan: 3 },
+        target: { spor: 2, ozut: 3, kan: 4 },
         success: "n_serum_hazir",
         cancel: "n_lab",
         penalty: { gurultu: 6, text: "HORRIFIC ERROR — The vial exploded, venting acid gas into the room. NOISE +6" },

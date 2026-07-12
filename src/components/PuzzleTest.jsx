@@ -29,7 +29,6 @@ const CFG_SYMBOLS = {
 };
 
 const CFG_RINGS = {
-  clockwiseOnly: true,
   variant: "vitray",
   title: "VİTRAY TESTİ — CAMI HİZALA",
   rings: [

@@ -72,10 +72,13 @@ export const AudioSys = {
         }
       }
 
-      // "Güvenli an" döngüsü sabit tek dosya yerine bir havuzdan rastgele
-      // seçilir — her girişte çeşitlilik olsun diye.
+      // "Güvenli an" döngüsü ve arşiv/ayarlar müziği sabit tek dosya
+      // yerine kendi havuzlarından rastgele seçilir — her girişte
+      // çeşitlilik olsun diye.
       const file = (track === this._bgAmbientTrack && LOOP_POOL.length)
         ? LOOP_POOL[Math.floor(Math.random() * LOOP_POOL.length)]
+        : (track === "archive" && AMBIENCE_POOL.length)
+        ? AMBIENCE_POOL[Math.floor(Math.random() * AMBIENCE_POOL.length)]
         : MUSIC_FILES[track];
       if (!file) return; // dosya tanımlı değil — sessiz kal, sentetiğe düşme
 
@@ -187,6 +190,10 @@ export const AudioSys = {
         const file = this._pausedMusicSrc || MUSIC_FILES[track];
         this._pausedMusicSrc = null;
         if (!file) return;
+
+        // Arşiv/ayarlar müziği hâlâ çalıyor olabilir — yeni parçayı
+        // başlatmadan önce KESİN durdur, yoksa iki müzik üst üste biner.
+        this._stopSampleMusic();
 
         const a = new Audio(file);
         a.loop = (track === this._bgAmbientTrack);

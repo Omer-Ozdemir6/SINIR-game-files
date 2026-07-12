@@ -1671,8 +1671,10 @@ export default function App() {
       {dying && <div style={S.dyingVignette} className="s1-dying" />}
       {death && <DeathOverlay death={death} onRespawn={respawnWithLoading} />}
 
-      {/* Fiziksel Kırık Ekran Camı Efekti (Outlast Miles kamerası tarzı) */}
-      {mode === "game" && !screen && !openItem && flags.tabletKirik && (
+      {/* Fiziksel Kırık Ekran Camı Efekti (Outlast Miles kamerası tarzı) — SADECE
+          asıl oyun ekranında görünür: ölüm, duraklat, ayarlar, arşiv/not okuma
+          veya bir bulmaca açıkken KESİNLİKLE gösterilmez. */}
+      {mode === "game" && !screen && !openItem && !death && !dying && !interaction && flags.tabletKirik && (
         <svg
           style={{
             position: "absolute",

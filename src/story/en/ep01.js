@@ -110,8 +110,8 @@ export const EP01 = {
         { type: "narrate", text: "You are inside the infirmary. The sharp stench of antiseptic burns your nostrils. The medicine cabinet has been savagely looted, its glass shattered across the floor. As you take a step, you aim your tablet's light toward the examination table. You cover your mouth to keep from vomiting: there is a corpse lying there. The bloody name tag on his chest is barely legible: 'B. SOYLU'. The owner of the tablet in your hand. The man whose place you were so eager to take. His eyes are wide open, staring blankly at the ceiling, his mouth agape. They said he 'resigned'... No, they left him here to die." },
         { type: "narrate", text: "On the medical terminal still running beside his desk, a single-line log is frozen on the screen: 'Shift continuity secured.' Not a death report. Not an emergency evacuation log. Before the human body could even cool down, the first thing the system did was type a new name into the vacant position. Your name." },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "narrate", text: "The corpse's right hand is tightly clenched, frozen stiff by rigor mortis. Suppressing your urge to vomit, you pry open his cold, bruised fingers one by one. His skin cracks. A crumpled, blood-stained scrap of paper slides out from his palm. Two numbers written in a frantic rush: \"21\". The rest has been torn away." },
-        { type: "note", id: "not_kod21", title: "Code Fragment: 21··", text: "Even while dying, Baturay hid something. Two numbers in his palm: 21. I used to think a person's last reflex would be to pray, murmur their mother's name, or beg for help. Baturay hid a passcode. That means calling for help down here is only possible by breaking a dead man's fingers." },
+        { type: "narrate", text: "The corpse's right hand is tightly clenched, frozen stiff by rigor mortis. Suppressing your urge to vomit, you pry open his cold, bruised fingers one by one. His skin cracks. A crumpled, blood-stained scrap of paper slides out from his palm. Two numbers written in a frantic rush: \"58\". The rest has been torn away." },
+        { type: "note", id: "not_kod21", title: "Code Fragment: 58··", text: "Even while dying, Baturay hid something. Two numbers in his palm: 58. I used to think a person's last reflex would be to pray, murmur their mother's name, or beg for help. Baturay hid a passcode. That means calling for help down here is only possible by breaking a dead man's fingers." },
         { type: "flag", set: { kod21: true } },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
@@ -417,8 +417,8 @@ export const EP01 = {
     n_pompaC: {
       cost: 1,
       events: [
-        { type: "narrate", text: "You reach the front of the Pump C panel. Its slot is COMPLETELY EMPTY. The fuse is gone, that vacant hole staring back at you like a blackened eye socket ringed with burn marks. Scratched violently onto the steel plate right next to the panel with a sharp object are two numbers: \"47\". Beneath it, in a shaky handwriting: \"I have the other half.\"", if: { flag: "kod47", equals: false } },
-        { type: "note", id: "not_kod47", title: "Code Fragment: ··47", text: "Scratched onto the wall of panel C: 47. It says 'I have the other half' — that's Baturay's handwriting. So the code is: [first half][47]. I need to combine the two pieces.", if: { flag: "kod47", equals: false } },
+        { type: "narrate", text: "You reach the front of the Pump C panel. Its slot is COMPLETELY EMPTY. The fuse is gone, that vacant hole staring back at you like a blackened eye socket ringed with burn marks. Scratched violently onto the steel plate right next to the panel with a sharp object are two numbers: \"36\". Beneath it, in a shaky handwriting: \"I have the other half.\"", if: { flag: "kod47", equals: false } },
+        { type: "note", id: "not_kod47", title: "Code Fragment: ··36", text: "Scratched onto the wall of panel C: 36. It says 'I have the other half' — that's Baturay's handwriting. So the code is: [first half][36]. I need to combine the two pieces.", if: { flag: "kod47", equals: false } },
         { type: "flag", set: { kod47: true } },
         { type: "narrate", text: "The Pump C line is operational now. The panel is still wet and hazardous, but the fuse is locked into its slot; touching it again will gain you nothing.", if: { flag: "pompaC", equals: true } },
         { type: "narrate", text: "This hungry socket demands a replacement fuse, but your hands are empty. You try to recall the note from the handover report... Where were the spares?", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
@@ -597,7 +597,7 @@ export const EP01 = {
         { type: "system", text: "HINT: The code is split into two fragments. Combine the notes in your archive.", if: { flag: "kod21", equals: true } },
         { type: "alert", text: "You DO NOT have the first half of the code. Baturay wrote 'half of it is always with me'... Where is he now?", if: { flag: "kod21", equals: false } },
       ],
-      interaction: { kind: "keypad", code: "2147", success: "n_radyo", cancel: "n_koridor2" },
+      interaction: { kind: "keypad", code: "5836", success: "n_radyo", cancel: "n_koridor2" },
     },
 
     n_radyo: {

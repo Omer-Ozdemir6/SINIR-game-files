@@ -618,8 +618,8 @@ export const EP05 = {
       checkpoint: true,
       cost: 1,
       events: [
-        { type: "narrate", text: "The rusted sonar console stands before you like a death bill, gleaming[cite: 9]. There are two phases: first you will input the language the Artifact carved onto the stones into the panel, then you will lock its 432 hertz pulse into reverse[cite: 9]. Like breaking a ritual with technology[cite: 9]. Or forcing the device of the corporation to confess the crime it hid for years[cite: 9]." },
-        { type: "narrate", text: "Selin is leaning over the console, froth seeping from her mouth: «I am reading the sequence, you will hit those damned buttons! The order is this: Triangle-eye, Curl, Four-notch, and Wave... This means 'PERISH' in its foul tongue! Tell me you are ready!»[cite: 9]" },
+        { type: "narrate", text: "The rusted sonar console stands before you like a death bill, gleaming. There are two phases: first you will input the language the Artifact carved onto the stones into the panel, then you will lock its 432 hertz pulse into reverse. Like breaking a ritual with technology. Or forcing the device of the corporation to confess the crime it hid for years." },
+        { type: "narrate", text: "Selin is leaning over the console, froth seeping from her mouth: «I am reading the sequence, you will hit those damned buttons! The order is this: Triangle-eye, Four-notch, Hook, Star, Curl, then Arrow... This means 'PERISH' in its foul tongue! Tell me you are ready!»" },
         { type: "waitTap" },
       ],
       choices: [

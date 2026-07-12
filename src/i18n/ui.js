@@ -96,7 +96,7 @@ export const UI = {
     },
     credits: {
       tagline: "Karadeniz'in dibinde, ölümün çalışmadığı yerde.",
-      roll: "TASARIM & YÖNETİM\nÖmer Özdemir\n\n\nHİKAYE & SENARYO\nÖmer Özdemir\n\n\nOYUN TASARIMI\nÖmer Özdemir\n\n\nPROGRAMLAMA\nÖmer Özdemir\n\n\nSES & ATMOSFER\nÖmer Özdemir\n\n\n\nMÜZİKLER\nPixabay\n\n\n\nÖZEL TEŞEKKÜR\nBaturay Soylu'ya —\nmesajı gönderdiği için.\n\n\n\n\nPERISHED'da kimse\ngerçekten ölmez.\n\nSadece Aile'ye katılır.\n\n\n\n\n— SON —\n\n\nsürüm 1.0",
+      roll: "TASARIM & YÖNETİM\nÖmer Özdemir\n\n\nHİKAYE & SENARYO\nÖmer Özdemir\n\n\nOYUN TASARIMI\nÖmer Özdemir\n\n\nPROGRAMLAMA\nÖmer Özdemir\n\n\nSES & ATMOSFER\nÖmer Özdemir\n\n\n\nMÜZİKLER\nPixabay\nÖmer Özdemir\n\n\n\nÖZEL TEŞEKKÜR\nBaturay Soylu'ya —\nmesajı gönderdiği için.\n\n\n\n\nPERISHED'da kimse\ngerçekten ölmez.\n\nSadece Aile'ye katılır.\n\n\n\n\n— SON —\n\n\nsürüm 1.0",
       close: "Kapat",
     },
     archive: {
@@ -214,6 +214,7 @@ export const UI = {
       symbolsWrong: "YANLIŞ SEMBOL — DİZİ SIFIRLANDI",
       ringsTitle: "VİTRAY KİLİDİ — HALKALARI HİZALA",
       ringsHint: "Cam katmanlarını çevir. Altın figürün parçaları ancak doğru açılarda BİRLEŞİR — resme bak, işarete değil.",
+      ringsHintSelect: "Önce bir renk seç, sonra ⟲/⟳ ile (ya da klavye ok tuşlarıyla) çevir.",
       ringsDone: "CAM BÜTÜNLEŞTİ — DESEN TAMAM",
       ringsMissing: "HALKALAR HİZADA — AMA CAM EKSİK: {n} PARÇA DIŞARIDA",
       ringsPlaced: "eksik parça yerleştirildi",
@@ -322,7 +323,7 @@ export const UI = {
     },
     credits: {
       tagline: "At the bottom of the Black Sea, where death does not work.",
-      roll: "DESIGN & DIRECTION\nÖmer Özdemir\n\n\nSTORY & SCRIPT\nÖmer Özdemir\n\n\nGAME DESIGN\nÖmer Özdemir\n\n\nPROGRAMMING\nÖmer Özdemir\n\n\nSOUND & ATMOSPHERE\nÖmer Özdemir\n\n\n\nMUSIC\nPixabay\n\n\n\nSPECIAL THANKS\nTo Baturay Soylu —\nfor transmitting the message.\n\n\n\n\nIn PERISHED, no one\nreally dies.\n\nThey just join the Family.\n\n\n\n\n— THE END —\n\n\nversion 1.0",
+      roll: "DESIGN & DIRECTION\nÖmer Özdemir\n\n\nSTORY & SCRIPT\nÖmer Özdemir\n\n\nGAME DESIGN\nÖmer Özdemir\n\n\nPROGRAMMING\nÖmer Özdemir\n\n\nSOUND & ATMOSPHERE\nÖmer Özdemir\n\n\n\nMUSIC\nPixabay\nÖmer Özdemir\n\n\n\nSPECIAL THANKS\nTo Baturay Soylu —\nfor transmitting the message.\n\n\n\n\nIn PERISHED, no one\nreally dies.\n\nThey just join the Family.\n\n\n\n\n— THE END —\n\n\nversion 1.0",
       close: "Close",
     },
     archive: {
@@ -440,6 +441,7 @@ export const UI = {
       symbolsWrong: "WRONG SYMBOL — SEQUENCE RESET",
       ringsTitle: "STAINED GLASS LOCK — ALIGN THE RINGS",
       ringsHint: "Rotate the glass layers. The pieces of the golden figure MERGE only at correct angles — look at the image, not the sign.",
+      ringsHintSelect: "First pick a color, then rotate it with ⟲/⟳ (or the arrow keys).",
       ringsDone: "GLASS MERGED — PATTERN COMPLETED",
       ringsMissing: "RINGS ALIGNED — BUT GLASS MISSING: {n} PIECES OUTSIDE",
       ringsPlaced: "missing piece installed",
@@ -510,7 +512,7 @@ de: {
     },
     credits: {
       tagline: "Am Grunde des Schwarzen Meeres, wo der Tod Feierabend hat.",
-      roll: "DESIGN & REGIE\nÖmer Özdemir\n\n\nHINTERGRUND & DREHBUCH\nÖmer Özdemir\n\n\nSPIELDESIGN\nÖmer Özdemir\n\n\nPROGRAMMIERUNG\nÖmer Özdemir\n\n\nSOUND & ATMOSPHÄRE\nÖmer Özdemir\n\n\n\nMUSIK\nPixabay\n\n\n\nBESONDERER DANK\nAn Baturay Soylu —\nfür das Senden der Nachricht.\n\n\n\n\nIn GRENZE-1 stirbt\nniemand wirklich.\n\nMan schließt sich nur der Familie an.\n\n\n\n\n— ENDE —\n\n\nVersion 1.0",
+      roll: "DESIGN & REGIE\nÖmer Özdemir\n\n\nHINTERGRUND & DREHBUCH\nÖmer Özdemir\n\n\nSPIELDESIGN\nÖmer Özdemir\n\n\nPROGRAMMIERUNG\nÖmer Özdemir\n\n\nSOUND & ATMOSPHÄRE\nÖmer Özdemir\n\n\n\nMUSIK\nPixabay\nÖmer Özdemir\n\n\n\nBESONDERER DANK\nAn Baturay Soylu —\nfür das Senden der Nachricht.\n\n\n\n\nIn GRENZE-1 stirbt\nniemand wirklich.\n\nMan schließt sich nur der Familie an.\n\n\n\n\n— ENDE —\n\n\nVersion 1.0",
       close: "Schließen",
     },
     archive: {
@@ -620,6 +622,7 @@ de: {
       symbolsWrong: "FALSCHES SYMBOL — SEQUENZ ZURÜCKGESETZT",
       ringsTitle: "BLEIGLAS-SCHLOSS — RINGE AUSRICHTEN",
       ringsHint: "Drehe die Glasschichten. Die Teile der goldenen Figur FÜGEN SICH nur in den richtigen Winkeln zusammen — schaue auf das Bild, nicht auf das Zeichen.",
+      ringsHintSelect: "Wähle zuerst eine Farbe, dann drehe sie mit ⟲/⟳ (oder den Pfeiltasten).",
       ringsDone: "GLAS ZUSAMMENGEFÜGT — MUSTER KOMPLETT",
       ringsMissing: "RINGE AUSGERICHTET — ABER GLAS FEHLT: {n} TEILE FEHLEN NOCH",
       ringsPlaced: "Fehlendes Teil eingesetzt",

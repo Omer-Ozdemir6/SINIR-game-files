@@ -49,7 +49,9 @@ export const MUSIC_FILES = {
   menu: "/audio/music/main_menu.mp3",   // ana menü müziği (New Game/Continue'a kadar çalar)
   intro: "/audio/music/intro.mp3",     // intro mail sekansı müziği
   credits: "/audio/music/credits.mp3",   // credits ekranı müziği
-  archive: "/audio/music/archive.wav",   // ayarlar / arşiv menü müziği
+  // NOT: "archive" (ayarlar/arşiv menü müziği) artık burada sabit bir
+  // dosya değil — AudioSys.music() bunu AMBIENCE_POOL'dan rastgele
+  // seçiyor (bkz. aşağıdaki havuz).
   endsound: "/audio/music/endsound.mp3", // final ekranı (EndingCards) — siyah ekranda yazılar akarken çalar
 
   // Bölüm giriş parçaları — hikayede { type: "music", track: "k6" }

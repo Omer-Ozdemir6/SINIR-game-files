@@ -618,7 +618,7 @@ export const EP05 = {
       cost: 1,
       events: [
         { type: "narrate", text: "Paslı sonar konsolu önünde ölüm faturası gibi parlıyor. İki aşama var: önce Buluntu'nun taşlara kazıdığı dili panele gireceksin, sonra 432 hertzlik nabzını tersine kilitleyeceksin. Bir ritüeli teknolojiyle bozmak gibi. Ya da kurumun yıllarca sakladığı suçu kendi cihazıyla itiraf ettirmek." },
-        { type: "narrate", text: "Selin konsolun üstüne abanmış, ağzından köpükler sızıyor: «Diziyi ben okuyorum, sen o lanet düğmelere basacaksın! Sıra şu: Üçgen-göz, Kıvrım, Dört-çentik ve Dalga... Bu o piçin dilinde 'GEBER' demek! Hazırsın de bana!»" },
+        { type: "narrate", text: "Selin konsolun üstüne abanmış, ağzından köpükler sızıyor: «Diziyi ben okuyorum, sen o lanet düğmelere basacaksın! Sıra şu: Üçgen-göz, Dört-çentik, Çengel, Yıldız, Kıvrım, sonra Ok... Bu o piçin dilinde 'GEBER' demek! Hazırsın de bana!»" },
         { type: "waitTap" },
       ],
       choices: [

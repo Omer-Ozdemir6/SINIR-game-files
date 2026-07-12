@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
 import { styles as S } from "../../styles/theme";
 import { AudioSys } from "../../audio/AudioSys";
 import { t } from "../../i18n";
@@ -707,16 +708,19 @@ export function WiresOverlay({ config, onSuccess, onFail, onCancel }) {
              penalty? }
    ============================================================ */
 
+// Her işaretin belirgin, sözle tarif edilebilir TEK bir kimliği var —
+// Selin'in konsolda okuduğu isimlerle (n_verici, ep05) birebir eşleşir,
+// ki oyuncu duyduğunu doğru düğmeyle eşleştirebilsin.
 export const GLYPHS = {
-  g1: "M20 7 A13 13 0 1 0 20.1 7 M20 13 A7 7 0 1 0 20.1 13 M20 20 V34 M14 28 H26",
-  g2: "M9 20 H31 M20 9 V31 M13 13 L27 27 M27 13 L13 27",
-  g3: "M12 10 C17 15 23 15 28 10 M12 20 C17 25 23 25 28 20 M12 30 C17 35 23 35 28 30",
-  g4: "M20 8 L31 16 L27 31 L13 31 L9 16 Z M14 18 H26 M17 25 H23",
-  g5: "M20 7 C10 15 11 27 20 34 C29 27 30 15 20 7 Z M15 21 H25",
-  g6: "M8 28 C13 16 20 12 32 12 M10 28 C18 22 22 22 30 28 M20 12 V34",
-  g7: "M11 11 H29 M14 16 H26 M17 21 H23 M14 26 H26 M11 31 H29",
-  g8: "M20 8 V32 M12 16 C16 12 24 12 28 16 M12 24 C16 28 24 28",
-}; // ihtiyaÃ§ olursa yeni iÅŸaretler buraya eklenir
+  g1: "M28 12 A12 12 0 1 1 12 12", // HALKA — kırık çember
+  g2: "M26 14 C26 8 12 9 12 18 C12 25 20 27 23 21 C24 18 20 16 18 18", // KIVRIM — içe kıvrılan sarmal
+  g3: "M12 10 C17 15 23 15 28 10 M12 20 C17 25 23 25 28 20 M12 30 C17 35 23 35 28 30", // DALGA — üst üste 3 dalga
+  g4: "M10 10 H30 M13 10 V26 M18 10 V30 M23 10 V26 M28 10 V30", // DÖRT-ÇENTİK — tarak gibi 4 diş
+  g5: "M20 8 L32 30 H8 Z M20 22 A4 4 0 1 0 20.1 22", // ÜÇGEN-GÖZ — üçgen içinde göz
+  g6: "M14 8 V20 A8 8 0 1 0 28 22", // ÇENGEL — kanca
+  g7: "M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z", // YILDIZ — 4 uçlu kıvılcım
+  g8: "M8 20 H26 M18 12 L28 20 L18 28", // OK — sağa dönük ok
+}; // ihtiyaç olursa yeni işaretler buraya eklenir
 
 export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
   const [progress, setProgress] = useState(0); // dizide kaÃ§ doÄŸru basÄ±ldÄ±
@@ -820,45 +824,153 @@ export function SymbolsOverlay({ config, onSuccess, onFail, onCancel }) {
    hedeften sapmasÄ± (step'in katÄ± olmalÄ± ki Ã§Ã¶zÃ¼lebilsin).
    ============================================================ */
 
+// Halka rengini (hex) rozet buton stiline çevirir — config'teki r.color
+// hangi renk olursa olsun kullanılabilir (sabit renk dizisi yerine).
+const hexToRgb = (hex) => {
+  const h = hex.replace("#", "");
+  return [parseInt(h.substring(0, 2), 16), parseInt(h.substring(2, 4), 16), parseInt(h.substring(4, 6), 16)];
+};
+const hexToRgba = (hex, a) => { const [r, g, b] = hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; };
+const darken = (hex, f = 0.55) => { const [r, g, b] = hexToRgb(hex); return `rgb(${Math.round(r * f)},${Math.round(g * f)},${Math.round(b * f)})`; };
+
+// Her katman (renk) TAM DAİRE üzerinde 8'er parça taşır — 3 katman
+// birlikte ortak bir 24 dilimlik ızgarayı iç içe geçmiş (interleaved)
+// paylaşır, bu yüzden her dizi aynı uzunlukta (8) olmalı.
+// Krem/beyaz karışımı YOK — her katman SADECE kendi renk ailesinin
+// (açık/orta/koyu) tonlarını taşır ki hangi düğmeye basarsak yukarıda
+// gerçekten sadece O renk hareket ettiğini net görelim.
 const GLASS_SHARDS = [
-  // 1. Ä°Ã§ Halka: 8 ParÃ§a (YeÅŸil tonlarÄ± ve krem)
-  ["#8ec5a0", "#e8e4d4", "#72ad87", "#8ec5a0", "#e8e4d4", "#619675", "#8ec5a0", "#e8e4d4"],
-  // 2. Orta Halka: 10 ParÃ§a (Pembe tonlarÄ± ve krem)
-  ["#d4a0a8", "#e8e4d4", "#be868f", "#d4a0a8", "#e8e4d4", "#a96f78", "#d4a0a8", "#e8e4d4", "#be868f", "#d4a0a8"],
-  // 3. DÄ±ÅŸ Halka: 12 ParÃ§a (Lavanta/mor tonlarÄ± ve krem)
-  ["#c4a4c8", "#e8e4d4", "#aa84b0", "#c4a4c8", "#e8e4d4", "#926899", "#c4a4c8", "#e8e4d4", "#aa84b0", "#c4a4c8", "#926899", "#e8e4d4"],
+  // 1. Katman: Yeşil tonları (açık/orta/koyu)
+  ["#8ec5a0", "#5a9a6a", "#a8d4b8", "#8ec5a0", "#5a9a6a", "#8ec5a0", "#a8d4b8", "#5a9a6a"],
+  // 2. Katman: Pembe tonları (açık/orta/koyu)
+  ["#d4a0a8", "#a8626e", "#e4c0c6", "#d4a0a8", "#a8626e", "#d4a0a8", "#e4c0c6", "#a8626e"],
+  // 3. Katman: Lavanta/mor tonları (açık/orta/koyu)
+  ["#c4a4c8", "#8e5f96", "#dcc4e0", "#c4a4c8", "#8e5f96", "#c4a4c8", "#dcc4e0", "#8e5f96"],
 ];
 
-const wedge = (r0, r1, a0, a1) => {
+// Sabit-tohum sözde-rastgelelik — indekse bağlı, her render'da aynı
+// sonucu verir (titreme olmasın diye Math.random() değil).
+const seeded = (n) => { const x = Math.sin(n * 12.9898) * 43758.5453; return x - Math.floor(x); };
+
+// Bir hücrenin YAN kenarı (açısal sınır) düz radyal çizgi değil, yarıçapa
+// göre yumuşakça dalgalanan organik bir eğridir. Aynı açısal sınırı
+// paylaşan İKİ komşu hücre (aynı bantta, farklı renk katmanlarında bile
+// olsalar) tam olarak aynı `boundarySeed`'i kullandığı için kenarları
+// birebir örtüşür — hiç boşluk kalmaz, tıpkı gerçek kırık cam parçalarının
+// birbirine kenetlenmesi gibi.
+const waveA = (r, aBase, boundarySeed) =>
+  aBase + Math.sin(r * 0.11 + boundarySeed * 2.37) * 3.4 + Math.sin(r * 0.04 + boundarySeed * 0.63) * 2.2;
+
+// Organik cam parçası: iki dalgalı yan kenar (waveA) + iç/dış kavis
+// (mükemmel daire, birkaç düz segmentle yaklaştırılmış). Kavisler
+// kasıtlı olarak dalgasız bırakıldı ki köşe noktaları her zaman kesin
+// ve tutarlı kalsın (komşu hücrelerle mükemmel kenetlenme garantili).
+const organicCell = (rIn, rOut, a0, a1, seedA0, seedA1) => {
   const p = (r, a) => `${r * Math.sin(rad(a))} ${-r * Math.cos(rad(a))}`;
-  return `M ${p(r0, a0)} A ${r0} ${r0} 0 0 1 ${p(r0, a1)} L ${p(r1, a1)} A ${r1} ${r1} 0 0 0 ${p(r1, a0)} Z`;
+  const steps = 3;
+  const leftPts = Array.from({ length: steps + 1 }, (_, s) => {
+    const r = rIn + ((rOut - rIn) * s) / steps;
+    return { r, a: waveA(r, a0, seedA0) };
+  });
+  const rightPts = Array.from({ length: steps + 1 }, (_, s) => {
+    const r = rOut - ((rOut - rIn) * s) / steps;
+    return { r, a: waveA(r, a1, seedA1) };
+  });
+  const arcSteps = 3;
+  const outerPts = Array.from({ length: arcSteps + 1 }, (_, s) => ({
+    r: rOut, a: leftPts[steps].a + (rightPts[0].a - leftPts[steps].a) * (s / arcSteps),
+  }));
+  const innerPts = Array.from({ length: arcSteps + 1 }, (_, s) => ({
+    r: rIn, a: rightPts[steps].a + (leftPts[0].a - rightPts[steps].a) * (s / arcSteps),
+  }));
+  const all = [...leftPts, ...outerPts.slice(1), ...rightPts.slice(1), ...innerPts.slice(1)];
+  return "M " + all.map((pt) => p(pt.r, pt.a)).join(" L ") + " Z";
 };
 
-// Altın mühür parçaları (Uçları birbirine değen ve ortada çember oluşturan Sacred Sun/Key Sigil)
+// Ortak dilim ızgarasına DÜZENSİZ (ama sabit) genişlikler dağıtır — bazı
+// parçalar büyük, bazıları küçük olsun diye; toplamı yine tam 360°
+// tutulur ki katmanlar boşluksuz/çakışmasız kenetlensin. totalSlots ve
+// seed'e göre deterministiktir (aynı girdi = aynı sonuç); seed farklı
+// bantların birbirinin aynı görünmemesi için kullanılır.
+const slotBounds = (totalSlots, seedOffset = 0) => {
+  const weights = Array.from({ length: totalSlots }, (_, s) => 0.5 + seeded(s * 3.71 + 11 + seedOffset * 977) * 1.4);
+  const sum = weights.reduce((a, b) => a + b, 0);
+  const bounds = [0];
+  let acc = 0;
+  for (let s = 0; s < totalSlots; s++) {
+    acc += (weights[s] / sum) * 360;
+    bounds.push(acc);
+  }
+  return bounds; // uzunluk totalSlots+1; bounds[s]..bounds[s+1] = s. dilimin açı aralığı
+};
+
+// Merkezdeki sabit altın işaretin (r=16 çember) hemen dışından başlayıp
+// kenara kadar 3 bant — her bandın kendi düzensiz açı ızgarası var (farklı
+// seed) ki sınırlar tüm bantlarda aynı hizada durup "ıspatlı tekerlek"
+// gibi görünmesin; içte işarete bitişik küçük parçalar, dışa doğru daha
+// büyük parçalar. Her katman bu 3 banttan da pay alır (3+3+2=8 parça),
+// yani cam her yere dağılmış olur — tek bir sabit dilim ızgarası değil.
+const RING_BANDS = [
+  { rIn: 13, rOut: 42, cellsPerLayer: 3, seed: 1 },
+  { rIn: 42, rOut: 70, cellsPerLayer: 3, seed: 2 },
+  { rIn: 70, rOut: 98, cellsPerLayer: 2, seed: 3 },
+];
+
+// Bir katmanın (renk) TÜM parçalarını (3 bant birden) tek düz listeye
+// çıkarır — her hücre kendi (açı aralığı, yarıçap aralığı) ile sabit bir
+// "yeri" olan, tekrar üretilebilir (deterministik) bir parça tanımıdır.
+function buildRingCells(ringIndex, totalLayers) {
+  const cells = [];
+  RING_BANDS.forEach((band, bandIdx) => {
+    const totalInBand = band.cellsPerLayer * totalLayers;
+    const bounds = slotBounds(totalInBand, band.seed);
+    for (let c = 0; c < band.cellsPerLayer; c++) {
+      const abs = c * totalLayers + ringIndex;
+      cells.push({
+        a0: bounds[abs],
+        a1: bounds[abs + 1],
+        rIn: band.rIn,
+        rOut: band.rOut,
+        // Bu banttaki sınır İNDEKSİNE bağlı sabit tohum — aynı sınırı
+        // paylaşan komşu hücre (hangi renk katmanında olursa olsun)
+        // BİREBİR aynı tohumu üretir, kenarlar tam örtüşür.
+        seedA0: bandIdx * 100000 + (abs % totalInBand),
+        seedA1: bandIdx * 100000 + ((abs + 1) % totalInBand),
+      });
+    }
+  });
+  return cells;
+}
+
+// Açan bir gül — merkezdeki sıkı goncadan dışa doğru açılan altın
+// çizgi-sanatı işaret (annenin hatırasını temsil eder). 3 katman: sıkı
+// merkez goncası, yarı açılmış orta yapraklar, tam açılmış dış yapraklar
+// — her katman bir öncekinden hafifçe döndürülmüş, gerçek bir gülün
+// yaprak dizilişi gibi üst üste binsin diye.
+const petalPath = (angleDeg, rInner, rOuter, widthDeg) => {
+  const a = rad(angleDeg);
+  const half = rad(widthDeg / 2);
+  const pt = (r, ang) => [r * Math.sin(ang), -r * Math.cos(ang)];
+  const [tipX, tipY] = pt(rOuter, a);
+  const [baseLX, baseLY] = pt(rInner, a - half);
+  const [baseRX, baseRY] = pt(rInner, a + half);
+  const midR = rInner + (rOuter - rInner) * 0.6;
+  const [ctrlLX, ctrlLY] = pt(midR, a - half * 1.15);
+  const [ctrlRX, ctrlRY] = pt(midR, a + half * 1.15);
+  const f = (n) => n.toFixed(1);
+  return `M ${f(baseLX)} ${f(baseLY)} Q ${f(ctrlLX)} ${f(ctrlLY)} ${f(tipX)} ${f(tipY)} Q ${f(ctrlRX)} ${f(ctrlRY)} ${f(baseRX)} ${f(baseRY)} Z`;
+};
+
 const FIGURE = [
-  // İç: Merkez çember + 4 yöne uzanan kollar (r=16'dan r=38'e)
+  // İç: sıkı gonca — merkez çember (r=9) + 5 tığ yaprak (r=9'dan r=34'e)
   [
-    "M -16 0 A 16 16 0 1 1 16 0 A 16 16 0 1 1 -16 0 Z", // Merkez çember (Ortada çıkan şekil)
-    "M 0 -16 V -38", // Üst kol
-    "M 0 16 V 38",   // Alt kol
-    "M -16 0 H -38", // Sol kol
-    "M 16 0 H 38",   // Sağ kol
+    "M -9 0 A 9 9 0 1 1 9 0 A 9 9 0 1 1 -9 0 Z",
+    ...Array.from({ length: 5 }, (_, i) => petalPath(i * 72, 9, 34, 52)),
   ],
-  // Orta: 4 yöne uzanan devam çizgileri (r=42'den r=68'e) ve bağlayıcı çember (r=55)
-  [
-    "M -55 0 A 55 55 0 1 1 55 0 A 55 55 0 1 1 -55 0 Z", // Bağlayıcı çember
-    "M 0 -42 V -68", // Üst kol devamı
-    "M 0 42 V 68",   // Alt kol devamı
-    "M -42 0 H -68", // Sol kol devamı
-    "M 42 0 H 68",   // Sağ kol devamı
-  ],
-  // Dış: 4 yöne uzanan uç çizgileri (r=72'den r=96'e) ve ok uçları
-  [
-    "M 0 -72 V -96 M -12 -86 L 0 -96 L 12 -86", // Üst uç + ok
-    "M 0 72 V 96 M -12 86 L 0 96 L 12 86",     // Alt uç + ok
-    "M -72 0 H -96 M -86 -12 L -96 0 L -86 12", // Sol uç + ok
-    "M 72 0 H 96 M 86 -12 L 96 0 L 86 12",     // Sağ uç + ok
-  ],
+  // Orta: yarı açılmış 6 yaprak (r=38'den r=64'e), gonca yapraklarına göre kaydırılmış
+  Array.from({ length: 6 }, (_, i) => petalPath(i * 60 + 24, 38, 64, 48)),
+  // Dış: tam açılmış 6 yaprak (r=68'den r=94'e)
+  Array.from({ length: 6 }, (_, i) => petalPath(i * 60 + 54, 68, 94, 46)),
 ];
 
 // Toz zerreleri iÃ§in rastgele koordinatlar
@@ -873,17 +985,35 @@ const DUST_PARTICLES = Array.from({ length: 10 }).map((_, i) => ({
 
 export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }) {
   const rings = config.rings;
-  const radii = [[16, 38], [42, 68], [72, 96]];
-  const [rots, setRots] = useState(rings.map((r) => r.offset)); // 0 = Ã§Ã¶zÃ¼m
+  // Videodaki gibi: 3 renk KATMANI da TAM DAİRE üzerinde, iç içe geçmiş
+  // (interleaved) ortak bir dilim ızgarasını paylaşır — eskisi gibi
+  // birbirinden ayrı, küçükten büyüğe sıralı 3 halka DEĞİL. Hangi renk
+  // butonuna basılırsa sadece O renge ait dilimler döner; doğru açıda
+  // üç katmanın dilimleri boşluksuz kenetlenip resmi tamamlar.
+  // Her açılışta yepyeni bir dağınıklık: her katman, kendi adım açısının
+  // (step) rastgele bir katı kadar 0'dan uzakta başlar (asla 0'da, yani
+  // hiçbir zaman çözülmüş görünerek başlamaz) — video'daki gibi "camlar
+  // dağılmış" hissi her denemede farklı olsun diye.
+  const [rots, setRots] = useState(() => rings.map((r) => {
+    const stepsPerFull = Math.max(2, Math.round(360 / r.step));
+    const stepsAway = 1 + Math.floor(Math.random() * (stepsPerFull - 1));
+    return (stepsAway * r.step) % 360;
+  }));
   const [done, setDone] = useState(false);
+  // Bir katman tam kendi hedef açısına oturduğu an kısa bir "doğru yer"
+  // sinyali (parlama + ses) verir — diğer katmanlar henüz hizalanmamış
+  // olsa bile, oyuncu o rengi doğru çözdüğünü hemen anlasın diye.
+  const [pulseRing, setPulseRing] = useState(null);
   const pieces = config.pieces || [];
   const missing = pieces.filter((p) => !flags[p.flag]);
-  
+  const sceneRef = useRef(null);
+  const bloomRef = useRef(null);
+
   const holeAt = (ring, shard) => missing.some((p) => p.ring === ring && p.shard === shard);
   const placedAt = (ring, shard) => pieces.some((p) => p.ring === ring && p.shard === shard && flags[p.flag]);
   const figHidden = (ring, k) => missing.some((p) => p.ring === ring && (p.fig ?? 0) === k);
 
-  // Hizalama hesaplamasÄ± (yakÄ±nlÄ±k toleransÄ±)
+  // Hizalama hesaplaması (yakınlık toleransı)
   const normRot = (r) => ((r % 360) + 360) % 360;
   const isAligned = rots.every((r, j) => {
     const nr = normRot(r);
@@ -891,7 +1021,7 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
     return diff <= Math.max(7, rings[j].step / 2 - 1);
   });
 
-  // 0.0 (hizalanmamÄ±ÅŸ) ile 1.0 (tam hizalanmÄ±ÅŸ) arasÄ± yakÄ±nlÄ±k katsayÄ±sÄ±
+  // 0.0 (hizalanmamış) ile 1.0 (tam hizalanmış) arası yakınlık katsayısı
   const getProximity = () => {
     const sumDiff = rots.reduce((sum, r) => {
       const nr = normRot(r);
@@ -903,28 +1033,56 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
 
   const proximity = getProximity();
 
+  // RE4 tarzı: renkli butona her basışta o halka SADECE saat yönünde
+  // bir adım (ring.step derece) döner. Yön seçimi yok, ara buton yok —
+  // tek dokunuş = tek dönüş, tıpkı referans videodaki gibi.
+  const ringOk = (deg, j) => {
+    const nr = normRot(deg);
+    const diff = Math.min(nr, 360 - nr);
+    return diff <= Math.max(7, rings[j].step / 2 - 1);
+  };
+
   const rotate = (i) => {
     if (done) return;
     AudioSys.puzzleButtonSfx();
+    const wasOk = ringOk(rots[i], i);
     const next = rots.slice();
-    // Sadece saat yÃ¶nÃ¼nde (clockwise-only) dÃ¶ndÃ¼rme
     next[i] = (next[i] + rings[i].step) % 360;
     setRots(next);
 
-    const ok = next.every((r, j) => {
-      const nr = normRot(r);
-      const diff = Math.min(nr, 360 - nr);
-      return diff <= Math.max(7, rings[j].step / 2 - 1);
-    });
+    if (!wasOk && ringOk(next[i], i)) {
+      // Bu katman DOĞRU yerine oturdu — küçük anlık işaret ver.
+      AudioSys.objectiveSfx();
+      setPulseRing(i);
+      setTimeout(() => setPulseRing((p) => (p === i ? null : p)), 700);
+    }
+
+    const ok = next.every((r, j) => ringOk(r, j));
 
     if (ok && missing.length === 0) {
       setDone(true);
       AudioSys.blipSfx(980);
-      setTimeout(onSuccess, 2200);
     } else if (ok && missing.length > 0) {
       AudioSys.buzzSfx(); // Cam eksikse kilit direnir
     }
   };
+
+  // RE4 Remake tarzı sinematik çözülüş: arayüz kilitlenir, "kamera" geri
+  // çekilip döner (CSS 3B perspektif), ardından kutsal ışık patlaması
+  // ekranı kaplar — ancak o zaman onSuccess çağrılır.
+  useEffect(() => {
+    if (!done) return;
+    if (!sceneRef.current || !bloomRef.current) { onSuccess(); return; }
+    const tl = gsap.timeline({ onComplete: () => onSuccess() });
+    tl.to(sceneRef.current, {
+      duration: 1.3, rotateY: 16, rotateX: -6, scale: 0.78, z: -130,
+      ease: "power2.inOut",
+    })
+      .to(bloomRef.current, { duration: 1.0, opacity: 1, ease: "power1.in" }, "-=0.75")
+      .to({}, { duration: 0.5 });
+    return () => tl.kill();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   return (
     <div style={S.overlayDim} onPointerDown={(e) => e.stopPropagation()}>
@@ -940,6 +1098,12 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
           22% { opacity: 0.88; }
           100% { opacity: 0; }
         }
+        @keyframes ring-piece-pulse {
+          0% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,217,125,0)); }
+          35% { filter: brightness(1.65) drop-shadow(0 0 10px rgba(255,217,125,0.95)); }
+          100% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,217,125,0)); }
+        }
+        .s1-ring-pulse { animation: ring-piece-pulse 700ms ease-out; }
         .rosette-btn {
           width: 64px;
           height: 64px;
@@ -949,14 +1113,17 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
           color: #1a1510;
           cursor: pointer;
           padding: 0;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.65), inset 0 2px 4px rgba(255,255,255,0.35);
+          box-shadow: 0 0 15px var(--glow-color), 0 4px 12px rgba(0,0,0,0.65), inset 0 2px 4px rgba(255,255,255,0.35);
           transition: transform 120ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 150ms;
         }
         .rosette-btn:hover {
-          box-shadow: 0 0 15px var(--glow-color), inset 0 2px 4px rgba(255,255,255,0.45);
+          box-shadow: 0 0 22px var(--glow-color), inset 0 2px 4px rgba(255,255,255,0.45);
         }
         .rosette-btn:active {
-          transform: scale(0.92);
+          transform: scale(0.9);
+        }
+        .rosette-btn:disabled {
+          cursor: default;
         }
       `}</style>
       <div style={{
@@ -981,16 +1148,18 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
             {config.title || t("puzzle.ringsTitle")}
           </div>
 
-          {/* === VITRAY SVG PANEL === */}
+          {/* === VİTRAY SAHNESİ — 3B perspektif "kamera" sarmalayıcısı === */}
+          <div style={{ width: "100%", maxWidth: 286, perspective: 900 }}>
+          <div ref={sceneRef} style={{ position: "relative", transformStyle: "preserve-3d" }}>
           <svg viewBox="-112 -112 224 224" style={{
-            width: "100%", maxWidth: 286,
+            width: "100%", display: "block",
             filter: proximity > 0.8 && !done ? "drop-shadow(0 0 6px rgba(255,217,125,0.4))" : "none",
             transition: "filter 300ms",
           }}>
             <defs>
               <radialGradient id="s1-glass-back" cx="47%" cy="44%" r="64%">
-                <stop offset="0%" stopColor="#f3efd9" stopOpacity="0.48" />
-                <stop offset="60%" stopColor="#3d4f40" stopOpacity="0.22" />
+                <stop offset="0%" stopColor="#fff7e0" stopOpacity="0.92" />
+                <stop offset="45%" stopColor="#f0d896" stopOpacity="0.5" />
                 <stop offset="100%" stopColor="#050807" stopOpacity="0.98" />
               </radialGradient>
             </defs>
@@ -1019,61 +1188,73 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
                 <line key={`ray-${i}`}
                   x1="0" y1="0"
                   x2={120 * Math.sin(rad(angle))} y2={-120 * Math.cos(rad(angle))}
-                  stroke="#ffd97d" strokeWidth="0.8" opacity={proximity * 0.22}
+                  stroke="#ffd97d" strokeWidth="0.8" opacity={0.1 + proximity * 0.28}
                   style={{ transition: "opacity 300ms" }} />
               );
             })}
 
-            {/* CAM HALKALAR & ALTIN FİGÜRLER */}
+            {/* CAM PARÇALARI — sabit dilim ızgarası DEĞİL: her parçanın kendi
+                yeri var. 3 bant (işarete bitişik küçük parçalardan kenara
+                doğru büyüyen parçalara) + her bandın kendi düzensiz açı
+                ızgarası, böylece parçalar her yere dağılmış, karışık
+                boyutta/şekilde ama yine de boşluksuz kenetlenecek şekilde
+                tasarlı. */}
             {rings.map((r, i) => {
-              const [r0, r1] = radii[i];
-              const shards = GLASS_SHARDS[i % GLASS_SHARDS.length];
-              const n = shards.length;
+              const shards = r.shards || GLASS_SHARDS[i % GLASS_SHARDS.length];
+              const totalLayers = rings.length;
+              const cells = buildRingCells(i, totalLayers);
               return (
-                <g key={i} style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
-                  {shards.map((c, k) => {
+                <g key={i}
+                  className={pulseRing === i ? "s1-ring-pulse" : undefined}
+                  style={{ transition: "transform 320ms ease" }} transform={`rotate(${rots[i]})`}>
+                  {cells.map((cell, k) => {
                     const hole = holeAt(i, k);
                     const placed = placedAt(i, k);
+                    const c = shards[k % shards.length];
+                    const strokeCol = hole ? "#242c23" : placed ? "#e8c95a" : "#100f0a";
+                    const strokeW = placed ? 2.4 : 1.8;
+                    const dash = hole ? "4 3" : "none";
+                    const pieceOpacity = hole ? 0.98 : done ? 0.96 : 0.88;
                     return (
-                      <path key={k}
-                        d={wedge(r1, r0, (k / n) * 360 + (k % 3) * 4, ((k + 1) / n) * 360 - (k % 2) * 5)}
-                        fill={hole ? "#040605" : c}
-                        opacity={hole ? 0.98 : done ? 0.8 : 0.44}
-                        stroke={hole ? "#242c23" : placed ? "#e8c95a" : "#131713"}
-                        strokeWidth={placed ? 2.5 : 1.8}
-                        strokeDasharray={hole ? "4 3" : "none"}
-                        style={{ transition: "fill 300ms, stroke 300ms, opacity 300ms" }}
-                      />
-                    );
-                  })}
-                  {/* Altın Mühür Parçası */}
-                  {FIGURE[i].map((d, k) => {
-                    if (figHidden(i, k)) return null;
-                    const isClosed = d.endsWith("Z") || d.endsWith("z");
-                    return (
-                      <path key={"f" + k}
-                        d={d}
-                        fill={isClosed ? "rgba(255,217,125,0.22)" : "none"}
-                        stroke={done ? "#e8c95a" : "#c8a94a"}
-                        strokeWidth={done ? 4.5 : 3.5}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{
-                          transition: "stroke 400ms, stroke-width 400ms",
-                          filter: done ? "drop-shadow(0 0 8px rgba(255,217,125,0.85))" : proximity > 0.75 ? "drop-shadow(0 0 4px rgba(255,217,125,0.45))" : "none",
-                        }}
-                        opacity={done ? 1 : 0.85 + proximity * 0.15}
-                      />
+                      <path key={k} d={organicCell(cell.rIn, cell.rOut, cell.a0, cell.a1, cell.seedA0, cell.seedA1)}
+                        fill={hole ? "#040605" : c} opacity={pieceOpacity}
+                        stroke={strokeCol} strokeWidth={strokeW} strokeDasharray={dash}
+                        style={{ transition: "fill 300ms, stroke 300ms, opacity 300ms" }} />
                     );
                   })}
                 </g>
               );
             })}
 
-            {/* Bölme/Kurşun Halka Sınırları */}
-            <circle r="38" fill="none" stroke="rgba(12,15,11,0.72)" strokeWidth="2" />
-            <circle r="68" fill="none" stroke="rgba(12,15,11,0.72)" strokeWidth="2" />
-            <circle r="96" fill="none" stroke="rgba(12,15,11,0.82)" strokeWidth="2.5" />
+            {/* SABİT ALTIN İŞARET — hiç dönmez, hep merkezde tam ve doğru
+                duruyor (video'daki gibi). SADECE ANA HAT (kurşun/lehim
+                çizgisi) — İÇİ DOLU DEĞİL, ki her yaprağın içi altında
+                dönen CAM MOZAİĞİYLE dolsun; gerçek vitraylarda kurşun
+                çizgiler camı gizlemez, sadece parçaların arasını çizer. */}
+            <g style={{ pointerEvents: "none" }}>
+              {rings.map((r, i) => FIGURE[i].map((d, k) => {
+                if (figHidden(i, k)) return null;
+                const glow = done ? 1 : proximity;
+                return (
+                  <path key={`f-${i}-${k}`}
+                    d={d}
+                    fill="none"
+                    stroke={done ? "#fff2c9" : `rgb(${Math.round(200 + glow * 55)},${Math.round(169 + glow * 48)},${Math.round(74 + glow * 105)})`}
+                    strokeWidth={2.2 + glow * 2.2 + (done ? 1 : 0)}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      transition: "stroke 250ms, stroke-width 250ms, filter 250ms",
+                      filter: `drop-shadow(0 0 ${(2 + glow * 10).toFixed(1)}px rgba(255,217,125,${(0.25 + glow * 0.65).toFixed(2)}))`,
+                    }}
+                    opacity={done ? 1 : 0.75 + glow * 0.25}
+                  />
+                );
+              }))}
+            </g>
+
+            {/* Dış kurşun çerçeve sınırı */}
+            <circle r="98" fill="none" stroke="rgba(12,15,11,0.82)" strokeWidth="2.5" />
 
             {/* Havada süzülen toz zerreleri */}
             {!done && DUST_PARTICLES.map((p, idx) => (
@@ -1096,8 +1277,16 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
             {/* Çözüm Altın Flaş Overlay */}
             {done && <circle r="100" fill="#ffd97d" style={{ animation: "success-flash 2.2s ease-out forwards" }} />}
           </svg>
+          {/* Kutsal ışık patlaması — çözülünce GSAP ile opacity 0→1 */}
+          <div ref={bloomRef} style={{
+            position: "absolute", inset: 0, borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(255,250,235,1) 0%, rgba(255,230,160,0.88) 38%, rgba(255,217,125,0) 74%)",
+            opacity: 0, pointerEvents: "none", mixBlendMode: "screen",
+          }} />
+          </div>
+          </div>
 
-          {/* === ROZET BUTONLAR (Çiçek SVG desenli) === */}
+          {/* === ROZET BUTONLAR — renk seç (Çiçek SVG desenli) === */}
           <div style={{
             display: "flex",
             gap: 16,
@@ -1106,20 +1295,16 @@ export function RingsOverlay({ config, flags = {}, onSuccess, onFail, onCancel }
             marginBottom: 6
           }}>
             {rings.map((r, i) => {
-              const styles = [
-                { border: "#5e9470", bg: "#8ec5a0", glow: "rgba(142,197,160,0.6)" }, // Yeşil (İÇ)
-                { border: "#a8727a", bg: "#d4a0a8", glow: "rgba(212,160,168,0.6)" }, // Pembe (ORTA)
-                { border: "#98749a", bg: "#c4a4c8", glow: "rgba(196,164,200,0.6)" }, // Mor (DIŞ)
-              ][i];
+              const color = r.color || ["#8ec5a0", "#d4a0a8", "#c4a4c8"][i % 3];
 
               return (
                 <button
                   key={i}
                   className="rosette-btn"
                   style={{
-                    "--border-color": styles.border,
-                    "--bg-color": styles.bg,
-                    "--glow-color": styles.glow,
+                    "--border-color": darken(color, 0.6),
+                    "--bg-color": color,
+                    "--glow-color": hexToRgba(color, 0.65),
                   }}
                   onClick={() => rotate(i)}
                   disabled={done}

@@ -296,7 +296,6 @@ export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontFamily: mono, fontSize: 8, color: "#475963", marginTop: 2 }}>
                   <span>pH 3.0</span>
-                  <span>{t("puzzle.mixTarget") || "Hedef"}: {targetPH.toFixed(2)}</span>
                   <span>pH 11.0</span>
                 </div>
               </div>
@@ -321,7 +320,6 @@ export function MixOverlay({ config, onSuccess, onFail, onCancel }) {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontFamily: mono, fontSize: 8, color: "#475963", marginTop: 2 }}>
                   <span>15.0 °C</span>
-                  <span>{t("puzzle.mixTarget") || "Hedef"}: {targetTemp.toFixed(1)}°C</span>
                   <span>65.0 °C</span>
                 </div>
               </div>

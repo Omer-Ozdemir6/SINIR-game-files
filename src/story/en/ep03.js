@@ -194,12 +194,11 @@ export const EP03 = {
       interaction: {
         kind: "rings",
         variant: "vitray",
-        clockwiseOnly: true,
         title: "FAMILY STAINED GLASS — ALIGN THE GLASS",
         rings: [
-          { label: "INNER", color: "#6aaa7a", step: 30, offset: 210, shards: ["#8ec5a0", "#e8e4d4", "#c4a4c8", "#d4a0a8", "#a8d4b8", "#c8b8d8", "#d8c8b4", "#b4d8c4"] },
-          { label: "MID", color: "#c88a9a", step: 24, offset: 168, shards: ["#d4a0a8", "#a8d4b8", "#c4a4c8", "#e8e4d4", "#8ec5a0", "#d8b8c4", "#b4c8d8", "#c8d4a8", "#d4b4c8"] },
-          { label: "OUTER", color: "#aa8ab8", step: 40, offset: 280, shards: ["#c4a4c8", "#8ec5a0", "#e8e4d4", "#d4a0a8", "#b4d8c4", "#d8c8b4", "#a8b8d4", "#c8a8b4", "#8ec5a0", "#d4b8d4"] },
+          { label: "INNER", color: "#6aaa7a", step: 30, offset: 210, shards: ["#8ec5a0", "#5a9a6a", "#a8d4b8", "#8ec5a0", "#5a9a6a", "#8ec5a0", "#a8d4b8", "#5a9a6a"] },
+          { label: "MID", color: "#c88a9a", step: 24, offset: 168, shards: ["#d4a0a8", "#a8626e", "#e4c0c6", "#d4a0a8", "#a8626e", "#d4a0a8", "#e4c0c6", "#a8626e"] },
+          { label: "OUTER", color: "#aa8ab8", step: 40, offset: 280, shards: ["#c4a4c8", "#8e5f96", "#dcc4e0", "#c4a4c8", "#8e5f96", "#c4a4c8", "#dcc4e0", "#8e5f96"] },
         ],
         success: "n_vitray_cozuldu",
         cancel: "n_hol",
@@ -510,8 +509,8 @@ export const EP03 = {
     n_fanus_kurtul: {
       cost: 1,
       events: [
-        { type: "narrate", text: "The boots halt, snarling as they bolt out of the room into the corridor[cite: 7]. He thinks you fled[cite: 7]! You crawl out from beneath the bed, your clothes caked in the blood of previous victims[cite: 7]. Gripping your tablet, you quietly slide down to the hallway[cite: 7]. The tooth is in your pocket, all three heirlooms are ready[cite: 7]." },
-        { type: "flag", set: { sefNerede: "" } },
+        { type: "narrate", text: "The boots halt, snarling as they bolt out of the room into the corridor. He thinks you fled! As you scramble out from beneath the bed, the tablet slips from your grip and cracks against the bed's iron frame — a jagged fracture spreads across the corner of the screen. Your clothes caked in the blood of previous victims, you grip the tablet and quietly slide down to the hallway. The tooth is in your pocket, all three heirlooms are ready." },
+        { type: "flag", set: { sefNerede: "", tabletKirik: true } },
         { type: "stat", stat: "akil", delta: -8 },
       ],
       choices: [

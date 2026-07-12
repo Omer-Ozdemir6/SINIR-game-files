@@ -109,8 +109,8 @@ export const EP01 = {
         { type: "narrate", text: "Revir odasındasın. Keskin antiseptik kokusu genzini yakıyor. İlaç dolabı vahşice yağmalanmış, camları yerde tuzla buz olmuş. Adımını atarken tabletinin ışığını muayene masasına doğru çeviriyorsun. Kusmamak için ağzını kapatıyorsun: orada bir ceset var. Göğsündeki kanlı isimlik zorlukla okunuyor: 'B. SOYLU'. Elindeki tabletin sahibi. Yerini almak için can attığın o adam. Gözleri sonuna kadar açılmış, donukça tavana bakıyor, ağzı açık kalmış. Yüzündeki o dehşet dolu sakinlik ruhunu kemiriyor. 'Görevi bıraktı' demişlerdi... Hayır, onu burada ölüme terk etmişler." },
         { type: "narrate", text: "Masasının yanında hâlâ açık duran medikal terminalde tek satırlık bir kayıt donup kalmış: 'Vardiya sürekliliği sağlandı.' Ölüm raporu değil. Acil tahliye değil. İnsan bedeni soğumadan önce sistemin ilk yaptığı şey, boşalan pozisyona yeni bir isim yazmak olmuş. Senin adın." },
         { type: "stat", stat: "akil", delta: -5 },
-        { type: "narrate", text: "Cesedin sağ eli sıkıca kapatılmış, kaskatı kesilmiş. Kusma dürtünü bastırarak, adamın soğuk, morarmış parmaklarını tek tek, zorlayarak açıyorsun. Derisi çıtırdıyor. Avucunun içinden kan lekeli, buruşmuş bir kağıt parçası çıkıyor. Aceleyle yazılmış iki rakam: \"21\". Devamı yırtılıp gitmiş." },
-        { type: "note", id: "not_kod21", title: "Kod parçası: 21··", text: "Baturay ölürken bile bir şeyi saklamış. Avucunda iki rakam: 21. Bir insanın son refleksi dua etmek, annesini sayıklamak ya da yardım istemek olur sanırdım. Baturay şifre sakladı. Demek ki burada yardım çağırmak bile ancak ölü bir adamın parmaklarını kırarak mümkün." },
+        { type: "narrate", text: "Cesedin sağ eli sıkıca kapatılmış, kaskatı kesilmiş. Kusma dürtünü bastırarak, adamın soğuk, morarmış parmaklarını tek tek, zorlayarak açıyorsun. Derisi çıtırdıyor. Avucunun içinden kan lekeli, buruşmuş bir kağıt parçası çıkıyor. Aceleyle yazılmış iki rakam: \"58\". Devamı yırtılıp gitmiş." },
+        { type: "note", id: "not_kod21", title: "Kod parçası: 58··", text: "Baturay ölürken bile bir şeyi saklamış. Avucunda iki rakam: 58. Bir insanın son refleksi dua etmek, annesini sayıklamak ya da yardım istemek olur sanırdım. Baturay şifre sakladı. Demek ki burada yardım çağırmak bile ancak ölü bir adamın parmaklarını kırarak mümkün." },
         { type: "flag", set: { kod21: true } },
         { type: "waitTap" },
         { type: "document", open: true, doc: {
@@ -416,8 +416,8 @@ export const EP01 = {
     n_pompaC: {
       cost: 1,
       events: [
-        { type: "narrate", text: "Pompa C panosunun önüne ulaşıyorsun. Yuvası BOMBOŞ. Sigorta yerinde değil, o boş delik yanık izleriyle çevrelenmiş simsiyah bir göz çukuru gibi sana bakıyor. Panonun hemen yanındaki çelik sacın üzerine keskin bir cisimle vahşice kazınmış iki rakam var: \"47\". Altında ise titrek bir el yazısıyla: \"öbürü bende\" yazıyor.", if: { flag: "kod47", equals: false } },
-        { type: "note", id: "not_kod47", title: "Kod parçası: ··47", text: "C panosunun duvarına kazınmış: 47. 'Öbürü bende' diyor — Baturay'ın el yazısı bu. Demek kod: [ilk yarı][47]. İki parçayı birleştirmem gerek.", if: { flag: "kod47", equals: false } },
+        { type: "narrate", text: "Pompa C panosunun önüne ulaşıyorsun. Yuvası BOMBOŞ. Sigorta yerinde değil, o boş delik yanık izleriyle çevrelenmiş simsiyah bir göz çukuru gibi sana bakıyor. Panonun hemen yanındaki çelik sacın üzerine keskin bir cisimle vahşice kazınmış iki rakam var: \"36\". Altında ise titrek bir el yazısıyla: \"öbürü bende\" yazıyor.", if: { flag: "kod47", equals: false } },
+        { type: "note", id: "not_kod47", title: "Kod parçası: ··36", text: "C panosunun duvarına kazınmış: 36. 'Öbürü bende' diyor — Baturay'ın el yazısı bu. Demek kod: [ilk yarı][36]. İki parçayı birleştirmem gerek.", if: { flag: "kod47", equals: false } },
         { type: "flag", set: { kod47: true } },
         { type: "narrate", text: "Pompa C hattı artık çalışıyor. Pano hâlâ ıslak ve tehlikeli ama sigorta yuvaya kilitlenmiş; buraya tekrar dokunmanın sana kazandıracağı hiçbir şey yok.", if: { flag: "pompaC", equals: true } },
         { type: "narrate", text: "Bu aç göz çukuru bir yedek sigorta istiyor ama senin elinde hiçbir şey yok. Devir raporundaki notu hatırlamaya çalışıyorsun... Yedekler neredeydi?", if: { all: [{ flag: "sigortaAlindi", equals: false }, { flag: "pompaC", equals: false }] } },
@@ -596,7 +596,7 @@ export const EP01 = {
         { type: "system", text: "İPUCU: Kod iki parçaya bölünmüş durumda. Arşivindeki notları birleştir.", if: { flag: "kod21", equals: true } },
         { type: "alert", text: "Kodun ilk yarısı sende YOK. Baturay 'yarısı hep yanımda' yazmıştı... O şimdi nerede?", if: { flag: "kod21", equals: false } },
       ],
-      interaction: { kind: "keypad", code: "2147", success: "n_radyo", cancel: "n_koridor2" },
+      interaction: { kind: "keypad", code: "5836", success: "n_radyo", cancel: "n_koridor2" },
     },
 
     n_radyo: {
