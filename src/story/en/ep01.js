@@ -839,7 +839,7 @@ export const EP01 = {
         
       ],
       choices: [
-        { id: "k5", text: "Climb the stairs — K-5: Life Support", next: "n_k5_giris" },
+        { id: "k5", text: "Climb the stairs — K-5: Life Support", next: "n_k5_giris", paywall: true },
       ],
     },
   },

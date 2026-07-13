@@ -37,6 +37,8 @@ import ChaseOverlay from "./components/interactions/ChaseOverlay";
 import { ShadowOverlay, WiresOverlay, MixOverlay, SymbolsOverlay, RingsOverlay, TilesOverlay, ColorGridOverlay } from "./components/interactions/PuzzleOverlays";
 import DarknessOverlay from "./components/DarknessOverlay";
 import EndingCards from "./components/EndingCards";
+import PaywallScreen from "./components/PaywallScreen";
+import { isUnlockedLocal, restorePurchases } from "./purchases/purchases";
 
 const MENU_AFTER_END_KEY = "sinir1_menu_after_ending";
 const PuzzleTest = lazy(() => import("./components/PuzzleTest"));
@@ -119,6 +121,9 @@ export default function App() {
       if (h !== null) { const on = h === "1"; setHapticsOn(on); Haptics.setEnabled(on); }
     } catch (e) {}
   }, []);
+  // Bölüm 2 kilidi daha önce satın alındıysa (Play'in satın alma
+  // geçmişinden) yerel bayrağı senkronla — kullanıcı tekrar ödeme görmesin.
+  useEffect(() => { restorePurchases(); }, []);
   // keypad
   const [kpEntry, setKpEntry] = useState("");
   const [kpMsg, setKpMsg] = useState(null);
@@ -670,12 +675,31 @@ export default function App() {
     setChoicesVisible(false);
     clockRef.current += 1 + Math.floor(Math.random() * 3);
     setLines((ls) => [...ls, { kind: "choice", text: (auto ? "· · · " : "» ") + choice.text }]);
+    if (choice.paywall && !isUnlockedLocal()) {
+      pendingLoadRef.current = choice.next;
+      setScreen("paywall");
+      return;
+    }
     if (choice.loading) {
       pendingLoadRef.current = choice.next;
       setChapterLoading(true);
       return;
     }
     playNode(choice.next);
+  };
+
+  // Ödeme duvarı (paywall) başarıyla geçildiğinde bekleyen düğüme devam
+  // eder; "Ana Menüye Dön" seçilirse bekleyen düğüm iptal edilir.
+  const finishPaywall = () => {
+    setScreen(null);
+    const target = pendingLoadRef.current;
+    pendingLoadRef.current = null;
+    if (target) playNode(target);
+  };
+  const paywallMainMenu = () => {
+    pendingLoadRef.current = null;
+    setScreen(null);
+    setMode("menu");
   };
 
   // Bölüm geçişi / ölümden devam arasına giren yükleme ekranı bitince
@@ -1289,8 +1313,9 @@ export default function App() {
       AudioSys.music(null);
       return;
     }
-    // arşiv (menu, notes, docs) veya ayarlar (pause, settings) açıkken sakin ambiyans müziği
-    if (mode === "game" && (screen === "pause" || screen === "settings" || screen === "menu" || screen === "notes" || screen === "docs")) {
+    // arşiv (menu, notes, docs), ayarlar (pause, settings) ya da ödeme
+    // duvarı açıkken sakin ambiyans müziği
+    if (mode === "game" && (screen === "pause" || screen === "settings" || screen === "menu" || screen === "notes" || screen === "docs" || screen === "paywall")) {
       AudioSys.pauseGameMusic();
       AudioSys.music("archive"); // Sakin arşiv/ayarlar müziği
       return;
@@ -1662,6 +1687,9 @@ export default function App() {
           onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
             hapticsOn={hapticsOn} onHaptics={applyHaptics}
           onBack={() => setScreen(settingsFrom === "pause" ? "pause" : null)} />
+      )}
+      {screen === "paywall" && (
+        <PaywallScreen onUnlocked={finishPaywall} onMainMenu={paywallMainMenu} />
       )}
 
       {/* Karanlık modu — pil %0 */}

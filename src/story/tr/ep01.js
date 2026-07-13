@@ -838,7 +838,7 @@ export const EP01 = {
         
       ],
       choices: [
-        { id: "k5", text: "Merdiveni tırman — K-5: Yaşam Destek", next: "n_k5_giris" },
+        { id: "k5", text: "Merdiveni tırman — K-5: Yaşam Destek", next: "n_k5_giris", paywall: true },
       ],
     },
   },

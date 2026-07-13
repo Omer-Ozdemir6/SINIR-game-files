@@ -1,4 +1,4 @@
-package com.sahip.sinir1;
+package com.reddoors.perished;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

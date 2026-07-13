@@ -1,3 +1,9 @@
 node_modules
 dist
 .DS_Store
+
+# İmzalama anahtarı — SAKIN commit'leme, ayrıca güvenli bir yerde
+# yedekle (kaybedilirse geri alınamaz).
+*.keystore
+*.jks
+android/keystore.properties

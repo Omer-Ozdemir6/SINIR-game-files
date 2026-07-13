@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PERISHED — Acoustic Terminal Terminal Prototype</title>
+  <style>
+    /* ---- Core Design & Tokens ---- */
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+    :root {
+      --bg-color: #020708;
+      --terminal-green: #00ff66;
+      --terminal-dim: #005a24;
+      --warning-amber: #ffaa00;
+      --threat-red: #ff3333;
+      --text-gray: #7a8f8d;
+      --crt-glow: rgba(0, 255, 102, 0.08);
+      --font-mono: 'Courier Prime', monospace;
+      --font-serif: 'Playfair Display', Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--terminal-green);
+      font-family: var(--font-mono);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      perspective: 1000px;
+    }
+
+    /* ---- CRT Screen FX & Framing ---- */
+    .crt-monitor {
+      width: 1000px;
+      height: 680px;
+      background-color: #030a0b;
+      border: 18px solid #0f1618;
+      border-radius: 24px;
+      position: relative;
+      box-shadow: 
+        0 0 0 4px #080c0d,
+        0 25px 50px -12px rgba(0,0,0,0.9),
+        inset 0 0 40px rgba(0,0,0,1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: rotateX(2deg);
+      transition: transform 0.4s ease;
+    }
+
+    .crt-monitor::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 4px, 6px 100%;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .crt-vignette {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.85);
+      z-index: 8;
+      pointer-events: none;
+    }
+
+    .crt-flicker {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 255, 102, 0.005);
+      z-index: 9;
+      pointer-events: none;
+      animation: crtFlicker 0.15s infinite;
+    }
+
+    @keyframes crtFlicker {
+      0% { opacity: 0.95; }
+      50% { opacity: 1.0; }
+      100% { opacity: 0.93; }
+    }
+
+    /* ---- Screen Collapse (Shut off) ---- */
+    .crt-monitor.collapsed {
+      animation: crtCollapse 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    @keyframes crtCollapse {
+      0% {
+        transform: scale(1, 1);
+        filter: brightness(1);
+      }
+      30% {
+        transform: scale(1, 0.008);
+        filter: brightness(5);
+      }
+      100% {
+        transform: scale(0, 0.008);
+        filter: brightness(10);
+        opacity: 0;
+      }
+    }
+
+    /* ---- Interface Layout ---- */
+    .terminal-header {
+      padding: 16px 24px;
+      border-bottom: 2px solid var(--terminal-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      letter-spacing: 2px;
+      background: rgba(0, 25, 10, 0.15);
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--terminal-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--terminal-green);
+      animation: blink 1s infinite steps(2);
+    }
+
+    @keyframes blink {
+      0% { opacity: 0; }
+    }
+
+    .status-dot.warning {
+      background-color: var(--warning-amber);
+      box-shadow: 0 0 8px var(--warning-amber);
+    }
+
+    .status-dot.critical {
+      background-color: var(--threat-red);
+      box-shadow: 0 0 8px var(--threat-red);
+      animation: blink 0.3s infinite steps(2);
+    }
+
+    .main-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px dashed var(--terminal-dim);
+      padding-left: 20px;
+    }
+
+    /* ---- Radar View ---- */
+    .radar-container {
+      flex: 1;
+      border: 1px solid var(--terminal-dim);
+      background: rgba(0, 10, 5, 0.2);
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #radarCanvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .radar-alert-msg {
+      position: absolute;
+      bottom: 12px;
+      font-size: 11px;
+      color: var(--warning-amber);
+      letter-spacing: 1px;
+      display: none;
+      animation: warningPulse 1s infinite alternate;
+    }
+
+    @keyframes warningPulse {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* ---- Oscilloscope (Heart Rate) ---- */
+    .oscilloscope-container {
+      height: 150px;
+      border: 1px solid var(--terminal-dim);
+      background: rgba(0, 10, 5, 0.25);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #oscilloscopeCanvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hr-readout {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 12px;
+      color: var(--terminal-green);
+      font-weight: bold;
+    }
+
+    /* ---- Diagnostics Panel ---- */
+    .diagnostics-panel {
+      flex: 1;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--text-gray);
+      margin-bottom: 20px;
+    }
+
+    .diagnostics-log {
+      max-height: 240px;
+      overflow-y: hidden;
+      margin-top: 10px;
+    }
+
+    .log-entry {
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .log-green { color: var(--terminal-green); }
+    .log-amber { color: var(--warning-amber); }
+    .log-red { color: var(--threat-red); }
+
+    /* ---- Breath Hold Interaction ---- */
+    .interaction-panel {
+      text-align: center;
+      padding: 15px;
+      border: 1px solid var(--terminal-dim);
+      border-radius: 8px;
+      background: rgba(0, 20, 10, 0.1);
+      position: relative;
+    }
+
+    .breath-circle-container {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      position: relative;
+    }
+
+    .breath-svg {
+      width: 100px;
+      height: 100px;
+      transform: rotate(-90deg);
+    }
+
+    .breath-track {
+      fill: none;
+      stroke: var(--terminal-dim);
+      stroke-width: 4px;
+    }
+
+    .breath-fill {
+      fill: none;
+      stroke: var(--warning-amber);
+      stroke-width: 6px;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.1s linear;
+      filter: drop-shadow(0 0 3px var(--warning-amber));
+    }
+
+    .breath-pct {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--warning-amber);
+    }
+
+    .hold-btn {
+      width: 100%;
+      background: transparent;
+      border: 2px solid var(--warning-amber);
+      color: var(--warning-amber);
+      padding: 14px 0;
+      font-family: var(--font-mono);
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 2px;
+      border-radius: 4px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(255, 170, 0, 0.1);
+    }
+
+    .hold-btn:hover {
+      background: rgba(255, 170, 0, 0.1);
+      box-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
+    }
+
+    .hold-btn:active, .hold-btn.pressed {
+      background: var(--warning-amber);
+      color: var(--bg-color);
+      box-shadow: 0 0 25px var(--warning-amber);
+      transform: scale(0.98);
+    }
+
+    /* ---- Subtitle / Caption Overlay ---- */
+    .caption-overlay {
+      position: absolute;
+      bottom: 12%;
+      left: 5%;
+      right: 5%;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 24px;
+      color: #e0ecea;
+      text-shadow: 0 2px 8px rgba(0,0,0,1);
+      pointer-events: none;
+      z-index: 12;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ---- Final Game Over / Logo Glitch Reveal ---- */
+    .glitch-screen {
+      position: absolute;
+      inset: 0;
+      background-color: #020506;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.1s ease;
+    }
+
+    .glitch-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .logo-container {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .logo-title {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 72px;
+      letter-spacing: 12px;
+      color: #e8ecea;
+      position: relative;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Chromatic aberration splits */
+    .logo-title::before, .logo-title::after {
+      content: "PERISHED";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: transparent;
+    }
+
+    .logo-title::before {
+      color: var(--threat-red);
+      left: 3px;
+      text-shadow: -2px 0 var(--threat-red);
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+
+    .logo-title::after {
+      color: cyan;
+      left: -3px;
+      text-shadow: -2px 0 cyan;
+      clip: rect(85px, 450px, 140px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(31px, 9999px, 94px, 0); }
+      10% { clip: rect(112px, 9999px, 76px, 0); }
+      20% { clip: rect(85px, 9999px, 5px, 0); }
+      30% { clip: rect(27px, 9999px, 115px, 0); }
+      40% { clip: rect(73px, 9999px, 29px, 0); }
+      50% { clip: rect(118px, 9999px, 140px, 0); }
+      60% { clip: rect(9px, 9999px, 54px, 0); }
+      70% { clip: rect(62px, 9999px, 102px, 0); }
+      80% { clip: rect(135px, 9999px, 41px, 0); }
+      90% { clip: rect(18px, 9999px, 88px, 0); }
+      100% { clip: rect(94px, 9999px, 122px, 0); }
+    }
+
+    @keyframes glitch-anim2 {
+      0% { clip: rect(76px, 9999px, 116px, 0); }
+      11% { clip: rect(9px, 9999px, 45px, 0); }
+      22% { clip: rect(125px, 9999px, 13px, 0); }
+      33% { clip: rect(41px, 9999px, 83px, 0); }
+      44% { clip: rect(102px, 9999px, 64px, 0); }
+      55% { clip: rect(19px, 9999px, 132px, 0); }
+      66% { clip: rect(89px, 9999px, 25px, 0); }
+      77% { clip: rect(120px, 9999px, 108px, 0); }
+      88% { clip: rect(3px, 9999px, 73px, 0); }
+      100% { clip: rect(68px, 9999px, 99px, 0); }
+    }
+
+    .logo-tagline {
+      font-size: 18px;
+      color: var(--text-gray);
+      letter-spacing: 4px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .logo-tagline.visible {
+      opacity: 0.85;
+      transform: translateY(0);
+    }
+
+    .restart-hint {
+      margin-top: 40px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--terminal-dim);
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .restart-hint.visible {
+      opacity: 1;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ---- Intro / Overlay Play Screen ---- */
+    .intro-screen {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-color);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      border: 18px solid #0f1618;
+      border-radius: 24px;
+      width: 1000px;
+      height: 680px;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+    }
+
+    .intro-title {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      letter-spacing: 8px;
+      color: var(--terminal-green);
+      text-shadow: 0 0 10px var(--terminal-green);
+    }
+
+    .intro-desc {
+      font-size: 12px;
+      color: var(--text-gray);
+      max-width: 500px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .start-btn {
+      background: transparent;
+      border: 1px solid var(--terminal-green);
+      color: var(--terminal-green);
+      padding: 12px 30px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .start-btn:hover {
+      background: var(--terminal-green);
+      color: var(--bg-color);
+      box-shadow: 0 0 20px var(--terminal-green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ---- INTRO / AUDIO ENABLER SCREEN ---- -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-title">PERISHED MONITORING TERM</div>
+    <div class="intro-desc">
+      Karadeniz'in 214 metre altında, derin hidrofondan akustik sinyaller alınmaktadır. Bu interaktif deneyim ses sentezleyicileri (Web Audio API) kullanır. Lütfen hoparlörünüzü açın.
+    </div>
+    <button class="start-btn" onclick="startTerminal()">TERMİNALİ BAŞLAT</button>
+  </div>
+
+  <!-- ---- CRT MAIN MONITOR ---- -->
+  <div class="crt-monitor" id="crtMonitor" style="display: none;">
+    <div class="crt-flicker"></div>
+    <div class="crt-vignette"></div>
+
+    <!-- Header UI -->
+    <div class="terminal-header">
+      <div>LOG SYSTEM: HYDROPHONE_HD-4</div>
+      <div id="depthCounter">DERİNLİK: 0 M</div>
+      <div class="header-status">
+        <span id="statusLabel">DURUM: IZLEME UYGUN</span>
+        <div class="status-dot" id="statusDot"></div>
+      </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="main-grid">
+      <!-- Left Screen Section (Radar + Oscilloscope) -->
+      <div class="left-column">
+        <!-- Radar Grid -->
+        <div class="radar-container">
+          <canvas id="radarCanvas"></canvas>
+          <div class="radar-alert-msg" id="radarAlert">⚠️ BİLİNMEYEN AKUSTİK FREKANS ALGILANDI</div>
+        </div>
+
+        <!-- Oscilloscope -->
+        <div class="oscilloscope-container">
+          <canvas id="oscilloscopeCanvas"></canvas>
+          <span class="hr-readout" id="hrReadout">HR: 60 BPM</span>
+        </div>
+      </div>
+
+      <!-- Right Panel Section (Logs + Interaction) -->
+      <div class="right-column">
+        <!-- Logs -->
+        <div class="diagnostics-panel">
+          <div>DIAGNOSTICS & SYSTEM CONSOLE:</div>
+          <div class="diagnostics-log" id="diagnosticsLog">
+            <div class="log-entry log-green">> SYSTEM BOOTING... DONE</div>
+            <div class="log-entry log-green">> DEPTH CONTROLLER INITIATED</div>
+            <div class="log-entry log-green">> HYDROPHONE SENSORS: ONLINE</div>
+          </div>
+        </div>
+
+        <!-- Hold Breath Box -->
+        <div class="interaction-panel">
+          <div class="breath-circle-container">
+            <svg class="breath-svg">
+              <circle class="breath-track" cx="50" cy="50" r="45"></circle>
+              <circle class="breath-fill" id="breathFill" cx="50" cy="50" r="45"></circle>
+            </svg>
+            <div class="breath-pct" id="breathPct">100%</div>
+          </div>
+          <button class="hold-btn" id="holdBtn">NEFESİNİ TUT</button>
+          <div style="font-size: 9px; color: var(--text-gray); margin-top: 10px; letter-spacing: 1px;">
+            [ SPACEBAR veya CLICK ile basılı tut ]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Subtitles -->
+    <div class="caption-overlay" id="captionText"></div>
+  </div>
+
+  <!-- ---- FINAL LOGO GLITCH REVEAL ---- -->
+  <div class="glitch-screen" id="glitchScreen">
+    <div class="logo-container">
+      <div class="logo-title" id="typewriterLogo"></div>
+    </div>
+    <div class="logo-tagline" id="logoTagline">“Ölümün çalışmadığı yerde.”</div>
+    <div class="restart-hint" id="restartHint">YENİDEN BAŞLATMAK İÇİN CLICK YAPIN</div>
+  </div>
+
+  <script>
+    // ---- Global State Variables ----
+    let isTermActive = false;
+    let timeElapsed = 0;
+    let depth = 0;
+    let heartRate = 60;
+    let glitchIntensity = 0;
+    let breathLevel = 100;
+    let isHoldingBreath = false;
+    let phase = 1; // 1: Safe, 2: Anomaly, 3: Hold Breath Warn, 4: Sinyal Loss, 5: Dead Screen
+    let lastTime = 0;
+    let animationId = null;
+    let logsIndex = 0;
+
+    // Canvas Contexts
+    let radarCanvas, radarCtx;
+    let oscCanvas, oscCtx;
+    let sweepAngle = 0;
+
+    // Web Audio API Synth Engine
+    let audioCtx = null;
+    let heartOsc = null;
+    let heartGain = null;
+    let sonarOsc = null;
+    let sonarGain = null;
+
+    // Diagnostic Logs Database
+    const logData = [
+      { time: 1, text: "SYS CHECK: HYDROPHONE-4 STABLE", level: "green" },
+      { time: 3, text: "DEPTH DETECTED: 214 METERS", level: "green" },
+      { time: 5, text: "UYARI: K-6 SİNTİNE GİRİŞİNDE ANOMALİ", level: "amber" },
+      { time: 7.5, text: "SİNYAL BOZULMASI: TELSİZ FREKANSI", level: "amber" },
+      { time: 10, text: "ŞİDDET: MUHALEFET UYUMSUZ", level: "amber" },
+      { time: 12.5, text: "AKUSTİK PUSU: O, SUYU DUYAR!", level: "red" },
+      { time: 14, text: "KULLANICI SEVİYESİ: NEFES TUTMA DEVREDE", level: "amber" },
+      { time: 17, text: "NABIZ ARTIŞI ALGILANDI", level: "red" },
+      { time: 20, text: "HİDROFON BAĞLANTISI ZAYIFLIYOR", level: "red" },
+      { time: 21.4, text: "SYS ERROR: HYDROPHONE FAILURE", level: "red" }
+    ];
+
+    // Story Subtitles Timetable
+    const captions = [
+      { start: 5, end: 11, text: "“Sintinede ses yapma. O, suyu duyar.”" },
+      { start: 12.5, end: 17.5, text: "“İşe alım formunda tek satırlık bir kutucuk vardı: Kapalı alan toleransı...”" },
+      { start: 18, end: 22.5, text: "“O kutucuğu işaretlediğin an bu yer seni yasal olarak yutmuş.”" }
+    ];
+
+    // ---- Start Terminal & Audio Context ----
+    function startTerminal() {
+      document.getElementById("introScreen").style.display = "none";
+      document.getElementById("crtMonitor").style.display = "flex";
+      
+      isTermActive = true;
+      lastTime = performance.now();
+
+      // Initialize Canvas elements
+      radarCanvas = document.getElementById("radarCanvas");
+      radarCtx = radarCanvas.getContext("2d");
+      resizeRadar();
+
+      oscCanvas = document.getElementById("oscilloscopeCanvas");
+      oscCtx = oscCanvas.getContext("2d");
+      resizeOsc();
+
+      // Sound Engine Init
+      initAudio();
+
+      // Input Event Listeners
+      const holdBtn = document.getElementById("holdBtn");
+      
+      // Mouse/Touch controls
+      holdBtn.addEventListener("mousedown", startHolding);
+      holdBtn.addEventListener("mouseup", stopHolding);
+      holdBtn.addEventListener("mouseleave", stopHolding);
+      holdBtn.addEventListener("touchstart", (e) => { e.preventDefault(); startHolding(); });
+      holdBtn.addEventListener("touchend", stopHolding);
+
+      // Keyboard controls
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+          e.preventDefault();
+          startHolding();
+        }
+      });
+      window.addEventListener("keyup", (e) => {
+        if (e.code === "Space") {
+          stopHolding();
+        }
+      });
+
+      // Start core animation loop
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    // ---- Web Audio API Audio Synthesizer ----
+    function initAudio() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+
+        // Create deep background hum node
+        const humOsc = audioCtx.createOscillator();
+        const humGain = audioCtx.createGain();
+        humOsc.type = "sine";
+        humOsc.frequency.value = 47.3; // Low deep sub rumble
+        humGain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+        humOsc.connect(humGain);
+        humGain.connect(audioCtx.destination);
+        humOsc.start();
+
+        // Start scheduling Sonar sweep pings
+        scheduleSonarPing();
+
+        // Start scheduling Heartbeat drum hits
+        scheduleHeartbeat();
+      } catch (e) {
+        console.warn("Audio initialization failed. Check browser policies.");
+      }
+    }
+
+    // Procedural Sonar Sound (High chime with delay feedback feel)
+    function scheduleSonarPing() {
+      if (!isTermActive || phase >= 4) return;
+
+      const pingInterval = phase === 1 ? 3000 : 1800; // speeds up on danger
+      
+      if (audioCtx && audioCtx.state === "running") {
+        const time = audioCtx.currentTime;
+        
+        // Sonar Ping Chime
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(980, time); // High clean ping
+        osc.frequency.exponentialRampToValueAtTime(320, time + 0.9); // sweep downward
+        
+        gain.gain.setValueAtTime(0.08, time);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.8); // long delay decay
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(time);
+        osc.stop(time + 2.0);
+      }
+
+      setTimeout(scheduleSonarPing, pingInterval);
+    }
+
+    // Procedural Heartbeat Synth (Sub bass thump envelope)
+    function scheduleHeartbeat() {
+      if (!isTermActive || phase >= 4) return;
+
+      // Heartbeat pulse frequency based on current Heart Rate
+      const bpm = heartRate;
+      const beatInterval = (60 / bpm) * 1000;
+
+      if (audioCtx && audioCtx.state === "running") {
+        const time = audioCtx.currentTime;
+        
+        // Double drum thud envelope: thump 1
+        playSingleThump(time, 58, 0.08);
+        // thump 2 (systole-diastole rhythm delay)
+        playSingleThump(time + 0.16, 52, 0.06);
+      }
+
+      setTimeout(scheduleHeartbeat, beatInterval);
+    }
+
+    function playSingleThump(startTime, startFreq, volume) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(startFreq, startTime);
+      osc.frequency.exponentialRampToValueAtTime(25, startTime + 0.12); // Deep drop
+
+      gain.gain.setValueAtTime(volume, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.2);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.22);
+    }
+
+    // Play Glitch Burst Static Sound
+    function playGlitchBurst(duration) {
+      if (!audioCtx) return;
+      const bufferSize = audioCtx.sampleRate * duration;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Generate raw white noise
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+
+      const noiseNode = audioCtx.createBufferSource();
+      noiseNode.buffer = buffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(450, audioCtx.currentTime); // distorted radio filter
+      filter.Q.setValueAtTime(1.0, audioCtx.currentTime);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+      noiseNode.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      noiseNode.start();
+    }
+
+    // Play CRT shutdown hum drop
+    function playCRTShutdown() {
+      if (!audioCtx) return;
+      const time = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(220, time);
+      osc.frequency.linearRampToValueAtTime(10, time + 0.35); // frequency dive
+
+      gain.gain.setValueAtTime(0.25, time);
+      gain.gain.linearRampToValueAtTime(0.0001, time + 0.38);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(time);
+      osc.stop(time + 0.4);
+    }
+
+    // ---- Canvas Resizing ----
+    function resizeRadar() {
+      radarCanvas.width = radarCanvas.parentElement.clientWidth;
+      radarCanvas.height = radarCanvas.parentElement.clientHeight;
+    }
+
+    // ---- Custom Oscilloscope Resizing ----
+    function resizeOsc() {
+      oscCanvas.width = oscCanvas.parentElement.clientWidth;
+      oscCanvas.height = oscCanvas.parentElement.clientHeight;
+    }
+
+    // ---- Interactive Breath Holding Methods ----
+    function startHolding() {
+      if (phase >= 4) return;
+      isHoldingBreath = true;
+      document.getElementById("holdBtn").classList.add("pressed");
+    }
+
+    // ---- Stop holding ----
+    function stopHolding() {
+      isHoldingBreath = false;
+      document.getElementById("holdBtn").classList.remove("pressed");
+    }
+
+    // ---- Core Game Loop ----
+    function gameLoop(now) {
+      if (!isTermActive) return;
+
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      timeElapsed += dt;
+
+      // 1. Depth Counter Ascent
+      if (depth < 214) {
+        depth = Math.min(214, depth + dt * 55); // climbs fast
+        document.getElementById("depthCounter").innerText = `DERİNLİK: ${Math.round(depth)} M`;
+      }
+
+      // 2. Timeline Phases Logic
+      updatePhases();
+
+      // 3. Breath Hold Mechanics
+      updateBreath(dt);
+
+      // 4. Update Logs & UI Status Text
+      updateDiagnosticLogs();
+
+      // 5. Draw Sonar Sweep Canvas
+      drawRadar(now);
+
+      // 6. Draw Oscilloscope Heartbeat Canvas
+      drawOscilloscope(now);
+
+      // 7. Update Text Subtitles
+      updateCaptions();
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    // ---- Update Timeline Phases ----
+    function updatePhases() {
+      const statusLabel = document.getElementById("statusLabel");
+      const statusDot = document.getElementById("statusDot");
+
+      if (timeElapsed >= 21.4) {
+        // Trigger CRT Shutdown and Glitch Loss
+        if (phase < 4) {
+          triggerBreach();
+        }
+      } else if (timeElapsed >= 12.0) {
+        // Phase 3: Hold Breath Warning Area
+        phase = 3;
+        statusLabel.innerText = "DURUM: PROTOKOL-9 AKTİF";
+        statusLabel.className = "log-red";
+        statusDot.className = "status-dot critical";
+        document.getElementById("radarAlert").style.display = "block";
+        
+        // Increase heart rate dynamically
+        if (isHoldingBreath) {
+          heartRate = Math.min(140, heartRate + 0.15); // heart rate beats fast under breath holding
+        } else {
+          heartRate = Math.min(115, heartRate + 0.1);
+        }
+      } else if (timeElapsed >= 5.0) {
+        // Phase 2: Anomaly Alert Area
+        phase = 2;
+        statusLabel.innerText = "DURUM: ANOMALİ ALARMI";
+        statusLabel.className = "log-amber";
+        statusDot.className = "status-dot warning";
+        heartRate = Math.min(85, heartRate + 0.08);
+      } else {
+        phase = 1;
+      }
+    }
+
+    // ---- Breath holding progress bar ----
+    function updateBreath(dt) {
+      const fill = document.getElementById("breathFill");
+      const pctText = document.getElementById("breathPct");
+
+      if (phase >= 3) {
+        if (isHoldingBreath) {
+          // Shrink breath bar over 9.4s
+          breathLevel = Math.max(0, breathLevel - (dt / 9.4) * 100);
+        } else {
+          // Rapid decay if NOT holding breath!
+          breathLevel = Math.max(0, breathLevel - dt * 25);
+        }
+      } else {
+        // Recover breath before warning phase
+        if (isHoldingBreath) {
+          breathLevel = Math.max(0, breathLevel - dt * 5);
+        } else {
+          breathLevel = Math.min(100, breathLevel + dt * 10);
+        }
+      }
+
+      // Convert percentage to dashoffset
+      // Circumference of 45r circle is ~282.7
+      const offset = 283 - (breathLevel / 100) * 283;
+      fill.style.strokeDashoffset = offset;
+      pctText.innerText = `${Math.round(breathLevel)}%`;
+
+      // If breath level hits 0, trigger instant blowout breach!
+      if (breathLevel <= 0 && phase < 4) {
+        timeElapsed = 21.4; // Fast forward to blowout time!
+      }
+    }
+
+    // ---- Console Diagnostics Logs Manager ----
+    function updateDiagnosticLogs() {
+      const consoleLog = document.getElementById("diagnosticsLog");
+
+      if (logsIndex < logData.length && timeElapsed >= logData[logsIndex].time) {
+        const log = logData[logsIndex];
+        const newLog = document.createElement("div");
+        newLog.className = `log-entry log-${log.level}`;
+        newLog.innerText = `> ${log.text}`;
+        
+        consoleLog.appendChild(newLog);
+        consoleLog.scrollTop = consoleLog.scrollHeight; // Scroll to bottom
+        
+        logsIndex++;
+      }
+    }
+
+    // ---- Typewriter Text Captions Overlay ----
+    function updateCaptions() {
+      const capContainer = document.getElementById("captionText");
+      let activeText = "";
+
+      for (let i = 0; i < captions.length; i++) {
+        const cap = captions[i];
+        if (timeElapsed >= cap.start && timeElapsed <= cap.end) {
+          activeText = cap.text;
+          break;
+        }
+      }
+
+      if (activeText !== "") {
+        capContainer.innerText = activeText;
+        capContainer.style.opacity = 1;
+      } else {
+        capContainer.style.opacity = 0;
+      }
+    }
+
+    // ---- Draw Hydrophone Radar Canvas ----
+    function drawRadar(now) {
+      if (!radarCtx) return;
+
+      const w = radarCanvas.width;
+      const h = radarCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const radius = Math.min(cx, cy) - 20;
+
+      // Clear canvas
+      radarCtx.clearRect(0, 0, w, h);
+
+      // Background grid circles
+      radarCtx.strokeStyle = "rgba(0, 90, 36, 0.25)";
+      radarCtx.lineWidth = 1;
+      
+      for (let r = 1; r <= 3; r++) {
+        radarCtx.beginPath();
+        radarCtx.arc(cx, cy, (r / 3) * radius, 0, Math.PI * 2);
+        radarCtx.stroke();
+      }
+
+      // Radar Crosshairs
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx - radius, cy);
+      radarCtx.lineTo(cx + radius, cy);
+      radarCtx.moveTo(cx, cy - radius);
+      radarCtx.lineTo(cx, cy + radius);
+      radarCtx.stroke();
+
+      // Draw red anomaly dot if phase >= 2
+      if (phase >= 2) {
+        const threatAngle = -Math.PI / 4; // Top-Right area
+        // Threat approaches center as breath shrinks or time moves
+        const approachProgress = Math.max(0.1, (21.4 - timeElapsed) / 16.4); // shrinks closer
+        const threatDistance = radius * approachProgress;
+        
+        const tx = cx + Math.cos(threatAngle) * threatDistance;
+        const ty = cy + Math.sin(threatAngle) * threatDistance;
+
+        // Flash red threat dot based on sweep angle proximity
+        const dotSweepDiff = Math.abs((sweepAngle % (Math.PI * 2)) - (threatAngle + Math.PI * 2) % (Math.PI * 2));
+        let alpha = 0.15;
+        if (dotSweepDiff < 0.2) alpha = 1.0;
+        else if (dotSweepDiff < 1.0) alpha = 1.0 - (dotSweepDiff / 1.0);
+
+        radarCtx.fillStyle = `rgba(255, 51, 51, ${alpha})`;
+        radarCtx.beginPath();
+        radarCtx.arc(tx, ty, 8, 0, Math.PI * 2);
+        radarCtx.fill();
+        
+        // Glow effect
+        radarCtx.shadowBlur = 10;
+        radarCtx.shadowColor = "var(--threat-red)";
+        radarCtx.fill();
+        radarCtx.shadowBlur = 0; // reset
+      }
+
+      // Sweep radar line
+      sweepAngle += 0.035; // sweep rotation speed
+      const sx = cx + Math.cos(sweepAngle) * radius;
+      const sy = cy + Math.sin(sweepAngle) * radius;
+
+      // Draw fading sweep gradient wedge
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx, cy);
+      radarCtx.arc(cx, cy, radius, sweepAngle - 0.25, sweepAngle);
+      radarCtx.closePath();
+      
+      const gradient = radarCtx.createRadialGradient(cx, cy, 5, cx, cy, radius);
+      gradient.addColorStop(0, "rgba(0, 255, 102, 0.15)");
+      gradient.addColorStop(1, "rgba(0, 255, 102, 0.01)");
+      radarCtx.fillStyle = gradient;
+      radarCtx.fill();
+
+      // Main sweep line
+      radarCtx.strokeStyle = "rgba(0, 255, 102, 0.7)";
+      radarCtx.lineWidth = 1.5;
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx, cy);
+      radarCtx.lineTo(sx, sy);
+      radarCtx.stroke();
+    }
+
+    // ---- Draw Oscilloscope Waveform Canvas ----
+    function drawOscilloscope(now) {
+      if (!oscCtx) return;
+
+      const w = oscCanvas.width;
+      const h = oscCanvas.height;
+      const cy = h / 2;
+
+      oscCtx.clearRect(0, 0, w, h);
+
+      // Grid line backgrounds
+      oscCtx.strokeStyle = "rgba(0, 90, 36, 0.1)";
+      oscCtx.lineWidth = 1;
+      oscCtx.beginPath();
+      oscCtx.moveTo(0, cy);
+      oscCtx.lineTo(w, cy);
+      oscCtx.stroke();
+
+      oscCtx.strokeStyle = "var(--terminal-green)";
+      oscCtx.lineWidth = 2.0;
+      oscCtx.beginPath();
+
+      // Oscilloscope path coordinates generator
+      const numPoints = 120;
+      const points = [];
+      const timeVal = now / 1000;
+
+      for (let i = 0; i < numPoints; i++) {
+        const x = (i / (numPoints - 1)) * w;
+        
+        // Base low rumbling waves
+        let baseWave = Math.sin(i * 0.1 - timeVal * 12) * 5;
+        
+        // Scheduling procedural heartbeat spike
+        let heartbeatPulse = 0;
+        const period = 60 / heartRate;
+        const cycle = timeVal % period;
+
+        if (cycle < 0.25) {
+          const progress = cycle / 0.25;
+          // QRS complex spike shape formula
+          const pulseShape = Math.sin(progress * Math.PI) * Math.sin(progress * Math.PI * 2.5);
+          const spatialEnvelope = Math.exp(-Math.abs(x - w / 2) / 120); // Spike localized in center
+          heartbeatPulse = pulseShape * 45 * spatialEnvelope;
+        }
+
+        // Apply signal noise when terminal glitches out
+        const noiseVal = (Math.random() - 0.5) * 60 * glitchIntensity;
+
+        const y = cy + baseWave + heartbeatPulse + noiseVal;
+        points.push({ x, y });
+      }
+
+      // Draw custom smooth lines using segments
+      oscCtx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i++) {
+        oscCtx.lineTo(points[i].x, points[i].y);
+      }
+      oscCtx.stroke();
+
+      // Readout Text
+      document.getElementById("hrReadout").innerText = `HR: ${Math.round(heartRate)} BPM`;
+    }
+
+    // ---- Trigger Breach / CRT Collapse Sequence ----
+    function triggerBreach() {
+      phase = 4;
+      glitchIntensity = 1.0;
+      isTermActive = true; // Still active for shutdown animation
+
+      // Play audio explosion glitch
+      playGlitchBurst(1.8);
+
+      // Flash critical alert styling
+      document.getElementById("statusLabel").innerText = "SİNYAL KOPMASI!";
+      document.getElementById("statusLabel").className = "log-red";
+      document.getElementById("statusDot").className = "status-dot critical";
+
+      // Add a heavy red terminal override alert log
+      const consoleLog = document.getElementById("diagnosticsLog");
+      const newLog = document.createElement("div");
+      newLog.className = "log-entry log-red";
+      newLog.innerText = ">> CRITICAL BREACH: HYDROPHONE HD-4 OFFLINE";
+      consoleLog.appendChild(newLog);
+      consoleLog.scrollTop = consoleLog.scrollHeight;
+
+      // 1.5 seconds later: trigger CRT Shutdown Screen Collapse
+      setTimeout(() => {
+        playCRTShutdown();
+        document.getElementById("crtMonitor").classList.add("collapsed");
+
+        // 600ms later: enter the glitched dead state and show title reveal
+        setTimeout(() => {
+          showLogoGlitchScreen();
+        }, 600);
+
+      }, 1600);
+    }
+
+    // ---- Show Final Logo Glitch Screen ----
+    function showLogoGlitchScreen() {
+      isTermActive = false;
+      cancelAnimationFrame(animationId);
+
+      const glitchScreen = document.getElementById("glitchScreen");
+      glitchScreen.classList.add("active");
+
+      // Typewriter title effect for "PERISHED" with keyboard sounds
+      typewriterEffect("typewriterLogo", "PERISHED", 150, () => {
+        // Show tagline
+        document.getElementById("logoTagline").classList.add("visible");
+        
+        // Show restart option hint
+        setTimeout(() => {
+          document.getElementById("restartHint").classList.add("visible");
+          glitchScreen.addEventListener("click", resetTerminal);
+        }, 1200);
+      });
+    }
+
+    // Typewriter Text Effect generator
+    function typewriterEffect(elementId, text, speed, callback) {
+      const elem = document.getElementById(elementId);
+      let idx = 0;
+      elem.innerText = "";
+
+      // Play synth keyboard typing sound
+      function playTypeSound() {
+        if (!audioCtx) return;
+        const time = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(220 + Math.random() * 440, time); // mechanical click
+
+        gain.gain.setValueAtTime(0.04, time);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.05);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(time);
+        osc.stop(time + 0.06);
+      }
+
+      function type() {
+        if (idx < text.length) {
+          elem.innerText += text.charAt(idx);
+          playTypeSound();
+          idx++;
+          setTimeout(type, speed + (Math.random() - 0.5) * 80); // variable typing rhythm
+        } else if (callback) {
+          callback();
+        }
+      }
+
+      type();
+    }
+
+    // ---- Reset & Restart Terminal ----
+    function resetTerminal() {
+      // Reload page to reset Web Audio and contexts safely
+      window.location.reload();
+    }
+  </script>
+
+</body>
+</html>

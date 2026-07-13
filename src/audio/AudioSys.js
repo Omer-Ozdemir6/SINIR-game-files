@@ -13,6 +13,8 @@ export const AudioSys = {
   _musicTrack: null,
   _ambEl: null,
   _ambientOn: false,
+  _duckBaseVolume: null,
+  _duckTimeout: null,
   inited: false,
   enabled: true,
   heartId: null,
@@ -43,10 +45,31 @@ export const AudioSys = {
       a.volume = vol;
       a.currentTime = 0;
       a.play().catch(() => {});
+      this.duckMusicBriefly();
       return true;
     } catch (e) {
       return false;
     }
+  },
+
+  // Müzik efekt seslerini bastırmasın diye: bir SFX her çaldığında müziği
+  // hafifçe (%30) ve kısa süreliğine kısar. Art arda hızlı SFX'lerde
+  // (ör. şifre tuşlarına art arda basmak) her seferinde sıfırdan
+  // kısılıp açılmaz — kısık kalır ve SADECE sonuncusundan bir süre sonra
+  // tek seferde normale döner, ses "pompalanmaz".
+  duckMusicBriefly(factor = 0.7, ms = 380) {
+    try {
+      const el = this._musicEl;
+      if (!el) return;
+      if (this._duckBaseVolume == null) this._duckBaseVolume = el.volume;
+      el.volume = this._duckBaseVolume * factor;
+      if (this._duckTimeout) clearTimeout(this._duckTimeout);
+      this._duckTimeout = setTimeout(() => {
+        if (this._musicEl === el) el.volume = this._duckBaseVolume;
+        this._duckBaseVolume = null;
+        this._duckTimeout = null;
+      }, ms);
+    } catch (e) {}
   },
 
   music(track) {
@@ -83,12 +106,15 @@ export const AudioSys = {
       if (!file) return; // dosya tanımlı değil — sessiz kal, sentetiğe düşme
 
       if (this._musicTrack === track && this._musicEl) return;
-      this._stopSampleMusic();
+      // Eski parça KESİK durmasın — kısa bir sönümle (fade-out) ayrılırken
+      // yeni parça aynı anda içeri sönümlenir (fade-in), doğal bir
+      // crossfade oluşur. Çalan bir şey yoksa bu no-op'tur.
+      this.fadeOutMusic(450);
 
       const a = new Audio(file);
       // Menü ve arka plan müzikleri loop, bölüm/etkinlik müzikleri tek sefer çalar
       a.loop = isMenuTrack || (track === this._bgAmbientTrack);
-      a.volume = 0.55;
+      a.volume = 0;
       this._musicEl = a;
       this._musicTrack = track;
 
@@ -104,7 +130,27 @@ export const AudioSys = {
         });
       }
 
-      if (this.enabled) a.play().catch(() => {});
+      if (this.enabled) {
+        a.play().catch(() => {});
+        this._fadeMusicVolume(a, 0.55, 900);
+      }
+    } catch (e) {}
+  },
+
+  // Bir ses elemanının sesini 0'dan hedef seviyeye (ya da tersi) belirli
+  // sürede kademeli açar/kısar — fade-in için kullanılır. fadeOutMusic()
+  // zaten var olan sönümleme fonksiyonu, bu onun "içeri açan" eşi.
+  _fadeMusicVolume(el, targetVol, durationMs) {
+    try {
+      const steps = 18;
+      const intervalMs = durationMs / steps;
+      let count = 0;
+      const timer = setInterval(() => {
+        count++;
+        if (this._musicEl !== el) { clearInterval(timer); return; } // parça bu arada değişti
+        el.volume = Math.min(targetVol, (targetVol * count) / steps);
+        if (count >= steps) clearInterval(timer);
+      }, intervalMs);
     } catch (e) {}
   },
 
@@ -192,19 +238,23 @@ export const AudioSys = {
         if (!file) return;
 
         // Arşiv/ayarlar müziği hâlâ çalıyor olabilir — yeni parçayı
-        // başlatmadan önce KESİN durdur, yoksa iki müzik üst üste biner.
-        this._stopSampleMusic();
+        // başlatmadan önce sönümle (iki müzik üst üste binmesin), yeni
+        // parça da içeri fade-in ile girsin.
+        this.fadeOutMusic(450);
 
         const a = new Audio(file);
         a.loop = (track === this._bgAmbientTrack);
-        a.volume = 0.55;
+        a.volume = 0;
         this._musicEl = a;
         this._musicTrack = track;
         if (this._pausedGameTime) {
           a.currentTime = this._pausedGameTime;
           this._pausedGameTime = 0;
         }
-        if (this.enabled) a.play().catch(() => {});
+        if (this.enabled) {
+          a.play().catch(() => {});
+          this._fadeMusicVolume(a, 0.55, 900);
+        }
       } else {
         this.music(this._bgAmbientTrack);
       }
