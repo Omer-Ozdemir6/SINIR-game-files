@@ -1,5 +1,31 @@
 import { styles as S } from "../styles/theme";
 import { t } from "../i18n";
+import { STORY } from "../story";
+
+function getLocalizedDoc(docId) {
+  for (const nodeId in STORY.nodes) {
+    const events = STORY.nodes[nodeId].events || [];
+    for (const ev of events) {
+      if (ev.type === "document" && ev.doc?.id === docId) {
+        return ev.doc;
+      }
+    }
+  }
+  return null;
+}
+
+function getLocalizedNote(noteId) {
+  for (const nodeId in STORY.nodes) {
+    const events = STORY.nodes[nodeId].events || [];
+    for (const ev of events) {
+      if (ev.type === "note" && ev.id === noteId) {
+        return ev;
+      }
+    }
+  }
+  return null;
+}
+
 
 /* Arşiv ana menüsü */
 export function ArchiveMenu({ objective, onNotes, onDocs, onClose }) {
@@ -29,13 +55,18 @@ export function ArchiveList({ kind, items, onOpen, onBack }) {
               {kind === "notes" ? t("archive.emptyNotes") : t("archive.emptyDocs")}
             </div>
           )}
-          {items.map((item) => (
-            <button key={item.id} className="s1-btn s1-row" style={S.listRow}
-              onClick={() => onOpen(kind === "notes" ? "note" : "doc", item)}>
-              <span style={S.rowDotSlot}>{!item.read && <span style={S.redDot} />}</span>
-              <span style={S.rowText}>{item.title}</span>
-            </button>
-          ))}
+          {items.map((item) => {
+            const title = kind === "notes"
+              ? (getLocalizedNote(item.id)?.title || item.title)
+              : (getLocalizedDoc(item.id)?.title || item.title);
+            return (
+              <button key={item.id} className="s1-btn s1-row" style={S.listRow}
+                onClick={() => onOpen(kind === "notes" ? "note" : "doc", item)}>
+                <span style={S.rowDotSlot}>{!item.read && <span style={S.redDot} />}</span>
+                <span style={S.rowText}>{title}</span>
+              </button>
+            );
+          })}
         </div>
         <button className="s1-btn s1-menuitem" style={S.menuClose} onClick={onBack}>{t("archive.back")}</button>
       </div>
@@ -45,14 +76,15 @@ export function ArchiveList({ kind, items, onOpen, onBack }) {
 
 /* El yazısı not kağıdı */
 export function NotePaper({ item, onBack }) {
+  const note = getLocalizedNote(item.id) || item;
   return (
     <div style={{ ...S.overlayDim, ...S.noteOverlay }} onPointerDown={(e) => e.stopPropagation()}>
       <div style={S.notePaper} className="s1-paper">
         <div style={S.noteTitleRow}>
-          <span style={S.notePaperTitle}>{item.title}</span>
+          <span style={S.notePaperTitle}>{note.title}</span>
           <span style={S.notePaperTime}>{item.time}</span>
         </div>
-        <div style={S.notePaperBody}>{item.text}</div>
+        <div style={S.notePaperBody}>{note.text}</div>
         <button className="s1-btn s1-menuitem" style={S.paperBack} onClick={onBack}>{t("archive.back")}</button>
       </div>
     </div>

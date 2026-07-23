@@ -2,11 +2,42 @@ import { memo, useMemo } from "react";
 import { styles as S } from "../styles/theme";
 import { obscureText } from "../engine/textFx";
 import { t } from "../i18n";
+import { STORY } from "../story";
 
 const MAX_VISIBLE_LINES = 90;
 
-const StoryLine = memo(function StoryLine({ line, cursor, wordsObscured }) {
-  let txt = line.text;
+function getLocalizedLineText(line, story) {
+  if (line.translationKey) {
+    let tText = t(line.translationKey);
+    if (line.translationPrefix) tText = line.translationPrefix + tText;
+    return tText;
+  }
+  
+  if (line.nodeId && line.eventIdx !== undefined) {
+    const node = story.nodes[line.nodeId];
+    const ev = node?.events?.[line.eventIdx];
+    if (ev) {
+      if (line.isNote) {
+        return "⚠ " + ev.note;
+      }
+      return ev.text;
+    }
+  }
+  
+  if (line.choiceId && line.choiceNodeId) {
+    const node = story.nodes[line.choiceNodeId];
+    const choice = node?.choices?.find(c => c.id === line.choiceId) || (line.choiceIdx !== undefined ? node?.choices?.[line.choiceIdx] : null);
+    if (choice) {
+      return (line.choiceAuto ? "· · · " : "» ") + choice.text;
+    }
+  }
+
+  // Fallback to static text
+  return line.text;
+}
+
+const StoryLine = memo(function StoryLine({ line, lang, cursor, wordsObscured }) {
+  let txt = getLocalizedLineText(line, STORY);
   if ((line.kind === "narrate" || line.kind === "ambient") && wordsObscured) {
     txt = obscureText(txt);
   }
@@ -22,13 +53,13 @@ const StoryLine = memo(function StoryLine({ line, cursor, wordsObscured }) {
 export default function StoryStream({
   scrollRef, lines, typing, wordsObscured, choicesObscured,
   timeLeft, choicesVisible, choices, flags, onChoice,
-  ended, onEndContinue, tapWait, onSkipTap,
+  ended, onEndContinue, tapWait, onSkipTap, lang,
 }) {
   const visibleLines = useMemo(() => {
     if (lines.length <= MAX_VISIBLE_LINES) return lines.map((line, i) => ({ line, key: i }));
     const offset = lines.length - MAX_VISIBLE_LINES;
     return lines.slice(offset).map((line, i) => ({ line, key: offset + i }));
-  }, [lines]);
+  }, [lines, lang]);
   const lastLineKey = lines.length - 1;
 
   return (
@@ -44,6 +75,7 @@ export default function StoryStream({
         <StoryLine
           key={key}
           line={line}
+          lang={lang}
           cursor={key === lastLineKey && typing}
           wordsObscured={wordsObscured}
         />

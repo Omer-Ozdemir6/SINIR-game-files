@@ -23,7 +23,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import GameHeader from "./components/GameHeader";
 import StoryStream from "./components/StoryStream";
 import Hud from "./components/Hud";
-import { PauseMenu, SettingsOverlay, DeathOverlay } from "./components/MenuOverlays";
+import { PauseMenu, SettingsOverlay, DeathOverlay, ExitConfirmOverlay, OnboardingOverlay } from "./components/MenuOverlays";
 import Credits from "./components/Credits";
 import HowToPlay from "./components/HowToPlay";
 import { ArchiveMenu, ArchiveList, NotePaper, DocPaper } from "./components/ArchiveOverlays";
@@ -95,6 +95,7 @@ export default function App() {
   const [chapterLoading, setChapterLoading] = useState(false); // bölüm geçişi / ölümden devam arasına giren yükleme ekranı
   const [showCredits, setShowCredits] = useState(false);
   const [endFade, setEndFade] = useState(false);
+  const [exitConfirm, setExitConfirm] = useState(false);
   const [menuAfterEnding, setMenuAfterEnding] = useState(() => {
     try { return localStorage.getItem(MENU_AFTER_END_KEY) === "1"; }
     catch (e) { return false; }
@@ -191,6 +192,87 @@ export default function App() {
   const tapWaitRef = useRef(null);   // "devam için dokun" kapısı
   const docCloseRef = useRef(null);  // açık döküman kapanana dek bekleme
 
+  const handleHardwareBack = () => {
+    if (openItem) {
+      setOpenItem(null);
+      return;
+    }
+    if (screen === "notes" || screen === "docs") {
+      setScreen("menu");
+      return;
+    }
+    if (screen === "menu") {
+      setScreen(null);
+      return;
+    }
+    if (screen === "settings") {
+      setScreen(settingsFrom || null);
+      return;
+    }
+    if (screen === "pause") {
+      setScreen(null);
+      return;
+    }
+    if (exitConfirm) {
+      setExitConfirm(false);
+      return;
+    }
+    if (screen === "onboarding") {
+      try { localStorage.setItem("sinir1_gameplay_tutorial_seen", "1"); } catch (e) {}
+      setScreen(null);
+      return;
+    }
+    if (mode === "menu") {
+      if (showCredits) {
+        setShowCredits(false);
+        return;
+      }
+      if (confirmNew) {
+        setConfirmNew(false);
+        return;
+      }
+      setExitConfirm(true);
+      return;
+    }
+    if (mode === "puzzletest") {
+      setMode("menu");
+      return;
+    }
+    if (mode === "game") {
+      if (interaction) {
+        interactionCancel();
+        return;
+      }
+      setScreen("pause");
+      return;
+    }
+  };
+
+  const hardwareBackRef = useRef(null);
+  hardwareBackRef.current = handleHardwareBack;
+
+  useEffect(() => {
+    let capHandler = null;
+    const registerCapBackButton = async () => {
+      try {
+        const { App: CapApp } = await import("@capacitor/app");
+        capHandler = await CapApp.addListener("backButton", () => {
+          if (hardwareBackRef.current) {
+            hardwareBackRef.current();
+          }
+        });
+      } catch (e) {
+        console.log("Capacitor App plugin not available.", e);
+      }
+    };
+    registerCapBackButton();
+    return () => {
+      if (capHandler) {
+        capHandler.remove();
+      }
+    };
+  }, []);
+
   /* ---------------- yardımcılar ---------------- */
 
   const clearTimer = () => {
@@ -275,11 +357,11 @@ export default function App() {
     return Math.min(9500, Math.max(2200, len * 42));
   };
 
-  const typeLine = (kind, text, runId) =>
+  const typeLine = (kind, text, runId, meta = {}) =>
     new Promise((resolve) => {
       if (runIdRef.current !== runId) return resolve();
       setTyping(false);
-      setLines((ls) => [...ls, { kind, text }]);
+      setLines((ls) => [...ls, { kind, text, ...meta }]);
       // Artık otomatik ilerlemez — oyuncu dokunana kadar bekler. "Devam
       // için dokun" ipucu, satırın normalde okunacağı süre (uzunluk +
       // hız ayarına göre) dolunca belirir.
@@ -429,13 +511,13 @@ export default function App() {
 
   /* ---------------- olay oynatıcı ---------------- */
 
-  const playEvent = async (ev, runId) => {
+  const playEvent = async (ev, runId, nodeId, eventIdx) => {
     if (ev.if && !flagOk(ev.if)) return;
     switch (ev.type) {
-      case "narrate": return typeLine("narrate", ev.text, runId);
-      case "ambient": return typeLine("ambient", ev.text, runId);
-      case "system": return typeLine("system", ev.text, runId);
-      case "alert": return typeLine("alert", ev.text, runId);
+      case "narrate": return typeLine("narrate", ev.text, runId, { nodeId, eventIdx });
+      case "ambient": return typeLine("ambient", ev.text, runId, { nodeId, eventIdx });
+      case "system": return typeLine("system", ev.text, runId, { nodeId, eventIdx });
+      case "alert": return typeLine("alert", ev.text, runId, { nodeId, eventIdx });
       case "pause": return wait(ev.ms || 800, runId);
       case "glitch": return runGlitch(ev.ms || 600);
       case "sting": {
@@ -448,7 +530,10 @@ export default function App() {
       case "status": {
         for (const item of ev.items) {
           const on = !!flagsRef.current[item.flag];
-          await typeLine("system", item.label + ": " + (on ? t("eng.statusOn") : t("eng.statusOff")), runId);
+          await typeLine("system", item.label + ": " + (on ? t("eng.statusOn") : t("eng.statusOff")), runId, {
+            translationKey: on ? "eng.statusOn" : "eng.statusOff",
+            translationPrefix: item.label + ": "
+          });
           if (runIdRef.current !== runId) return;
         }
         return;
@@ -466,7 +551,7 @@ export default function App() {
         setStats(next);
         // merkezî eşik izleyicisi: gürültü/akıl eşiklerini kontrol et
         if (checkThresholds(runId)) return;   // ölüm tetiklendiyse akışı durdur
-        if (ev.note) return typeLine(ev.noteKind || "alert", "⚠ " + ev.note, runId);
+        if (ev.note) return typeLine(ev.noteKind || "alert", "⚠ " + ev.note, runId, { nodeId, eventIdx, isNote: true });
         return;
       }
       case "battery": {
@@ -479,7 +564,7 @@ export default function App() {
         }
         return wait(1500, runId);
       }
-      case "anons": return typeLine("anons", ev.text, runId);
+      case "anons": return typeLine("anons", ev.text, runId, { nodeId, eventIdx });
       case "music": { currentTrackRef.current = ev.track || null; AudioSys.music(ev.track || null); return; }
       case "document": {
         if (!docsRef.current.find((d) => d.id === ev.doc.id)) {
@@ -623,14 +708,17 @@ export default function App() {
     // gelirse araya otomatik dokunma kapısı girer — ödül seli oluşamaz.
     const META = new Set(["document", "note", "objective", "battery"]);
     let prevMeta = false;
-    for (const ev of eventsToPlay) {
+    const eventsList = node.events || [];
+    for (let i = 0; i < eventsToPlay.length; i++) {
+      const ev = eventsToPlay[i];
       if (runIdRef.current !== runId) return;
       const isMeta = META.has(ev.type);
       if (isMeta && prevMeta) {
         await waitTap(runId);
         if (runIdRef.current !== runId) return;
       }
-      await playEvent(ev, runId);
+      const eventIdx = eventsList.indexOf(ev);
+      await playEvent(ev, runId, nodeId, eventIdx);
       if (ev.type === "narrate" || ev.type === "ambient" || ev.type === "waitTap") prevMeta = false;
       else if (isMeta) prevMeta = true;
     }
@@ -674,7 +762,19 @@ export default function App() {
     clearTimer();
     setChoicesVisible(false);
     clockRef.current += 1 + Math.floor(Math.random() * 3);
-    setLines((ls) => [...ls, { kind: "choice", text: (auto ? "· · · " : "» ") + choice.text }]);
+    const choiceNode = STORY.nodes[currentNodeId];
+    const choiceIdx = choiceNode?.choices?.indexOf(choice);
+    setLines((ls) => [
+      ...ls,
+      {
+        kind: "choice",
+        text: (auto ? "· · · " : "» ") + choice.text,
+        choiceId: choice.id,
+        choiceNodeId: currentNodeId,
+        choiceIdx: choiceIdx,
+        choiceAuto: auto
+      }
+    ]);
     if (choice.paywall && !isUnlockedLocal()) {
       pendingLoadRef.current = choice.next;
       setScreen("paywall");
@@ -868,7 +968,7 @@ export default function App() {
     if (!interaction) return;
     const target = interaction.cancel;
     setInteraction(null);
-    setLines((ls) => [...ls, { kind: "choice", text: "» Uzaklaş" }]);
+    setLines((ls) => [...ls, { kind: "choice", text: "» " + t("panel.away"), translationKey: "panel.away", translationPrefix: "» " }]);
     playNode(target);
   };
 
@@ -1078,7 +1178,7 @@ export default function App() {
     seenObjectivesRef.current = new Set(cp.seenObjectives || (cp.objective && cp.objective !== "—" ? [cp.objective] : []));
     clockRef.current = cp.clock;
     setScreen(null);
-    setLines([{ kind: "system", text: t("eng.restored") }]);
+    setLines([{ kind: "system", text: t("eng.restored"), translationKey: "eng.restored" }]);
     playNode(cp.nodeId);
   };
 
@@ -1126,7 +1226,15 @@ export default function App() {
     setBreath(null);
     clockRef.current = 227;
     checkpointRef.current = null;
-    setScreen(null);
+    try {
+      if (localStorage.getItem("sinir1_gameplay_tutorial_seen") !== "1") {
+        setScreen("onboarding");
+      } else {
+        setScreen(null);
+      }
+    } catch (e) {
+      setScreen(null);
+    }
     setOpenItem(null);
     setLines([]);
     setGameExists(true);
@@ -1379,17 +1487,49 @@ export default function App() {
   const eligibleChoices = (node?.choices || []).filter((c) => flagOk(c.if) && statOk(c.ifStat));
   // Sıra, aynı düğümde aynı seçenek seti gösterildiği sürece SABİT kalır
   // (her render'da yeniden karışmaz) — sadece düğüm ya da uygun seçenek
-  // seti değişince yeniden karıştırılır.
+  // seti değişince yeniden karıştırılır. Dil değiştiğinde ise seçeneklerin
+  // ekrandaki yerleri değişmesin ama metinler güncellensin diye ID sırasını
+  // karıştırıp sabit tutuyoruz, sonra bu sırayla güncel seçenekleri çekiyoruz.
   const choiceKey = currentNodeId + ":" + eligibleChoices.map((c) => c.id).join(",");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const visibleChoices = useMemo(() => shuffled(eligibleChoices), [choiceKey]);
+  const shuffledIds = useMemo(() => shuffled(eligibleChoices).map((c) => c.id), [choiceKey]);
+  const visibleChoices = useMemo(() => {
+    return shuffledIds.map((id) => eligibleChoices.find((c) => c.id === id)).filter(Boolean);
+  }, [shuffledIds, eligibleChoices]);
 
   const dimOpacity = battery > 40 ? 0 : battery > 15 ? 0.2 : battery > 5 ? 0.42 : 0.58;
   const wordsObscured = battery <= 5;
   const choicesObscured = battery <= 5;
   const flickering = (battery > 0 && battery <= 12 && screen !== "blackout") || batteryFlicker;
 
-  const docPages = openItem?.kind === "doc" ? paginateDoc(openItem.item.body) : [];
+  const getLocalizedDoc = (docId) => {
+    for (const nodeId in STORY.nodes) {
+      const events = STORY.nodes[nodeId].events || [];
+      for (const ev of events) {
+        if (ev.type === "document" && ev.doc?.id === docId) {
+          return ev.doc;
+        }
+      }
+    }
+    return null;
+  };
+
+  const getLocalizedNote = (noteId) => {
+    for (const nodeId in STORY.nodes) {
+      const events = STORY.nodes[nodeId].events || [];
+      for (const ev of events) {
+        if (ev.type === "note" && ev.id === noteId) {
+          return ev;
+        }
+      }
+    }
+    return null;
+  };
+
+  const docPages = useMemo(() => {
+    if (openItem?.kind !== "doc") return [];
+    const body = getLocalizedDoc(openItem.item.id)?.body || openItem.item.body || "";
+    return paginateDoc(body);
+  }, [openItem, lang]);
   // karanlıkta ölüme yaklaşma oranı (0→1) — SÜRE OYUNCUYA GÖSTERİLMEZ
   const darkP = dark ? Math.min(1, Math.max(0, 1 - dark.left / DARK_MS)) : 0;
 
@@ -1489,6 +1629,7 @@ export default function App() {
           onArchive={() => { setScreen("menu"); setOpenItem(null); }}
         />
         <StoryStream
+          lang={lang}
           scrollRef={scrollRef} lines={lines} typing={typing}
           wordsObscured={wordsObscured} choicesObscured={choicesObscured}
           timeLeft={timeLeft} choicesVisible={choicesVisible} choices={visibleChoices}
@@ -1659,18 +1800,24 @@ export default function App() {
         <ArchiveList kind={screen} items={screen === "notes" ? notes : docs}
           onOpen={openArchiveItem} onBack={() => setScreen("menu")} />
       )}
-      {openItem?.kind === "note" && (
-        <NotePaper item={openItem.item} onBack={() => setOpenItem(null)} />
-      )}
-      {openItem?.kind === "doc" && (
-        <DocPaper item={openItem.item} page={docPage} pages={docPages}
-          onPrev={() => { AudioSys.page(); setDocPage(docPage - 1); }}
-          onNext={() => { AudioSys.page(); setDocPage(docPage + 1); }}
-          onClose={() => {
-            setOpenItem(null);
-            if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; }
-          }} />
-      )}
+      {openItem?.kind === "note" && (() => {
+        const note = getLocalizedNote(openItem.item.id) || openItem.item;
+        return (
+          <NotePaper item={note} onBack={() => setOpenItem(null)} />
+        );
+      })()}
+      {openItem?.kind === "doc" && (() => {
+        const doc = getLocalizedDoc(openItem.item.id) || openItem.item;
+        return (
+          <DocPaper item={doc} page={docPage} pages={docPages}
+            onPrev={() => { AudioSys.page(); setDocPage(docPage - 1); }}
+            onNext={() => { AudioSys.page(); setDocPage(docPage + 1); }}
+            onClose={() => {
+              setOpenItem(null);
+              if (docCloseRef.current) { docCloseRef.current(); docCloseRef.current = null; }
+            }} />
+        );
+      })()}
 
       {/* Çark menüsü ve ayarlar */}
       {screen === "pause" && (
@@ -1687,6 +1834,24 @@ export default function App() {
           onSpeed={applySpeed} onGlitch={applyGlitchFx} onSound={applySound}
             hapticsOn={hapticsOn} onHaptics={applyHaptics}
           onBack={() => setScreen(settingsFrom === "pause" ? "pause" : null)} />
+      )}
+      {screen === "onboarding" && (
+        <OnboardingOverlay
+          onClose={() => {
+            try { localStorage.setItem("sinir1_gameplay_tutorial_seen", "1"); } catch (e) {}
+            setScreen(null);
+          }}
+        />
+      )}
+      {exitConfirm && (
+        <ExitConfirmOverlay
+          onConfirm={() => {
+            import("@capacitor/app").then(({ App: CapApp }) => {
+              CapApp.exitApp();
+            });
+          }}
+          onCancel={() => setExitConfirm(false)}
+        />
       )}
       {screen === "paywall" && (
         <PaywallScreen onUnlocked={finishPaywall} onMainMenu={paywallMainMenu} />
